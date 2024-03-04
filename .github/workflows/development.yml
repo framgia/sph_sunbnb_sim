@@ -1,0 +1,52 @@
+name: Development
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "checkout repository"
+        uses: actions/checkout@v2
+
+      - name: Install PHP versions
+        uses: shivammathur/setup-php@v2
+
+      - name: Go to backend folder
+        run: ls && cd backend
+
+      - name: PHP Version
+        run: php --version
+
+      - name: Redirect to backend folder
+        run: pwd
+
+      - name: Install Dependencies
+        run: cd backend && composer update && composer install
+
+      - name: Run Pint
+        run: cd backend && vendor/bin/pint --test -v
+
+  nextjs-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "checkout repository"
+        uses: actions/checkout@v2
+
+      - name: "setup node"
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 18
+
+      - name: "install npm@latest"
+        run: npm i -g npm@latest
+
+      - name: "install dependencies"
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: frontend
+
+      - name: "lint code"
+        run: cd frontend && npm run lint --if-present
