@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// accesible through {server_uri}/api/v1/
-Route::get('/', function () {
-    return 'Hello World hi';
-});
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::apiResource('products', ProductController::class);
+Route::middleware('auth:api')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
