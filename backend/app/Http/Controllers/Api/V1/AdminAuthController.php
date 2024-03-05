@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminAuthController extends Controller {
     public function login(LoginRequest $request) {
-        $request->validate();
+        $request->validated();
 
         $admin = Admin::where('email', $request->email)->first();
 
