@@ -27,6 +27,8 @@ class User extends Authenticatable {
         'status',
         'email',
         'password',
+        'provider',
+        'provider_id',
     ];
 
     /**
