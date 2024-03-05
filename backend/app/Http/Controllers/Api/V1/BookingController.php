@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller {
     public function store(Request $request) {
+
         try {
 
             $validatedData = $request->validate([

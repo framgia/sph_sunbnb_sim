@@ -20,9 +20,9 @@ class Report extends Model {
     //     return $this->belongsTo(Listing::class);
     // }
 
-    // public function admin() {
-    //     return $this->belongsTo(Admin::class);
-    // }
+    public function admin() {
+        return $this->belongsTo(Admin::class);
+    }
 
     public function reasons() {
         return $this->belongsToMany(Reason::class);
