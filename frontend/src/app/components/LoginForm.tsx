@@ -53,7 +53,7 @@ function LoginForm() {
                         id="password"
                         placeholder="Password"
                         value={password}
-                        onChange={handleEmailChange}
+                        onChange={handlePasswordChange}
                         className="w-full"
                     />
                 </div>
