@@ -18,6 +18,10 @@ class GoogleAuthController extends Controller {
     }
 
     public function login(Request $request) {
+        $request->validate([
+            'id_token' => 'required',
+        ]);
+
         $payload = $payload = $this->googleClient->verifyIdToken($request->input('id_token'));
 
         if ($payload && isset($payload['sub']) && isset($payload['email'])) {
