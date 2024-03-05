@@ -9,7 +9,7 @@ const SignUpPage: React.FC = () => {
             <LogoLargeIcon />
             <div className="my-10 flex flex-col">
                 <span className="text-center text-xl font-bold">
-                    Let's get started!
+                    Let&apos;s get started!
                 </span>
                 <span className="text-center text-zinc-500">
                     Create an account to book or list a space

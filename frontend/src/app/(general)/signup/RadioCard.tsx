@@ -1,6 +1,6 @@
 "use client";
-
-import { RadioProps, cn, useRadio } from "@nextui-org/react";
+import type { RadioProps } from "@nextui-org/react";
+import { cn, useRadio } from "@nextui-org/react";
 import React from "react";
 
 const RadioCard: React.FC<RadioProps> = (props) => {
@@ -31,15 +31,19 @@ const RadioCard: React.FC<RadioProps> = (props) => {
                 {...getInputProps()}
             />
             <div {...getLabelWrapperProps()}>
-                {children && (
+                {children !== undefined ? (
                     <span {...getLabelProps()} className="justify-start pb-1">
                         {children}
                     </span>
+                ) : (
+                    <></>
                 )}
-                {description && (
+                {description !== undefined ? (
                     <span className="text-small text-foreground opacity-70">
                         {description}
                     </span>
+                ) : (
+                    <></>
                 )}
             </div>
         </Component>

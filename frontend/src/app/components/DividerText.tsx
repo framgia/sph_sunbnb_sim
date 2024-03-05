@@ -1,8 +1,8 @@
 import React from "react";
 
-type DividerTextProps = {
+interface DividerTextProps {
     children: React.ReactNode;
-};
+}
 
 const DividerText: React.FC<DividerTextProps> = ({ children }) => {
     return (
