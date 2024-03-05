@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Button, Link} from "@nextui-org/react";
+import { Input, Button, Link, Image} from "@nextui-org/react";
 
 function LoginForm() {
     const [email, setEmail] = useState("");
@@ -20,11 +20,15 @@ function LoginForm() {
 
     return (
         <form className="flex flex-col px-5 max-w-[500px]" onSubmit={handleSubmit}>
-            <img
+            <div className="w-full flex justify-center">
+                <Image
                 loading="lazy"
                 src="/images/sunbnblogo.svg"
                 className="mt-14 w-15 h-auto"
             />
+            </div>
+            
+            <div/>
             <div className="mt-9 w-full text-xl font-semibold leading-7 text-center text-black">
                 Welcome back!
             </div>
