@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 
 class PasswordController extends Controller {
-    //
     public function forgotpassword(Request $request) {
         try {
             $input = $request->only('email');
@@ -21,7 +19,7 @@ class PasswordController extends Controller {
                 return response()->json(['error' => $validator->errors()], 422);
             }
 
-            $status = Password::sendResetLink($input);
+            $status = Password::sendResetLink($request->only('email'));
 
             if ($status === Password::RESET_LINK_SENT) {
                 return response()->json(['message' => 'Password reset link sent to your email'], 200);
@@ -49,9 +47,8 @@ class PasswordController extends Controller {
                 return response()->json(['error' => $validator->errors()], 422);
             }
 
-            $status = Password::reset($input, function ($user, $password) {
-                $user->password = Hash::make($password);
-                $user->save();
+            $status = Password::reset($input, function ($user) use ($request) {
+                $user->forceFill(['password' => $request->password])->save();
             });
 
             return $status == Password::PASSWORD_RESET
