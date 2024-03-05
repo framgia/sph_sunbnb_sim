@@ -11,7 +11,8 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->enum('status', ListingStatus::getConstants());
             $table->string('name');
             $table->text('description');
             $table->string('province');
