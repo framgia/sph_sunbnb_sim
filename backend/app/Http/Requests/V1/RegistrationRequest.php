@@ -25,7 +25,7 @@ class RegistrationRequest extends FormRequest {
             'last_name' => 'required|string',
             'role' => ['required', 'string', Rule::in(UserRole::toArray())],
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
+            'password' => 'required|confirmed|string|min:8',
         ];
     }
 }
