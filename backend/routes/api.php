@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AdminAuthController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\GoogleAuthController;
 use App\Http\Controllers\Api\V1\PasswordController;
@@ -16,8 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/login/google', [GoogleAuthController::class, 'login']);
+Route::group(['prefix' => 'login'], function () {
+    Route::post('/', [AuthController::class, 'login']);
+    Route::post('/google', [GoogleAuthController::class, 'login']);
+    Route::post('/admin', [AdminAuthController::class, 'login']);
+});
 
 Route::post('forget-password', [PasswordController::class, 'forgotpassword']);
 Route::post('reset-password', [PasswordController::class, 'resetpassword']);
