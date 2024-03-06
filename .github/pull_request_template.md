@@ -10,6 +10,9 @@ Why are these changes necessary?
 
 Link to the related task or issue that prompted these changes.
 
+- Slack Link:
+- Task Link:
+
 ## Screenshots
 
 Include screenshots to visually demonstrate the changes made by this pull request.
