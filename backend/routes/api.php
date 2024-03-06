@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\AdminAuthController;
+use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +16,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// accesible through {server_uri}/api/v1/
-Route::get('/', function () {
-    return 'Hello World hi';
+Route::group(['prefix' => 'login'], function () {
+    Route::post('/', [AuthController::class, 'login']);
+    Route::post('/google', [GoogleAuthController::class, 'login']);
+    Route::post('/admin', [AdminAuthController::class, 'login']);
 });
 
-Route::apiResource('products', ProductController::class);
+Route::middleware('auth:api')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+});

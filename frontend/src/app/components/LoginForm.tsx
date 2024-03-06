@@ -25,6 +25,7 @@ const LoginForm:React.FC = () => {
                 loading="lazy"
                 src="/images/sunbnblogo.svg"
                 className="mt-14 w-15 h-auto"
+                alt = "Sunbnb Logo"
             />
             </div>
             
