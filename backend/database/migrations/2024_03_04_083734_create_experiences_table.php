@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->integer('duration');
             $table->string('language');
             $table->enum('name', ExperienceType::getConstants());
+            $table->json('inclusions')->nullable();
             $table->timestamps();
         });
     }
