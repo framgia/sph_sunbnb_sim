@@ -57,7 +57,7 @@ class User extends Authenticatable {
     }
 
     public function sendPasswordResetNotification($token) {
-        $url = 'http://frontend-url-here?token='.$token;
+        $url = env('FE_URL').'/forget-password?token='.$token;
 
         $this->notify(new ResetPasswordNotification($url));
     }
