@@ -23,8 +23,11 @@ Route::group(['prefix' => 'login'], function () {
     Route::post('/admin', [AdminAuthController::class, 'login']);
 });
 
+Route::post('/register', [AuthController::class, 'register']);
+
 Route::post('forget-password', [PasswordController::class, 'forgotpassword']);
 Route::post('reset-password', [PasswordController::class, 'resetpassword']);
+
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });

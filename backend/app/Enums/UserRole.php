@@ -3,9 +3,13 @@
 namespace App\Enums;
 
 class UserRole {
-    const ADMIN = 'admin';
-
     const HOST = 'host';
 
     const GUEST = 'guest';
+
+    public static function toArray(): array {
+        $reflectionClass = new \ReflectionClass(__CLASS__);
+
+        return $reflectionClass->getConstants();
+    }
 }
