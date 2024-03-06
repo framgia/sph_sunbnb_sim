@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->enum('name', ExperienceType::getConstants());
             $table->json('inclusions')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

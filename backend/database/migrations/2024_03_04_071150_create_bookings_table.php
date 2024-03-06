@@ -12,17 +12,16 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('user_id');
-            // $table->unsignedBigInteger('listing_id');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('listing_id')->constrained();
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('number_of_guests');
             $table->decimal('total_price', 10, 2);
             $table->enum('status', BookingStatus::getConstants());
+            $table->timestamps();
             $table->softDeletes();
 
-            // $table->foreign('user_id')->references('id')->on('guests');
-            // $table->foreign('listing_id')->references('id')->on('listings');
         });
     }
 

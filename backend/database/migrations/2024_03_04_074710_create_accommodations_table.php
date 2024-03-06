@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->integer('maximum_days');
             $table->json('amenities')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
