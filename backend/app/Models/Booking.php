@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Accommodation extends Model {
+class Booking extends Model {
     use HasFactory;
 
-    protected $fillable = ['type', 'bed_count', 'bedroom_count', 'bathroom_count', 'minimum_days', 'maximum_days', 'amenities'];
+    protected $fillable = [
+        'guest_id', 'listing_id', 'start_date', 'end_date', 'number_of_guests', 'total_price', 'status',
+    ];
+
+    public function user(): BelongsTo {
+        return $this->belongsTo(User::class);
+    }
 
     public function listing(): BelongsTo {
         return $this->belongsTo(Listing::class);

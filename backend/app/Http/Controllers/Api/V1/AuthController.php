@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\LoginRequest;
+use App\Http\Requests\V1\RegistrationRequest;
 use App\Http\Resources\V1\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,6 +32,28 @@ class AuthController extends Controller {
             'expires_in' => $userToken->token->expires_at,
             'user' => new UserResource($user),
         ], Response::HTTP_OK);
+    }
+
+    public function register(RegistrationRequest $request) {
+        $request->validated();
+
+        $user = User::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'role' => $request->role,
+            'status' => UserStatus::ACTIVE,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        $userToken = $user->createToken('appToken');
+
+        return response()->json([
+            'success' => true,
+            'token' => $userToken->accessToken,
+            'expires_in' => $userToken->token->expires_at,
+            'user' => new UserResource($user),
+        ], Response::HTTP_CREATED);
     }
 
     public function logout(Request $request) {

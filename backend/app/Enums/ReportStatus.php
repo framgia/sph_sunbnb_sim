@@ -2,12 +2,12 @@
 
 namespace App\Enums;
 
-class UserRole {
-    const HOST = 'host';
+class ReportStatus {
+    const OPEN = 'open';
 
-    const GUEST = 'guest';
+    const CLOSED = 'closed';
 
-    public static function toArray(): array {
+    public static function getConstants(): array {
         $reflectionClass = new \ReflectionClass(__CLASS__);
 
         return $reflectionClass->getConstants();

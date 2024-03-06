@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->foreignId('listing_id')->constrained();
             $table->string('media');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

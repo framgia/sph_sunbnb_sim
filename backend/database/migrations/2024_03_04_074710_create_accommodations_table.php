@@ -19,7 +19,9 @@ return new class extends Migration {
             $table->integer('bathroom_count');
             $table->integer('minimum_days');
             $table->integer('maximum_days');
+            $table->json('amenities')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

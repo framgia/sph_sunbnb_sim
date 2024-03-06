@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -48,6 +50,27 @@ class User extends Authenticatable {
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
     ];
+
+    public function setPasswordAttribute($password) {
+        $this->attributes['password'] = bcrypt($password);
+    }
+
+    public function sendPasswordResetNotification($token) {
+        $url = env('FE_URL').'/forget-password?token='.$token;
+
+        $this->notify(new ResetPasswordNotification($url));
+    }
+
+    public function reports() {
+        return $this->hasMany(Report::class);
+    }
+
+    public function bookings() {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function listings() {
+        return $this->hasMany(Listing::class);
+    }
 }
