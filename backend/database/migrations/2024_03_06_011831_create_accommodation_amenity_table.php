@@ -9,7 +9,7 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('accommodations_amenities', function (Blueprint $table) {
+        Schema::create('accommodation_amenity', function (Blueprint $table) {
             $table->foreignId('accommodation_id')->constrained();
             $table->foreignId('amenity_id')->constrained();
         });
@@ -19,6 +19,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('accommodations_amenities');
+        Schema::dropIfExists('accommodation_amenity');
     }
 };
