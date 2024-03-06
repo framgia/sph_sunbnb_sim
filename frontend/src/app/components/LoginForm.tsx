@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { Input, Button, Link, Image} from "@nextui-org/react";
 
-function LoginForm() {
+const LoginForm:React.FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) : void => {
         setEmail(e.target.value);
     };
 
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) : void => {
         setPassword(e.target.value);
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) : void => {
         e.preventDefault();
         // Handle form submission logic here
     };

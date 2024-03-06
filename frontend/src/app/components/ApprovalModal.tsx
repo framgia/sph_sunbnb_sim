@@ -1,6 +1,6 @@
-import React from 'react';
-
-const ApprovalModal = () => {
+import React from "react";
+import { Button } from "@nextui-org/react";
+const ApprovalModal:React.FC = () => {
   return (
     <section className="flex flex-col items-center justify-center max-w-screen-sm px-6 py-12 mx-auto my-8 bg-white rounded-3xl shadow-lg">
     <HeaderImage
@@ -20,7 +20,12 @@ const ApprovalModal = () => {
         <br />
         Please check back later for updates on its status. We appreciate your patience!
       </p>
-      <PreviewButton />
+      <Button
+        className="px-8 py-3 mt-10 text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-50"
+        type="button"
+    >
+        Preview
+    </Button>
     </section>
   );
 };
@@ -30,12 +35,7 @@ const HeaderImage = ({ src, alt, additionalClasses }: { src: string, alt: string
 );
 
 const PreviewButton = () => (
-    <button
-        className="px-8 py-3 mt-10 text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-50"
-        type="button"
-    >
-        Preview
-    </button>
+    
 );
 
 export default ApprovalModal;
