@@ -32,7 +32,7 @@ class ResetPasswordNotification extends Notification {
      */
     public function toMail(object $notifiable): MailMessage {
         return (new MailMessage)
-            ->line('We have received a request to reset the password associated with your account on SunBnB. 
+            ->line('We have received a request to reset the password associated with your account on SUNBNB. 
             To proceed with the password reset, click the button below:')
             ->action('Click to reset', $this->url)
             ->line('If you did not request a password reset or if you believe this email was sent in error, please ignore it. 
