@@ -1,8 +1,11 @@
+"use client";
+
 import React, { useState } from "react";
-import { Input, Button, Link } from "@nextui-org/react";
+import { Input, Button } from "@nextui-org/react";
 import LogoLargeIcon from "../../components/svgs/LogoLargeIcon";
 import GoogleButton from "../../components/GoogleButton";
 import DividerText from "../../components/DividerText";
+import Link from "next/link";
 
 const LoginForm: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -71,26 +74,22 @@ const LoginForm: React.FC = () => {
                 </div>
             </div>
 
-            <a
+            <Link
                 href="ForgotPassword"
                 className="mt-2 self-end whitespace-nowrap text-sm leading-5 text-red-600"
             >
                 Forgot Password?
-            </a>
-            <Button
-                as={Link}
-                href="#"
-                className="mt-10 w-full items-center justify-center whitespace-nowrap rounded-xl bg-primary-600 px-16 py-2 text-center text-base font-medium leading-6 text-white"
-            >
+            </Link>
+            <Button className="mt-10 w-full items-center justify-center whitespace-nowrap rounded-xl bg-primary-600 px-16 py-2 text-center text-base font-medium leading-6 text-white">
                 Login
             </Button>
             <DividerText>or login using</DividerText>
             <GoogleButton />
             <div className="mt-8 flex justify-between gap-2 whitespace-nowrap px-11 text-sm leading-5">
                 <div className="grow text-black">Don’t have an account?</div>
-                <a href="/signup" className="text-red-600">
+                <Link href="/signup" className="text-primary-600">
                     Sign up
-                </a>
+                </Link>
             </div>
         </form>
     );

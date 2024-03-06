@@ -18,7 +18,7 @@ const SignUpPage: React.FC = () => {
             <SignUpForm />
             <span className="mt-5 text-sm">
                 Already have an account?{" "}
-                <Link href="/">
+                <Link href="/login">
                     <span className="text-[#ff2200]"> Sign in </span>
                 </Link>
             </span>
