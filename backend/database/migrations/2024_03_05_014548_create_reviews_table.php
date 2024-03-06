@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->foreignId('listing_id')->constrained();
             $table->decimal('overall_rating', $precision = 4, $scale = 2);
             $table->decimal('cleanliness_rating', $precision = 4, $scale = 2);
