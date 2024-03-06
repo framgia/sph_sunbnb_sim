@@ -1,14 +1,13 @@
 import { Button } from "@nextui-org/button";
 import React from "react";
+import WatchIcon from "./svgs/WatchIcon";
 
 const ApprovalModal: React.FC = () => {
     return (
         <section className="mx-auto my-8 flex max-w-screen-sm flex-col items-center justify-center rounded-3xl bg-white px-6 py-12 shadow-lg">
-            {/*  <Image change to svg 
-        src="/images/watch.svg"
-        alt="Approval Pending"
-        additionalClasses="w-12 h-12 mt-7"
-      />  */}
+            <div className="mt-7 h-12 w-12">
+                <WatchIcon />
+            </div>
 
             <h1 className="mt-4 text-center text-xl font-bold">
                 Waiting for Approval

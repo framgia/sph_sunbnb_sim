@@ -1,20 +1,17 @@
 import { Button } from "@nextui-org/react";
 import React from "react";
+import CloseIcon from "./svgs/CloseIcon";
+import WatchIcon from "./svgs/WatchIcon";
 
 const EditWarningModal: React.FC = () => {
     return (
         <section className="mx-auto my-8 flex max-w-screen-sm flex-col items-center justify-center rounded-3xl bg-white px-6 py-12 shadow-lg">
-            {/*  change to svg
-    <HeaderImage
-        src="/images/close.svg"
-        alt="Notification Icon"
-        additionalClasses="w-6 h-6 relative cursor-pointer ml-auto -mt-6 -mr-1"
-    />
-       <HeaderImage
-        src="/images/watch.svg"
-        alt="Approval Pending"
-        additionalClasses="w-12 h-12 mt-7"
-      /> */}
+            <div className="relative -mr-1 -mt-6 ml-auto h-6 w-6 cursor-pointer">
+                <CloseIcon />
+            </div>
+            <div className="mt-7 h-12 w-12">
+                <WatchIcon />
+            </div>
             <h1 className="mt-4 text-center text-xl font-bold">
                 Waiting for Approval
             </h1>

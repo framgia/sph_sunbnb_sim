@@ -1,4 +1,5 @@
 import React from "react";
+import UploadIcon from "./svgs/UploadIcon";
 
 const NewListingForm: React.FC = () => {
     const handleBrowseClick = (): void => {
@@ -142,13 +143,9 @@ const NewListingForm: React.FC = () => {
             {/* Upload photos section should be implemented here */}
 
             <div className="flex flex-col items-center rounded-2xl border-2 border-dashed border-[#71717A] bg-[#FFF3EC] px-72 py-40 text-3xl text-[#000] max-md:px-5">
-                {/*  change to svg 
-      <img
-        loading="lazy"
-        src="/images/document-upload.svg"
-        alt="Upload Placeholder"
-        className="aspect-square w-[53px]"
-      /> */}
+                <div className="aspect-square w-[53px]">
+                    <UploadIcon />
+                </div>
                 <h2 className="mt-5 text-center">Drag your photos here</h2>
                 <p className="mt-4">or</p>
                 <button

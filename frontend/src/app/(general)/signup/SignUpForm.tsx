@@ -4,7 +4,7 @@ import RadioCard from "./RadioCard";
 import HostIcon from "@/app/components/svgs/SignUp/HostIcon";
 import GuestIcon from "@/app/components/svgs/SignUp/GuestIcon";
 import DividerText from "@/app/components/DividerText";
-import GoogleIcon from "@/app/components/svgs/Google";
+import GoogleButton from "@/app/components/GoogleButton";
 
 const SignUpForm: React.FC = () => {
     return (
@@ -72,14 +72,7 @@ const SignUpForm: React.FC = () => {
                 Register
             </Button>
             <DividerText>or register using</DividerText>
-            <Button className="w-full" variant="bordered">
-                <span className="flex flex-row justify-center font-medium">
-                    <span className="mx-2">
-                        <GoogleIcon />
-                    </span>
-                    <span className="self-center">Google</span>
-                </span>
-            </Button>
+            <GoogleButton />
         </form>
     );
 };

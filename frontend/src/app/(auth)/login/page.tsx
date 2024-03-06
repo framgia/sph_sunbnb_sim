@@ -1,8 +1,7 @@
-"use client";
 import React from "react";
-import LoginForm from "./(auth)/login/LoginForm";
+import LoginForm from "@/app/(auth)/login/LoginForm";
 
-const Home: React.FC = () => {
+const LoginPage: React.FC = () => {
     return (
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
             <LoginForm />
@@ -10,4 +9,4 @@ const Home: React.FC = () => {
     );
 };
 
-export default Home;
+export default LoginPage;
