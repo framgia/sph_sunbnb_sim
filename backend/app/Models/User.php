@@ -61,4 +61,16 @@ class User extends Authenticatable {
 
         $this->notify(new ResetPasswordNotification($url));
     }
+
+    public function reports() {
+        return $this->hasMany(Report::class);
+    }
+
+    public function bookings() {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function listings() {
+        return $this->hasMany(Listing::class);
+    }
 }
