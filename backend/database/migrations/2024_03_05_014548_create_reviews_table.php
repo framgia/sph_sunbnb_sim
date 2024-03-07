@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->decimal('value_rating', $precision = 4, $scale = 2);
             $table->text('comment');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

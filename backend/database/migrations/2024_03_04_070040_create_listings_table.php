@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->string('price');
             $table->integer('maximum_guests');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

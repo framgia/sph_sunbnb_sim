@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->date('date');
             $table->boolean('available');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
