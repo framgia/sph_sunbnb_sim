@@ -16,7 +16,7 @@
     },
     "plugins": ["react"],
     "rules": {
-        "multiline-ternary": ["error", "never"],
+        "multiline-ternary": "off",
         "no-return-assign": "off",
         "@typescript-eslint/no-misused-promises": "off",
         "@typescript-eslint/no-var-requires": "off",
