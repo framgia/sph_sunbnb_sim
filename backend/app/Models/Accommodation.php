@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Accommodation extends Model {
     use HasFactory;
 
-    protected $fillable = ['type', 'bed_count', 'bedroom_count', 'bathroom_count', 'minimum_days', 'maximum_days'];
+    protected $fillable = ['type', 'bed_count', 'bedroom_count', 'bathroom_count', 'minimum_days', 'maximum_days', 'amenities'];
 
     public function listing() {
         return $this->morphOne(Listing::class, 'listable');

@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->enum('status', ListingStatus::getConstants())->default(ListingStatus::PENDING);
             $table->string('name');
             $table->text('description');
             $table->string('province');
@@ -20,11 +21,11 @@ return new class extends Migration {
             $table->string('barangay');
             $table->string('street');
             $table->integer('zip_code');
-            $table->enum('status', ListingStatus::getConstants())->default(ListingStatus::PENDING);
             $table->string('price');
             $table->integer('maximum_guests');
             $table->morphs('listable');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -19,6 +19,14 @@ class Listing extends Model {
         return $this->hasMany(Calendar::class);
     }
 
+    public function bookings(): HasMany {
+        return $this->hasMany(Accommodation::class);
+    }
+
+    public function reports(): HasMany {
+        return $this->hasMany(Report::class);
+    }
+
     public function experiences(): HasMany {
         return $this->hasMany(Experience::class);
     }
