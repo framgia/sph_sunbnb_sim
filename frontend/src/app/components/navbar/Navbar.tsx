@@ -11,20 +11,18 @@ import { UserRole } from "@/app/utils/enums";
 import NavbarLinks from "./NavbarLinks";
 
 const Navbar: React.FC = () => {
-    const role = UserRole.HOST; // TODO: get user role from context
-
     return (
-        <NextUINavbar>
+        <NextUINavbar className="shadow-md" isBlurred={false}>
             <NavbarBrand>
                 <Link href="/">
                     <LogoNavbarIcon />
                 </Link>
             </NavbarBrand>
             <NavbarContent justify="center" className="hidden sm:flex">
-                <NavbarLinks role={role} />
+                <NavbarLinks role={UserRole.DEFAULT} />
             </NavbarContent>
             <NavbarContent justify="end">
-                <NavbarDropdown role={role} />
+                <NavbarDropdown role={UserRole.DEFAULT} />
             </NavbarContent>
         </NextUINavbar>
     );

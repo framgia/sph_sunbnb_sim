@@ -4,12 +4,16 @@ import NavbarLinks from "./NavbarLinks";
 import { NavbarPosition, UserRole } from "@/app/utils/enums";
 
 const NavbarBottom: React.FC = () => {
-    const role = UserRole.HOST; // TODO: get user role from context
-
     return (
-        <Navbar className="sm:hidden">
+        <Navbar
+            className="border-top sticky bottom-0 border sm:hidden"
+            isBlurred={false}
+        >
             <NavbarContent justify="center" className="w-full">
-                <NavbarLinks role={role} position={NavbarPosition.BOTTOM} />
+                <NavbarLinks
+                    role={UserRole.DEFAULT}
+                    position={NavbarPosition.BOTTOM}
+                />
             </NavbarContent>
         </Navbar>
     );

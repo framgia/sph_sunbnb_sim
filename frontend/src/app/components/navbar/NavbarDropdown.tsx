@@ -27,8 +27,11 @@ const NavbarDropdown: React.FC<NavbarProps> = (props) => {
     };
 
     function handleLogout(): void {
+        // TODO: implement logout
         console.log("logout");
     }
+
+    console.log(props.role);
 
     return (
         <Dropdown>
@@ -68,10 +71,10 @@ const NavbarDropdown: React.FC<NavbarProps> = (props) => {
                     </DropdownSection>
                 ) : (
                     <DropdownSection>
-                        <DropdownItem key="login">
+                        <DropdownItem key="login" textValue="Login">
                             <Link href="/login">Login</Link>
                         </DropdownItem>
-                        <DropdownItem key="signup">
+                        <DropdownItem key="signup" textValue="Sign up">
                             <Link href="/signup">Sign Up</Link>
                         </DropdownItem>
                     </DropdownSection>
