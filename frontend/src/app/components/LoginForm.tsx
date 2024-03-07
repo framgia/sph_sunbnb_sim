@@ -1,42 +1,49 @@
 import React, { useState } from "react";
-import { Input, Button, Link, Image} from "@nextui-org/react";
+import { Input, Button, Link, Image } from "@nextui-org/react";
 
-const LoginForm:React.FC = () => {
+const LoginForm: React.FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) : void => {
+    const handleEmailChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ): void => {
         setEmail(e.target.value);
     };
 
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) : void => {
+    const handlePasswordChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ): void => {
         setPassword(e.target.value);
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) : void => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         // Handle form submission logic here
     };
 
     return (
-        <form className="flex flex-col px-5 max-w-[500px]" onSubmit={handleSubmit}>
-            <div className="w-full flex justify-center">
+        <form
+            className="flex max-w-[500px] flex-col px-5"
+            onSubmit={handleSubmit}
+        >
+            <div className="flex w-full justify-center">
                 <Image
-                loading="lazy"
-                src="/images/sunbnblogo.svg"
-                className="mt-14 w-15 h-auto"
-                alt = "Sunbnb Logo"
-            />
+                    loading="lazy"
+                    src="/images/sunbnblogo.svg"
+                    className="w-15 mt-14 h-auto"
+                    alt="Sunbnb Logo"
+                />
             </div>
-            
-            <div/>
-            <div className="mt-9 w-full text-xl font-semibold leading-7 text-center text-black">
+
+            <div />
+            <div className="mt-9 w-full text-center text-xl font-semibold leading-7 text-black">
                 Welcome back!
             </div>
-            <div className="w-full text-sm leading-5 text-center text-zinc-500">
+            <div className="w-full text-center text-sm leading-5 text-zinc-500">
                 Login to continue booking or listing
             </div>
-            <div className="flex flex-col px-5 max-w-[500px] mt-8">
+            <div className="mt-8 flex max-w-[500px] flex-col px-5">
                 <label htmlFor="email"></label>
                 <div>
                     <Input
@@ -51,7 +58,7 @@ const LoginForm:React.FC = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col px-5 max-w-[500px] mt-8">
+            <div className="mt-8 flex max-w-[500px] flex-col px-5">
                 <label htmlFor="email"></label>
                 <div>
                     <Input
@@ -66,41 +73,46 @@ const LoginForm:React.FC = () => {
                 </div>
             </div>
 
-            <a href="ForgotPassword" className="self-end mt-2 text-sm leading-5 text-red-600 whitespace-nowrap">
+            <a
+                href="ForgotPassword"
+                className="mt-2 self-end whitespace-nowrap text-sm leading-5 text-red-600"
+            >
                 Forgot Password?
             </a>
             <Button
                 as={Link}
                 href="#"
-                className="justify-center text-center items-center px-16 py-2 mt-10 w-full text-base font-medium leading-6 text-white whitespace-nowrap bg-primary-600 rounded-xl"
+                className="mt-10 w-full items-center justify-center whitespace-nowrap rounded-xl bg-primary-600 px-16 py-2 text-center text-base font-medium leading-6 text-white"
             >
                 Login
             </Button>
-            <div className="flex gap-1 justify-center items-center mt-4 text-xs leading-4 text-zinc-500">
-                <div className="self-stretch my-auto h-px bg-neutral-900 bg-opacity-10 w-[108px]" />
+            <div className="mt-4 flex items-center justify-center gap-1 text-xs leading-4 text-zinc-500">
+                <div className="my-auto h-px w-[108px] self-stretch bg-neutral-900 bg-opacity-10" />
                 <div className="self-stretch text-center">or login using</div>
-                <div className="self-stretch my-auto h-px bg-neutral-900 bg-opacity-10 w-[108px]" />
+                <div className="my-auto h-px w-[108px] self-stretch bg-neutral-900 bg-opacity-10" />
             </div>
             <Button
                 as={Link}
                 href="#"
-                className="flex justify-center items-center px-16 py-2 mt-4 w-full text-base font-medium leading-6 text-black whitespace-nowrap rounded-xl border-2 border-solid border-[color:var(--colors-base-default,#D4D4D8)] bg-colors-base-default"
+                className="bg-colors-base-default mt-4 flex w-full items-center justify-center whitespace-nowrap rounded-xl border-2 border-solid border-[color:var(--colors-base-default,#D4D4D8)] px-16 py-2 text-base font-medium leading-6 text-black"
             >
                 <div className="flex gap-3">
                     <img
                         loading="lazy"
                         src="/images/devicon_google.svg"
-                        className="w-6 aspect-square"
+                        className="aspect-square w-6"
                     />
                     <div>Google</div>
                 </div>
             </Button>
-            <div className="flex gap-2 justify-between px-11 mt-8 text-sm leading-5 whitespace-nowrap">
+            <div className="mt-8 flex justify-between gap-2 whitespace-nowrap px-11 text-sm leading-5">
                 <div className="grow text-black">Don’t have an account?</div>
-                <a href="/signup" className="text-red-600">Sign up</a>
+                <a href="/signup" className="text-red-600">
+                    Sign up
+                </a>
             </div>
         </form>
     );
-}
+};
 
 export default LoginForm;
