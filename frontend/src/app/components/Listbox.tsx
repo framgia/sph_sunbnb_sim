@@ -1,7 +1,7 @@
 import React from "react";
 import { Listbox, ListboxItem } from "@nextui-org/react";
 
-const Listboxx: React.FC = () => {
+const ListboxComponent: React.FC = () => {
     const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(
         new Set(["kitchen"])
     );
@@ -61,4 +61,4 @@ const Listboxx: React.FC = () => {
     );
 };
 
-export default Listboxx;
+export default ListboxComponent;

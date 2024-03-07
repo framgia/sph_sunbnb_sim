@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
-import { Select, Input, Button, SelectItem, Textarea } from "@nextui-org/react";
+import { Input, Button, Textarea } from "@nextui-org/react";
 import UploadIcon from "./svgs/UploadIcon";
 
-import Listboxx from "./Listbox";
+import ListboxComponent from "./Listbox";
 import AccommodationMoreDetails from "./AccommodationMoreDetails";
+import TypeSelect from "./SelectType";
 
 interface NewListingProps {
     onPress: () => void;
@@ -21,35 +22,16 @@ const NewListingForm: React.FC<NewListingProps> = ({ onPress }) => {
         console.log(e.target.files);
     };
 
-    const options = [
-        { value: "apartment", label: "Apartment" },
-        { value: "house", label: "House" },
-        { value: "villa", label: "Villa" },
-        { value: "cottage", label: "Cottage" }
-    ];
-
     return (
         <section className="flex max-w-[826px] flex-col px-5">
             <header className="w-full text-left text-lg font-semibold leading-7 text-black max-md:max-w-full">
                 List Accommodation
             </header>
-            <div className="mt-10 w-full text-left text-sm font-semibold leading-7 text-black max-md:max-w-full">
-                Type
-            </div>
-            <Select
-                className="mt-8"
-                placeholder="Select accommodation type"
-                variant="bordered"
-            >
-                {options.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                    </SelectItem>
-                ))}
-            </Select>
+            <TypeSelect />
             <div className="mt-10 w-full text-left text-sm font-semibold leading-7 text-black max-md:max-w-full">
                 Address
             </div>
+
             <Input
                 type="text"
                 className="mt-8"
@@ -106,7 +88,7 @@ const NewListingForm: React.FC<NewListingProps> = ({ onPress }) => {
                         <div className="mb-5 w-full text-left text-left text-sm font-semibold leading-5 text-black max-md:max-w-full">
                             Amenities
                         </div>
-                        <Listboxx />
+                        <ListboxComponent />
                     </div>
                     <div>
                         <div className="w-full text-left text-sm font-semibold leading-5 text-black max-md:max-w-full">
