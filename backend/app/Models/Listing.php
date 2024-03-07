@@ -19,15 +19,15 @@ class Listing extends Model {
         return $this->hasMany(Calendar::class);
     }
 
-    public function accommodations(): HasMany {
-        return $this->hasMany(Accommodation::class);
-    }
-
     public function experiences(): HasMany {
         return $this->hasMany(Experience::class);
     }
 
     public function reviews(): HasMany {
         return $this->hasMany(Review::class);
+    }
+
+    public function listable() {
+        return $this->morphTo();
     }
 }

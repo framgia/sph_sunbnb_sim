@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AccommodationController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
@@ -21,3 +22,5 @@ Route::post('/login/google', [GoogleAuthController::class, 'login']);
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+
+Route::apiResource('accommodation', AccommodationController::class);
