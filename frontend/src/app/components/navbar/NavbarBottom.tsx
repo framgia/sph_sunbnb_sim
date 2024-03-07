@@ -10,8 +10,9 @@ const NavbarBottom: React.FC = () => {
             isBlurred={false}
         >
             <NavbarContent justify="center" className="w-full">
+                {/* TODO: Fetch user role from logged in user */}
                 <NavbarLinks
-                    role={UserRole.ADMIN}
+                    role={UserRole.HOST}
                     position={NavbarPosition.BOTTOM}
                 />
             </NavbarContent>

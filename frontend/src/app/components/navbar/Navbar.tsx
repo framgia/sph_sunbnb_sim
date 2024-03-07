@@ -19,9 +19,11 @@ const Navbar: React.FC = () => {
                 </Link>
             </NavbarBrand>
             <NavbarContent justify="center" className="hidden sm:flex">
+                {/* TODO: Fetch user role from logged in user */}
                 <NavbarLinks role={UserRole.HOST} />
             </NavbarContent>
             <NavbarContent justify="end">
+                {/* TODO: Fetch user role from logged in user */}
                 <NavbarDropdown role={UserRole.HOST} />
             </NavbarContent>
         </NextUINavbar>
