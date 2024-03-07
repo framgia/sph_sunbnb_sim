@@ -18,11 +18,11 @@ const NavbarDropdown: React.FC<NavbarProps> = (props) => {
     const actions = {
         host: [
             { path: "/accommodations/new", label: "New Accommodation" },
-            { path: "/experience/new", label: "New Experience" },
-            { path: "/profile", label: "Account" }
+            { path: "/experiences/new", label: "New Experience" },
+            { path: "/profile", label: "View Profile" }
         ],
-        guest: [{ path: "/profile", label: "Account" }],
-        admin: [{ path: "/profile", label: "Account" }],
+        guest: [{ path: "/profile", label: "View Profile" }],
+        admin: [{ path: "/profile", label: "View Profile" }],
         default: []
     };
 

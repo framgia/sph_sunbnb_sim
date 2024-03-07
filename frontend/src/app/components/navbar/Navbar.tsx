@@ -19,10 +19,10 @@ const Navbar: React.FC = () => {
                 </Link>
             </NavbarBrand>
             <NavbarContent justify="center" className="hidden sm:flex">
-                <NavbarLinks role={UserRole.DEFAULT} />
+                <NavbarLinks role={UserRole.HOST} />
             </NavbarContent>
             <NavbarContent justify="end">
-                <NavbarDropdown role={UserRole.DEFAULT} />
+                <NavbarDropdown role={UserRole.HOST} />
             </NavbarContent>
         </NextUINavbar>
     );

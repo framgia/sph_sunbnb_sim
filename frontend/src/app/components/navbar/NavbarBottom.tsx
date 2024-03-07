@@ -11,7 +11,7 @@ const NavbarBottom: React.FC = () => {
         >
             <NavbarContent justify="center" className="w-full">
                 <NavbarLinks
-                    role={UserRole.DEFAULT}
+                    role={UserRole.ADMIN}
                     position={NavbarPosition.BOTTOM}
                 />
             </NavbarContent>

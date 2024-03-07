@@ -37,7 +37,7 @@ const NavbarLinks: React.FC<NavbarProps> = (props) => {
         ],
         admin: [
             { path: "/dashboard", label: "Dashboard", icon: <DashboardIcon /> },
-            { path: "/listings", label: "Listings", icon: <ListingsIcon /> },
+            { path: "/approvals", label: "Approvals", icon: <ListingsIcon /> },
             { path: "/reports", label: "Reports", icon: <ReportsIcon /> },
             { path: "/users", label: "Users", icon: <UsersIcon /> }
         ],
