@@ -28,4 +28,8 @@ class Admin extends Authenticatable {
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    public function report() {
+        return $this->hasMany(Report::class);
+    }
 }

@@ -7,7 +7,11 @@ import GoogleButton from "../../components/GoogleButton";
 import DividerText from "../../components/DividerText";
 import Link from "next/link";
 
-const LoginForm: React.FC = () => {
+interface LoginFormProps {
+    onResetPress: () => void;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onResetPress }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -74,12 +78,12 @@ const LoginForm: React.FC = () => {
                 </div>
             </div>
 
-            <Link
-                href="ForgotPassword"
-                className="mt-2 self-end whitespace-nowrap text-sm leading-5 text-red-600"
+            <p
+                className="mt-2 cursor-pointer self-end whitespace-nowrap text-sm leading-5 text-primary-600"
+                onClick={onResetPress}
             >
                 Forgot Password?
-            </Link>
+            </p>
             <Button className="mt-10 w-full items-center justify-center whitespace-nowrap rounded-xl bg-primary-600 px-16 py-2 text-center text-base font-medium leading-6 text-white">
                 Login
             </Button>

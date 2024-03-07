@@ -37,7 +37,7 @@ const Listboxx: React.FC = () => {
         .join(", ");
 
     return (
-        <div className="px-10">
+        <div className="pr-10">
             <div className="w-full rounded-small border-small border-default-200 px-1 py-2 dark:border-default-100">
                 <Listbox
                     className="h-72 overflow-auto rounded-small px-1 py-2 "

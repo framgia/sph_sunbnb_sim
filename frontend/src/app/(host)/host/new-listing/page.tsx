@@ -7,7 +7,7 @@ import React from "react";
 const NewListingPage: React.FC = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between px-24 py-10">
+        <main className="flex min-h-screen flex-col items-center justify-between">
             <NewListingForm onPress={onOpen} />
             <ApprovalModal isOpen={isOpen} onClose={onClose} />
         </main>

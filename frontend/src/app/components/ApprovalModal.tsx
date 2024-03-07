@@ -7,6 +7,7 @@ import {
     ModalFooter,
     Button
 } from "@nextui-org/react";
+import WatchIcon from "./svgs/WatchIcon";
 
 interface ModalProps {
     isOpen: boolean;
@@ -20,11 +21,9 @@ const ApprovalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                     {(onClose) => (
                         <>
                             <ModalBody>
-                                <HeaderImage
-                                    src="/images/watch.svg"
-                                    alt="Approval Pending"
-                                    additionalClasses="w-12 h-12 mt-7"
-                                />
+                                <div className="mt-7 flex h-12 w-full justify-center">
+                                    <WatchIcon />
+                                </div>
                                 <ModalHeader className="flex flex-col gap-1 text-center">
                                     Waiting for Approval
                                 </ModalHeader>
@@ -56,22 +55,5 @@ const ApprovalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         </>
     );
 };
-
-const HeaderImage = ({
-    src,
-    alt,
-    additionalClasses
-}: {
-    src: string;
-    alt: string;
-    additionalClasses: string;
-}): React.ReactNode => (
-    <img
-        loading="lazy"
-        src={src}
-        alt={alt}
-        className={`mx-auto ${additionalClasses}`}
-    />
-);
 
 export default ApprovalModal;
