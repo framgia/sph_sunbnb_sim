@@ -2,68 +2,131 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\AccommodationType;
 use App\Enums\Amenity;
 use App\Http\Controllers\Controller;
 use App\Models\Accommodation;
 use App\Models\Listing;
+use App\Models\Media;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class AccommodationController extends Controller {
     public function index() {
-        $listings = Listing::with('listable')->get();
+        $listings = Listing::with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
+            ->paginate(3);
 
-        return response()->json($listings, 200);
+        return response()->json([
+            'success' => true,
+            'listings' => $listings->items(),
+            'pagination' => [
+                'current_page' => $listings->currentPage(),
+                'per_page' => $listings->perPage(),
+                'total' => $listings->total(),
+                'next_page_url' => $listings->nextPageUrl(),
+                'path' => $listings->path(),
+                'prev_page_url' => $listings->previousPageUrl(),
+                'to' => $listings->lastItem(),
+            ],
+        ], Response::HTTP_OK);
     }
 
-    public function show($id) {
-        $listing = Listing::with('listable')->find($id);
+    public function show($listingId) {
+        $listing = Listing::with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])->find($id);
 
         if ($listing) {
-            return response()->json(['data' => $listing], 200);
+            return response()->json([
+                'success' => true,
+                'listing' => $listing,
+            ], Response::HTTP_OK);
         } else {
-            return response()->json(['error' => 'Listing not found'], 404);
+            return response()->json([
+                'success' => false,
+                'error' => 'Listing not found',
+            ], Response::HTTP_NOT_FOUND);
         }
     }
 
+    public function showAccommodationsByUser($userId) {
+        $user = User::find($userId);
+
+        if (! $user) {
+            return response()->json([
+                'success' => false,
+                'error' => 'User not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $listings = $user->listings()->with(['listable', 'media'])
+            ->paginate(3);
+
+        return response()->json([
+            'success' => true,
+            'user' => [
+                'id' => $user->id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'email' => $user->email,
+                'created_at' => $user->created_at,
+            ],
+            'listings' => $listings->items(),
+            'pagination' => [
+                'current_page' => $listings->currentPage(),
+                'per_page' => $listings->perPage(),
+                'total' => $listings->total(),
+                'next_page_url' => $listings->nextPageUrl(),
+                'path' => $listings->path(),
+                'prev_page_url' => $listings->previousPageUrl(),
+                'to' => $listings->lastItem(),
+            ],
+        ], Response::HTTP_OK);
+    }
+
     public function store(Request $request) {
+        $this->validate($request, $this->getValidationRules());
+
         return DB::transaction(function () use ($request) {
 
-            if ($request->has('amenities')) {
-                $inputAmenities = $request->amenities;
-                $validAmenities = Amenity::getConstants();
-
-                foreach ($inputAmenities as $amenity) {
-                    if (! in_array($amenity, $validAmenities)) {
-                        return response()->json(['error' => 'Invalid amenity: '.$amenity], 400);
-                    }
-                }
-            }
-
-            $accommodation = new Accommodation;
-            $accommodation->type = $request->type;
-            $accommodation->bed_count = $request->bed_count;
-            $accommodation->bedroom_count = $request->bedroom_count;
-            $accommodation->bathroom_count = $request->bathroom_count;
-            $accommodation->minimum_days = $request->minimum_days;
-            $accommodation->maximum_days = $request->maximum_days;
-            $accommodation->amenities = json_encode($request->amenities);
+            $accommodation = Accommodation::instantiateAccommodation($request);
             $accommodation->save();
 
-            $listing = new Listing;
-            $listing->name = $request->name;
-            $listing->description = $request->description;
-            $listing->province = $request->province;
-            $listing->city = $request->city;
-            $listing->barangay = $request->barangay;
-            $listing->street = $request->street;
-            $listing->zip_code = $request->zip_code;
-            $listing->price = $request->price;
-            $listing->maximum_guests = $request->maximum_guests;
-            $listing->listable()->associate($accommodation);
+            $listing = Listing::instantiateListing($request, $accommodation);
             $listing->save();
 
-            return response()->json(['message' => 'Listing created successfully', 'listing_data' => $listing], 201);
+            foreach ($request->media as $mediaUrl) {
+                $media = Media::instantiateMedia($mediaUrl, $listing);
+                $media->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Listing created successfully',
+            ], Response::HTTP_CREATED);
         });
+    }
+
+    private function getValidationRules() {
+        return [
+            'type' => ['required', 'string', 'in:'.implode(',', AccommodationType::getConstants())],
+            'bed_count' => 'required|integer|min:1',
+            'bedroom_count' => 'required|integer|min:1',
+            'bathroom_count' => 'required|integer|min:1',
+            'minimum_days' => 'required|integer|min:1',
+            'maximum_days' => 'required|integer|min:1',
+            'amenities' => ['array', 'in:'.implode(',', Amenity::getConstants())],
+            'name' => 'required|string',
+            'description' => 'required',
+            'province' => 'required|string',
+            'city' => 'required|string',
+            'barangay' => 'required|string',
+            'street' => 'required|string',
+            'zip_code' => 'required|numeric',
+            'price' => 'required|string',
+            'maximum_guests' => 'required|integer|min:1',
+            'media' => 'required|min:1',
+            'media.*' => 'url',
+        ];
     }
 }
