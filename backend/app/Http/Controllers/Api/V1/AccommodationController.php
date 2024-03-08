@@ -34,7 +34,7 @@ class AccommodationController extends Controller {
     }
 
     public function show($listingId) {
-        $listing = Listing::with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])->find($id);
+        $listing = Listing::with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])->find($listingId);
 
         if ($listing) {
             return response()->json([
@@ -50,7 +50,8 @@ class AccommodationController extends Controller {
     }
 
     public function showAccommodationsByUser($userId) {
-        $user = User::find($userId);
+        $user = User::select('id', 'first_name', 'last_name', 'email', 'created_at')
+            ->find($userId);
 
         if (! $user) {
             return response()->json([
@@ -64,13 +65,7 @@ class AccommodationController extends Controller {
 
         return response()->json([
             'success' => true,
-            'user' => [
-                'id' => $user->id,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'email' => $user->email,
-                'created_at' => $user->created_at,
-            ],
+            'user' => $user,
             'listings' => $listings->items(),
             'pagination' => [
                 'current_page' => $listings->currentPage(),
@@ -96,7 +91,7 @@ class AccommodationController extends Controller {
             $listing->save();
 
             foreach ($request->media as $mediaUrl) {
-                $media = Media::instantiateMedia($mediaUrl, $listing);
+                $media = Media::instantiateMedia([$mediaUrl], $listing);
                 $media->save();
             }
 
