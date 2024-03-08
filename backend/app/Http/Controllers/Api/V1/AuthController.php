@@ -43,7 +43,7 @@ class AuthController extends Controller {
             'role' => $request->role,
             'status' => UserStatus::ACTIVE,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => $request->password,
         ]);
 
         $userToken = $user->createToken('appToken');
