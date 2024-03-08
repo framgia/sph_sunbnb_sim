@@ -1,10 +1,11 @@
 import React from "react";
+import ProfileComponent from "./ProfileComponent";
 
 const ProfilePage: React.FC = () => {
     return (
-        <>
-            <h1>Profile Page</h1>
-        </>
+        <main>
+            <ProfileComponent />
+        </main>
     );
 };
 
