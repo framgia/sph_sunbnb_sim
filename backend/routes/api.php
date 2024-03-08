@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\AccommodationController;
 use App\Http\Controllers\Api\V1\AdminAuthController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CalendarController;
 use App\Http\Controllers\Api\V1\GoogleAuthController;
 use App\Http\Controllers\Api\V1\PasswordController;
 use Illuminate\Support\Facades\Route;
@@ -33,4 +34,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('accommodation', AccommodationController::class);
     Route::get('/accommodation/user/{userId}', [AccommodationController::class, 'showAccommodationsByUser']);
+    Route::put('calendar/{listingId}', [CalendarController::class, 'set']);
+    Route::get('calendar/{listingId}', [CalendarController::class, 'show']);
 });
