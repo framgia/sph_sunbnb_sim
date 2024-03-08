@@ -13,7 +13,7 @@ class CalendarController extends Controller {
             $calendarDates = Calendar::where('listing_id', $listingId)->get();
 
             if ($calendarDates->isEmpty()) {
-                return response()->json(['message' => 'Listing does not any calendar availability data.'], Response::HTTP_NOT_FOUND);
+                return response()->json(['message' => 'Listing does not have any calendar availability data.'], Response::HTTP_NOT_FOUND);
             }
 
             return response()->json(['calendar_dates' => $calendarDates], Response::HTTP_OK);
