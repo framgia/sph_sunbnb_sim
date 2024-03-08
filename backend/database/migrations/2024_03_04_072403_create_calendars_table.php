@@ -12,7 +12,6 @@ return new class extends Migration {
         Schema::create('calendars', function (Blueprint $table) {
             $table->id();
             $table->foreignId('listing_id')->constrained();
-            $table->integer('listing_id');
             $table->date('date');
             $table->boolean('available');
             $table->timestamps();
