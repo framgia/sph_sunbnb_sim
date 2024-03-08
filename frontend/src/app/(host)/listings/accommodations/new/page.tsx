@@ -5,13 +5,13 @@ import { useDisclosure } from "@nextui-org/react";
 import React from "react";
 
 const NewListingPage: React.FC = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    return (
-        <main className="flex min-h-screen flex-col items-center justify-between">
-            <NewListingForm onPress={onOpen} />
-            <ApprovalModal isOpen={isOpen} onClose={onClose} />
-        </main>
-    );
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between">
+      <NewListingForm onPress={onOpen} />
+      <ApprovalModal isOpen={isOpen} onClose={onClose} size={"full"} />
+    </main>
+  );
 };
 
 export default NewListingPage;
