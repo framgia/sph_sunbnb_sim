@@ -8,11 +8,8 @@ import {
     Button
 } from "@nextui-org/react";
 import WatchIcon from "./svgs/WatchIcon";
+import type { ModalProps } from "../interfaces/ModalProps";
 
-interface ModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-}
 const ApprovalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     return (
         <>
