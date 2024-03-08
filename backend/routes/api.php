@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AdminAuthController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CalendarController;
 use App\Http\Controllers\Api\V1\GoogleAuthController;
 use App\Http\Controllers\Api\V1\PasswordController;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,6 @@ Route::post('reset-password', [PasswordController::class, 'resetpassword']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::put('set-calendar/{listingId}', [CalendarController::class, 'set']);
+    Route::get('set-calendar/{listingId}', [CalendarController::class, 'show']);
 });
