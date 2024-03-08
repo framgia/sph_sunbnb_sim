@@ -91,7 +91,7 @@ class AccommodationController extends Controller {
             $listing->save();
 
             foreach ($request->media as $mediaUrl) {
-                $media = Media::instantiateMedia([$mediaUrl], $listing);
+                $media = Media::instantiateMedia($mediaUrl, $listing);
                 $media->save();
             }
 
