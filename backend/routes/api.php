@@ -31,6 +31,6 @@ Route::post('reset-password', [PasswordController::class, 'resetpassword']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::put('set-calendar/{listingId}', [CalendarController::class, 'set']);
-    Route::get('set-calendar/{listingId}', [CalendarController::class, 'show']);
+    Route::put('calendar/{listingId}', [CalendarController::class, 'set']);
+    Route::get('calendar/{listingId}', [CalendarController::class, 'show']);
 });
