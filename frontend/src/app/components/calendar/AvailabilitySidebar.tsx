@@ -20,9 +20,9 @@ const AvailabilitySidebar: React.FC<AvailabilitySidebarProps> = ({
       {selectedDates.length > 1 ? (
         <div className="text-lg font-medium">
           {`
-                ${format(selectedDates[0], "MMM dd")} - 
-                ${format(selectedDates[selectedDates.length - 1], "MMM dd")}
-              `}
+            ${format(selectedDates[0], "MMM dd")} - 
+            ${format(selectedDates[selectedDates.length - 1], "MMM dd")}
+          `}
         </div>
       ) : (
         <div className="text-lg font-medium">
