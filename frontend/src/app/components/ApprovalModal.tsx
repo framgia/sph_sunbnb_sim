@@ -1,29 +1,55 @@
-import { Button } from "@nextui-org/button";
 import React from "react";
+import {
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Button
+} from "@nextui-org/react";
 import WatchIcon from "./svgs/WatchIcon";
+import type { ModalProps } from "../interfaces/ModalProps";
 
-const ApprovalModal: React.FC = () => {
+const ApprovalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     return (
-        <section className="mx-auto my-8 flex max-w-screen-sm flex-col items-center justify-center rounded-3xl bg-white px-6 py-12 shadow-lg">
-            <div className="mt-7 h-12 w-12">
-                <WatchIcon />
-            </div>
-
-            <h1 className="mt-4 text-center text-xl font-bold">
-                Waiting for Approval
-            </h1>
-            <p className="mt-8 text-center">
-                Thank you for posting your listing! It is currently under review
-                to ensure quality and compliance.
-                <br />
-                <br />
-                Please check back later for updates on its status. We appreciate
-                your patience!
-            </p>
-            <Button className="mt-10 rounded-lg bg-red-600 px-8 py-3 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-50">
-                Preview
-            </Button>
-        </section>
+        <>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalBody>
+                                <div className="mt-7 flex h-12 w-full justify-center">
+                                    <WatchIcon />
+                                </div>
+                                <ModalHeader className="flex flex-col gap-1 text-center">
+                                    Waiting for Approval
+                                </ModalHeader>
+                                <p className="mb-5 mt-1 text-center">
+                                    Thank you for posting your listing! It is
+                                    currently under review to ensure quality and
+                                    compliance.
+                                    <br />
+                                    <br />
+                                    Please check back later for updates on its
+                                    status. We appreciate your patience!
+                                </p>
+                            </ModalBody>
+                            <ModalFooter>
+                                <div className="flex w-full justify-center">
+                                    <Button
+                                        className="mb-5 bg-primary-600 text-white"
+                                        variant="light"
+                                        onPress={onClose}
+                                    >
+                                        Preview
+                                    </Button>
+                                </div>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+        </>
     );
 };
 
