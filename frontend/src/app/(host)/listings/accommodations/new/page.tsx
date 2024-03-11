@@ -1,6 +1,6 @@
 "use client";
 import ApprovalModal from "@/app/components/ApprovalModal";
-import NewListingForm from "@/app/components/NewListingForm";
+import NewListingForm from "@/app/components/accommodation/NewListingForm";
 import { useDisclosure } from "@nextui-org/react";
 import React from "react";
 
