@@ -35,6 +35,15 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
   modifiedAt,
   images
 }) => {
+  function getInitials(name: string): string {
+    let names = name.split(" ");
+    let initials = names[0].substring(0, 1).toUpperCase();
+
+    if (names.length > 1) {
+      initials += names[names.length - 1].substring(0, 1).toUpperCase();
+    }
+    return initials;
+  }
   return (
     <div>
       <div className="mb-2">
@@ -80,7 +89,10 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
         <div className="mb-1 text-xs font-semibold leading-4">{address}</div>
       </div>
       <div className="flex flex-row">
-        <Avatar name="DX" className="h-12 w-12 text-tiny uppercase" />
+        <Avatar
+          name={getInitials(hostName)}
+          className="h-12 w-12 text-tiny uppercase"
+        />
         <div className="mx-2 flex flex-col">
           <span className="text-base font-semibold leading-6">
             Hosted by {hostName}
