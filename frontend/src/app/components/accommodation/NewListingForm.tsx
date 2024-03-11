@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Input, Button, Textarea } from "@nextui-org/react";
+import UploadIcon from "../svgs/UploadIcon";
 
 import ListboxComponent from "./Listbox";
 import AccommodationMoreDetails from "./AccommodationMoreDetails";
@@ -21,17 +22,8 @@ const NewListingForm: React.FC<NewListingProps> = ({ onPress }) => {
     console.log(e.target.files);
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>): void => {
-    e.preventDefault();
-    // Your handleDrop logic here
-  };
-
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>): void => {
-    // Your handleDragStart logic here
-  };
-
   return (
-    <section className="flex max-w-full flex-col px-5">
+    <section className="flex max-w-[826px] flex-col px-5">
       <header className="w-full text-left text-lg font-semibold leading-7 text-black max-md:max-w-full">
         List Accommodation
       </header>
@@ -112,25 +104,15 @@ const NewListingForm: React.FC<NewListingProps> = ({ onPress }) => {
 
       {/* Upload photos section should be implemented here */}
 
-      <div
-        className="flex flex-col items-center rounded-2xl border-2 border-dashed border-[#71717A] bg-[#FFF3EC] px-72 py-40 text-3xl text-[#000] max-md:px-5"
-        onDragOver={(e) => {
-          e.preventDefault();
-        }}
-        onDrop={handleDrop}
-      >
-        <div
-          className="aspect-square w-[53px]"
-          draggable
-          onDragStart={handleDragStart}
-        >
-          {/* Add UploadIcon component here */}
+      <div className="flex flex-col items-center rounded-2xl border-2 border-dashed border-[#71717A] bg-[#FFF3EC] px-72 py-40 text-3xl text-[#000] max-md:px-5">
+        <div className="aspect-square w-[53px]">
+          <UploadIcon />
         </div>
         <h2 className="mt-5 text-center">Drag your photos here</h2>
         <p className="mt-4">or</p>
         <button
           onClick={handleBrowseClick}
-          className="mt-4 inline-block cursor-pointer rounded-xl bg-primary-600 px-10 py-4 text-xl leading-4 text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+          className="mt-4 inline-block cursor-pointer rounded-xl bg-primary-600 px-10 py-4 text-xl leading-4 text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50  "
         >
           Browse
         </button>
