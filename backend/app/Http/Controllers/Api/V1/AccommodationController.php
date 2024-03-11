@@ -137,9 +137,14 @@ class AccommodationController extends Controller {
 
     public function destroy($listingId) {
         $listing = Listing::with(['listable', 'media'])->find($listingId);
-
         if ($listing) {
-            $listing->deleteAssociatedItems();
+            if ($listing->listable) {
+                $listing->listable->delete();
+            }
+
+            foreach ($listing->media as $media) {
+                $media->delete();
+            }
             $listing->delete();
 
             return response()->json([
