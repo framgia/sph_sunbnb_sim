@@ -4,13 +4,14 @@ import { Input, Button, Textarea } from "@nextui-org/react";
 
 import ListboxComponent from "./Listbox";
 import AccommodationMoreDetails from "./AccommodationMoreDetails";
-import TypeSelect from "./SelectType";
+import EditSelectType from "./EditSelectType";
+import TrashIcon from "./svgs/TrashIcon";
 
-interface NewListingProps {
+interface EditListingProps {
   onPress: () => void;
 }
 
-const NewListingForm: React.FC<NewListingProps> = ({ onPress }) => {
+const EditListingForm: React.FC<EditListingProps> = ({ onPress }) => {
   const handleBrowseClick = (): void => {
     // Implement the functionality to invoke file input click
     document.getElementById("fileInput")?.click();
@@ -35,7 +36,7 @@ const NewListingForm: React.FC<NewListingProps> = ({ onPress }) => {
       <header className="w-full text-left text-lg font-semibold leading-7 text-black max-md:max-w-full">
         List Accommodation
       </header>
-      <TypeSelect />
+      <EditSelectType />
       <div className="mt-10 w-full text-left text-sm font-semibold leading-7 text-black max-md:max-w-full">
         Address
       </div>
@@ -43,20 +44,23 @@ const NewListingForm: React.FC<NewListingProps> = ({ onPress }) => {
       <Input
         type="text"
         className="mt-8"
-        placeholder="Province"
+        label="Province"
+        color="success"
         variant="bordered"
       />
       <div className="mt-5 flex w-full justify-between gap-5 whitespace-nowrap text-base leading-6 text-zinc-500 max-md:max-w-full max-md:flex-wrap">
         <Input
           type="text"
           className="mt-8"
-          placeholder="Street"
+          label="Street"
+          color="success"
           variant="bordered"
         />
         <Input
           type="text"
           className="mt-8"
-          placeholder="Barangay"
+          label="Barangay"
+          color="success"
           variant="bordered"
         />
       </div>
@@ -64,13 +68,15 @@ const NewListingForm: React.FC<NewListingProps> = ({ onPress }) => {
         <Input
           type="text"
           className="mt-8"
-          placeholder="City"
+          label="City"
+          color="success"
           variant="bordered"
         />
         <Input
           type="text"
           className="mt-8"
-          placeholder="Zip Code"
+          label="Zip Code"
+          color="success"
           variant="bordered"
         />
       </div>
@@ -81,13 +87,19 @@ const NewListingForm: React.FC<NewListingProps> = ({ onPress }) => {
       <Input
         type="text"
         className="mt-8"
-        placeholder="Title"
+        label="Title"
+        color="success"
         variant="bordered"
       />
-      <Textarea label="Description" className="mt-8 " variant="bordered" />
+      <Textarea
+        label="Description"
+        className="mt-8 "
+        variant="bordered"
+        color="success"
+      />
 
       <div className="mb-10 mt-5 rounded-lg border-[1.3px] border-solid border-[color:var(--Blues-Gray2,#B8BBC2)] p-10">
-        <div className="grid grid-cols-2">
+        <div className="grid md:grid-cols-2">
           <div>
             <div className="mb-5 w-full text-left text-left text-sm font-semibold leading-5 text-black max-md:max-w-full">
               Amenities
@@ -153,18 +165,34 @@ const NewListingForm: React.FC<NewListingProps> = ({ onPress }) => {
         placeholder="₱"
         variant="bordered"
       />
-      <div className="mt-9 flex gap-5 self-end whitespace-nowrap text-sm leading-5">
-        <Button className="grow justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5">
-          Cancel
-        </Button>
-        <Button
-          className="grow justify-center rounded-lg bg-primary-600 px-7 py-2.5 font-bold text-white drop-shadow-sm max-md:px-5 "
-          onPress={onPress}
-        >
-          Publish
-        </Button>
+
+      <div className="rounded-lg">
+        <div className="mt-9  flex gap-5 self-end whitespace-nowrap text-sm leading-5">
+          <Button
+            className=" gap-y-1.5 rounded-lg bg-danger px-4 text-white max-md:px-5"
+            size="md"
+            onPress={onPress}
+          >
+            <TrashIcon />
+            Delete
+          </Button>
+          <div className="flex-grow"></div>{" "}
+          <Button
+            className="justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5"
+            size="md"
+          >
+            Cancel
+          </Button>
+          <Button
+            className="justify-center rounded-lg bg-primary-600 px-7 py-2.5 font-bold text-white drop-shadow-sm max-md:px-5 "
+            size="md"
+            onPress={onPress}
+          >
+            Save
+          </Button>
+        </div>
       </div>
     </section>
   );
 };
-export default NewListingForm;
+export default EditListingForm;
