@@ -63,4 +63,18 @@ class Listing extends Model {
 
         return $listing;
     }
+
+    public static function updateMedia($listing, $mediaData) {
+        foreach ($mediaData['delete'] as $deleteItem) {
+            $media = Media::find($deleteItem);
+            if ($media) {
+                $media->delete();
+            }
+        }
+
+        foreach ($mediaData['new'] as $newItem) {
+            $newMedia = Media::instantiateMedia($newItem, $listing);
+            $newMedia->save();
+        }
+    }
 }

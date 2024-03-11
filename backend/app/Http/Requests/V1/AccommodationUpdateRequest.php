@@ -39,8 +39,7 @@ class AccommodationUpdateRequest extends FormRequest {
             'maximum_guests' => 'required|integer|min:1',
             'media.*' => ['array'],
             'media.delete' => ['array'],
-            'media.delete.*.id' => 'integer',
-            'media.delete.*.url' => 'url',
+            'media.delete.*' => 'integer',
             'media.new' => ['array'],
             'media.new.*' => 'url',
         ];

@@ -119,17 +119,7 @@ class AccommodationController extends Controller {
                 'price', 'maximum_guests',
             ]));
 
-            foreach ($request->media['delete'] as $deleteItem) {
-                $media = Media::find($deleteItem['id']);
-                if ($media) {
-                    $media->delete();
-                }
-            }
-
-            foreach ($request->media['new'] as $newItem) {
-                $newMedia = Media::instantiateMedia($newItem, $listing);
-                $newMedia->save();
-            }
+            $listing->updateMedia($listing, $request->media);
 
             return response()->json(['message' => 'Listing updated successfully'], Response::HTTP_OK);
         });
