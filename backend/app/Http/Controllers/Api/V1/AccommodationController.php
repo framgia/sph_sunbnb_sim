@@ -124,4 +124,29 @@ class AccommodationController extends Controller {
             'media.*' => 'url',
         ];
     }
+
+    public function destroy($listingId) {
+        $listing = Listing::with(['listable', 'media'])->find($listingId);
+
+        if ($listing) {
+            if ($listing->listable) {
+                $listing->listable->delete();
+            }
+
+            foreach ($listing->media as $media) {
+                $media->delete();
+            }
+            $listing->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Listing is deleted successfully',
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'success' => false,
+                'error' => 'Listing not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+    }
 }
