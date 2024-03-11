@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Enums\AccommodationType;
-use App\Enums\Amenity;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\AccommodationRequest;
+use App\Http\Requests\V1\AccomodationUpdateRequest;
 use App\Models\Accommodation;
 use App\Models\Listing;
 use App\Models\Media;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
@@ -79,8 +78,8 @@ class AccommodationController extends Controller {
         ], Response::HTTP_OK);
     }
 
-    public function store(Request $request) {
-        $this->validate($request, $this->getValidationRules());
+    public function store(AccommodationRequest $request) {
+        $request->validated();
 
         return DB::transaction(function () use ($request) {
 
@@ -102,8 +101,8 @@ class AccommodationController extends Controller {
         });
     }
 
-    public function update(Request $request, $listingId) {
-        $this->validate($request, $this->getValidationRules(true));
+    public function update(AccomodationUpdateRequest $request, $listingId) {
+        $request->validated();
 
         return DB::transaction(function () use ($request, $listingId) {
 
@@ -120,51 +119,20 @@ class AccommodationController extends Controller {
                 'price', 'maximum_guests',
             ]));
 
-            foreach ($request->media as $mediaItem) {
-                $media = Media::find($mediaItem['id']);
-
+            foreach ($request->media['delete'] as $deleteItem) {
+                $media = Media::find($deleteItem['id']);
                 if ($media) {
-                    $media->update(['media' => json_encode($mediaItem['url'])]);
-                } else {
-                    $newMedia = Media::instantiateMedia($mediaItem['url'], $listing);
-                    $newMedia->save();
+                    $media->delete();
                 }
+            }
+
+            foreach ($request->media['new'] as $newItem) {
+                $newMedia = Media::instantiateMedia($newItem, $listing);
+                $newMedia->save();
             }
 
             return response()->json(['message' => 'Listing updated successfully'], Response::HTTP_OK);
         });
-    }
-
-    private function getValidationRules($isUpdate = false) {
-        $rules = [
-            'type' => ['required', 'string', 'in:'.implode(',', AccommodationType::getConstants())],
-            'bed_count' => 'required|integer|min:1',
-            'bedroom_count' => 'required|integer|min:1',
-            'bathroom_count' => 'required|integer|min:1',
-            'minimum_days' => 'required|integer|min:1',
-            'maximum_days' => 'required|integer|min:1',
-            'amenities' => ['array', 'in:'.implode(',', Amenity::getConstants())],
-            'name' => 'required|string',
-            'description' => 'required',
-            'province' => 'required|string',
-            'city' => 'required|string',
-            'barangay' => 'required|string',
-            'street' => 'required|string',
-            'zip_code' => 'required|numeric',
-            'price' => 'required|string',
-            'maximum_guests' => 'required|integer|min:1',
-        ];
-
-        if ($isUpdate) {
-            $rules['media'] = ['required', 'array', 'min:1'];
-            $rules['media.*.id'] = 'required|integer';
-            $rules['media.*.url'] = 'required|url';
-        } else {
-            $rules['media'] = ['required', 'array', 'min:1'];
-            $rules['media.*'] = 'url';
-        }
-
-        return $rules;
     }
 
     public function destroy($listingId) {
