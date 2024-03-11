@@ -12,8 +12,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('accommodations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('listing_id')->constrained();
-            $table->enum('name', AccommodationType::getConstants());
+            $table->enum('type', AccommodationType::getConstants());
             $table->integer('bed_count');
             $table->integer('bedroom_count');
             $table->integer('bathroom_count');

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Calendar extends Model {
     use HasFactory;
 
-    protected $fillable = ['date', 'available'];
+    protected $fillable = ['listing_id', 'date', 'available'];
 
     public function listing(): BelongsTo {
         return $this->belongsTo(Listing::class);
