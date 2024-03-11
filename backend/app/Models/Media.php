@@ -14,4 +14,12 @@ class Media extends Model {
     public function listing(): BelongsTo {
         return $this->belongsTo(Listing::class);
     }
+
+    public static function instantiateMedia(string $mediaUrl, Listing $listing) {
+        $media = new self;
+        $media->media = json_encode($mediaUrl);
+        $media->listing()->associate($listing);
+
+        return $media;
+    }
 }

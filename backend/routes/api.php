@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AccommodationController;
 use App\Http\Controllers\Api\V1\AdminAuthController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CalendarController;
@@ -31,6 +32,8 @@ Route::post('reset-password', [PasswordController::class, 'resetpassword']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::apiResource('accommodation', AccommodationController::class);
+    Route::get('/accommodation/user/{userId}', [AccommodationController::class, 'showAccommodationsByUser']);
     Route::put('calendar/{listingId}', [CalendarController::class, 'set']);
     Route::get('calendar/{listingId}', [CalendarController::class, 'show']);
 });
