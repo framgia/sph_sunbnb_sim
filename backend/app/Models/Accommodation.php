@@ -27,4 +27,8 @@ class Accommodation extends Model {
 
         return $accommodation;
     }
+
+    public function getAmenitiesAttribute($value) {
+        return json_decode($value, true);
+    }
 }
