@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\AccommodationRequest;
-use App\Http\Requests\V1\AccomodationUpdateRequest;
+use App\Http\Requests\V1\AccommodationUpdateRequest;
 use App\Models\Accommodation;
 use App\Models\Listing;
 use App\Models\Media;
@@ -101,7 +101,7 @@ class AccommodationController extends Controller {
         });
     }
 
-    public function update(AccomodationUpdateRequest $request, $listingId) {
+    public function update(AccommodationUpdateRequest $request, $listingId) {
         $request->validated();
 
         return DB::transaction(function () use ($request, $listingId) {
@@ -139,13 +139,7 @@ class AccommodationController extends Controller {
         $listing = Listing::with(['listable', 'media'])->find($listingId);
 
         if ($listing) {
-            if ($listing->listable) {
-                $listing->listable->delete();
-            }
-
-            foreach ($listing->media as $media) {
-                $media->delete();
-            }
+            $listing->deleteAssociatedItems();
             $listing->delete();
 
             return response()->json([

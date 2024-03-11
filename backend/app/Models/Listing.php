@@ -63,4 +63,14 @@ class Listing extends Model {
 
         return $listing;
     }
+
+    public function deleteAssociatedItems() {
+        if ($this->listable) {
+            $this->listable->delete();
+        }
+
+        foreach ($this->media as $media) {
+            $media->delete();
+        }
+    }
 }

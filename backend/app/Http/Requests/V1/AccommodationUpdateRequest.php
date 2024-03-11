@@ -6,7 +6,7 @@ use App\Enums\AccommodationType;
 use App\Enums\Amenity;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AccomodationUpdateRequest extends FormRequest {
+class AccommodationUpdateRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */

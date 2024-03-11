@@ -34,7 +34,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('accommodation', AccommodationController::class);
     Route::get('/accommodation/user/{userId}', [AccommodationController::class, 'showAccommodationsByUser']);
-    Route::put('/accommodation/{listingId}', [AccommodationController::class, 'update']);
     Route::put('/calendar/{listingId}', [CalendarController::class, 'set']);
     Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
 });
