@@ -25,7 +25,6 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = (props) => {
         />
         <Calendar selectedDates={selectedDates} onSelect={setSelectedDates} />
       </div>
-
       <AvailabilitySidebar selectedDates={selectedDates} />
     </div>
   );
