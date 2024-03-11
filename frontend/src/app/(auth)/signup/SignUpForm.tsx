@@ -1,3 +1,4 @@
+"use client";
 import { Button, Input, RadioGroup } from "@nextui-org/react";
 import React from "react";
 import RadioCard from "./RadioCard";
@@ -5,10 +6,16 @@ import HostIcon from "@/app/components/svgs/SignUp/HostIcon";
 import GuestIcon from "@/app/components/svgs/SignUp/GuestIcon";
 import DividerText from "@/app/components/DividerText";
 import GoogleButton from "@/app/components/GoogleButton";
+import { useFormStatus } from "react-dom";
 
-const SignUpForm: React.FC = () => {
+interface SignUpFormProps {
+  formAction: (payload: FormData) => void;
+  formState: { message: string };
+}
+const SignUpForm: React.FC<SignUpFormProps> = ({ formAction, formState }) => {
+  const { pending } = useFormStatus();
   return (
-    <form>
+    <form action={formAction}>
       <div className="mb-2 mb-2 flex flex-row">
         <Input
           variant="bordered"
@@ -74,7 +81,9 @@ const SignUpForm: React.FC = () => {
           </RadioCard>
         </div>
       </RadioGroup>
-      <Button className="w-full bg-primary-600 text-white">Register</Button>
+      <Button isDisabled={pending} className="w-full bg-primary-600 text-white">
+        Register
+      </Button>
       <DividerText>or register using</DividerText>
       <GoogleButton />
     </form>

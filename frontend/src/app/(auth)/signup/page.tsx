@@ -1,13 +1,9 @@
-"use client";
 import React from "react";
-import SignUpForm from "./SignUpForm";
 import LogoLargeIcon from "@/app/components/svgs/LogoLargeIcon";
 import Link from "next/link";
-import { useFormState } from "react-dom";
-import { registerUser } from "@/app/utils/userHelper";
+import SignUpComponent from "./SignUpComponent";
 
 const SignUpPage: React.FC = () => {
-  const [state, formAction] = useFormState(registerUser, { message: "" });
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       <LogoLargeIcon />
@@ -19,7 +15,7 @@ const SignUpPage: React.FC = () => {
           Create an account to book or list a space
         </span>
       </div>
-      <SignUpForm />
+      <SignUpComponent />
       <span className="mt-5 text-sm">
         Already have an account?{" "}
         <Link href="/login">
