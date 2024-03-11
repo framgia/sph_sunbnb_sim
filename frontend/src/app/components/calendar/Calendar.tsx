@@ -70,7 +70,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDates, onSelect }) => {
         <Button variant="light" isIconOnly onClick={handlePrevMonth}>
           <ChevronLeftIcon />
         </Button>
-        <div className="text-primary text-xl font-semibold uppercase">
+        <div className="text-xl font-semibold uppercase text-primary">
           {format(currentDate, "MMMM yyyy")}
         </div>
         <Button variant="light" isIconOnly onClick={handleNextMonth}>
@@ -78,7 +78,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDates, onSelect }) => {
         </Button>
       </div>
       <Divider className="m-auto mb-4 w-1/2" />
-      <div className="grid grid-cols-7 gap-2.5">
+      <div className="grid grid-cols-7 gap-2">
         {DAYS_OF_WEEK.map((day) => (
           <div
             key={day}

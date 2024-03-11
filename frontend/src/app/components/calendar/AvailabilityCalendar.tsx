@@ -14,7 +14,7 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = (props) => {
   return (
     <div className="flex w-full flex-col-reverse gap-4 sm:h-full sm:flex-row sm:gap-6">
       <div
-        className={`${selectedDates.length > 0 ? "sm:ms-auto sm:pe-0 sm:ps-32" : "sm:m-auto sm:px-24"}
+        className={`${selectedDates.length > 0 ? "sm:ms-auto sm:pe-0 sm:ps-48" : "sm:m-auto sm:px-24"}
           flex w-full flex-col gap-2 sm:my-5 sm:max-w-[1024px] sm:gap-6
         `}
       >

@@ -11,6 +11,10 @@ const AvailabilitySidebar: React.FC<AvailabilitySidebarProps> = ({
     return null;
   }
 
+  function handleTabChange(key: React.Key): void {
+    // TODO: Implement tab change
+  }
+
   return (
     <div className="flex w-full flex-col gap-2 bg-gray-100 px-5 py-5 sm:h-full sm:w-2/5 sm:gap-4 sm:px-8 sm:py-12 lg:w-1/4">
       {selectedDates.length > 1 ? (
@@ -33,6 +37,7 @@ const AvailabilitySidebar: React.FC<AvailabilitySidebarProps> = ({
           className="flex-1"
           variant="bordered"
           color="primary"
+          onSelectionChange={handleTabChange}
         >
           <Tab key="open" title="Open" />
           <Tab key="block " title="Block" />

@@ -26,7 +26,7 @@ const CalendarDateButton: React.FC<CalendarDateButtonProps> = ({
   return (
     <Button
       radius={date < today ? "none" : "full"}
-      size="lg"
+      size="md"
       color="primary"
       isIconOnly
       className={`${baseClasses} ${notCurrentMonthClasses} ${pastDateClasses} ${selectedDateClasses}`}
