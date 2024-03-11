@@ -27,13 +27,14 @@ Route::group(['prefix' => 'login'], function () {
 
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::post('forget-password', [PasswordController::class, 'forgotpassword']);
-Route::post('reset-password', [PasswordController::class, 'resetpassword']);
+Route::post('/forget-password', [PasswordController::class, 'forgotpassword']);
+Route::post('/reset-password', [PasswordController::class, 'resetpassword']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('accommodation', AccommodationController::class);
+    Route::put('/accommodation/{listingId}', [AccommodationController::class, 'update']);
     Route::get('/accommodation/user/{userId}', [AccommodationController::class, 'showAccommodationsByUser']);
-    Route::put('calendar/{listingId}', [CalendarController::class, 'set']);
-    Route::get('calendar/{listingId}', [CalendarController::class, 'show']);
+    Route::put('/calendar/{listingId}', [CalendarController::class, 'set']);
+    Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
 });

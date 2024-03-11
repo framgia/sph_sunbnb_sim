@@ -102,8 +102,41 @@ class AccommodationController extends Controller {
         });
     }
 
-    private function getValidationRules() {
-        return [
+    public function update(Request $request, $listingId) {
+        $this->validate($request, $this->getValidationRules(true));
+
+        return DB::transaction(function () use ($request, $listingId) {
+
+            $listing = Listing::findOrFail($listingId);
+            $accommodation = $listing->listable;
+
+            $accommodation->update($request->only([
+                'type', 'bed_count', 'bedroom_count', 'bathroom_count', 'minimum_days',
+                'maximum_days', 'amenities',
+            ]));
+
+            $listing->update($request->only([
+                'name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code',
+                'price', 'maximum_guests',
+            ]));
+
+            foreach ($request->media as $mediaItem) {
+                $media = Media::find($mediaItem['id']);
+
+                if ($media) {
+                    $media->update(['media' => json_encode($mediaItem['url'])]);
+                } else {
+                    $newMedia = Media::instantiateMedia($mediaItem['url'], $listing);
+                    $newMedia->save();
+                }
+            }
+
+            return response()->json(['message' => 'Listing updated successfully'], Response::HTTP_OK);
+        });
+    }
+
+    private function getValidationRules($isUpdate = false) {
+        $rules = [
             'type' => ['required', 'string', 'in:'.implode(',', AccommodationType::getConstants())],
             'bed_count' => 'required|integer|min:1',
             'bedroom_count' => 'required|integer|min:1',
@@ -120,8 +153,17 @@ class AccommodationController extends Controller {
             'zip_code' => 'required|numeric',
             'price' => 'required|string',
             'maximum_guests' => 'required|integer|min:1',
-            'media' => 'required|min:1',
-            'media.*' => 'url',
         ];
+
+        if ($isUpdate) {
+            $rules['media'] = ['required', 'array', 'min:1'];
+            $rules['media.*.id'] = 'required|integer';
+            $rules['media.*.url'] = 'required|url';
+        } else {
+            $rules['media'] = ['required', 'array', 'min:1'];
+            $rules['media.*'] = 'url';
+        }
+
+        return $rules;
     }
 }
