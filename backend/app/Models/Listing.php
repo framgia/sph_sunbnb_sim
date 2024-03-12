@@ -89,4 +89,19 @@ class Listing extends Model {
 
         $this->delete();
     }
+
+    public static function paginateListings(Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        return static::with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
+            ->paginate($perPage);
+    }
+
+    public static function paginateListingsByUser($userId, Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        return static::where('user_id', $userId)
+            ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
+            ->paginate($perPage);
+    }
 }
