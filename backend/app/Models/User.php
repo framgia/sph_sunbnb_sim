@@ -73,4 +73,22 @@ class User extends Authenticatable {
     public function listings() {
         return $this->hasMany(Listing::class);
     }
+
+    private function shouldAllowUpdate(): bool {
+        return $this->provider === null;
+    }
+
+    public function updateUser($request): void {
+        $data = [
+            'first_name' => $request->input('first_name', $this->first_name),
+            'last_name' => $request->input('last_name', $this->last_name),
+        ];
+
+        if ($this->shouldAllowUpdate()) {
+            $data['email'] = $request->input('email', $this->email);
+            $data['password'] = $request->input('password', $this->password);
+        }
+
+        $this->update($data);
+    }
 }
