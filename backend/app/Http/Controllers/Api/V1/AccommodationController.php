@@ -9,13 +9,13 @@ use App\Models\Accommodation;
 use App\Models\Listing;
 use App\Models\Media;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class AccommodationController extends Controller {
-    public function index() {
-        $listings = Listing::with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
-            ->paginate(3);
+    public function index(Request $request) {
+        $listings = Listing::paginateListings($request);
 
         return response()->json([
             'success' => true,
@@ -48,9 +48,8 @@ class AccommodationController extends Controller {
         }
     }
 
-    public function showAccommodationsByUser($userId) {
-        $user = User::select('id', 'first_name', 'last_name', 'email', 'created_at')
-            ->find($userId);
+    public function showAccommodationsByUser($userId, Request $request) {
+        $user = User::find($userId);
 
         if (! $user) {
             return response()->json([
@@ -59,12 +58,10 @@ class AccommodationController extends Controller {
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $listings = $user->listings()->with(['listable', 'media'])
-            ->paginate(3);
+        $listings = Listing::paginateListingsByUser($userId, $request);
 
         return response()->json([
             'success' => true,
-            'user' => $user,
             'listings' => $listings->items(),
             'pagination' => [
                 'current_page' => $listings->currentPage(),
@@ -127,15 +124,9 @@ class AccommodationController extends Controller {
 
     public function destroy($listingId) {
         $listing = Listing::with(['listable', 'media'])->find($listingId);
-        if ($listing) {
-            if ($listing->listable) {
-                $listing->listable->delete();
-            }
 
-            foreach ($listing->media as $media) {
-                $media->delete();
-            }
-            $listing->delete();
+        if ($listing) {
+            $listing->deleteListing();
 
             return response()->json([
                 'success' => true,
