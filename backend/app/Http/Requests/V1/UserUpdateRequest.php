@@ -29,7 +29,8 @@ class UserUpdateRequest extends FormRequest {
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => $emailRule,
-            'password' => 'required|confirmed|string|min:8',
+            'current_password' => 'required|string',
+            'new_password' => 'required|confirmed|string|min:8',
         ];
     }
 }

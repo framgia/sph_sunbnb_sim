@@ -38,5 +38,5 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/calendar/{listingId}', [CalendarController::class, 'set']);
     Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
 
-    Route::put('/user/update', [UserController::class, 'update']);
+    Route::put('/user', [UserController::class, 'update']);
 });

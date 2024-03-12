@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable {
@@ -78,6 +79,10 @@ class User extends Authenticatable {
         return $this->provider === null;
     }
 
+    public function checkPassword($password): bool {
+        return Hash::check($password, $this->password);
+    }
+
     public function updateUser($request): void {
         $data = [
             'first_name' => $request->input('first_name', $this->first_name),
@@ -86,7 +91,14 @@ class User extends Authenticatable {
 
         if ($this->shouldAllowUpdate()) {
             $data['email'] = $request->input('email', $this->email);
-            $data['password'] = $request->input('password', $this->password);
+
+            if ($request->has('current_password') && ! $this->checkPassword($request->input('current_password'))) {
+                abort(403, 'Current password is incorrect.');
+            }
+
+            $data['password'] = $request->input('new_password')
+                ? $request->input('new_password')
+                : $this->password;
         }
 
         $this->update($data);
