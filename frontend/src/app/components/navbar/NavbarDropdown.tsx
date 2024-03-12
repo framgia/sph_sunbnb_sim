@@ -18,7 +18,7 @@ import { logoutUser } from "@/app/utils/userHelper";
 import { useRouter } from "next/navigation";
 
 interface NavbarDropdownProps extends NavbarProps {
-  full_name: string;
+  full_name?: string;
 }
 
 const NavbarDropdown: React.FC<NavbarDropdownProps> = (props) => {
@@ -38,8 +38,10 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = (props) => {
   };
 
   async function handleLogout(): Promise<void> {
-    await logoutUser();
-    router.replace("/");
+    const logoutRes = await logoutUser();
+    if (logoutRes.message === "Logged out successfully") {
+      router.replace("/");
+    }
   }
 
   return (
@@ -52,7 +54,7 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = (props) => {
           startContent={<MenuIcon />}
           endContent={
             <Avatar
-              name={getInitials(props.full_name)}
+              name={getInitials(props.full_name ? props.full_name : "")}
               className="h-7 w-7 text-tiny uppercase"
             />
           }

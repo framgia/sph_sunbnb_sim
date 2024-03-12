@@ -1,9 +1,15 @@
 import React from "react";
-import { NavbarBrand, Navbar as NextUINavbar } from "@nextui-org/react";
+import {
+  NavbarBrand,
+  NavbarContent,
+  Navbar as NextUINavbar
+} from "@nextui-org/react";
 import LogoNavbarIcon from "../svgs/Navbar/LogoNavbarIcon";
 import Link from "next/link";
-import NavbarItems from "./NavbarItems";
 import { checkCookies } from "@/app/utils/userHelper";
+import { UserRole } from "@/app/utils/enums";
+import NavbarLinks from "./NavbarLinks";
+import NavbarDropdown from "./NavbarDropdown";
 
 const Navbar: React.FC = async () => {
   const user = await checkCookies();
@@ -15,12 +21,26 @@ const Navbar: React.FC = async () => {
         </Link>
       </NavbarBrand>
       {user !== null ? (
-        <NavbarItems
-          userRole={user.role}
-          userFullName={user.first_name + " " + user.last_name}
-        />
+        <>
+          <NavbarContent justify="center" className="hidden sm:flex">
+            <NavbarLinks role={user.role} />
+          </NavbarContent>
+          <NavbarContent justify="end">
+            <NavbarDropdown
+              role={user.role}
+              full_name={user.first_name + " " + user.last_name}
+            />
+          </NavbarContent>
+        </>
       ) : (
-        <></>
+        <>
+          <NavbarContent justify="center" className="hidden sm:flex">
+            <NavbarLinks role={UserRole.GUEST} />
+          </NavbarContent>
+          <NavbarContent justify="end">
+            <NavbarDropdown role={UserRole.DEFAULT} />
+          </NavbarContent>
+        </>
       )}
     </NextUINavbar>
   );

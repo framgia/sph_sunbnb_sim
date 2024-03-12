@@ -47,7 +47,6 @@ export async function logoutUser(): Promise<{ message: string }> {
       }
     });
     const resData = await fetchApi.json();
-    console.log(resData);
     cookies().delete("jwt");
     cookies().delete("user");
     return {
@@ -62,9 +61,8 @@ export async function logoutUser(): Promise<{ message: string }> {
 
 export async function checkCookies(): Promise<UserSessionType | null> {
   const user = cookies().get("user")?.value;
-  console.log(user);
-  if (user !== undefined) {
-    const jsUser = JSON.parse(user);
+  if (user !== undefined && user !== "") {
+    const jsUser = await JSON.parse(user);
     return jsUser as UserSessionType;
   } else {
     return null;
