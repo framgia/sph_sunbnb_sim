@@ -12,7 +12,7 @@ return new class extends Migration {
         Schema::create('media', function (Blueprint $table) {
             $table->id();
             $table->foreignId('listing_id')->constrained();
-            $table->json('media');
+            $table->string('media');
             $table->timestamps();
             $table->softDeletes();
         });
