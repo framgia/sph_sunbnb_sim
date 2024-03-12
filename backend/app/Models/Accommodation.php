@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Http\Requests\V1\AccommodationRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Http\Request;
 
 class Accommodation extends Model {
     use HasFactory;
@@ -17,7 +17,7 @@ class Accommodation extends Model {
         return $this->morphOne(Listing::class, 'listable');
     }
 
-    public static function instantiateAccommodation(Request $request) {
+    public static function instantiateAccommodation(AccommodationRequest $request) {
         $accommodation = new self;
         $accommodation->type = $request->type;
         $accommodation->bed_count = $request->bed_count;

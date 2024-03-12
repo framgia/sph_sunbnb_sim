@@ -19,7 +19,7 @@ class Media extends Model {
 
     public static function instantiateMedia(string $mediaUrl, Listing $listing) {
         $media = new self;
-        $media->media = json_encode($mediaUrl);
+        $media->media = $mediaUrl;
         $media->listing()->associate($listing);
 
         return $media;
