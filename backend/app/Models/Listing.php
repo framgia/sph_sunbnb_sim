@@ -77,4 +77,16 @@ class Listing extends Model {
             $newMedia->save();
         }
     }
+
+    public function deleteListing() {
+        if ($this->listable) {
+            $this->listable->delete();
+        }
+
+        foreach ($this->media as $media) {
+            $media->delete();
+        }
+
+        $this->delete();
+    }
 }
