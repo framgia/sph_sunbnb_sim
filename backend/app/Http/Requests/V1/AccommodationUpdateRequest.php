@@ -35,7 +35,7 @@ class AccommodationUpdateRequest extends FormRequest {
             'barangay' => 'required|string',
             'street' => 'required|string',
             'zip_code' => 'required|numeric',
-            'price' => 'required|string',
+            'price' => 'required|numeric',
             'maximum_guests' => 'required|integer|min:1',
             'media.*' => ['array'],
             'media.delete' => ['array'],

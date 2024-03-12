@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->string('barangay');
             $table->string('street');
             $table->integer('zip_code');
-            $table->string('price');
+            $table->decimal('price', $precision = 9, $scale = 2);
             $table->integer('maximum_guests');
             $table->morphs('listable');
             $table->timestamps();
