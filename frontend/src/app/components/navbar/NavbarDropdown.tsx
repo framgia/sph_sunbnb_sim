@@ -14,12 +14,15 @@ import Link from "next/link";
 import { UserRole } from "@/app/utils/enums";
 import { type NavbarProps } from "@/app/interfaces/NavbarProps";
 import { getInitials } from "@/app/utils/getInitials";
+import { logoutUser } from "@/app/utils/userHelper";
+import { useRouter } from "next/navigation";
 
 interface NavbarDropdownProps extends NavbarProps {
   full_name: string;
 }
 
 const NavbarDropdown: React.FC<NavbarDropdownProps> = (props) => {
+  const router = useRouter();
   const actions = {
     host: [
       {
@@ -34,11 +37,10 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = (props) => {
     default: []
   };
 
-  function handleLogout(): void {
-    // TODO: implement logout
+  async function handleLogout(): Promise<void> {
+    await logoutUser();
+    router.replace("/");
   }
-
-  console.log(props.role);
 
   return (
     <Dropdown>

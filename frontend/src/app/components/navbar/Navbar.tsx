@@ -7,7 +7,6 @@ import { checkCookies } from "@/app/utils/userHelper";
 
 const Navbar: React.FC = async () => {
   const user = await checkCookies();
-  console.log("nav user:", user);
   return (
     <NextUINavbar className="shadow-md" isBlurred={false}>
       <NavbarBrand>

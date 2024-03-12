@@ -2,7 +2,7 @@ import { NavbarContent } from "@nextui-org/react";
 import React from "react";
 import NavbarDropdown from "./NavbarDropdown";
 import NavbarLinks from "./NavbarLinks";
-import { UserRole } from "@/app/utils/enums";
+import type { UserRole } from "@/app/utils/enums";
 
 interface NavbarItemsProps {
   userRole: UserRole;

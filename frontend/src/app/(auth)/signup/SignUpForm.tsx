@@ -1,6 +1,6 @@
 "use client";
 import { Button, Input, RadioGroup } from "@nextui-org/react";
-import React, { FormEvent, useRef, useState } from "react";
+import React, { type FormEvent, useRef, useState } from "react";
 import RadioCard from "./RadioCard";
 import HostIcon from "@/app/components/svgs/SignUp/HostIcon";
 import GuestIcon from "@/app/components/svgs/SignUp/GuestIcon";
@@ -8,7 +8,6 @@ import DividerText from "@/app/components/DividerText";
 import GoogleButton from "@/app/components/GoogleButton";
 
 import { registerUser } from "@/app/utils/userHelper";
-import type { UserRegisterType } from "@/app/interfaces/types";
 import { useRouter } from "next/navigation";
 
 const SignUpForm: React.FC = () => {
@@ -26,10 +25,14 @@ const SignUpForm: React.FC = () => {
   const router = useRouter();
 
   function isInvalidText(text: string): boolean {
-    return !text || text.trim() === "";
+    if (text === undefined || text.trim() === "") {
+      return true;
+    } else {
+      return false;
+    }
   }
   function isValidEmail(email: string): boolean {
-    let regex = /\S+@\S+\.\S+/;
+    const regex = /\S+@\S+\.\S+/;
     return regex.test(email);
   }
 
@@ -37,22 +40,22 @@ const SignUpForm: React.FC = () => {
     event.preventDefault();
     setMessage("");
     if (
-      isInvalidText(firstNameRef?.current?.value as string) ||
-      isInvalidText(lastNameRef?.current?.value as string) ||
-      isInvalidText(emailRef?.current?.value as string) ||
-      isInvalidText(passwordRef?.current?.value as string) ||
-      isInvalidText(confirmPasswordRef?.current?.value as string)
+      isInvalidText(firstNameRef?.current?.value ?? "") ||
+      isInvalidText(lastNameRef?.current?.value ?? "") ||
+      isInvalidText(emailRef?.current?.value ?? "") ||
+      isInvalidText(passwordRef?.current?.value ?? "") ||
+      isInvalidText(confirmPasswordRef?.current?.value ?? "")
     ) {
       return;
     }
-    if (!isValidEmail(emailRef!.current!.value)) {
+    if (!isValidEmail(emailRef?.current?.value ?? "")) {
       setEmailInvalid(true);
       return;
     } else {
       setEmailInvalid(false);
     }
 
-    if (passwordRef!.current!.value.length < 8) {
+    if ((passwordRef?.current?.value?.length ?? 0) < 8) {
       setPasswordLess8(true);
       return;
     } else {
@@ -66,18 +69,18 @@ const SignUpForm: React.FC = () => {
       setPasswordsNotMatch(false);
     }
 
-    let user: UserRegisterType = {
-      first_name: firstNameRef!.current!.value,
-      last_name: lastNameRef!.current!.value,
-      email: emailRef!.current!.value,
-      password: passwordRef!.current!.value,
-      password_confirmation: confirmPasswordRef!.current!.value,
+    const user = {
+      first_name: firstNameRef?.current?.value ?? "",
+      last_name: lastNameRef?.current?.value ?? "",
+      email: emailRef?.current?.value ?? "",
+      password: passwordRef?.current?.value ?? "",
+      password_confirmation: confirmPasswordRef?.current?.value ?? "",
       role: userRole
     };
 
     setLoading(true);
 
-    let apiRes = await registerUser(user);
+    const apiRes = await registerUser(user);
     setLoading(false);
     if (apiRes.message !== "success") {
       setMessage(apiRes.message);

@@ -1,4 +1,4 @@
-import { UserRole } from "../utils/enums";
+import type { UserRole } from "../utils/enums";
 
 export interface MediaType {
   id: number;
