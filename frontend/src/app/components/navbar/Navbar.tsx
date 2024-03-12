@@ -2,12 +2,12 @@ import React from "react";
 import { NavbarBrand, Navbar as NextUINavbar } from "@nextui-org/react";
 import LogoNavbarIcon from "../svgs/Navbar/LogoNavbarIcon";
 import Link from "next/link";
-import { UserRole } from "@/app/utils/enums";
 import NavbarItems from "./NavbarItems";
 import { checkCookies } from "@/app/utils/userHelper";
 
-const Navbar: React.FC = () => {
-  const user = checkCookies();
+const Navbar: React.FC = async () => {
+  const user = await checkCookies();
+  console.log("nav user:", user);
   return (
     <NextUINavbar className="shadow-md" isBlurred={false}>
       <NavbarBrand>
@@ -15,7 +15,14 @@ const Navbar: React.FC = () => {
           <LogoNavbarIcon />
         </Link>
       </NavbarBrand>
-      <NavbarItems userRole={UserRole.HOST} />
+      {user !== null ? (
+        <NavbarItems
+          userRole={user.role}
+          userFullName={user.first_name + " " + user.last_name}
+        />
+      ) : (
+        <></>
+      )}
     </NextUINavbar>
   );
 };

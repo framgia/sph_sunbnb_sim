@@ -6,17 +6,19 @@ import { UserRole } from "@/app/utils/enums";
 
 interface NavbarItemsProps {
   userRole: UserRole;
+  userFullName: string;
 }
-const NavbarItems: React.FC<NavbarItemsProps> = ({ userRole }) => {
+const NavbarItems: React.FC<NavbarItemsProps> = ({
+  userRole,
+  userFullName
+}) => {
   return (
     <>
       <NavbarContent justify="center" className="hidden sm:flex">
-        {/* TODO: Fetch user role from logged in user */}
         <NavbarLinks role={userRole} />
       </NavbarContent>
       <NavbarContent justify="end">
-        {/* TODO: Fetch user role from logged in user */}
-        <NavbarDropdown role={userRole} />
+        <NavbarDropdown role={userRole} full_name={userFullName} />
       </NavbarContent>
     </>
   );

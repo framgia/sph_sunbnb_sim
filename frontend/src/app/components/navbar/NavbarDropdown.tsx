@@ -13,7 +13,13 @@ import MenuIcon from "../svgs/Navbar/MenuIcon";
 import Link from "next/link";
 import { UserRole } from "@/app/utils/enums";
 import { type NavbarProps } from "@/app/interfaces/NavbarProps";
-const NavbarDropdown: React.FC<NavbarProps> = (props) => {
+import { getInitials } from "@/app/utils/getInitials";
+
+interface NavbarDropdownProps extends NavbarProps {
+  full_name: string;
+}
+
+const NavbarDropdown: React.FC<NavbarDropdownProps> = (props) => {
   const actions = {
     host: [
       {
@@ -43,7 +49,10 @@ const NavbarDropdown: React.FC<NavbarProps> = (props) => {
           className="border px-3"
           startContent={<MenuIcon />}
           endContent={
-            <Avatar name="ja" className="h-7 w-7 text-tiny uppercase" />
+            <Avatar
+              name={getInitials(props.full_name)}
+              className="h-7 w-7 text-tiny uppercase"
+            />
           }
         />
       </DropdownTrigger>

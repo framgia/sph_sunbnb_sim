@@ -1,3 +1,5 @@
+import { UserRole } from "../utils/enums";
+
 export interface MediaType {
   id: number;
   listing_id: number;
@@ -21,7 +23,7 @@ export interface UserSessionType {
   first_name: string;
   last_name: string;
   email: string;
-  role: "host" | "guest";
+  role: UserRole;
   provider?: string;
   status: "active" | "banned";
   created_at: string;

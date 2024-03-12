@@ -2,6 +2,7 @@
 import React from "react";
 import { Avatar, Image } from "@nextui-org/react";
 import type { MediaType } from "@/app/interfaces/types";
+import { getInitials } from "@/app/utils/getInitials";
 
 interface ListingHeaderProps {
   accomodationName: string;
@@ -35,15 +36,6 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
   modifiedAt,
   images
 }) => {
-  function getInitials(name: string): string {
-    const names = name.split(" ");
-    let initials = names[0].substring(0, 1).toUpperCase();
-
-    if (names.length > 1) {
-      initials += names[names.length - 1].substring(0, 1).toUpperCase();
-    }
-    return initials;
-  }
   return (
     <div>
       <div className="mb-2">

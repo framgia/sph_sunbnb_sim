@@ -42,7 +42,7 @@ export async function checkCookies(): Promise<UserSessionType | null> {
 
   if (user) {
     const jsUser = JSON.parse(user);
-    return jsUser.user as UserSessionType;
+    return jsUser as UserSessionType;
   } else {
     return null;
   }
