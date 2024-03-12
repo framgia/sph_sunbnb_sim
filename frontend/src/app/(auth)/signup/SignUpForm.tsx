@@ -1,35 +1,113 @@
 "use client";
 import { Button, Input, RadioGroup } from "@nextui-org/react";
-import React from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import RadioCard from "./RadioCard";
 import HostIcon from "@/app/components/svgs/SignUp/HostIcon";
 import GuestIcon from "@/app/components/svgs/SignUp/GuestIcon";
 import DividerText from "@/app/components/DividerText";
 import GoogleButton from "@/app/components/GoogleButton";
-import { useFormStatus } from "react-dom";
 
-interface SignUpFormProps {
-  formAction: (payload: FormData) => void;
-  formState: { message: string };
-}
-const SignUpForm: React.FC<SignUpFormProps> = ({ formAction, formState }) => {
-  const { pending } = useFormStatus();
+import { registerUser } from "@/app/utils/userHelper";
+import type { UserRegisterType } from "@/app/interfaces/types";
+import { useRouter } from "next/navigation";
+
+const SignUpForm: React.FC = () => {
+  const firstNameRef = useRef<HTMLInputElement>(null);
+  const lastNameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
+  const [userRole, setRole] = useState<"host" | "guest">("host");
+  const [isEmailInvalid, setEmailInvalid] = useState(false);
+  const [isPasswordLess8, setPasswordLess8] = useState(false);
+  const [passwordsNotMatch, setPasswordsNotMatch] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const router = useRouter();
+
+  function isInvalidText(text: string): boolean {
+    return !text || text.trim() === "";
+  }
+  function isValidEmail(email: string): boolean {
+    let regex = /\S+@\S+\.\S+/;
+    return regex.test(email);
+  }
+
+  async function handleSubmit(event: FormEvent): Promise<void> {
+    event.preventDefault();
+    setMessage("");
+    if (
+      isInvalidText(firstNameRef?.current?.value as string) ||
+      isInvalidText(lastNameRef?.current?.value as string) ||
+      isInvalidText(emailRef?.current?.value as string) ||
+      isInvalidText(passwordRef?.current?.value as string) ||
+      isInvalidText(confirmPasswordRef?.current?.value as string)
+    ) {
+      return;
+    }
+    if (!isValidEmail(emailRef!.current!.value)) {
+      setEmailInvalid(true);
+      return;
+    } else {
+      setEmailInvalid(false);
+    }
+
+    if (passwordRef!.current!.value.length < 8) {
+      setPasswordLess8(true);
+      return;
+    } else {
+      setPasswordLess8(false);
+    }
+
+    if (passwordRef?.current?.value !== confirmPasswordRef?.current?.value) {
+      setPasswordsNotMatch(true);
+      return;
+    } else {
+      setPasswordsNotMatch(false);
+    }
+
+    let user: UserRegisterType = {
+      first_name: firstNameRef!.current!.value,
+      last_name: lastNameRef!.current!.value,
+      email: emailRef!.current!.value,
+      password: passwordRef!.current!.value,
+      password_confirmation: confirmPasswordRef!.current!.value,
+      role: userRole
+    };
+
+    setLoading(true);
+
+    let apiRes = await registerUser(user);
+    setLoading(false);
+    if (apiRes.message !== "success") {
+      setMessage(apiRes.message);
+    } else {
+      router.replace("/");
+    }
+  }
   return (
-    <form action={formAction}>
+    <form onSubmit={handleSubmit}>
+      {message !== "" ? (
+        <div className="rounded-xl p-2 py-5 text-danger">{message}</div>
+      ) : (
+        ""
+      )}
       <div className="mb-2 mb-2 flex flex-row">
         <Input
           variant="bordered"
           className="mr-2"
           placeholder="First Name"
           name="firstName"
-          required
+          ref={firstNameRef}
+          isRequired={true}
         />
         <Input
           variant="bordered"
           className="ml-2"
           placeholder="Last Name"
           name="lastName"
-          required
+          ref={lastNameRef}
+          isRequired={true}
         />
       </div>
       <Input
@@ -38,8 +116,10 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ formAction, formState }) => {
         type="email"
         placeholder="Email"
         name="email"
-        errorMessage="Please enter a valid email"
-        required
+        errorMessage={isEmailInvalid ? "Please enter a valid email" : ""}
+        isInvalid={isEmailInvalid}
+        ref={emailRef}
+        isRequired={true}
       />
       <Input
         className="mb-2"
@@ -47,7 +127,12 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ formAction, formState }) => {
         type="password"
         name="password"
         placeholder="Password"
-        required
+        isInvalid={isPasswordLess8}
+        errorMessage={
+          isPasswordLess8 ? "Password must be at least 8 characters" : ""
+        }
+        ref={passwordRef}
+        isRequired={true}
       />
       <Input
         className="mb-2"
@@ -55,7 +140,12 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ formAction, formState }) => {
         type="password"
         name="confirmPassword"
         placeholder="Confirm Password"
-        required
+        ref={confirmPasswordRef}
+        isInvalid={passwordsNotMatch}
+        errorMessage={
+          passwordsNotMatch ? "Please make sure your passwords match." : ""
+        }
+        isRequired={true}
       />
 
       <div className="justify-content-center mt-10 flex">
@@ -67,6 +157,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ formAction, formState }) => {
             className="m-2"
             description="List accommodations or experiences"
             value="host"
+            onClick={() => {
+              setRole("host");
+            }}
           >
             <HostIcon />
             <span className="font-bold">Host</span>
@@ -75,13 +168,20 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ formAction, formState }) => {
             className="m-2"
             description="Browse and book unique stays"
             value="guest"
+            onClick={() => {
+              setRole("guest");
+            }}
           >
             <GuestIcon />
             <span className="font-bold">Guest</span>
           </RadioCard>
         </div>
       </RadioGroup>
-      <Button isDisabled={pending} className="w-full bg-primary-600 text-white">
+      <Button
+        isDisabled={isLoading}
+        type="submit"
+        className="w-full bg-primary-600 text-white"
+      >
         Register
       </Button>
       <DividerText>or register using</DividerText>

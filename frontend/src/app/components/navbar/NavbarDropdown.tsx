@@ -13,7 +13,6 @@ import MenuIcon from "../svgs/Navbar/MenuIcon";
 import Link from "next/link";
 import { UserRole } from "@/app/utils/enums";
 import { type NavbarProps } from "@/app/interfaces/NavbarProps";
-
 const NavbarDropdown: React.FC<NavbarProps> = (props) => {
   const actions = {
     host: [

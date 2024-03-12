@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Avatar, Image } from "@nextui-org/react";
-import type { MediaType } from "@/app/interfaces/MediaType";
+import type { MediaType } from "@/app/interfaces/types";
 
 interface ListingHeaderProps {
   accomodationName: string;
