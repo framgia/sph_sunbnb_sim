@@ -3,7 +3,7 @@ import React from "react";
 import { Input, Button, Textarea } from "@nextui-org/react";
 import UploadIcon from "../svgs/UploadIcon";
 
-import ListboxComponent from "./Listbox";
+import ListboxComponent from "./ListboxComponent";
 import AccommodationMoreDetails from "./AccommodationMoreDetails";
 import TypeSelect from "./SelectType";
 
