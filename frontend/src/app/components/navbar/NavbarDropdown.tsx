@@ -30,7 +30,6 @@ const NavbarDropdown: React.FC<NavbarProps> = (props) => {
 
   function handleLogout(): void {
     // TODO: implement logout
-    console.log("logout");
   }
 
   console.log(props.role);

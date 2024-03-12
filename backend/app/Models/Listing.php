@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 class Listing extends Model {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = ['name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code', 'price', 'maximum_guests'];
 
@@ -60,5 +62,19 @@ class Listing extends Model {
         $listing->user()->associate(auth()->user());
 
         return $listing;
+    }
+
+    public static function updateMedia($listing, $mediaData) {
+        foreach ($mediaData['delete'] as $deleteItem) {
+            $media = Media::find($deleteItem);
+            if ($media) {
+                $media->delete();
+            }
+        }
+
+        foreach ($mediaData['new'] as $newItem) {
+            $newMedia = Media::instantiateMedia($newItem, $listing);
+            $newMedia->save();
+        }
     }
 }

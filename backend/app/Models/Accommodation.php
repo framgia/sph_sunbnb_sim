@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Http\Requests\V1\AccommodationRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Accommodation extends Model {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = ['type', 'bed_count', 'bedroom_count', 'bathroom_count', 'minimum_days', 'maximum_days', 'amenities'];
 
@@ -15,7 +17,7 @@ class Accommodation extends Model {
         return $this->morphOne(Listing::class, 'listable');
     }
 
-    public static function instantiateAccommodation(Request $request) {
+    public static function instantiateAccommodation(AccommodationRequest $request) {
         $accommodation = new self;
         $accommodation->type = $request->type;
         $accommodation->bed_count = $request->bed_count;
