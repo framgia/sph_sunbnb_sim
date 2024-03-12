@@ -6,6 +6,7 @@ import DividerText from "../../components/DividerText";
 import Link from "next/link";
 import config from "@/app/config/config";
 import { useRouter } from "next/navigation";
+import { loginUser } from "@/app/utils/userHelper";
 
 interface LoginFormProps {
   onResetPress: () => void;
@@ -40,28 +41,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onResetPress }) => {
       return;
     }
 
-    try {
-      const response = await fetch(`${config.backendUrl}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
-      });
-
-      console.log("Response:", response);
-
-      if (response.ok) {
-        // Redirect to "/" after successful login
-        router.push("/");
-        console.log("Login successful");
-      } else {
-        // Handle failed login, such as displaying an error message
-        setError("Incorrect Credentials, please input them again.");
-        console.error("Login failed");
-      }
-    } catch (error) {
-      console.error("Error occurred:", error);
+    const loginResult = await loginUser(email, password);
+    if (loginResult.message === "success") {
+      // Redirect to "/" after successful login
+      router.push("/");
+      console.log("Login successful");
+    } else {
+      // Handle failed login, such as displaying an error message
+      setError("Incorrect Credentials, please input them again.");
+      console.error("Login failed");
     }
   };
 

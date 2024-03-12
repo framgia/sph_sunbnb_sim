@@ -62,11 +62,40 @@ export async function logoutUser(): Promise<{ message: string }> {
 
 export async function checkCookies(): Promise<UserSessionType | null> {
   const user = cookies().get("user")?.value;
-
+  console.log(user);
   if (user !== undefined) {
     const jsUser = JSON.parse(user);
     return jsUser as UserSessionType;
   } else {
     return null;
+  }
+}
+
+export async function loginUser(
+  email: string,
+  password: string
+): Promise<{ message: string }> {
+  const response = await fetch(`${config.backendUrl}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
+  });
+
+  const resData = await response.json();
+
+  if (resData.success) {
+    cookies().set("jwt", resData.token as string, {
+      httpOnly: true,
+      expires: new Date(resData.expires_in as string)
+    });
+    cookies().set("user", JSON.stringify(resData.user as string), {
+      httpOnly: true,
+      expires: new Date(resData.expires_in as string)
+    });
+    return { message: "success" };
+  } else {
+    return { message: "login failed" };
   }
 }
