@@ -1,11 +1,13 @@
 import type { ModalProps } from "@/app/interfaces/ModalProps";
-import { Button, Input, Modal, ModalContent } from "@nextui-org/react";
+import { Button, Input, Modal, ModalContent, Spinner } from "@nextui-org/react";
 import React from "react";
 
 interface ResetModalProps extends ModalProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
+  loading: boolean;
+  error: Record<string, string | boolean>;
 }
 
 const ResetPasswordModal: React.FC<ResetModalProps> = ({
@@ -14,9 +16,12 @@ const ResetPasswordModal: React.FC<ResetModalProps> = ({
   onClose,
   onSubmit,
   email,
-  setEmail
+  setEmail,
+  loading,
+  error
 }) => {
   function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    e.preventDefault();
     setEmail(e.target.value);
   }
 
@@ -41,6 +46,8 @@ const ResetPasswordModal: React.FC<ResetModalProps> = ({
                   variant="bordered"
                   required
                   placeholder="Email"
+                  isInvalid={error.hasError as boolean}
+                  errorMessage={error.message as string}
                   value={email}
                   onChange={handleEmailChange}
                 />
@@ -53,7 +60,7 @@ const ResetPasswordModal: React.FC<ResetModalProps> = ({
                     Cancel
                   </Button>
                   <Button type="submit" className="bg-primary-600 text-white">
-                    Send
+                    {loading ? <Spinner color="default" size="sm" /> : "Send"}
                   </Button>
                 </div>
               </form>

@@ -1,33 +1,57 @@
 import React from "react";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Spinner } from "@nextui-org/react";
 
 interface ResetPasswordFormProps {
-    handleSubmit: (event: React.FormEvent) => void;
+  handleSubmit: (event: React.FormEvent) => void;
+  data: Record<string, string>;
+  setData: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  error: Record<string, string | boolean>;
+  loading: boolean;
 }
 const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
-    handleSubmit
+  handleSubmit,
+  data,
+  setData,
+  error,
+  loading
 }) => {
-    return (
-        <form onSubmit={handleSubmit}>
-            <div className="mb-10">
-                <Input
-                    variant="bordered"
-                    className="mb-2"
-                    placeholder="New password"
-                    required
-                />
-                <Input
-                    variant="bordered"
-                    className="mb-2"
-                    placeholder="Confirm new password"
-                    required
-                />
-            </div>
-            <Button className="w-full bg-primary-600 text-white" type="submit">
-                Reset
-            </Button>
-        </form>
-    );
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="mb-10">
+        <Input
+          type="password"
+          variant="bordered"
+          className="mb-2"
+          placeholder="New password"
+          isInvalid={error.hasError as boolean}
+          value={data.password}
+          onChange={(e) => {
+            setData((prevData) => ({ ...prevData, password: e.target.value }));
+          }}
+          required
+        />
+        <Input
+          type="password"
+          variant="bordered"
+          className="mb-2"
+          isInvalid={error.hasError as boolean}
+          errorMessage={error.message as string}
+          placeholder="Confirm new password"
+          value={data.password_confirmation}
+          onChange={(e) => {
+            setData((prevData) => ({
+              ...prevData,
+              password_confirmation: e.target.value
+            }));
+          }}
+          required
+        />
+      </div>
+      <Button className="w-full bg-primary-600 text-white" type="submit">
+        {loading ? <Spinner color="default" size="sm" /> : "Reset"}
+      </Button>
+    </form>
+  );
 };
 
 export default ResetPasswordForm;
