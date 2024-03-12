@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Enums\AccommodationType;
-use App\Enums\Amenity;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\AccommodationRequest;
+use App\Http\Requests\V1\AccommodationUpdateRequest;
 use App\Models\Accommodation;
 use App\Models\Listing;
 use App\Models\Media;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
@@ -79,8 +78,8 @@ class AccommodationController extends Controller {
         ], Response::HTTP_OK);
     }
 
-    public function store(Request $request) {
-        $this->validate($request, $this->getValidationRules());
+    public function store(AccommodationRequest $request) {
+        $request->validated();
 
         return DB::transaction(function () use ($request) {
 
@@ -102,32 +101,32 @@ class AccommodationController extends Controller {
         });
     }
 
-    private function getValidationRules() {
-        return [
-            'type' => ['required', 'string', 'in:'.implode(',', AccommodationType::getConstants())],
-            'bed_count' => 'required|integer|min:1',
-            'bedroom_count' => 'required|integer|min:1',
-            'bathroom_count' => 'required|integer|min:1',
-            'minimum_days' => 'required|integer|min:1',
-            'maximum_days' => 'required|integer|min:1',
-            'amenities' => ['array', 'in:'.implode(',', Amenity::getConstants())],
-            'name' => 'required|string',
-            'description' => 'required',
-            'province' => 'required|string',
-            'city' => 'required|string',
-            'barangay' => 'required|string',
-            'street' => 'required|string',
-            'zip_code' => 'required|numeric',
-            'price' => 'required|string',
-            'maximum_guests' => 'required|integer|min:1',
-            'media' => 'required|min:1',
-            'media.*' => 'url',
-        ];
+    public function update(AccommodationUpdateRequest $request, $listingId) {
+        $request->validated();
+
+        return DB::transaction(function () use ($request, $listingId) {
+
+            $listing = Listing::findOrFail($listingId);
+            $accommodation = $listing->listable;
+
+            $accommodation->update($request->only([
+                'type', 'bed_count', 'bedroom_count', 'bathroom_count', 'minimum_days',
+                'maximum_days', 'amenities',
+            ]));
+
+            $listing->update($request->only([
+                'name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code',
+                'price', 'maximum_guests',
+            ]));
+
+            $listing->updateMedia($listing, $request->media);
+
+            return response()->json(['message' => 'Listing updated successfully'], Response::HTTP_OK);
+        });
     }
 
     public function destroy($listingId) {
         $listing = Listing::with(['listable', 'media'])->find($listingId);
-
         if ($listing) {
             if ($listing->listable) {
                 $listing->listable->delete();

@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CalendarController;
 use App\Http\Controllers\Api\V1\GoogleAuthController;
 use App\Http\Controllers\Api\V1\PasswordController;
-use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,15 +27,13 @@ Route::group(['prefix' => 'login'], function () {
 
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::post('forget-password', [PasswordController::class, 'forgotpassword']);
-Route::post('reset-password', [PasswordController::class, 'resetpassword']);
+Route::post('/forget-password', [PasswordController::class, 'forgotpassword']);
+Route::post('/reset-password', [PasswordController::class, 'resetpassword']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('accommodation', AccommodationController::class);
     Route::get('/accommodation/user/{userId}', [AccommodationController::class, 'showAccommodationsByUser']);
-    Route::put('calendar/{listingId}', [CalendarController::class, 'set']);
-    Route::get('calendar/{listingId}', [CalendarController::class, 'show']);
-
-    Route::put('/user/update', [UserController::class, 'update']);
+    Route::put('/calendar/{listingId}', [CalendarController::class, 'set']);
+    Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
 });
