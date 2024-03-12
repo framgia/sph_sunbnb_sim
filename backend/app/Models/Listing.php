@@ -77,4 +77,31 @@ class Listing extends Model {
             $newMedia->save();
         }
     }
+
+    public function deleteListing() {
+        if ($this->listable) {
+            $this->listable->delete();
+        }
+
+        foreach ($this->media as $media) {
+            $media->delete();
+        }
+
+        $this->delete();
+    }
+
+    public static function paginateListings(Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        return static::with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
+            ->paginate($perPage);
+    }
+
+    public static function paginateListingsByUser($userId, Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        return static::where('user_id', $userId)
+            ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
+            ->paginate($perPage);
+    }
 }

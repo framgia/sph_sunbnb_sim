@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable {
@@ -57,7 +58,7 @@ class User extends Authenticatable {
     }
 
     public function sendPasswordResetNotification($token) {
-        $url = env('FE_URL').'/forget-password?token='.$token;
+        $url = env('FE_URL').'/reset-password?token='.$token.'&email='.urlencode($this->email);
 
         $this->notify(new ResetPasswordNotification($url));
     }
@@ -72,5 +73,34 @@ class User extends Authenticatable {
 
     public function listings() {
         return $this->hasMany(Listing::class);
+    }
+
+    private function shouldAllowUpdate(): bool {
+        return $this->provider === null;
+    }
+
+    public function checkPassword($password): bool {
+        return Hash::check($password, $this->password);
+    }
+
+    public function updateUser($request): void {
+        $data = [
+            'first_name' => $request->input('first_name', $this->first_name),
+            'last_name' => $request->input('last_name', $this->last_name),
+        ];
+
+        if ($this->shouldAllowUpdate()) {
+            $data['email'] = $request->input('email', $this->email);
+
+            if ($request->has('current_password') && ! $this->checkPassword($request->input('current_password'))) {
+                abort(403, 'Current password is incorrect.');
+            }
+
+            $data['password'] = $request->input('new_password')
+                ? $request->input('new_password')
+                : $this->password;
+        }
+
+        $this->update($data);
     }
 }
