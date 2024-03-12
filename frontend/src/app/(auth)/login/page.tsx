@@ -10,7 +10,6 @@ import { forgetPassword } from "@/app/utils/helpers/passwordHelper";
 const LoginPage: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isValid, setValid] = useState(false);
-
   const [email, setEmail] = useState("");
 
   const router = useRouter();
