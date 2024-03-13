@@ -6,7 +6,6 @@ import EditSelectType from "./EditSelectType";
 import TrashIcon from "./svgs/TrashIcon";
 import ListboxComponent from "./accommodation/ListboxComponent";
 import AccommodationMoreDetails from "./accommodation/AccommodationMoreDetails";
-import config from "@/app/config/config";
 
 interface EditListingProps {
   onPress: () => void;
