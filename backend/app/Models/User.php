@@ -91,7 +91,13 @@ class User extends Authenticatable {
 
         if ($this->shouldAllowUpdate()) {
             $data['email'] = $request->input('email', $this->email);
+        }
 
+        $this->update($data);
+    }
+
+    public function updatePassword($request): void {
+        if ($this->shouldAllowUpdate()) {
             if ($request->has('current_password') && ! $this->checkPassword($request->input('current_password'))) {
                 abort(403, 'Current password is incorrect.');
             }
@@ -99,8 +105,9 @@ class User extends Authenticatable {
             $data['password'] = $request->input('new_password')
                 ? $request->input('new_password')
                 : $this->password;
+        } else{
+            abort(403, 'Cannot update password if using provider.');
         }
-
         $this->update($data);
     }
 }
