@@ -25,10 +25,17 @@ const NewListingPage: React.FC = () => {
     maximum_days: 0,
     amenities: []
   });
+  const [media, setMedia] = useState<string[]>([]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      <NewListingForm onPress={onOpen} data={data} setData={setData} />
+      <NewListingForm
+        onPress={onOpen}
+        data={data}
+        setData={setData}
+        media={media}
+        setMedia={setMedia}
+      />
       <ApprovalModal isOpen={isOpen} onClose={onClose} size={"full"} />
     </main>
   );

@@ -11,12 +11,16 @@ interface NewListingProps {
   onPress: () => void;
   data: Accommodation;
   setData: React.Dispatch<React.SetStateAction<Accommodation>>;
+  media: string[];
+  setMedia: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const NewListingForm: React.FC<NewListingProps> = ({
   onPress,
   data,
-  setData
+  setData,
+  media,
+  setMedia
 }) => {
   return (
     <section className="flex max-w-[826px] flex-col px-5">
@@ -138,7 +142,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
       </div>
       <div className="grid grid-cols-2 rounded-3xl outline outline-1 outline-neutral-300">
         <div className="p-8">
-          <UploadthingDropzone />
+          <UploadthingDropzone media={media} setMedia={setMedia} />
           <div className="mt-3 text-center text-xs">Maximum of 5 photos</div>
         </div>
         <div className="rounded-3xl bg-primary-50 outline outline-1 outline-neutral-300"></div>
@@ -169,6 +173,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
           onPress={onPress}
           onClick={() => {
             console.log(data);
+            console.log(media);
           }}
         >
           Publish
