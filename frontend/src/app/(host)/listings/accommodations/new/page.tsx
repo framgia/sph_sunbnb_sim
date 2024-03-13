@@ -45,6 +45,8 @@ const NewListingPage: React.FC = () => {
     } else {
       onOpen();
     }
+    console.log(error.hasError);
+    console.log(error.message);
   }
 
   return (
