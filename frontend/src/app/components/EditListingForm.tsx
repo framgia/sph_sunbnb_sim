@@ -2,10 +2,10 @@
 import React from "react";
 import { Input, Button, Textarea } from "@nextui-org/react";
 
-import ListboxComponent from "./Listbox";
-import AccommodationMoreDetails from "./AccommodationMoreDetails";
 import EditSelectType from "./EditSelectType";
 import TrashIcon from "./svgs/TrashIcon";
+import ListboxComponent from "./accommodation/ListboxComponent";
+import AccommodationMoreDetails from "./accommodation/AccommodationMoreDetails";
 
 interface EditListingProps {
   onPress: () => void;

@@ -13,8 +13,16 @@ import MenuIcon from "../svgs/Navbar/MenuIcon";
 import Link from "next/link";
 import { UserRole } from "@/app/utils/enums";
 import { type NavbarProps } from "@/app/interfaces/NavbarProps";
+import { getInitials } from "@/app/utils/helpers/getInitials";
+import { logoutUser } from "@/app/utils/helpers/userHelper";
+import { useRouter } from "next/navigation";
 
-const NavbarDropdown: React.FC<NavbarProps> = (props) => {
+interface NavbarDropdownProps extends NavbarProps {
+  full_name?: string;
+}
+
+const NavbarDropdown: React.FC<NavbarDropdownProps> = (props) => {
+  const router = useRouter();
   const actions = {
     host: [
       {
@@ -29,11 +37,12 @@ const NavbarDropdown: React.FC<NavbarProps> = (props) => {
     default: []
   };
 
-  function handleLogout(): void {
-    // TODO: implement logout
+  async function handleLogout(): Promise<void> {
+    const logoutRes = await logoutUser();
+    if (logoutRes.message === "Logged out successfully") {
+      router.replace("/");
+    }
   }
-
-  console.log(props.role);
 
   return (
     <Dropdown>
@@ -44,7 +53,10 @@ const NavbarDropdown: React.FC<NavbarProps> = (props) => {
           className="border px-3"
           startContent={<MenuIcon />}
           endContent={
-            <Avatar name="ja" className="h-7 w-7 text-tiny uppercase" />
+            <Avatar
+              name={getInitials(props.full_name ?? "")}
+              className="h-7 w-7 text-tiny uppercase"
+            />
           }
         />
       </DropdownTrigger>
