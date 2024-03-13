@@ -1,3 +1,6 @@
+export const DAYS_IN_CALENDAR_VIEW = 42;
+export const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 export function isSameDay(date1: Date, date2: Date): boolean {
   return (
     date1.getDate() === date2.getDate() &&
