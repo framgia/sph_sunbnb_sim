@@ -6,13 +6,17 @@ import EditSelectType from "./EditSelectType";
 import TrashIcon from "./svgs/TrashIcon";
 import ListboxComponent from "./accommodation/ListboxComponent";
 import AccommodationMoreDetails from "./accommodation/AccommodationMoreDetails";
+import { handleDelete } from "../utils/helpers/listingHelper";
 
 interface EditListingProps {
-  onPress: () => void;
   onDelete: () => void; // Function to handle delete action
+  listingid: string;
 }
 
-const EditListingForm: React.FC<EditListingProps> = ({ onPress, onDelete }) => {
+const EditListingForm: React.FC<EditListingProps> = ({
+  onDelete,
+  listingid
+}) => {
   const handleBrowseClick = (): void => {
     // Implement the functionality to invoke file input click
     document.getElementById("fileInput")?.click();
@@ -32,27 +36,13 @@ const EditListingForm: React.FC<EditListingProps> = ({ onPress, onDelete }) => {
     // Your handleDragStart logic here
   };
 
-  const handleDelete = (): void => {
-    // Make a DELETE request to delete the listing
-    fetch(`${config.backendUrl}/accommodation/{accommodation}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer YOUR_AUTH_TOKEN" // Include authorization token if required
-      }
-    })
-      .then((response) => {
-        if (response.ok) {
-          // Listing deleted successfully, perform any necessary actions
-          onDelete();
-        } else {
-          // Handle error
-          console.error("Failed to delete listing");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+  const deleteResult = async (): Promise<void> => {
+    try {
+      const result = await handleDelete(Number(listingid));
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -195,8 +185,8 @@ const EditListingForm: React.FC<EditListingProps> = ({ onPress, onDelete }) => {
           <Button
             className=" gap-y-1.5 rounded-lg bg-danger px-4 text-white max-md:px-5"
             size="md"
-            onPress={onPress}
-            onClick={handleDelete}
+            onPress={onDelete}
+            onClick={deleteResult}
           >
             <TrashIcon />
             Delete
@@ -211,7 +201,7 @@ const EditListingForm: React.FC<EditListingProps> = ({ onPress, onDelete }) => {
           <Button
             className="justify-center rounded-lg bg-primary-600 px-7 py-2.5 font-bold text-white drop-shadow-sm max-md:px-5 "
             size="md"
-            onPress={onPress}
+            onPress={() => {}}
           >
             Save
           </Button>
