@@ -6,22 +6,20 @@ const CalendarDateButton: React.FC<CalendarDateButtonProps> = ({
   date,
   isCurrentMonth,
   isSelectedDate,
-  handleDateClick
+  isBlockedDate,
+  onDateClick
 }) => {
   const today = useMemo(() => {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
     return date;
   }, []);
-  const baseClasses = "text-lg font-medium w-full";
-  const notCurrentMonthClasses = !isCurrentMonth
-    ? "text-gray-400"
-    : "text-black";
-  const pastDateClasses =
-    isCurrentMonth && date < today ? "disabled:bg-gray-200" : "";
-  const selectedDateClasses = isSelectedDate
-    ? "text-white"
-    : "bg-white hover:bg-primary-50 hover:text-primary";
+
+  const base = "text-lg font-medium w-full";
+  const notCurrentMonth = !isCurrentMonth ? "text-gray-400" : "text-black";
+  const pastDate = isCurrentMonth && date < today ? "disabled:bg-gray-200" : "";
+  const selectedDate = isSelectedDate ? "text-white" : "bg-white hover:bg-primary-50 hover:text-primary";
+  const blockedDate = isBlockedDate ? "line-through" : "";
 
   return (
     <Button
@@ -29,9 +27,9 @@ const CalendarDateButton: React.FC<CalendarDateButtonProps> = ({
       size="md"
       color="primary"
       isIconOnly
-      className={`${baseClasses} ${notCurrentMonthClasses} ${pastDateClasses} ${selectedDateClasses}`}
+      className={`${base} ${notCurrentMonth} ${pastDate} ${selectedDate} ${blockedDate}`}
       onClick={() => {
-        handleDateClick(date);
+        onDateClick(date);
       }}
       isDisabled={date < today}
     >

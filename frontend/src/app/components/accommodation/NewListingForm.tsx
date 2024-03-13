@@ -1,6 +1,12 @@
 "use client";
 import React from "react";
+<<<<<<< HEAD
 import { Input, Button, Textarea, Spinner } from "@nextui-org/react";
+=======
+import { Input, Button, Textarea } from "@nextui-org/react";
+import UploadIcon from "../svgs/UploadIcon";
+
+>>>>>>> master
 import ListboxComponent from "./ListboxComponent";
 import AccommodationMoreDetails from "./AccommodationMoreDetails";
 import TypeSelect from "./SelectType";

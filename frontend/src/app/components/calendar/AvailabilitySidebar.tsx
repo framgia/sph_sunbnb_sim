@@ -1,22 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Tab, Tabs } from "@nextui-org/react";
-import { formatCurrency } from "@/app/utils/helpers/currency";
+import { formatCurrency } from "@/app/utils/currency";
 import { type AvailabilitySidebarProps } from "@/app/interfaces/AvailabilitySidebarProps";
+import { isSameDay } from "@/app/utils/calendar";
+import { updateListingAvailability } from "@/app/utils/helpers/availabilityHelper";
+import { type CalendarDate } from "@/app/interfaces/types";
 
 const AvailabilitySidebar: React.FC<AvailabilitySidebarProps> = ({
-  selectedDates
+  selectedDates,
+  blockedDates,
+  selectedListing,
+  onTabChange
 }) => {
+  const [selectedKey, setSelectedKey] = useState("open");
+
+  useEffect(() => {
+    setSelectedKey(
+      selectedDates.every((date) =>
+        blockedDates.some((blockedDate) => isSameDay(date, blockedDate))
+      )
+        ? "block"
+        : "open"
+    );
+  }, [selectedDates, blockedDates]);
+
+  async function handleTabChange(key: React.Key): Promise<void> {
+    setSelectedKey(String(key));
+    const calendarDates = selectedDates.map((date) => ({
+      date: format(date, "yyyy-MM-dd"),
+      available: key === "open"
+    })) as CalendarDate[];
+    await updateListingAvailability(selectedListing.id, calendarDates);
+    onTabChange(true);
+  }
+
   if (selectedDates.length === 0) {
     return null;
   }
 
-  function handleTabChange(key: React.Key): void {
-    // TODO: Implement tab change
-  }
-
   return (
-    <div className="flex w-full flex-col gap-2 bg-gray-100 px-5 py-5 sm:h-full sm:w-2/5 sm:gap-4 sm:px-8 sm:py-12 lg:w-1/4">
+    <div className="flex w-full flex-col gap-2 bg-gray-100 px-16 px-5 py-5 sm:h-full sm:w-1/4 sm:gap-4 sm:px-8 sm:py-12 2xl:px-20">
       {selectedDates.length > 1 ? (
         <div className="text-lg font-medium">
           {`
@@ -38,14 +62,15 @@ const AvailabilitySidebar: React.FC<AvailabilitySidebarProps> = ({
           variant="bordered"
           color="primary"
           onSelectionChange={handleTabChange}
+          selectedKey={selectedKey}
         >
           <Tab key="open" title="Open" />
-          <Tab key="block " title="Block" />
+          <Tab key="block" title="Block" />
         </Tabs>
         <div className="flex w-1/2 flex-col justify-center rounded rounded-full border-2 border-black px-6 sm:w-full sm:gap-1 sm:rounded-lg sm:px-5 sm:py-3">
           <div className="text-xs font-semibold sm:text-sm">Per Night</div>
           <div className="text-xs font-semibold text-gray-600 sm:text-lg">
-            {formatCurrency("PHP", 2, 100000)}
+            {formatCurrency("PHP", 2, selectedListing.price)}
           </div>
         </div>
       </div>
