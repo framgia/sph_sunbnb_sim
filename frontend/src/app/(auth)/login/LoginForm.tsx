@@ -61,13 +61,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onResetPress }) => {
 
       <div />
       {error !== "" && <div className="text-red-500">{error}</div>}
-      <div className="mt-9 w-full text-center text-xl font-semibold leading-7 text-black">
+      <div className="mt-10 w-full text-center text-xl font-semibold leading-7 text-black">
         Welcome back!
       </div>
-      <div className="w-full text-center text-sm leading-5 text-zinc-500">
+      <div className="w-full text-center text-zinc-500">
         Login to continue booking or listing
       </div>
-      <div className="mt-8 flex max-w-[500px] flex-col px-5">
+      <div className="mt-8 flex max-w-[500px] flex-col">
         <label htmlFor="email"></label>
         <div>
           <Input
@@ -82,7 +82,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onResetPress }) => {
         </div>
       </div>
 
-      <div className="mt-8 flex max-w-[500px] flex-col px-5">
+      <div className="mt-2 flex max-w-[500px] flex-col">
         <label htmlFor="email"></label>
         <div>
           <Input
@@ -112,9 +112,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onResetPress }) => {
       </Button>
       <DividerText>or login using</DividerText>
       <GoogleButton />
-      <div className="mt-8 flex justify-between gap-2 whitespace-nowrap px-11 text-sm leading-5">
-        <div className="grow text-black">Don’t have an account?</div>
-        <Link href="/signup" className="text-primary-600">
+      <div className="mt-8 flex justify-between gap-2 whitespace-nowrap px-11 text-sm">
+        <div className="text-black">Don’t have an account?</div>
+        <Link href="/signup" className="text-primary">
           Sign up
         </Link>
       </div>
