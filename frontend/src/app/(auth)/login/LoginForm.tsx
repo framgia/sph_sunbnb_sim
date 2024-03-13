@@ -6,7 +6,7 @@ import DividerText from "../../components/DividerText";
 import Link from "next/link";
 import config from "@/app/config/config";
 import { useRouter } from "next/navigation";
-import { loginUser } from "@/app/utils/userHelper";
+import { loginUser } from "@/app/utils/helpers/userHelper";
 
 interface LoginFormProps {
   onResetPress: () => void;

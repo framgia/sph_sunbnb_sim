@@ -1,7 +1,8 @@
 "use server";
 
-import config from "../config/config";
-import type { UserRegisterType, UserSessionType } from "../interfaces/types";
+import { jwtDecode } from "jwt-decode";
+import config from "../../config/config";
+import type { UserRegisterType, UserSessionType } from "../../interfaces/types";
 import { cookies } from "next/headers";
 
 export async function registerUser(
@@ -21,10 +22,6 @@ export async function registerUser(
       httpOnly: true,
       expires: new Date(resData.expires_in as string)
     });
-    cookies().set("user", JSON.stringify(resData.user as string), {
-      httpOnly: true,
-      expires: new Date(resData.expires_in as string)
-    });
 
     return {
       message: "success"
@@ -35,6 +32,7 @@ export async function registerUser(
     };
   }
 }
+
 export async function logoutUser(): Promise<{ message: string }> {
   const jwt = cookies().get("jwt")?.value;
   if (jwt !== undefined) {
@@ -48,7 +46,6 @@ export async function logoutUser(): Promise<{ message: string }> {
     });
     const resData = await fetchApi.json();
     cookies().delete("jwt");
-    cookies().delete("user");
     return {
       message: resData.message
     };
@@ -60,13 +57,17 @@ export async function logoutUser(): Promise<{ message: string }> {
 }
 
 export async function checkCookies(): Promise<UserSessionType | null> {
-  const user = cookies().get("user")?.value;
-  if (user !== undefined && user !== "") {
-    const jsUser = await JSON.parse(user);
-    return jsUser as UserSessionType;
-  } else {
-    return null;
+  const jwt = cookies().get("jwt")?.value;
+
+  if (jwt !== undefined && jwt !== "") {
+    const decodedJwt = jwtDecode(jwt);
+    const user = await getUser(Number(decodedJwt.sub), jwt);
+    console.log("check result", user);
+    if (user !== undefined && user !== null) {
+      return user;
+    }
   }
+  return null;
 }
 
 export async function loginUser(
@@ -76,7 +77,8 @@ export async function loginUser(
   const response = await fetch(`${config.backendUrl}/login`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Accept: "application/json"
     },
     body: JSON.stringify({ email, password })
   });
@@ -93,7 +95,26 @@ export async function loginUser(
       expires: new Date(resData.expires_in as string)
     });
     return { message: "success" };
-  } else {
-    return { message: "login failed" };
   }
+  return { message: "login failed" };
+}
+
+export async function getUser(
+  id: number,
+  jwt: string
+): Promise<UserSessionType | null> {
+  const fetchApi = await fetch(`${config.backendUrl}/user/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    }
+  });
+  const resData = await fetchApi.json();
+  console.log("get result", resData);
+  if (resData.success) {
+    return resData.user as UserSessionType;
+  }
+  return null;
 }

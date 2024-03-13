@@ -6,7 +6,7 @@ import {
 } from "@nextui-org/react";
 import LogoNavbarIcon from "../svgs/Navbar/LogoNavbarIcon";
 import Link from "next/link";
-import { checkCookies } from "@/app/utils/userHelper";
+import { checkCookies } from "@/app/utils/helpers/userHelper";
 import { UserRole } from "@/app/utils/enums";
 import NavbarLinks from "./NavbarLinks";
 import NavbarDropdown from "./NavbarDropdown";

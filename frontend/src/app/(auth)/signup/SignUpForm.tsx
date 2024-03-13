@@ -7,7 +7,7 @@ import GuestIcon from "@/app/components/svgs/SignUp/GuestIcon";
 import DividerText from "@/app/components/DividerText";
 import GoogleButton from "@/app/components/GoogleButton";
 
-import { registerUser } from "@/app/utils/userHelper";
+import { registerUser } from "@/app/utils/helpers/userHelper";
 import { useRouter } from "next/navigation";
 
 const SignUpForm: React.FC = () => {

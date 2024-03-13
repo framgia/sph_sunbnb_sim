@@ -13,8 +13,8 @@ import MenuIcon from "../svgs/Navbar/MenuIcon";
 import Link from "next/link";
 import { UserRole } from "@/app/utils/enums";
 import { type NavbarProps } from "@/app/interfaces/NavbarProps";
-import { getInitials } from "@/app/utils/getInitials";
-import { logoutUser } from "@/app/utils/userHelper";
+import { getInitials } from "@/app/utils/helpers/getInitials";
+import { logoutUser } from "@/app/utils/helpers/userHelper";
 import { useRouter } from "next/navigation";
 
 interface NavbarDropdownProps extends NavbarProps {

@@ -2,7 +2,7 @@
 import React from "react";
 import { Avatar, Image } from "@nextui-org/react";
 import type { MediaType } from "@/app/interfaces/types";
-import { getInitials } from "@/app/utils/getInitials";
+import { getInitials } from "@/app/utils/helpers/getInitials";
 
 interface ListingHeaderProps {
   accomodationName: string;
