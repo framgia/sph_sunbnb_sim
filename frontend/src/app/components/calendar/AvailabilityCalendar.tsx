@@ -1,31 +1,73 @@
 "use client";
-import { type AvailabilityCalendarProps } from "@/app/interfaces/AvailabilityCalendarProps";
-import React, { useState } from "react";
+import {
+  type AvailabilityListing,
+  type AvailabilityCalendarProps
+} from "@/app/interfaces/AvailabilityCalendarProps";
+import React, { useEffect, useState } from "react";
 import ListingsDropdown from "./ListingsDropdown";
 import Calendar from "./Calendar";
 import AvailabilitySidebar from "./AvailabilitySidebar";
+import { getListingAvailability } from "@/app/utils/helpers/availabilityHelper";
+import { type CalendarDate } from "@/app/interfaces/types";
 
-const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = (props) => {
-  const [selectedListing, setSelectedListing] = useState<string>(
-    props.listings[0]
-  );
+const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
+  listings
+}) => {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+  const [calendarDates, setCalendarDates] = useState<CalendarDate[]>([]);
+  const [blockedDates, setBlockedDates] = useState<Date[]>([]);
+  const [onTabChanged, setTabChanged] = useState(false);
+  const [selectedListing, setSelectedListing] = useState<AvailabilityListing>(
+    listings[0]
+  );
+
+  useEffect(() => {
+    if (calendarDates !== undefined) {
+      setBlockedDates(
+        calendarDates
+          .filter(({ available }) => !available)
+          .map(({ date }) => new Date(date))
+      );
+    }
+  }, [calendarDates]);
+
+  useEffect(() => {
+    if (selectedListing !== undefined) {
+      const fetchListingAvailability = async (): Promise<void> => {
+        const response = await getListingAvailability(selectedListing.id);
+        if (response !== undefined) setCalendarDates(response);
+      };
+      fetchListingAvailability().catch((error) => {
+        console.error("Failed to fetch lisitng availability: ", error);
+      });
+      setTabChanged(false);
+    }
+  }, [selectedListing, onTabChanged]);
 
   return (
-    <div className="flex w-full flex-col-reverse gap-4 sm:h-full sm:flex-row sm:gap-6">
+    <div className="flex w-full flex-col-reverse gap-4 sm:h-full sm:flex-row sm:gap-5">
       <div
-        className={`${selectedDates.length > 0 ? "sm:ms-auto sm:pe-0 sm:ps-48" : "sm:m-auto sm:px-24"}
+        className={`${selectedDates.length > 0 ? "px-6 sm:ms-auto" : "sm:m-auto sm:px-6"}
           flex w-full flex-col gap-2 sm:my-5 sm:max-w-[1024px] sm:gap-6
         `}
       >
         <ListingsDropdown
-          listings={props.listings}
+          listings={listings}
           selectedListing={selectedListing}
           onSelect={setSelectedListing}
         />
-        <Calendar selectedDates={selectedDates} onSelect={setSelectedDates} />
+        <Calendar
+          selectedDates={selectedDates}
+          blockedDates={blockedDates}
+          onSelect={setSelectedDates}
+        />
       </div>
-      <AvailabilitySidebar selectedDates={selectedDates} />
+      <AvailabilitySidebar
+        selectedDates={selectedDates}
+        blockedDates={blockedDates}
+        selectedListing={selectedListing}
+        onTabChange={setTabChanged}
+      />
     </div>
   );
 };
