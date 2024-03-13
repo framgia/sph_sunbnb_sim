@@ -3,7 +3,6 @@ import "@uploadthing/react/styles.css";
 import React from "react";
 import { UploadDropzone } from "@/app/utils/uploadthing/uploadthing";
 import UploadIcon from "../svgs/UploadIcon";
-import { Spinner } from "@nextui-org/react";
 
 interface UploadthingDropzoneProps {
   media: string[];
@@ -27,8 +26,8 @@ const UploadthingDropzone: React.FC<UploadthingDropzoneProps> = ({
         label: "Drag your photos here",
         allowedContent: "or",
         button({ ready, isUploading }) {
+          if (isUploading) return "Uploading...";
           if (ready) return "Upload File";
-          if (isUploading) return <Spinner color="default" size="sm" />;
           return "Getting ready...";
         }
       }}

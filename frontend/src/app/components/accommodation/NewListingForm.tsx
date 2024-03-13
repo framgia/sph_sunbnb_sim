@@ -1,11 +1,12 @@
 "use client";
 import React from "react";
-import { Input, Button, Textarea } from "@nextui-org/react";
+import { Input, Button, Textarea, Spinner } from "@nextui-org/react";
 import ListboxComponent from "./ListboxComponent";
 import AccommodationMoreDetails from "./AccommodationMoreDetails";
 import TypeSelect from "./SelectType";
 import UploadthingDropzone from "../uploadthing/UploadDropzone";
 import type { Accommodation } from "@/app/interfaces/AccomodationData";
+import AccommodationImage from "./ImageCollection";
 
 interface NewListingProps {
   onPress: () => void;
@@ -13,6 +14,7 @@ interface NewListingProps {
   setData: React.Dispatch<React.SetStateAction<Accommodation>>;
   media: string[];
   setMedia: React.Dispatch<React.SetStateAction<string[]>>;
+  loading: boolean;
 }
 
 const NewListingForm: React.FC<NewListingProps> = ({
@@ -20,7 +22,8 @@ const NewListingForm: React.FC<NewListingProps> = ({
   data,
   setData,
   media,
-  setMedia
+  setMedia,
+  loading
 }) => {
   return (
     <section className="flex max-w-[826px] flex-col px-5">
@@ -145,7 +148,9 @@ const NewListingForm: React.FC<NewListingProps> = ({
           <UploadthingDropzone media={media} setMedia={setMedia} />
           <div className="mt-3 text-center text-xs">Maximum of 5 photos</div>
         </div>
-        <div className="rounded-3xl bg-primary-50 outline outline-1 outline-neutral-300"></div>
+        <div className="rounded-3xl bg-primary-50 outline outline-1 outline-neutral-300">
+          <AccommodationImage media={media} setMedia={setMedia} />
+        </div>
       </div>
 
       <div className="mw-full mt-10 text-left text-sm font-semibold leading-5 text-black max-md:max-w-full ">
@@ -165,18 +170,18 @@ const NewListingForm: React.FC<NewListingProps> = ({
         />
       </div>
       <div className="mt-9 flex gap-5 self-end whitespace-nowrap text-sm leading-5">
-        <Button className="grow justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5">
+        <Button
+          disabled={loading}
+          className="grow justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5"
+        >
           Cancel
         </Button>
         <Button
           className="grow justify-center rounded-lg bg-primary-600 px-7 py-2.5 font-bold text-white drop-shadow-sm max-md:px-5 "
           onPress={onPress}
-          onClick={() => {
-            console.log(data);
-            console.log(media);
-          }}
+          disabled={loading}
         >
-          Publish
+          {loading ? <Spinner color="default" size="sm" /> : "Publish"}
         </Button>
       </div>
     </section>
