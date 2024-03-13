@@ -89,10 +89,6 @@ export async function loginUser(
       httpOnly: true,
       expires: new Date(resData.expires_in as string)
     });
-    cookies().set("user", JSON.stringify(resData.user as string), {
-      httpOnly: true,
-      expires: new Date(resData.expires_in as string)
-    });
     return { message: "success" };
   }
   return { message: "login failed" };
