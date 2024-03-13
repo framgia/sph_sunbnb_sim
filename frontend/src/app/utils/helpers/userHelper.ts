@@ -62,7 +62,6 @@ export async function checkCookies(): Promise<UserSessionType | null> {
   if (jwt !== undefined && jwt !== "") {
     const decodedJwt = jwtDecode(jwt);
     const user = await getUser(Number(decodedJwt.sub), jwt);
-    console.log("check result", user);
     if (user !== undefined && user !== null) {
       return user;
     }
@@ -85,7 +84,7 @@ export async function loginUser(
 
   const resData = await response.json();
 
-  if (resData.success) {
+  if (resData.success as boolean) {
     cookies().set("jwt", resData.token as string, {
       httpOnly: true,
       expires: new Date(resData.expires_in as string)
@@ -113,7 +112,7 @@ export async function getUser(
   });
   const resData = await fetchApi.json();
   console.log("get result", resData);
-  if (resData.success) {
+  if (resData.success as boolean) {
     return resData.user as UserSessionType;
   }
   return null;

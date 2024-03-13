@@ -4,7 +4,6 @@ import LogoLargeIcon from "../../components/svgs/LogoLargeIcon";
 import GoogleButton from "../../components/GoogleButton";
 import DividerText from "../../components/DividerText";
 import Link from "next/link";
-import config from "@/app/config/config";
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/app/utils/helpers/userHelper";
 
@@ -36,7 +35,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onResetPress }) => {
 
     setLoading(true);
     // Check if email or password is blank
-    if (!email || !password) {
+    if (email === "" || password === "") {
       setError("Please enter both email and password.");
       return;
     }
@@ -61,7 +60,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onResetPress }) => {
       </div>
 
       <div />
-      {error && <div className="text-red-500">{error}</div>}
+      {error !== "" && <div className="text-red-500">{error}</div>}
       <div className="mt-9 w-full text-center text-xl font-semibold leading-7 text-black">
         Welcome back!
       </div>

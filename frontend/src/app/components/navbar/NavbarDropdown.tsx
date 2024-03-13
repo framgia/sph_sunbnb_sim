@@ -54,7 +54,7 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = (props) => {
           startContent={<MenuIcon />}
           endContent={
             <Avatar
-              name={getInitials(props.full_name ? props.full_name : "")}
+              name={getInitials(props.full_name ?? "")}
               className="h-7 w-7 text-tiny uppercase"
             />
           }
