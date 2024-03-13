@@ -2,7 +2,11 @@
 
 import { jwtDecode } from "jwt-decode";
 import config from "../../config/config";
-import type { UserRegisterType, UserSessionType } from "../../interfaces/types";
+import type {
+  UserRegisterType,
+  UserSessionType,
+  UserUpdateType
+} from "../../interfaces/types";
 import { cookies } from "next/headers";
 
 export async function registerUser(
@@ -116,4 +120,38 @@ export async function getUser(
     return resData.user as UserSessionType;
   }
   return null;
+}
+
+export async function updateUser(
+  id: number,
+  updatedUserData: Partial<UserUpdateType>
+): Promise<{ message: string }> {
+  const jwt = cookies().get("jwt")?.value;
+  if (jwt !== undefined) {
+    const fetchApi = await fetch(`${config.backendUrl}/user/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(updatedUserData)
+    });
+
+    const resData = await fetchApi.json();
+
+    if (resData.success !== undefined) {
+      return {
+        message: "success"
+      };
+    } else {
+      return {
+        message: resData.message
+      };
+    }
+  } else {
+    return {
+      message: "User not authenticated"
+    };
+  }
 }

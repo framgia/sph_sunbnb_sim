@@ -32,3 +32,12 @@ export interface UserSessionType {
   updated_at: string;
   deleted_at?: string;
 }
+
+export interface UserUpdateType {
+  first_name: string;
+  last_name: string;
+  email: string;
+  current_password: string;
+  new_password: string;
+  new_password_confirmation: string;
+}

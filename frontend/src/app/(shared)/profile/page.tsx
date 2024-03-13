@@ -1,17 +1,15 @@
 import React from "react";
 import ProfileComponent from "./ProfileComponent";
-import { fetchUserData } from "@/app/utils/helpers/profileHelper";
+import { checkCookies } from "@/app/utils/helpers/userHelper";
 
 const ProfilePage: React.FC = async () => {
-    const userId = 1;
+  const user = await checkCookies();
 
-    const user = await fetchUserData(userId);
-
-    return (
-        <main>
-            <ProfileComponent user={user} />
-        </main>
-    );
+  return (
+    <main>
+      <ProfileComponent user={user} />
+    </main>
+  );
 };
 
 export default ProfilePage;
