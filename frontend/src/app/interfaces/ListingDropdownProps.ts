@@ -1,5 +1,7 @@
+import { type AvailabilityListing } from "./AvailabilityCalendarProps";
+
 export interface ListingDropdownProps {
-  listings: string[];
-  selectedListing: string;
-  onSelect: (listing: string) => void;
+  listings: AvailabilityListing[];
+  selectedListing: AvailabilityListing;
+  onSelect: (listing: AvailabilityListing) => void;
 }

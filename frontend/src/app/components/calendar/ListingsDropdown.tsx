@@ -7,7 +7,7 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 import ChevronDownIcon from "../svgs/Calendar/ChevronDownIcon";
-import { truncate } from "@/app/utils/helpers/string";
+import { truncate } from "@/app/utils/string";
 import { type ListingDropdownProps } from "@/app/interfaces/ListingDropdownProps";
 
 const ListingsDropdown: React.FC<ListingDropdownProps> = ({
@@ -23,7 +23,7 @@ const ListingsDropdown: React.FC<ListingDropdownProps> = ({
           className="w-52"
           endContent={<ChevronDownIcon />}
         >
-          {truncate(selectedListing, 20)}
+          {truncate(selectedListing.name, 20)}
         </Button>
       </DropdownTrigger>
       <DropdownMenu
@@ -37,7 +37,7 @@ const ListingsDropdown: React.FC<ListingDropdownProps> = ({
               onSelect(listing);
             }}
           >
-            {listing}
+            {listing.name}
           </DropdownItem>
         ))}
       </DropdownMenu>
