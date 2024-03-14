@@ -19,11 +19,13 @@ interface Accommodation {
   amenities: Amenity[];
 }
 
-// Media
-// media: {
-//   delete: string[];
-//   new: string[];
-// };
-// media: string[];
+interface MediaUpdate {
+  prev: Array<{
+    id: number;
+    url: string;
+  }>;
+  delete: number[];
+  new: string[];
+}
 
-export type { Accommodation };
+export type { Accommodation, MediaUpdate };
