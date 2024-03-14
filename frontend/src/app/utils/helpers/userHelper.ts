@@ -125,7 +125,7 @@ export async function getUser(
 export async function updateUser(
   id: number,
   updatedUserData: Partial<UserSessionType>
-): Promise<{ message: string }> {
+): Promise<{ message: string; errors?: Record<string, string[]> }> {
   const jwt = cookies().get("jwt")?.value;
   if (jwt !== undefined) {
     const fetchApi = await fetch(`${config.backendUrl}/user/${id}`, {
@@ -140,13 +140,15 @@ export async function updateUser(
 
     const resData = await fetchApi.json();
 
-    if (resData.success !== undefined) {
+    if (resData.success as boolean) {
       return {
         message: "success"
       };
     } else {
+      console.log("message update user:", resData);
       return {
-        message: resData.message
+        message: resData.message,
+        errors: resData.errors
       };
     }
   } else {
@@ -159,7 +161,7 @@ export async function updateUser(
 export async function updatePassword(
   id: number,
   passwordUpdate: PasswordUpdateType
-): Promise<{ message: string }> {
+): Promise<{ message: string; errors?: Record<string, string[]> }> {
   const jwt = cookies().get("jwt")?.value;
   if (jwt !== undefined) {
     const fetchApi = await fetch(
@@ -177,13 +179,15 @@ export async function updatePassword(
 
     const resData = await fetchApi.json();
 
-    if (resData.success !== undefined) {
+    if (resData.success as boolean) {
       return {
         message: "success"
       };
     } else {
+      console.log("message:", resData);
       return {
-        message: resData.message
+        message: resData.message,
+        errors: resData.errors
       };
     }
   } else {

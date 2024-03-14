@@ -40,6 +40,16 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
 
   const handleUpdate = async (): Promise<void> => {
     try {
+      if (firstName === "" || lastName === "") {
+        if (firstName === "") {
+          setFirstNameError("The first name field is required.");
+        }
+        if (lastName === "") {
+          setLastNameError("The last name field is required.");
+        }
+        return;
+      }
+
       const updatedUser = {
         ...user,
         first_name: firstName,
@@ -55,15 +65,32 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
         setFirstNameError("");
         setLastNameError("");
 
-        if (result.message === "The first name field is required.") {
-          setFirstNameError(result.message);
-        } else if (result.message === "The last name field is required.") {
-          setLastNameError(result.message);
+        if (result.errors !== undefined) {
+          if (result.errors.first_name !== undefined) {
+            setFirstNameError(result.errors.first_name[0]);
+          }
+          if (result.errors.last_name !== undefined) {
+            setLastNameError(result.errors.last_name[0]);
+          }
         }
       }
     } catch (error) {
       console.error("Unexpected error during update:", error);
     }
+  };
+
+  const handleFirstNameChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setFirstName(e.target.value);
+    setFirstNameError("");
+  };
+
+  const handleLastNameChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setLastName(e.target.value);
+    setLastNameError("");
   };
 
   return (
@@ -80,9 +107,7 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
               <Input
                 className="mr-5 text-zinc-500"
                 value={firstName}
-                onChange={(e) => {
-                  setFirstName(e.target.value);
-                }}
+                onChange={handleFirstNameChange}
                 variant="bordered"
                 placeholder="First Name"
                 isInvalid={firstNameError.length > 0}
@@ -92,9 +117,7 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
                 variant="bordered"
                 className="text-zinc-500"
                 value={lastName}
-                onChange={(e) => {
-                  setLastName(e.target.value);
-                }}
+                onChange={handleLastNameChange}
                 placeholder="Last Name"
                 isInvalid={lastNameError.length > 0}
                 errorMessage={lastNameError}

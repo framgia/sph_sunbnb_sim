@@ -13,9 +13,35 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [newPasswordError, setNewPasswordError] = useState("");
+  const [confirmNewPasswordError, setConfirmNewPasswordError] = useState("");
 
   const handleUpdate = async (): Promise<void> => {
     try {
+      if (
+        currentPassword === "" ||
+        newPassword === "" ||
+        confirmNewPassword === ""
+      ) {
+        if (currentPassword === "") {
+          setPasswordError("The current password field is required.");
+        }
+        if (newPassword === "") {
+          setNewPasswordError("The new password field is required.");
+        }
+        if (confirmNewPassword === "") {
+          setConfirmNewPasswordError(
+            "The password confirmation field is required."
+          );
+        }
+        return;
+      }
+
+      if (newPassword !== confirmNewPassword) {
+        setConfirmNewPasswordError("Passwords do not match");
+        return;
+      }
       const passwordUpdate = {
         current_password: currentPassword,
         new_password: newPassword,
@@ -24,18 +50,57 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
 
       const result = await updatePassword(user?.id, passwordUpdate);
 
-      if (result.message === "success") {
+      if (result.message !== "success") {
+        console.error("Update failed:", result.message);
+        if (result.message === "Current password is incorrect.") {
+          setPasswordError(result.message);
+        } else if (result.errors !== undefined) {
+          if (result.errors.current_password !== undefined) {
+            setPasswordError(result.errors.current_password[0]);
+          }
+          if (result.errors.new_password !== undefined) {
+            setNewPasswordError(result.errors.new_password[0]);
+          }
+          if (result.errors.new_password_confirmation !== undefined) {
+            setConfirmNewPasswordError(
+              result.errors.new_password_confirmation[0]
+            );
+          }
+        }
+      } else {
         onCancel();
         setEditing(false);
         setCurrentPassword("");
         setNewPassword("");
         setConfirmNewPassword("");
-      } else {
-        console.error("Update failed:", result.message);
+        setPasswordError("");
+        setNewPasswordError("");
+        setConfirmNewPasswordError("");
       }
     } catch (error) {
       console.error("Unexpected error during update:", error);
     }
+  };
+
+  const handleCurrentPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setCurrentPassword(e.target.value);
+    setPasswordError("");
+  };
+
+  const handleNewPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setNewPassword(e.target.value);
+    setNewPasswordError("");
+  };
+
+  const handleConfirmNewPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setConfirmNewPassword(e.target.value);
+    setConfirmNewPasswordError("");
   };
 
   return (
@@ -52,27 +117,27 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
               variant="bordered"
               placeholder="Current Password"
               value={currentPassword}
-              onChange={(e) => {
-                setCurrentPassword(e.target.value);
-              }}
+              isInvalid={passwordError !== ""}
+              errorMessage={passwordError}
+              onChange={handleCurrentPasswordChange}
             />
             <Input
               className="mb-5 text-zinc-500"
               variant="bordered"
               placeholder="New Password"
+              isInvalid={newPasswordError !== ""}
+              errorMessage={newPasswordError}
               value={newPassword}
-              onChange={(e) => {
-                setNewPassword(e.target.value);
-              }}
+              onChange={handleNewPasswordChange}
             />
             <Input
               className="text-zinc-500"
               variant="bordered"
               placeholder="Confirm New Password"
+              isInvalid={confirmNewPasswordError !== ""}
+              errorMessage={confirmNewPasswordError}
               value={confirmNewPassword}
-              onChange={(e) => {
-                setConfirmNewPassword(e.target.value);
-              }}
+              onChange={handleConfirmNewPasswordChange}
             />
           </div>
           <div className="my-5 flex flex-row">
@@ -87,6 +152,9 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
                 setCurrentPassword("");
                 setNewPassword("");
                 setConfirmNewPassword("");
+                setPasswordError("");
+                setNewPasswordError("");
+                setConfirmNewPasswordError("");
               }}
             >
               Cancel

@@ -17,7 +17,6 @@ const ProfileComponent: React.FC<ProfileComponentsProps> = ({ user }) => {
   const [PasswordActive, setPasswordActive] = useState(true);
   const isProvider: boolean = user !== null && user.provider === null;
 
-  //  functions for handling dynamic changing of colors
   function ResetAll(): void {
     setPersonalActive(true);
     setLoginActive(true);
@@ -51,7 +50,7 @@ const ProfileComponent: React.FC<ProfileComponentsProps> = ({ user }) => {
   }
 
   return (
-    <main className="flex min-h-screen flex-col">
+    <main className="flex flex-col">
       {user !== null && (
         <>
           <span
