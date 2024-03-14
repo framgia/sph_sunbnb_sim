@@ -4,7 +4,6 @@ import { Input, Button, Textarea } from "@nextui-org/react";
 import TrashIcon from "./svgs/TrashIcon";
 import ListboxComponent from "./accommodation/ListboxComponent";
 import AccommodationMoreDetails from "./accommodation/AccommodationMoreDetails";
-import { handleDelete } from "../utils/helpers/listingHelper";
 import type {
   MediaUpdate,
   Accommodation
@@ -12,6 +11,7 @@ import type {
 import SelectType from "./accommodation/SelectType";
 import UploadthingDropzoneUpdate from "./uploadthing/UploadAccommodationUpdate";
 import AccommodationImageUpdate from "./accommodation/ImageCollectionUpdate";
+import { handleDelete } from "../utils/helpers/accommodationHelper";
 
 interface EditListingProps {
   onDelete: () => void; // Function to handle delete action

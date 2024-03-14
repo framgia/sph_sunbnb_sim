@@ -11,6 +11,7 @@ import {
   validateAccommodation
 } from "@/app/utils/helpers/accommodationHelper";
 import { useDisclosure } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 interface EditListingComponentProps {
@@ -20,6 +21,7 @@ interface EditListingComponentProps {
 const EditListingComponent: React.FC<EditListingComponentProps> = ({
   listing
 }) => {
+  const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [error, setError] = useState<Record<string, string | boolean>>({
     hasError: false,
@@ -65,6 +67,9 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
       setIsLoading(true);
       const result = await updateAccommodation(listing.id, data, media);
       setIsLoading(false);
+      if (result.hasError === false) {
+        router.push("/listings");
+      }
       if (result.hasError === true) {
         setError({
           message: result.message,
@@ -76,7 +81,6 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      <pre>{JSON.stringify(listing, null, 2)}</pre>
       <EditListingForm
         listingid={listing.id.toString()}
         onDelete={onOpen}

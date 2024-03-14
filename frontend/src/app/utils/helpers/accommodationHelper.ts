@@ -130,7 +130,7 @@ export async function updateAccommodation(
 ): Promise<Record<string, string | boolean>> {
   try {
     const { prev, ...mediaWithoutPrev } = media;
-    const accommodationWithMedia = { ...data, ...mediaWithoutPrev };
+    const accommodationWithMedia = { ...data, media: { ...mediaWithoutPrev } };
     const response = await fetch(`${config.backendUrl}/accommodation/${id}`, {
       method: "PUT",
       headers: setHeaders(),
@@ -138,6 +138,7 @@ export async function updateAccommodation(
     });
 
     const responseData = await response.json();
+    console.log(responseData);
     if (response.ok) {
       return {
         hasError: false,
@@ -158,6 +159,30 @@ export async function updateAccommodation(
         error instanceof Error
           ? error.message
           : "An unexpected error occurred. Please contact the administrator."
+    };
+  }
+}
+
+export async function handleDelete(id: number): Promise<{ message: string }> {
+  const jwt = cookies().get("jwt")?.value;
+  if (jwt !== undefined) {
+    console.log(jwt);
+    const fetchApi = await fetch(`${config.backendUrl}/accommodation/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    });
+    const resData = await fetchApi.json();
+    console.log(resData);
+    return {
+      message: resData.message
+    };
+  } else {
+    return {
+      message: "Nothing to delete"
     };
   }
 }
