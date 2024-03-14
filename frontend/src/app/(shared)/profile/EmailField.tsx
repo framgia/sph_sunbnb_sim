@@ -11,14 +11,19 @@ const EmailField: React.FC<ProfileFieldProps> = ({
   enabled
 }) => {
   const [isEditing, setEditing] = useState(false);
-  const { email } = user || { email: "" };
-  // const [newEmail, setNewEmail] = useState(user?.email || "");
+  // const { email } = user || { email: "" };
+  const [email, setEmail] = useState(
+    user?.email !== undefined ? user.email : ""
+  );
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (): Promise<void> => {
     try {
-      const result = await updateUser(user?.id || 0, user);
+      const updatedUser = { ...user, email };
+
+      const result = await updateUser(user?.id, updatedUser);
 
       if (result.message === "success") {
+        user.email = email;
         onCancel();
         setEditing(false);
       } else {
@@ -40,7 +45,11 @@ const EmailField: React.FC<ProfileFieldProps> = ({
           <div className="flex w-2/4 flex-row">
             <Input
               className="mr-5 text-zinc-500"
-              defaultValue={email}
+              // defaultValue={email}
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
               variant="bordered"
               placeholder="Email"
             />

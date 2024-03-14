@@ -1,4 +1,4 @@
-import { UserSessionType } from "./types";
+import type { UserSessionType } from "./types";
 
 export interface ProfileFieldProps {
   user: UserSessionType;

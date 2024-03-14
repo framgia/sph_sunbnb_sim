@@ -38,10 +38,7 @@ export interface UserSessionType {
   deleted_at?: string;
 }
 
-export interface UserUpdateType {
-  first_name: string;
-  last_name: string;
-  email: string;
+export interface PasswordUpdateType {
   current_password: string;
   new_password: string;
   new_password_confirmation: string;

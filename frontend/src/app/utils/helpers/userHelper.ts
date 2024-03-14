@@ -5,7 +5,7 @@ import config from "../../config/config";
 import type {
   UserRegisterType,
   UserSessionType,
-  UserUpdateType
+  PasswordUpdateType
 } from "../../interfaces/types";
 import { cookies } from "next/headers";
 
@@ -124,7 +124,7 @@ export async function getUser(
 
 export async function updateUser(
   id: number,
-  updatedUserData: Partial<UserUpdateType>
+  updatedUserData: Partial<UserSessionType>
 ): Promise<{ message: string }> {
   const jwt = cookies().get("jwt")?.value;
   if (jwt !== undefined) {
@@ -137,6 +137,43 @@ export async function updateUser(
       },
       body: JSON.stringify(updatedUserData)
     });
+
+    const resData = await fetchApi.json();
+
+    if (resData.success !== undefined) {
+      return {
+        message: "success"
+      };
+    } else {
+      return {
+        message: resData.message
+      };
+    }
+  } else {
+    return {
+      message: "User not authenticated"
+    };
+  }
+}
+
+export async function updatePassword(
+  id: number,
+  passwordUpdate: PasswordUpdateType
+): Promise<{ message: string }> {
+  const jwt = cookies().get("jwt")?.value;
+  if (jwt !== undefined) {
+    const fetchApi = await fetch(
+      `${config.backendUrl}/user/change-password/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(passwordUpdate)
+      }
+    );
 
     const resData = await fetchApi.json();
 

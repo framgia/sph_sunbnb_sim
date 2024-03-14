@@ -11,11 +11,24 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
   enabled
 }) => {
   const [isEditing, setEditing] = useState(false);
-  const { first_name, last_name } = user || { first_name: "", last_name: "" };
+  // const { first_name, last_name } = user || { first_name: "", last_name: "" };
 
-  const handleUpdate = async () => {
+  const [firstName, setFirstName] = useState(
+    user?.first_name !== undefined ? user.first_name : ""
+  );
+  const [lastName, setLastName] = useState(
+    user?.last_name !== undefined ? user.last_name : ""
+  );
+
+  const handleUpdate = async (): Promise<void> => {
     try {
-      const result = await updateUser(user?.id || 0, user);
+      const updatedUser = {
+        ...user,
+        first_name: firstName,
+        last_name: lastName
+      };
+
+      const result = await updateUser(user?.id, updatedUser);
 
       if (result.message === "success") {
         onCancel();
@@ -41,14 +54,22 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
             <div className="flex w-2/4 flex-row">
               <Input
                 className="mr-5 text-zinc-500"
-                defaultValue={first_name}
+                // defaultValue={firstName}
+                value={firstName}
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                }}
                 variant="bordered"
                 placeholder="First Name"
               />
               <Input
                 variant="bordered"
                 className="text-zinc-500"
-                defaultValue={last_name}
+                // defaultValue={lastName}
+                value={lastName}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
                 placeholder="Last Name"
               />
             </div>
@@ -69,10 +90,11 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
                 size="sm"
                 variant="solid"
                 className="bg-primary-600 text-white"
-                onPress={() => {
-                  onCancel();
-                  setEditing(false);
-                }}
+                // onPress={() => {
+                //   onCancel();
+                //   setEditing(false);
+                // }}
+                onPress={handleUpdate}
               >
                 Save
               </Button>
@@ -97,7 +119,7 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
                 (enabled ? " text-zinc-500" : " text-foreground-300")
               }
             >
-              {first_name} {last_name}
+              {firstName} {lastName}
             </span>
           </div>
           <Button

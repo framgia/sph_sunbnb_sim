@@ -1,13 +1,40 @@
 import type { ProfileFieldProps } from "@/app/interfaces/ProfileFieldProps";
+import { updatePassword } from "@/app/utils/helpers/userHelper";
 import { Button, Divider, Input } from "@nextui-org/react";
 import React, { useState } from "react";
 
 const PasswordField: React.FC<ProfileFieldProps> = ({
+  user,
   enabled,
   onCancel,
   onEdit
 }) => {
   const [isEditing, setEditing] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+
+  const handleUpdate = async (): Promise<void> => {
+    try {
+      const passwordUpdate = {
+        current_password: currentPassword,
+        new_password: newPassword,
+        new_password_confirmation: confirmNewPassword
+      };
+
+      const result = await updatePassword(user?.id, passwordUpdate);
+
+      if (result.message === "success") {
+        onCancel();
+        setEditing(false);
+      } else {
+        console.error("Update failed:", result.message);
+      }
+    } catch (error) {
+      console.error("Unexpected error during update:", error);
+    }
+  };
+
   return (
     <div className="flex w-full flex-col">
       {isEditing && enabled ? (
@@ -21,16 +48,28 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
               className="mb-5 text-zinc-500"
               variant="bordered"
               placeholder="Current Password"
+              value={currentPassword}
+              onChange={(e) => {
+                setCurrentPassword(e.target.value);
+              }}
             />
             <Input
               className="mb-5 text-zinc-500"
               variant="bordered"
               placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => {
+                setNewPassword(e.target.value);
+              }}
             />
             <Input
               className="text-zinc-500"
               variant="bordered"
               placeholder="Confirm New Password"
+              value={confirmNewPassword}
+              onChange={(e) => {
+                setConfirmNewPassword(e.target.value);
+              }}
             />
           </div>
           <div className="my-5 flex flex-row">
@@ -50,10 +89,11 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
               size="sm"
               variant="solid"
               className="bg-primary-600 text-white"
-              onPress={() => {
-                onCancel();
-                setEditing(false);
-              }}
+              // onPress={() => {
+              //   onCancel();
+              //   setEditing(false);
+              // }}
+              onPress={handleUpdate}
             >
               Update
             </Button>
@@ -77,7 +117,12 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
                 (enabled ? " text-zinc-500" : " text-foreground-300")
               }
             >
-              Last updated on March 7, 2024
+              Last updated on{" "}
+              {new Date(user?.updated_at).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric"
+              })}
             </span>
           </div>
           <Button
