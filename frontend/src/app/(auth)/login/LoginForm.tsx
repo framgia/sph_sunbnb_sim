@@ -6,6 +6,7 @@ import DividerText from "../../components/DividerText";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/app/utils/helpers/userHelper";
+import WarningIcon from "@/app/components/svgs/WarnIcon";
 
 interface LoginFormProps {
   onResetPress: () => void;
@@ -58,9 +59,21 @@ const LoginForm: React.FC<LoginFormProps> = ({
   };
 
   return (
-    <form className="flex max-w-[500px] flex-col px-5" onSubmit={handleSubmit}>
-      {error !== "" && <div className="text-red-500">{error}</div>}
-      <div className="mt-8 flex max-w-[500px] flex-col px-5">
+    <form className="flex w-96 flex-col px-5" onSubmit={handleSubmit}>
+      {error !== "" && (
+        <div className="mt-8 h-20 w-full rounded-xl border border-2 border-danger-500 bg-danger-50 p-2 text-danger-500">
+          <div className="flex flex-row">
+            <div className="p-2">
+              <WarningIcon />
+            </div>
+            <div className="flex flex-col p-2 text-xs">
+              <span className="font-bold">Invalid Credentials</span>
+              <span>Make sure you entered the correct email and password</span>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="mt-8 flex flex-col">
         <label htmlFor="email"></label>
         <div>
           <Input
@@ -75,7 +88,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         </div>
       </div>
 
-      <div className="mt-2 flex max-w-[500px] flex-col">
+      <div className="mt-2 flex w-full flex-col">
         <label htmlFor="email"></label>
         <div>
           <Input
@@ -105,8 +118,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
       </Button>
       <DividerText>or login using</DividerText>
       <GoogleButton onPress={googleButton} />
-      <div className="mt-8 flex justify-between gap-2 whitespace-nowrap px-11 text-sm leading-5">
-        <div className="grow text-black">Don’t have an account?</div>
+      <div className="mt-8 flex justify-center px-11 text-sm leading-5">
+        <div className="mr-2 text-black">Don’t have an account?</div>
         <Link href="/signup" className="text-primary-600">
           Sign up
         </Link>
