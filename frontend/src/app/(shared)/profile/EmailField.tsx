@@ -33,6 +33,12 @@ const EmailField: React.FC<
     }
   };
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setEmail(e.target.value);
+    setErrorMessage("");
+    setEmailInvalid(false);
+  };
+
   return (
     <div className="flex w-full flex-col">
       {isEditing && enabled ? (
@@ -45,9 +51,7 @@ const EmailField: React.FC<
             <Input
               className="mr-5 text-zinc-500"
               value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
+              onChange={handleEmailChange}
               variant="bordered"
               placeholder="Email"
               isInvalid={isEmailInvalid}
