@@ -130,7 +130,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
       />
 
       <div className="mb-10 mt-5 rounded-lg border-[1.3px] border-solid border-[color:var(--Blues-Gray2,#B8BBC2)] p-10">
-        <div className="grid grid-cols-2">
+        <div className="grid md:grid-cols-2">
           <div>
             <div className="mb-5 w-full text-left text-sm font-semibold leading-5 text-black max-md:max-w-full">
               Amenities
@@ -152,7 +152,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
       <div className="mb-10 mt-10 w-full text-left text-lg font-semibold leading-5 text-black max-md:max-w-full">
         Upload photos of your place
       </div>
-      <div className="grid grid-cols-2 rounded-3xl outline outline-1 outline-neutral-300">
+      <div className="grid rounded-3xl outline outline-1 outline-neutral-300 md:grid-cols-2">
         <div className="p-8">
           <UploadthingDropzone media={media} setMedia={setMedia} />
           <div className="mt-3 text-center text-xs">Maximum of 5 photos</div>
