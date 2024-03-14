@@ -4,11 +4,17 @@ import EditListingForm from "@/app/components/EditListingForm";
 import { useDisclosure } from "@nextui-org/react";
 import React from "react";
 
-const EditListingPage: React.FC = () => {
+interface EditListingPageProps {
+  params: {
+    id: string;
+  };
+}
+
+const EditListingPage: React.FC<EditListingPageProps> = ({ params }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      <EditListingForm onPress={onOpen} />
+      <EditListingForm listingid={params.id} onDelete={onOpen} />
       <DeleteModal isOpen={isOpen} onClose={onClose} size={"full"} />
     </main>
   );

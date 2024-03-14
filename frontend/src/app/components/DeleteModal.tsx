@@ -33,7 +33,7 @@ const DeleteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                   <DeleteIcon />
                 </div>
                 <ModalHeader className="flex flex-col gap-1 text-center">
-                  {isDeleted ? "Successfully Deleted" : "Waiting for Approval"}
+                  {isDeleted ? "Successfully Deleted" : "Delete Listing"}
                 </ModalHeader>
                 <p className="mb-5 mt-1 text-center">
                   {isDeleted
