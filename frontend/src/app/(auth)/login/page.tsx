@@ -8,7 +8,6 @@ const LoginPage: React.FC = () => {
       <div className="flex w-full justify-center">
         <LogoLargeIcon />
       </div>
-
       <div />
       <div className="mt-9 w-full text-center text-xl font-semibold leading-7 text-black">
         Welcome back!

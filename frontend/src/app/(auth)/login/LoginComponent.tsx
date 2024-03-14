@@ -8,14 +8,13 @@ import {
   forgetPassword,
   validateForgetPassword
 } from "@/app/utils/helpers/passwordHelper";
-import RoleSelectModal from "@/app/components/RoleSelectModal";
+import { signIn } from "next-auth/react";
 
 const LoginComponent: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isValid, setValid] = useState(false);
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [toOpenReset, setToOpenReset] = useState(false);
   const [error, setError] = useState<Record<string, string | boolean>>({
     hasError: false,
     message: ""
@@ -45,29 +44,25 @@ const LoginComponent: React.FC = () => {
     <>
       <LoginForm
         onResetPress={() => {
-          setToOpenReset(true), onOpen();
+          onOpen();
         }}
         googleButton={() => {
-          setToOpenReset(false), onOpen();
+          signIn("google");
         }}
       />
-      {toOpenReset ? (
-        !isValid ? (
-          <ResetPasswordModal
-            size="sm"
-            isOpen={isOpen}
-            onClose={onClose}
-            onSubmit={onSubmit}
-            email={email}
-            setEmail={setEmail}
-            loading={isLoading}
-            error={error}
-          />
-        ) : (
-          <LinkSuccessModal size="sm" isOpen={isOpen} onClose={onClose} />
-        )
+      {!isValid ? (
+        <ResetPasswordModal
+          size="sm"
+          isOpen={isOpen}
+          onClose={onClose}
+          onSubmit={onSubmit}
+          email={email}
+          setEmail={setEmail}
+          loading={isLoading}
+          error={error}
+        />
       ) : (
-        <RoleSelectModal size="sm" isOpen={isOpen} onClose={onClose} />
+        <LinkSuccessModal size="sm" isOpen={isOpen} onClose={onClose} />
       )}
     </>
   );
