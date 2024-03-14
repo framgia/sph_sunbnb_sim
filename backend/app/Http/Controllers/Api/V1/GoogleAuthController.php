@@ -35,7 +35,6 @@ class GoogleAuthController extends Controller {
         $request->validated();
         $payload = $this->googleClient->verifyIdToken($request->input('id_token'));
         $user = User::instantiateGoogleUser($payload, $request->input('role'));
-        $user->save();
         $userToken = $user->createToken('Personal Access Token');
 
         return response()->json([
