@@ -1,7 +1,7 @@
 "use client";
 import { Button, Input, RadioGroup } from "@nextui-org/react";
 import React, { type FormEvent, useRef, useState } from "react";
-import RadioCard from "./RadioCard";
+import RadioCard from "../../components/RadioCard";
 import HostIcon from "@/app/components/svgs/SignUp/HostIcon";
 import GuestIcon from "@/app/components/svgs/SignUp/GuestIcon";
 import DividerText from "@/app/components/DividerText";
@@ -10,7 +10,10 @@ import GoogleButton from "@/app/components/GoogleButton";
 import { registerUser } from "@/app/utils/helpers/userHelper";
 import { useRouter } from "next/navigation";
 
-const SignUpForm: React.FC = () => {
+interface SignUpFormProps {
+  googleButton: () => void;
+}
+const SignUpForm: React.FC<SignUpFormProps> = ({ googleButton }) => {
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -188,7 +191,7 @@ const SignUpForm: React.FC = () => {
         Register
       </Button>
       <DividerText>or register using</DividerText>
-      <GoogleButton />
+      <GoogleButton onPress={googleButton} />
     </form>
   );
 };

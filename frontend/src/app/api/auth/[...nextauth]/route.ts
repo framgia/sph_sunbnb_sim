@@ -5,10 +5,8 @@ import { loginWithGoogle } from "../../../utils/helpers/userHelper";
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
       idToken: true,
       authorization: {
         params: {
@@ -44,7 +42,7 @@ export const authOptions: NextAuthOptions = {
         console.log("message", message);
         if (message === "success") {
           return "/";
-        } else if (message === "no user") {
+        } else if (message === "no role") {
           return "/role-selection";
         }
       }

@@ -9,9 +9,13 @@ import { loginUser } from "@/app/utils/helpers/userHelper";
 
 interface LoginFormProps {
   onResetPress: () => void;
+  googleButton: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onResetPress }) => {
+const LoginForm: React.FC<LoginFormProps> = ({
+  onResetPress,
+  googleButton
+}) => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -55,18 +59,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onResetPress }) => {
 
   return (
     <form className="flex max-w-[500px] flex-col px-5" onSubmit={handleSubmit}>
-      <div className="flex w-full justify-center">
-        <LogoLargeIcon />
-      </div>
-
-      <div />
       {error !== "" && <div className="text-red-500">{error}</div>}
-      <div className="mt-9 w-full text-center text-xl font-semibold leading-7 text-black">
-        Welcome back!
-      </div>
-      <div className="w-full text-center text-sm leading-5 text-zinc-500">
-        Login to continue booking or listing
-      </div>
       <div className="mt-8 flex max-w-[500px] flex-col px-5">
         <label htmlFor="email"></label>
         <div>
@@ -111,7 +104,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onResetPress }) => {
         Login
       </Button>
       <DividerText>or login using</DividerText>
-      <GoogleButton />
+      <GoogleButton onPress={googleButton} />
       <div className="mt-8 flex justify-between gap-2 whitespace-nowrap px-11 text-sm leading-5">
         <div className="grow text-black">Don’t have an account?</div>
         <Link href="/signup" className="text-primary-600">

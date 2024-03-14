@@ -3,9 +3,9 @@ import LogoLargeIcon from "@/app/components/svgs/LogoLargeIcon";
 import Link from "next/link";
 import SignUpComponent from "./SignUpComponent";
 
-const SignUpPage: React.FC = () => {
+const SignUpPage: React.FC = async () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
+    <main className="flex flex-col items-center justify-between">
       <LogoLargeIcon />
       <div className="my-10 flex flex-col">
         <span className="text-center text-xl font-bold">
