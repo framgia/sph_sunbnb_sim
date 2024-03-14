@@ -50,7 +50,7 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
             loading="lazy"
           />
         </div>
-        <div className="flex grid inline-grid h-full grid-cols-2 items-end gap-4">
+        <div className="grid h-full grid-cols-2 items-end gap-4">
           {images.slice(1).map((imageObj, i) => {
             return (
               <div

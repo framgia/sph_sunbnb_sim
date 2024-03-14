@@ -1,8 +1,7 @@
-"use client";
-import DeleteModal from "@/app/components/DeleteModal";
-import EditListingForm from "@/app/components/EditListingForm";
-import { useDisclosure } from "@nextui-org/react";
+"use server";
 import React from "react";
+import EditListingComponent from "./EditListingComponent";
+import { getAccommodation } from "@/app/utils/helpers/accommodationHelper";
 
 interface EditListingPageProps {
   params: {
@@ -10,12 +9,12 @@ interface EditListingPageProps {
   };
 }
 
-const EditListingPage: React.FC<EditListingPageProps> = ({ params }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const EditListingPage: React.FC<EditListingPageProps> = async ({ params }) => {
+  const listing = await getAccommodation(Number(params.id));
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      <EditListingForm listingid={params.id} onDelete={onOpen} />
-      <DeleteModal isOpen={isOpen} onClose={onClose} size={"full"} />
+      <EditListingComponent listing={listing} />
     </main>
   );
 };
