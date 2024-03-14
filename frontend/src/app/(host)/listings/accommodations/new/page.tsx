@@ -2,7 +2,10 @@
 import ApprovalModal from "@/app/components/ApprovalModal";
 import NewListingForm from "@/app/components/accommodation/NewListingForm";
 import type { Accommodation } from "@/app/interfaces/AccomodationData";
-import { createAccommodation } from "@/app/utils/helpers/listingHelper";
+import {
+  createAccommodation,
+  validateAccommodation
+} from "@/app/utils/helpers/accommodationHelper";
 import { useDisclosure } from "@nextui-org/react";
 import React, { useState } from "react";
 
@@ -34,19 +37,25 @@ const NewListingPage: React.FC = () => {
   const [media, setMedia] = useState<string[]>([]);
 
   async function handleClick(): Promise<void> {
-    setIsLoading(true);
-    const result = await createAccommodation(data, media);
-    setIsLoading(false);
-    if (result.hasError === true) {
+    const validateData = await validateAccommodation(data, media);
+    if (validateData.hasError as boolean) {
       setError({
-        message: result.message,
-        hasError: result.hasError
+        message: validateData.message,
+        hasError: validateData.hasError
       });
     } else {
-      onOpen();
+      setIsLoading(true);
+      const result = await createAccommodation(data, media);
+      setIsLoading(false);
+      if (result.hasError === true) {
+        setError({
+          message: result.message,
+          hasError: result.hasError
+        });
+      } else {
+        onOpen();
+      }
     }
-    console.log(error.hasError);
-    console.log(error.message);
   }
 
   return (
@@ -58,6 +67,7 @@ const NewListingPage: React.FC = () => {
         media={media}
         setMedia={setMedia}
         loading={isLoading}
+        error={error}
       />
       <ApprovalModal isOpen={isOpen} onClose={onClose} size={"full"} />
     </main>

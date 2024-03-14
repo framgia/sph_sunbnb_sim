@@ -10,11 +10,7 @@ export enum NavbarPosition {
   BOTTOM = "bottom"
 }
 
-<<<<<<< HEAD
-export enum AccomodationType {
-=======
 export enum AccommodationType {
->>>>>>> master
   BEACH_HOUSE = "Beach House",
   MANSION = "Mansion",
   TINY_HOUSE = "Tiny House",
@@ -51,13 +47,10 @@ export enum Amenity {
   OUTDOOR_FIREPLACE = "Outdoor Fireplace",
   BBQ_GRILL = "BBQ Grill",
   PETS_ALLOWED = "Pets Allowed"
-<<<<<<< HEAD
-=======
 }
 
 export enum ListingStatus {
   PENDING = "Pending",
   REFUSED = "Refused",
   ACTIVE = "Active"
->>>>>>> master
 }

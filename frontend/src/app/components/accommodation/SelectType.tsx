@@ -1,16 +1,18 @@
 import React from "react";
 import { Select, SelectItem } from "@nextui-org/react";
-import { AccomodationType } from "@/app/utils/enums";
+import { AccommodationType } from "@/app/utils/enums";
 import type { Accommodation } from "@/app/interfaces/AccomodationData";
 
 interface AccommodationMoreDetailsProps {
   data: Accommodation;
   setData: React.Dispatch<React.SetStateAction<Accommodation>>;
+  error: Record<string, string | boolean>;
 }
 
 const SelectType: React.FC<AccommodationMoreDetailsProps> = ({
   data,
-  setData
+  setData,
+  error
 }) => {
   return (
     <div>
@@ -27,7 +29,7 @@ const SelectType: React.FC<AccommodationMoreDetailsProps> = ({
           setData({ ...data, type: e.target.value });
         }}
       >
-        {Object.values(AccomodationType).map((type) => (
+        {Object.values(AccommodationType).map((type) => (
           <SelectItem
             key={type}
             value={type}
@@ -37,6 +39,11 @@ const SelectType: React.FC<AccommodationMoreDetailsProps> = ({
           </SelectItem>
         ))}
       </Select>
+      {error.hasError === true && data.type.trim() === "" && (
+        <div className="mt-2 text-xs text-red-500">
+          Select an accommodation type
+        </div>
+      )}
     </div>
   );
 };

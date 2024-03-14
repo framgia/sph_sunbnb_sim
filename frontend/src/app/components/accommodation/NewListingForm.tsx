@@ -1,12 +1,6 @@
 "use client";
 import React from "react";
-<<<<<<< HEAD
 import { Input, Button, Textarea, Spinner } from "@nextui-org/react";
-=======
-import { Input, Button, Textarea } from "@nextui-org/react";
-import UploadIcon from "../svgs/UploadIcon";
-
->>>>>>> master
 import ListboxComponent from "./ListboxComponent";
 import AccommodationMoreDetails from "./AccommodationMoreDetails";
 import TypeSelect from "./SelectType";
@@ -21,6 +15,7 @@ interface NewListingProps {
   media: string[];
   setMedia: React.Dispatch<React.SetStateAction<string[]>>;
   loading: boolean;
+  error: Record<string, string | boolean>;
 }
 
 const NewListingForm: React.FC<NewListingProps> = ({
@@ -29,14 +24,15 @@ const NewListingForm: React.FC<NewListingProps> = ({
   setData,
   media,
   setMedia,
-  loading
+  loading,
+  error
 }) => {
   return (
     <section className="flex max-w-[826px] flex-col px-5">
       <header className="w-full text-left text-lg font-semibold leading-7 text-black max-md:max-w-full">
         List Accommodation
       </header>
-      <TypeSelect data={data} setData={setData} />
+      <TypeSelect data={data} setData={setData} error={error} />
       <div className="mt-10 w-full text-left text-sm font-semibold leading-7 text-black max-md:max-w-full">
         Address
       </div>
@@ -47,6 +43,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
         className="mt-8"
         placeholder="Province"
         variant="bordered"
+        isInvalid={error.hasError === true && data.province.trim() === ""}
         value={data.province}
         onChange={(e) => {
           setData({ ...data, province: e.target.value });
@@ -59,6 +56,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
           className="mt-8"
           placeholder="Street"
           variant="bordered"
+          isInvalid={error.hasError === true && data.street.trim() === ""}
           value={data.street}
           onChange={(e) => {
             setData({ ...data, street: e.target.value });
@@ -70,6 +68,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
           className="mt-8"
           placeholder="Barangay"
           variant="bordered"
+          isInvalid={error.hasError === true && data.barangay.trim() === ""}
           value={data.barangay}
           onChange={(e) => {
             setData({ ...data, barangay: e.target.value });
@@ -83,6 +82,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
           className="mt-8"
           placeholder="City"
           variant="bordered"
+          isInvalid={error.hasError === true && data.city.trim() === ""}
           value={data.city}
           onChange={(e) => {
             setData({ ...data, city: e.target.value });
@@ -94,6 +94,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
           className="mt-8"
           placeholder="Zip Code"
           variant="bordered"
+          isInvalid={error.hasError === true && data.zip_code < 1}
           value={data.zip_code.toString()}
           onChange={(e) => {
             setData({ ...data, zip_code: parseInt(e.target.value) });
@@ -110,6 +111,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
         className="mt-8"
         placeholder="Title"
         variant="bordered"
+        isInvalid={error.hasError === true && data.name.trim() === ""}
         value={data.name}
         onChange={(e) => {
           setData({ ...data, name: e.target.value });
@@ -120,6 +122,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
         label="Description"
         className="mt-8 "
         variant="bordered"
+        isInvalid={error.hasError === true && data.description.trim() === ""}
         value={data.description}
         onChange={(e) => {
           setData({ ...data, description: e.target.value });
@@ -169,11 +172,17 @@ const NewListingForm: React.FC<NewListingProps> = ({
           className="mt-8"
           startContent="₱"
           variant="bordered"
+          isInvalid={error.hasError === true && data.price < 1}
           value={data.price.toString()}
           onChange={(e) => {
             setData({ ...data, price: parseInt(e.target.value) });
           }}
         />
+      </div>
+      <div>
+        {error.hasError === true && (
+          <div className="mt-5 text-xs text-red-500">{error.message}</div>
+        )}
       </div>
       <div className="mt-9 flex gap-5 self-end whitespace-nowrap text-sm leading-5">
         <Button
