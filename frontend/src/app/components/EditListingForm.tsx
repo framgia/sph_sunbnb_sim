@@ -1,41 +1,41 @@
 "use client";
 import React from "react";
 import { Input, Button, Textarea } from "@nextui-org/react";
-
-import EditSelectType from "./EditSelectType";
 import TrashIcon from "./svgs/TrashIcon";
 import ListboxComponent from "./accommodation/ListboxComponent";
 import AccommodationMoreDetails from "./accommodation/AccommodationMoreDetails";
-import { handleDelete } from "../utils/helpers/listingHelper";
+import type {
+  MediaUpdate,
+  Accommodation
+} from "../interfaces/AccomodationData";
+import SelectType from "./accommodation/SelectType";
+import UploadthingDropzoneUpdate from "./uploadthing/UploadAccommodationUpdate";
+import AccommodationImageUpdate from "./accommodation/ImageCollectionUpdate";
+import { handleDelete } from "../utils/helpers/accommodationHelper";
 
 interface EditListingProps {
   onDelete: () => void; // Function to handle delete action
   listingid: string;
+  data: Accommodation;
+  setData: React.Dispatch<React.SetStateAction<Accommodation>>;
+  media: MediaUpdate;
+  setMedia: React.Dispatch<React.SetStateAction<MediaUpdate>>;
+  error: Record<string, string | boolean>;
+  loading: boolean;
+  onPress: () => void;
 }
 
 const EditListingForm: React.FC<EditListingProps> = ({
   onDelete,
-  listingid
+  listingid,
+  data,
+  setData,
+  media,
+  setMedia,
+  error,
+  loading,
+  onPress
 }) => {
-  const handleBrowseClick = (): void => {
-    // Implement the functionality to invoke file input click
-    document.getElementById("fileInput")?.click();
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    // Implement the functionality to handle file change
-    console.log(e.target.files);
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>): void => {
-    e.preventDefault();
-    // Your handleDrop logic here
-  };
-
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>): void => {
-    // Your handleDragStart logic here
-  };
-
   const deleteResult = async (): Promise<void> => {
     try {
       const result = await handleDelete(Number(listingid));
@@ -50,48 +50,73 @@ const EditListingForm: React.FC<EditListingProps> = ({
       <header className="w-full text-left text-lg font-semibold leading-7 text-black max-md:max-w-full">
         List Accommodation
       </header>
-      <EditSelectType />
+      <SelectType data={data} setData={setData} error={error} />
       <div className="mt-10 w-full text-left text-sm font-semibold leading-7 text-black max-md:max-w-full">
         Address
       </div>
 
       <Input
+        aria-label="Province"
         type="text"
         className="mt-8"
         label="Province"
-        color="success"
         variant="bordered"
+        isInvalid={error.hasError === true && data.province.trim() === ""}
+        value={data.province}
+        onChange={(e) => {
+          setData({ ...data, province: e.target.value });
+        }}
       />
       <div className="mt-5 flex w-full justify-between gap-5 whitespace-nowrap text-base leading-6 text-zinc-500 max-md:max-w-full max-md:flex-wrap">
         <Input
+          aria-label="Street"
           type="text"
           className="mt-8"
           label="Street"
-          color="success"
           variant="bordered"
+          isInvalid={error.hasError === true && data.street.trim() === ""}
+          value={data.street}
+          onChange={(e) => {
+            setData({ ...data, street: e.target.value });
+          }}
         />
         <Input
+          aria-label="Barangay"
           type="text"
           className="mt-8"
           label="Barangay"
-          color="success"
           variant="bordered"
+          isInvalid={error.hasError === true && data.barangay.trim() === ""}
+          value={data.barangay}
+          onChange={(e) => {
+            setData({ ...data, barangay: e.target.value });
+          }}
         />
       </div>
       <div className="mt-5 flex w-full justify-between gap-5 whitespace-nowrap text-base leading-6 text-zinc-500 max-md:max-w-full max-md:flex-wrap">
         <Input
+          aria-label="City"
           type="text"
           className="mt-8"
           label="City"
-          color="success"
           variant="bordered"
+          isInvalid={error.hasError === true && data.city.trim() === ""}
+          value={data.city}
+          onChange={(e) => {
+            setData({ ...data, city: e.target.value });
+          }}
         />
         <Input
-          type="text"
+          aria-label="Zip Code"
+          type="number"
           className="mt-8"
           label="Zip Code"
-          color="success"
           variant="bordered"
+          isInvalid={error.hasError === true && data.zip_code < 1}
+          value={data.zip_code.toString()}
+          onChange={(e) => {
+            setData({ ...data, zip_code: parseInt(e.target.value) });
+          }}
         />
       </div>
       <div className="mt-12 min-h-[3px] w-full bg-zinc-200 max-md:mt-10 max-md:max-w-full"></div>
@@ -99,33 +124,43 @@ const EditListingForm: React.FC<EditListingProps> = ({
         Tell us about your place
       </div>
       <Input
+        aria-label="Name"
         type="text"
         className="mt-8"
         label="Title"
-        color="success"
         variant="bordered"
+        isInvalid={error.hasError === true && data.name.trim() === ""}
+        value={data.name}
+        onChange={(e) => {
+          setData({ ...data, name: e.target.value });
+        }}
       />
       <Textarea
+        aria-label="Description"
         label="Description"
         className="mt-8 "
         variant="bordered"
-        color="success"
+        isInvalid={error.hasError === true && data.description.trim() === ""}
+        value={data.description}
+        onChange={(e) => {
+          setData({ ...data, description: e.target.value });
+        }}
       />
 
       <div className="mb-10 mt-5 rounded-lg border-[1.3px] border-solid border-[color:var(--Blues-Gray2,#B8BBC2)] p-10">
         <div className="grid md:grid-cols-2">
           <div>
-            <div className="mb-5 w-full text-left text-left text-sm font-semibold leading-5 text-black max-md:max-w-full">
+            <div className="mb-5 w-full text-left text-sm font-semibold leading-5 text-black max-md:max-w-full">
               Amenities
             </div>
-            <ListboxComponent />
+            <ListboxComponent data={data} setData={setData} />
           </div>
           <div>
             <div className="w-full text-left text-sm font-semibold leading-5 text-black max-md:max-w-full">
               More Details
             </div>
             <div>
-              <AccommodationMoreDetails />
+              <AccommodationMoreDetails data={data} setData={setData} />
             </div>
           </div>
         </div>
@@ -135,51 +170,36 @@ const EditListingForm: React.FC<EditListingProps> = ({
       <div className="mb-10 mt-10 w-full text-left text-lg font-semibold leading-5 text-black max-md:max-w-full">
         Upload photos of your place
       </div>
-
-      {/* Upload photos section should be implemented here */}
-
-      <div
-        className="flex flex-col items-center rounded-2xl border-2 border-dashed border-[#71717A] bg-[#FFF3EC] px-72 py-40 text-3xl text-[#000] max-md:px-5"
-        onDragOver={(e) => {
-          e.preventDefault();
-        }}
-        onDrop={handleDrop}
-      >
-        <div
-          className="aspect-square w-[53px]"
-          draggable
-          onDragStart={handleDragStart}
-        >
-          {/* Add UploadIcon component here */}
+      <div className="grid rounded-3xl outline outline-1 outline-neutral-300 md:grid-cols-2">
+        <div className="p-8">
+          <UploadthingDropzoneUpdate media={media} setMedia={setMedia} />
+          <div className="mt-3 text-center text-xs">Maximum of 5 photos</div>
         </div>
-        <h2 className="mt-5 text-center">Drag your photos here</h2>
-        <p className="mt-4">or</p>
-        <button
-          onClick={handleBrowseClick}
-          className="mt-4 inline-block cursor-pointer rounded-xl bg-primary-600 px-10 py-4 text-xl leading-4 text-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-        >
-          Browse
-        </button>
-        <input
-          type="file"
-          id="fileInput"
-          onChange={handleFileChange}
-          className="hidden"
-          multiple
-        />
+        <div className="rounded-3xl bg-primary-50 outline outline-1 outline-neutral-300">
+          <AccommodationImageUpdate media={media} setMedia={setMedia} />
+        </div>
       </div>
 
       <div className="mw-full mt-10 text-left text-sm font-semibold leading-5 text-black max-md:max-w-full ">
         Set your price
       </div>
       <Input
-        type="text"
-        inputMode="numeric"
+        aria-label="Price"
+        type="number"
         className="mt-8"
-        placeholder="₱"
+        startContent="₱"
         variant="bordered"
+        isInvalid={error.hasError === true && data.price < 1}
+        value={data.price.toString()}
+        onChange={(e) => {
+          setData({ ...data, price: parseInt(e.target.value) });
+        }}
       />
-
+      <div>
+        {error.hasError === true && (
+          <div className="mt-5 text-xs text-red-500">{error.message}</div>
+        )}
+      </div>
       <div className="rounded-lg">
         <div className="mt-9  flex gap-5 self-end whitespace-nowrap text-sm leading-5">
           <Button
@@ -187,6 +207,7 @@ const EditListingForm: React.FC<EditListingProps> = ({
             size="md"
             onPress={onDelete}
             onClick={deleteResult}
+            isDisabled={loading}
           >
             <TrashIcon />
             Delete
@@ -195,13 +216,16 @@ const EditListingForm: React.FC<EditListingProps> = ({
           <Button
             className="justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5"
             size="md"
+            isDisabled={loading}
           >
             Cancel
           </Button>
           <Button
             className="justify-center rounded-lg bg-primary-600 px-7 py-2.5 font-bold text-white drop-shadow-sm max-md:px-5 "
             size="md"
-            onPress={() => {}}
+            onPress={onPress}
+            isDisabled={loading}
+            isLoading={loading}
           >
             Save
           </Button>
