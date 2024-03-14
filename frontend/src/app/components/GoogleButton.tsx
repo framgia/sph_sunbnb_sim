@@ -8,8 +8,8 @@ const GoogleButton: React.FC = () => {
     <Button
       className="w-full"
       variant="bordered"
-      onPress={() => {
-        signIn("google");
+      onPress={async () => {
+        await signIn("google");
       }}
     >
       <span className="flex flex-row justify-center font-medium">

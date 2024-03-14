@@ -113,3 +113,29 @@ export async function getUser(
   }
   return null;
 }
+
+export async function loginWithGoogle(
+  idToken: string
+): Promise<{ message: string }> {
+  const response = await fetch(`${config.backendUrl}/login/google`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify({ id_token: idToken })
+  });
+  const resData = await response.json();
+  if (resData.success as boolean) {
+    if (resData.user.role === null) {
+      return { message: "no role" };
+    } else {
+      cookies().set("jwt", resData.token as string, {
+        httpOnly: true,
+        expires: new Date(resData.expires_in as string)
+      });
+      return { message: "success" };
+    }
+  }
+  return { message: "login failed" };
+}
