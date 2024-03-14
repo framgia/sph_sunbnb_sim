@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import config from "../../config/config";
 import type { UserRegisterType, UserSessionType } from "../../interfaces/types";
 import { cookies } from "next/headers";
+import { signIn } from "next-auth/react";
 
 export async function registerUser(
   user: UserRegisterType
@@ -114,6 +115,11 @@ export async function getUser(
   return null;
 }
 
+export async function setRoleBeforeGoogle(role: string) {
+  cookies().set("userRole", role, { expires: new Date(Date.now() + 60) });
+  signIn("google");
+}
+
 export async function loginWithGoogle(
   idToken: string
 ): Promise<{ message: string }> {
@@ -126,6 +132,7 @@ export async function loginWithGoogle(
     body: JSON.stringify({ id_token: idToken })
   });
   const resData = await response.json();
+  console.log("data received", resData);
   if (resData.success as boolean) {
     if (resData.user.role === null) {
       return { message: "no role" };
@@ -138,4 +145,28 @@ export async function loginWithGoogle(
     }
   }
   return { message: "login failed" };
+}
+
+export async function registerWithGoogle(
+  idToken: string,
+  role: string
+): Promise<{ message: string }> {
+  const response = await fetch(`${config.backendUrl}/register/google`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify({ id_token: idToken, role: role })
+  });
+  const resData = await response.json();
+  console.log("data received", resData);
+  if (resData.success as boolean) {
+    cookies().set("jwt", resData.token as string, {
+      httpOnly: true,
+      expires: new Date(resData.expires_in as string)
+    });
+    return { message: "success" };
+  }
+  return { message: "register failed" };
 }
