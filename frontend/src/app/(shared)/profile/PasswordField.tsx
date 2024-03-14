@@ -27,6 +27,9 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
       if (result.message === "success") {
         onCancel();
         setEditing(false);
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmNewPassword("");
       } else {
         console.error("Update failed:", result.message);
       }
@@ -81,6 +84,9 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
               onPress={() => {
                 onCancel();
                 setEditing(false);
+                setCurrentPassword("");
+                setNewPassword("");
+                setConfirmNewPassword("");
               }}
             >
               Cancel
@@ -89,10 +95,6 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
               size="sm"
               variant="solid"
               className="bg-primary-600 text-white"
-              // onPress={() => {
-              //   onCancel();
-              //   setEditing(false);
-              // }}
               onPress={handleUpdate}
             >
               Update

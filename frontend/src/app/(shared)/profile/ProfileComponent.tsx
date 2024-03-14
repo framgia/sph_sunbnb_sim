@@ -15,6 +15,7 @@ const ProfileComponent: React.FC<ProfileComponentsProps> = ({ user }) => {
   const [LegalActive, setLegalActive] = useState(true);
   const [EmailActive, setEmailActive] = useState(true);
   const [PasswordActive, setPasswordActive] = useState(true);
+  const isProvider: boolean = user !== null && user.provider === null;
 
   //  functions for handling dynamic changing of colors
   function ResetAll(): void {
@@ -83,17 +84,19 @@ const ProfileComponent: React.FC<ProfileComponentsProps> = ({ user }) => {
               onEdit={onFocusEmail}
               onCancel={ResetAll}
               enabled={EmailActive}
+              showUpdateButton={isProvider}
             />
           </div>
-          {/*  Passwordfield should be hidden if user is not using OAuth   */}
-          <div className="my-5 w-full">
-            <PasswordField
-              user={user}
-              onEdit={onFocusPassword}
-              onCancel={ResetAll}
-              enabled={PasswordActive}
-            />
-          </div>
+          {isProvider && (
+            <div className="my-5 w-full">
+              <PasswordField
+                user={user}
+                onEdit={onFocusPassword}
+                onCancel={ResetAll}
+                enabled={PasswordActive}
+              />
+            </div>
+          )}
         </>
       )}
     </main>

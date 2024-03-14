@@ -4,14 +4,12 @@ import { updateUser } from "@/app/utils/helpers/userHelper";
 import { Button, Divider, Input } from "@nextui-org/react";
 import React, { useState } from "react";
 
-const EmailField: React.FC<ProfileFieldProps> = ({
-  user,
-  onEdit,
-  onCancel,
-  enabled
-}) => {
+const EmailField: React.FC<
+  ProfileFieldProps & { showUpdateButton: boolean }
+> = ({ user, onEdit, onCancel, enabled, showUpdateButton }) => {
   const [isEditing, setEditing] = useState(false);
-  // const { email } = user || { email: "" };
+  const [isEmailInvalid, setEmailInvalid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [email, setEmail] = useState(
     user?.email !== undefined ? user.email : ""
   );
@@ -27,7 +25,8 @@ const EmailField: React.FC<ProfileFieldProps> = ({
         onCancel();
         setEditing(false);
       } else {
-        console.error("Update failed:", result.message);
+        setErrorMessage(result.message);
+        setEmailInvalid(true);
       }
     } catch (error) {
       console.error("Unexpected error during update:", error);
@@ -45,13 +44,14 @@ const EmailField: React.FC<ProfileFieldProps> = ({
           <div className="flex w-2/4 flex-row">
             <Input
               className="mr-5 text-zinc-500"
-              // defaultValue={email}
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
               variant="bordered"
               placeholder="Email"
+              isInvalid={isEmailInvalid}
+              errorMessage={errorMessage}
             />
           </div>
           <div className="my-5 flex flex-row">
@@ -61,6 +61,9 @@ const EmailField: React.FC<ProfileFieldProps> = ({
               color="default"
               className="mr-2 font-semibold"
               onPress={() => {
+                setEmail(user?.email);
+                setEmailInvalid(false);
+                setErrorMessage("");
                 onCancel();
                 setEditing(false);
               }}
@@ -98,21 +101,23 @@ const EmailField: React.FC<ProfileFieldProps> = ({
               {user?.email}
             </span>
           </div>
-          <Button
-            variant={enabled ? "flat" : "bordered"}
-            size="sm"
-            color="default"
-            className={
-              "font-semibold " + (enabled ? "" : "text-foreground-300")
-            }
-            onPress={() => {
-              onEdit();
-              setEditing(true);
-            }}
-            disabled={!enabled}
-          >
-            Update
-          </Button>
+          {showUpdateButton && (
+            <Button
+              variant={enabled ? "flat" : "bordered"}
+              size="sm"
+              color="default"
+              className={
+                "font-semibold " + (enabled ? "" : "text-foreground-300")
+              }
+              onPress={() => {
+                onEdit();
+                setEditing(true);
+              }}
+              disabled={!enabled}
+            >
+              Update
+            </Button>
+          )}
         </div>
       )}
       <Divider />

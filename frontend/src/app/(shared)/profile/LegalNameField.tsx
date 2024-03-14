@@ -11,14 +11,32 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
   enabled
 }) => {
   const [isEditing, setEditing] = useState(false);
-  // const { first_name, last_name } = user || { first_name: "", last_name: "" };
-
+  const [originalFirstName, setOriginalFirstName] = useState("");
+  const [originalLastName, setOriginalLastName] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
   const [firstName, setFirstName] = useState(
     user?.first_name !== undefined ? user.first_name : ""
   );
   const [lastName, setLastName] = useState(
     user?.last_name !== undefined ? user.last_name : ""
   );
+
+  const handleEdit = (): void => {
+    setOriginalFirstName(firstName);
+    setOriginalLastName(lastName);
+    onEdit();
+    setEditing(true);
+  };
+
+  const handleCancel = (): void => {
+    setFirstName(originalFirstName);
+    setLastName(originalLastName);
+    onCancel();
+    setEditing(false);
+    setFirstNameError("");
+    setLastNameError("");
+  };
 
   const handleUpdate = async (): Promise<void> => {
     try {
@@ -34,7 +52,14 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
         onCancel();
         setEditing(false);
       } else {
-        console.error("Update failed:", result.message);
+        setFirstNameError("");
+        setLastNameError("");
+
+        if (result.message === "The first name field is required.") {
+          setFirstNameError(result.message);
+        } else if (result.message === "The last name field is required.") {
+          setLastNameError(result.message);
+        }
       }
     } catch (error) {
       console.error("Unexpected error during update:", error);
@@ -54,23 +79,25 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
             <div className="flex w-2/4 flex-row">
               <Input
                 className="mr-5 text-zinc-500"
-                // defaultValue={firstName}
                 value={firstName}
                 onChange={(e) => {
                   setFirstName(e.target.value);
                 }}
                 variant="bordered"
                 placeholder="First Name"
+                isInvalid={firstNameError.length > 0}
+                errorMessage={firstNameError}
               />
               <Input
                 variant="bordered"
                 className="text-zinc-500"
-                // defaultValue={lastName}
                 value={lastName}
                 onChange={(e) => {
                   setLastName(e.target.value);
                 }}
                 placeholder="Last Name"
+                isInvalid={lastNameError.length > 0}
+                errorMessage={lastNameError}
               />
             </div>
             <div className="my-5 flex flex-row">
@@ -79,10 +106,7 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
                 variant="flat"
                 color="default"
                 className="mr-2 font-semibold"
-                onPress={() => {
-                  onCancel();
-                  setEditing(false);
-                }}
+                onPress={handleCancel}
               >
                 Cancel
               </Button>
@@ -90,10 +114,6 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
                 size="sm"
                 variant="solid"
                 className="bg-primary-600 text-white"
-                // onPress={() => {
-                //   onCancel();
-                //   setEditing(false);
-                // }}
                 onPress={handleUpdate}
               >
                 Save
@@ -129,10 +149,7 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
             className={
               "font-semibold " + (enabled ? "" : "text-foreground-300")
             }
-            onPress={() => {
-              onEdit();
-              setEditing(true);
-            }}
+            onPress={handleEdit}
             disabled={!enabled}
           >
             Edit
