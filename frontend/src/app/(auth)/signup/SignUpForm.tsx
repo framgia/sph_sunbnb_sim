@@ -98,7 +98,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ googleButton }) => {
       ) : (
         ""
       )}
-      <div className="mb-2 mb-2 flex flex-row">
+      <div className="mb-2 flex flex-row">
         <Input
           variant="bordered"
           className="mr-2"

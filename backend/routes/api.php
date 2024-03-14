@@ -39,4 +39,5 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
 
     Route::apiResource('user', UserController::class);
+    Route::put('/user/change-password/{userId}', [UserController::class, 'updatePassword']);
 });

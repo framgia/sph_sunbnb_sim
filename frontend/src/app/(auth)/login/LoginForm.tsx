@@ -75,7 +75,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         </div>
       </div>
 
-      <div className="mt-8 flex max-w-[500px] flex-col px-5">
+      <div className="mt-2 flex max-w-[500px] flex-col">
         <label htmlFor="email"></label>
         <div>
           <Input

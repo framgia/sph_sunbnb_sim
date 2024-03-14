@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\PasswordUpdateRequest;
 use App\Http\Requests\V1\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Response;
@@ -43,6 +44,17 @@ class UserController extends Controller {
             'success' => true,
             'message' => 'User information updated successfully',
             'user' => $user,
+        ], Response::HTTP_OK);
+    }
+
+    public function updatePassword(PasswordUpdateRequest $request) {
+        $user = Auth::user();
+
+        $user->updatePassword($request);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Password updated successfully',
         ], Response::HTTP_OK);
     }
 }

@@ -8,41 +8,56 @@ import {
   getDate,
   getDateRange,
   getFirstDayOfMonth,
-  isSameDay
-} from "@/app/utils/helpers/calendar";
-import { DAYS_IN_CALENDAR_VIEW, DAYS_OF_WEEK } from "@/app/utils/constants";
+  isSameDay,
+  DAYS_IN_CALENDAR_VIEW,
+  DAYS_OF_WEEK
+} from "@/app/utils/calendar";
 import { type CalendarProps } from "@/app/interfaces/CalendarProps";
 
-const Calendar: React.FC<CalendarProps> = ({ selectedDates, onSelect }) => {
+const Calendar: React.FC<CalendarProps> = ({
+  selectedDates,
+  blockedDates,
+  onSelect
+}) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const startDate = useMemo(() => selectedDates[0], [selectedDates]);
+  const [startDate] = selectedDates;
   const firstDayOfMonth = useMemo(
     () => getFirstDayOfMonth(currentDate),
     [currentDate]
   );
 
-  const handleNextMonth = useCallback((): void => {
+  const handleNextMonth = useCallback(() => {
     setCurrentDate(addMonths(currentDate, 1));
   }, [currentDate]);
 
-  const handlePrevMonth = useCallback((): void => {
+  const handlePrevMonth = useCallback(() => {
     setCurrentDate(subMonths(currentDate, 1));
   }, [currentDate]);
 
+  const isDateBlocked = useCallback(
+    (date: Date): boolean => {
+      return blockedDates.some((blockedDate) => isSameDay(date, blockedDate));
+    },
+    [blockedDates]
+  );
+
   const handleDateClick = useCallback(
     (date: Date): void => {
+      const dateMonth = date.getMonth();
+      const dateYear = date.getFullYear();
+      const currentMonth = currentDate.getMonth();
+      const currentYear = currentDate.getFullYear();
+
       if (
-        (!(date.getMonth() === 11 && currentDate.getMonth() === 0) &&
-          date.getMonth() > currentDate.getMonth()) ||
-        date.getFullYear() > currentDate.getFullYear()
+        (!(dateMonth === 11 && currentMonth === 0) &&
+          dateMonth > currentMonth) ||
+        dateYear > currentYear
       ) {
         handleNextMonth();
-      } else if (
-        date.getMonth() < currentDate.getMonth() ||
-        date.getFullYear() < currentDate.getFullYear()
-      ) {
+      } else if (dateMonth < currentMonth || dateYear < currentYear) {
         handlePrevMonth();
       }
+
       if (
         selectedDates.length > 1 ||
         startDate === undefined ||
@@ -51,16 +66,21 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDates, onSelect }) => {
       ) {
         onSelect([date]);
       } else {
-        onSelect(getDateRange(startDate, date));
+        const dateRange = getDateRange(startDate, date);
+        const isAnyDateBlocked = dateRange.some(isDateBlocked);
+
+        if (!isAnyDateBlocked) onSelect(dateRange);
+        else onSelect([date]);
       }
     },
     [
       currentDate,
-      selectedDates.length,
       startDate,
+      selectedDates,
+      onSelect,
       handleNextMonth,
       handlePrevMonth,
-      onSelect
+      isDateBlocked
     ]
   );
 
@@ -100,7 +120,10 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDates, onSelect }) => {
               date={date}
               isCurrentMonth={isCurrentMonth}
               isSelectedDate={isSelectedDate}
-              handleDateClick={handleDateClick}
+              isBlockedDate={blockedDates.some((blockedDate) =>
+                isSameDay(blockedDate, date)
+              )}
+              onDateClick={handleDateClick}
             />
           );
         })}
