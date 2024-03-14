@@ -1,63 +1,50 @@
 import React from "react";
 import { Listbox, ListboxItem } from "@nextui-org/react";
+import type { Accommodation } from "@/app/interfaces/AccomodationData";
+import { Amenity } from "@/app/utils/enums";
 
-const ListboxComponent: React.FC = () => {
-  const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>(
-    new Set(["kitchen"])
-  );
+interface ListboxProps {
+  data: Accommodation;
+  setData: React.Dispatch<React.SetStateAction<Accommodation>>;
+}
 
-  const options = new Map();
-  options.set("kitchen", "Kitchen");
-  options.set("wifi", "Wifi");
-  options.set("tv", "TV");
-  options.set("cable", "Cable");
-  options.set("crib", "Crib");
-  options.set("indoor fireplace", "Indoor Fireplace");
-  options.set("air conditioning", "Air Conditioning");
-  options.set("fan", "Fan");
-  options.set("shower", "Shower");
-  options.set("heater", "Heater");
-  options.set("bathtub", "Bathtub");
-  options.set("iron", "Iron");
-  options.set("washer", "Washer");
-  options.set("dryer", "Dryer");
-  options.set("parking", "Parking");
-  options.set("gym", "Gym");
-  options.set("backyard", "Backyard");
-  options.set("beach access", "Beach Access");
-  options.set("balcony", "Balcony");
-  options.set("pool", "Pool");
-  options.set("jacuzzi", "Jacuzzi");
-  options.set("outdoor fireplace", "Outdoor Fireplace");
-  options.set("bbq grill", "BBQ Grill");
-  options.set("pets allowed", "Pets Allowed");
+const ListboxComponent: React.FC<ListboxProps> = ({ data, setData}) => {
+  const options = new Map<Amenity, string>();
+  Object.values(Amenity).forEach((amenity) => {
+    options.set(amenity, amenity);
+  });
 
-  const selectedValues = Array.from(selectedKeys)
-    .map((key) => options.get(key))
+  const selectedValues = Array.from(data.amenities)
+    .map((key) => key.toString())
     .join(", ");
 
   return (
-    <div className="pr-0 md:pr-10">
-      <div className="w-full rounded-small border-small border-default-200 px-1 py-2 dark:border-default-100">
-        <Listbox
-          className="h-72 overflow-auto rounded-small px-1 py-2 "
-          aria-label="Multiple selection example"
-          variant="flat"
-          disallowEmptySelection
-          selectionMode="multiple"
-          selectedKeys={selectedKeys}
-          onSelectionChange={(keys) => {
-            setSelectedKeys(keys as Set<string>);
-          }}
-        >
-          {Array.from(options).map(([key, value]) => (
-            <ListboxItem key={key}>{value}</ListboxItem>
-          ))}
-        </Listbox>
+    <>
+      <div className="pr-0 md:pr-10">
+        <div className="w-full rounded-small border-small border-default-200 px-1 py-2 dark:border-default-100">
+          <Listbox
+            className="h-72 overflow-auto rounded-small px-1 py-2 "
+            aria-label="Multiple selection example"
+            variant="flat"
+            disallowEmptySelection
+            selectionMode="multiple"
+            selectedKeys={data.amenities}
+            onSelectionChange={(keys) => {
+              setData((prevData) => ({
+                ...prevData,
+                amenities: Array.from(keys) as Amenity[]
+              }));
+            }}
+          >
+            {Array.from(options).map(([key, value]) => (
+              <ListboxItem key={key}>{value}</ListboxItem>
+            ))}
+          </Listbox>
+        </div>
+        <p className="mt-1 text-sm font-bold">Your Amenities:</p>
+        <p className="mb-10 text-xs text-default-500">{selectedValues}</p>
       </div>
-      <p className="mt-1 text-sm font-bold">Your Amenities:</p>
-      <p className="mb-10 text-xs text-default-500">{selectedValues}</p>
-    </div>
+    </>
   );
 };
 
