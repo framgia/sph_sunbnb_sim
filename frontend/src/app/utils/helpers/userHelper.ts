@@ -145,7 +145,6 @@ export async function updateUser(
         message: "success"
       };
     } else {
-      console.log("message update user:", resData);
       return {
         message: resData.message,
         errors: resData.errors
@@ -184,7 +183,6 @@ export async function updatePassword(
         message: "success"
       };
     } else {
-      console.log("message:", resData);
       return {
         message: resData.message,
         errors: resData.errors

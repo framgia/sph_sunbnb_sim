@@ -51,7 +51,6 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
       const result = await updatePassword(user?.id, passwordUpdate);
 
       if (result.message !== "success") {
-        console.error("Update failed:", result.message);
         if (result.message === "Current password is incorrect.") {
           setPasswordError(result.message);
         } else if (result.errors !== undefined) {
@@ -116,6 +115,7 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
               className="mb-5 text-zinc-500"
               variant="bordered"
               placeholder="Current Password"
+              type="password"
               value={currentPassword}
               isInvalid={passwordError !== ""}
               errorMessage={passwordError}
@@ -125,6 +125,7 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
               className="mb-5 text-zinc-500"
               variant="bordered"
               placeholder="New Password"
+              type="password"
               isInvalid={newPasswordError !== ""}
               errorMessage={newPasswordError}
               value={newPassword}
@@ -134,6 +135,7 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
               className="text-zinc-500"
               variant="bordered"
               placeholder="Confirm New Password"
+              type="password"
               isInvalid={confirmNewPasswordError !== ""}
               errorMessage={confirmNewPasswordError}
               value={confirmNewPassword}
