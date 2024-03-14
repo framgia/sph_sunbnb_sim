@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
-import { NextApiRequest, NextApiResponse } from "next/types";
-import { nextAuthOptions } from "./nextAuthoptions";
+import type { NextApiRequest, NextApiResponse } from "next/types";
+import { nextAuthOptions } from "./nextAuthOptions";
 
 function auth(
   req: NextApiRequest,

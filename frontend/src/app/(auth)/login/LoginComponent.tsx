@@ -46,8 +46,8 @@ const LoginComponent: React.FC = () => {
         onResetPress={() => {
           onOpen();
         }}
-        googleButton={() => {
-          signIn("google");
+        googleButton={async () => {
+          await signIn("google");
         }}
       />
       {!isValid ? (

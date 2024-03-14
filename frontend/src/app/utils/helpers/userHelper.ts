@@ -4,7 +4,6 @@ import { jwtDecode } from "jwt-decode";
 import config from "../../config/config";
 import type { UserRegisterType, UserSessionType } from "../../interfaces/types";
 import { cookies } from "next/headers";
-import { signIn } from "next-auth/react";
 
 export async function registerUser(
   user: UserRegisterType
@@ -115,11 +114,6 @@ export async function getUser(
   return null;
 }
 
-export async function setRoleBeforeGoogle(role: string) {
-  cookies().set("userRole", role, { expires: new Date(Date.now() + 60) });
-  signIn("google");
-}
-
 export async function loginWithGoogle(
   idToken: string
 ): Promise<{ message: string }> {
@@ -149,7 +143,7 @@ export async function loginWithGoogle(
 
 export async function registerWithGoogle(
   idToken: string,
-  role: string
+  userRole: string
 ): Promise<{ message: string }> {
   const response = await fetch(`${config.backendUrl}/register/google`, {
     method: "POST",
@@ -157,14 +151,16 @@ export async function registerWithGoogle(
       "Content-Type": "application/json",
       Accept: "application/json"
     },
-    body: JSON.stringify({ id_token: idToken, role: role })
+    body: JSON.stringify({ id_token: idToken, role: userRole })
   });
   const resData = await response.json();
   console.log("data received", resData);
   if (resData.success as boolean) {
-    cookies().set("jwt", resData.token as string, {
+    const token = resData.token as string;
+    const expireDate = new Date(resData.expires_in as string);
+    cookies().set("jwt", token, {
       httpOnly: true,
-      expires: new Date(resData.expires_in as string)
+      expires: expireDate
     });
     return { message: "success" };
   }

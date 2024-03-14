@@ -1,10 +1,10 @@
-import { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import {
   loginWithGoogle,
   registerWithGoogle
 } from "../../../utils/helpers/userHelper";
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { cookies } from "next/headers";
 
 export function nextAuthOptions(
@@ -39,17 +39,24 @@ export function nextAuthOptions(
           if (role !== undefined && role !== "") {
             result = await registerWithGoogle(account.id_token, role);
             if (result.message === "success") {
+              cookies().delete("userRole");
               return "/";
+            } else {
+              result = await loginWithGoogle(account.id_token);
+              console.log("message", result.message);
+              if (result.message === "success") {
+                cookies().delete("userRole");
+                return "/";
+              }
             }
           } else {
             result = await loginWithGoogle(account.id_token);
             console.log("message", result.message);
             if (result.message === "success") {
+              cookies().delete("userRole");
               return "/";
-            } else if (result.message === "no role") {
-              return "/role-selection";
             } else {
-              return "/signup";
+              return "/role-selection";
             }
           }
         }

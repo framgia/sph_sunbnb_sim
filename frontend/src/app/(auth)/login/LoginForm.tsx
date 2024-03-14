@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
-import LogoLargeIcon from "../../components/svgs/LogoLargeIcon";
 import GoogleButton from "../../components/GoogleButton";
 import DividerText from "../../components/DividerText";
 import Link from "next/link";

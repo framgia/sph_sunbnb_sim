@@ -3,18 +3,20 @@ import RadioCard from "@/app/components/RadioCard";
 import GuestIcon from "@/app/components/svgs/SignUp/GuestIcon";
 import HostIcon from "@/app/components/svgs/SignUp/HostIcon";
 import { Button, RadioGroup } from "@nextui-org/react";
-import React, { FormEvent, useState } from "react";
+import React, { type FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 
 const RoleSelectForm: React.FC = () => {
   const [roleSelected, setRole] = useState("host");
   const [isLoading, setLoading] = useState(false);
 
-  function handleRoleSumbit(event: FormEvent) {
+  async function handleRoleSumbit(event: FormEvent): Promise<void> {
     event.preventDefault();
     setLoading(true);
-    document.cookie = `userRole=${roleSelected};path=/;expires=${new Date(Date.now() + 36000)}`;
-    signIn("google");
+    const expireTime = new Date();
+    expireTime.setMinutes(expireTime.getMinutes() + 20);
+    document.cookie = `userRole=${roleSelected};path=/;expires=${expireTime.toString()}`;
+    await signIn("google");
   }
   return (
     <form onSubmit={handleRoleSumbit}>
