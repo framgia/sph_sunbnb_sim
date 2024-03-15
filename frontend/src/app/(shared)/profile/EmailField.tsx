@@ -13,8 +13,10 @@ const EmailField: React.FC<
   const [email, setEmail] = useState(
     user?.email !== undefined ? user.email : ""
   );
+  const [isLoading, setLoading] = useState(false);
 
   const handleUpdate = async (): Promise<void> => {
+    setLoading(true);
     try {
       const updatedUser = { ...user, email };
 
@@ -31,6 +33,7 @@ const EmailField: React.FC<
     } catch (error) {
       console.error("Unexpected error during update:", error);
     }
+    setLoading(false);
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -79,6 +82,7 @@ const EmailField: React.FC<
               variant="solid"
               className="bg-primary-600 text-white"
               onPress={handleUpdate}
+              isDisabled={isLoading}
             >
               Update
             </Button>

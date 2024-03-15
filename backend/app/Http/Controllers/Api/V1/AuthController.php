@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\LoginRequest;
 use App\Http\Requests\V1\RegistrationRequest;
-use App\Http\Resources\V1\UserResource;
 use App\Models\User;
 use Illuminate\Http\Response;
 
@@ -19,7 +18,6 @@ class AuthController extends Controller {
             'success' => true,
             'token' => $userToken->accessToken,
             'expires_in' => $userToken->token->expires_at,
-            'user' => new UserResource($user),
         ], Response::HTTP_OK);
     }
 
@@ -32,7 +30,6 @@ class AuthController extends Controller {
             'success' => true,
             'token' => $userToken->accessToken,
             'expires_in' => $userToken->token->expires_at,
-            'user' => new UserResource($user),
         ], Response::HTTP_CREATED);
     }
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\GoogleLoginRequest;
 use App\Http\Requests\V1\GoogleRegistrationRequest;
-use App\Http\Resources\V1\UserResource;
 use App\Models\User;
 use Google_Client;
 use Illuminate\Http\Response;
@@ -27,7 +26,6 @@ class GoogleAuthController extends Controller {
             'success' => true,
             'token' => $userToken->accessToken,
             'expires_in' => $userToken->token->expires_at,
-            'user' => new UserResource($user),
         ], Response::HTTP_OK);
     }
 
@@ -41,7 +39,6 @@ class GoogleAuthController extends Controller {
             'success' => true,
             'token' => $userToken->accessToken,
             'expires_in' => $userToken->token->expires_at,
-            'user' => new UserResource($user),
         ], Response::HTTP_CREATED);
     }
 }
