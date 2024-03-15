@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import LegalNameField from "./LegalNameField";
 import EmailField from "./EmailField";
 import PasswordField from "./PasswordField";
-import type { UserSessionType } from "@/app/interfaces/types";
+import { UserDetailsType } from "@/app/interfaces/types";
 
 interface ProfileComponentsProps {
-  user: UserSessionType | null;
+  user: UserDetailsType | null;
 }
 
 const ProfileComponent: React.FC<ProfileComponentsProps> = ({ user }) => {
