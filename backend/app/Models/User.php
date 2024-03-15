@@ -92,6 +92,7 @@ class User extends Authenticatable {
     }
 
     public static function authenticateGoogleUser($payload): self {
+        abort_unless($payload && isset($payload['sub']), 400, 'Invalid Google payload.');
         $user = self::where('provider_id', $payload['sub'])->first();
         abort_unless($user, 401, 'User not found.');
 

@@ -3,94 +3,103 @@ import React, { useState } from "react";
 import LegalNameField from "./LegalNameField";
 import EmailField from "./EmailField";
 import PasswordField from "./PasswordField";
+import type { UserSessionType } from "@/app/interfaces/types";
 
-const ProfileComponent: React.FC = () => {
-    const [PersonalSectionActive, setPersonalActive] = useState(true);
-    const [LoginSectionActive, setLoginActive] = useState(true);
-    const [LegalActive, setLegalActive] = useState(true);
-    const [EmailActive, setEmailActive] = useState(true);
-    const [PasswordActive, setPasswordActive] = useState(true);
+interface ProfileComponentsProps {
+  user: UserSessionType | null;
+}
 
-    //  functions for handling dynamic changing of colors
-    function ResetAll(): void {
-        setPersonalActive(true);
-        setLoginActive(true);
-        setLegalActive(true);
-        setEmailActive(true);
-        setPasswordActive(true);
-    }
+const ProfileComponent: React.FC<ProfileComponentsProps> = ({ user }) => {
+  const [PersonalSectionActive, setPersonalActive] = useState(true);
+  const [LoginSectionActive, setLoginActive] = useState(true);
+  const [LegalActive, setLegalActive] = useState(true);
+  const [EmailActive, setEmailActive] = useState(true);
+  const [PasswordActive, setPasswordActive] = useState(true);
+  const isProvider: boolean = user !== null && user.provider === null;
 
-    function onFocusLegal(): void {
-        setPersonalActive(true);
-        setLoginActive(false);
-        setLegalActive(true);
-        setEmailActive(false);
-        setPasswordActive(false);
-    }
+  function ResetAll(): void {
+    setPersonalActive(true);
+    setLoginActive(true);
+    setLegalActive(true);
+    setEmailActive(true);
+    setPasswordActive(true);
+  }
 
-    function onFocusEmail(): void {
-        setPersonalActive(false);
-        setLoginActive(true);
-        setLegalActive(false);
-        setEmailActive(true);
-        setPasswordActive(false);
-    }
+  function onFocusLegal(): void {
+    setPersonalActive(true);
+    setLoginActive(false);
+    setLegalActive(true);
+    setEmailActive(false);
+    setPasswordActive(false);
+  }
 
-    function onFocusPassword(): void {
-        setPersonalActive(false);
-        setLoginActive(true);
-        setLegalActive(false);
-        setEmailActive(false);
-        setPasswordActive(true);
-    }
-    return (
-        <main className="flex min-h-screen flex-col">
-            <span
-                className={
-                    "flex w-full text-lg font-semibold" +
-                    (PersonalSectionActive ? " " : " text-foreground-300")
-                }
-            >
-                Personal Information
-            </span>
+  function onFocusEmail(): void {
+    setPersonalActive(false);
+    setLoginActive(true);
+    setLegalActive(false);
+    setEmailActive(true);
+    setPasswordActive(false);
+  }
+
+  function onFocusPassword(): void {
+    setPersonalActive(false);
+    setLoginActive(true);
+    setLegalActive(false);
+    setEmailActive(false);
+    setPasswordActive(true);
+  }
+
+  return (
+    <main className="flex flex-col">
+      {user !== null && (
+        <>
+          <span
+            className={
+              "flex w-full text-lg font-semibold" +
+              (PersonalSectionActive ? " " : " text-foreground-300")
+            }
+          >
+            Personal Information
+          </span>
+          <div className="my-5 w-full">
+            <LegalNameField
+              user={user}
+              onEdit={onFocusLegal}
+              onCancel={ResetAll}
+              enabled={LegalActive}
+            />
+          </div>
+          <span
+            className={
+              "flex w-full text-lg font-semibold" +
+              (LoginSectionActive ? " " : " text-foreground-300")
+            }
+          >
+            Login and Security
+          </span>
+          <div className="my-5 w-full">
+            <EmailField
+              user={user}
+              onEdit={onFocusEmail}
+              onCancel={ResetAll}
+              enabled={EmailActive}
+              showUpdateButton={isProvider}
+            />
+          </div>
+          {isProvider && (
             <div className="my-5 w-full">
-                <LegalNameField
-                    firstName="John"
-                    lastName="Doe"
-                    onEdit={onFocusLegal}
-                    onCancel={ResetAll}
-                    onUpdate={() => {}}
-                    enabled={LegalActive}
-                />
+              <PasswordField
+                user={user}
+                onEdit={onFocusPassword}
+                onCancel={ResetAll}
+                enabled={PasswordActive}
+              />
             </div>
-            <span
-                className={
-                    "flex w-full text-lg font-semibold" +
-                    (LoginSectionActive ? " " : " text-foreground-300")
-                }
-            >
-                Login and Security
-            </span>
-            <div className="my-5 w-full">
-                <EmailField
-                    email="john.doe@gmail.com"
-                    onEdit={onFocusEmail}
-                    onCancel={ResetAll}
-                    onUpdate={() => {}}
-                    enabled={EmailActive}
-                />
-            </div>
-            {/*  Passwordfield should be hidden if user is not using OAuth   */}
-            <div className="my-5 w-full">
-                <PasswordField
-                    onEdit={onFocusPassword}
-                    onCancel={ResetAll}
-                    onUpdate={() => {}}
-                    enabled={PasswordActive}
-                />
-            </div>
-        </main>
-    );
+          )}
+        </>
+      )}
+    </main>
+  );
 };
 
 export default ProfileComponent;

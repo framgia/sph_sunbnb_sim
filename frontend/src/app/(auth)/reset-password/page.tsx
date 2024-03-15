@@ -53,7 +53,7 @@ const ResetPasswordPage: React.FC = () => {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start px-24 py-10">
+    <main className="flex flex-col items-center justify-start px-24 py-10">
       <LogoLargeIcon />
       <div className="w-2/5">
         <div className="my-5 flex flex-col">

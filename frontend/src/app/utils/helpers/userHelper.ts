@@ -2,7 +2,13 @@
 
 import { jwtDecode } from "jwt-decode";
 import config from "../../config/config";
-import type { UserRegisterType, UserSessionType } from "../../interfaces/types";
+import type {
+  JwtPayloadwithUser,
+  PasswordUpdateType,
+  UserDetailsType,
+  UserRegisterType,
+  UserSessionType
+} from "../../interfaces/types";
 import { cookies } from "next/headers";
 
 export async function registerUser(
@@ -58,11 +64,10 @@ export async function logoutUser(): Promise<{ message: string }> {
 
 export async function checkCookies(): Promise<UserSessionType | null> {
   const jwt = cookies().get("jwt")?.value;
-
   if (jwt !== undefined && jwt !== "") {
-    const decodedJwt = jwtDecode(jwt);
-    const user = await getUser(Number(decodedJwt.sub), jwt);
-    if (user !== undefined && user !== null) {
+    const decodedJwt: JwtPayloadwithUser = jwtDecode(jwt);
+    if (decodedJwt.user !== undefined) {
+      const user = decodedJwt.user;
       return user;
     }
   }
@@ -89,10 +94,6 @@ export async function loginUser(
       httpOnly: true,
       expires: new Date(resData.expires_in as string)
     });
-    cookies().set("user", JSON.stringify(resData.user as string), {
-      httpOnly: true,
-      expires: new Date(resData.expires_in as string)
-    });
     return { message: "success" };
   }
   return { message: "login failed" };
@@ -101,7 +102,7 @@ export async function loginUser(
 export async function getUser(
   id: number,
   jwt: string
-): Promise<UserSessionType | null> {
+): Promise<UserDetailsType | null> {
   const fetchApi = await fetch(`${config.backendUrl}/user/${id}`, {
     method: "GET",
     headers: {
@@ -111,9 +112,136 @@ export async function getUser(
     }
   });
   const resData = await fetchApi.json();
-  console.log("get result", resData);
   if (resData.success as boolean) {
-    return resData.user as UserSessionType;
+    return resData.user as UserDetailsType;
   }
   return null;
+}
+
+export async function updateUser(
+  id: number,
+  updatedUserData: Partial<UserSessionType>
+): Promise<{ message: string; errors?: Record<string, string[]> }> {
+  const jwt = cookies().get("jwt")?.value;
+  if (jwt !== undefined) {
+    const fetchApi = await fetch(`${config.backendUrl}/user/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(updatedUserData)
+    });
+
+    const resData = await fetchApi.json();
+
+    if (resData.success as boolean) {
+      return {
+        message: "success"
+      };
+    } else {
+      return {
+        message: resData.message,
+        errors: resData.errors
+      };
+    }
+  } else {
+    return {
+      message: "User not authenticated"
+    };
+  }
+}
+
+export async function updatePassword(
+  id: number,
+  passwordUpdate: PasswordUpdateType
+): Promise<{ message: string; errors?: Record<string, string[]> }> {
+  const jwt = cookies().get("jwt")?.value;
+  if (jwt !== undefined) {
+    const fetchApi = await fetch(
+      `${config.backendUrl}/user/change-password/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(passwordUpdate)
+      }
+    );
+
+    const resData = await fetchApi.json();
+
+    if (resData.success as boolean) {
+      return {
+        message: "success"
+      };
+    } else {
+      return {
+        message: resData.message,
+        errors: resData.errors
+      };
+    }
+  } else {
+    return {
+      message: "User not authenticated"
+    };
+  }
+}
+
+export async function loginWithGoogle(
+  idToken: string
+): Promise<{ message: string }> {
+  const response = await fetch(`${config.backendUrl}/login/google`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify({ id_token: idToken })
+  });
+  const resData = await response.json();
+  console.log("Data received:", resData);
+  if (resData.token !== undefined && resData.token !== "") {
+    const decodedJwt: JwtPayloadwithUser = jwtDecode(resData.token as string);
+    if (resData.success as boolean) {
+      if (decodedJwt.user.role === null) {
+        return { message: "no role" };
+      } else {
+        cookies().set("jwt", resData.token as string, {
+          httpOnly: true,
+          expires: new Date(resData.expires_in as string)
+        });
+        return { message: "success" };
+      }
+    }
+  }
+  return { message: "login failed" };
+}
+
+export async function registerWithGoogle(
+  idToken: string,
+  userRole: string
+): Promise<{ message: string }> {
+  const response = await fetch(`${config.backendUrl}/register/google`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify({ id_token: idToken, role: userRole })
+  });
+  const resData = await response.json();
+  if (resData.success as boolean) {
+    const token = resData.token as string;
+    const expireDate = new Date(resData.expires_in as string);
+    cookies().set("jwt", token, {
+      httpOnly: true,
+      expires: expireDate
+    });
+    return { message: "success" };
+  }
+  return { message: "register failed" };
 }
