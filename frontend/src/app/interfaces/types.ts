@@ -1,3 +1,4 @@
+import { JwtPayload } from "jwt-decode";
 import type {
   UserRole,
   Amenity,
@@ -39,6 +40,21 @@ export interface PasswordUpdateType {
   new_password_confirmation: string;
 }
 
+export interface UserDetailsType {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  email_verified_at?: string;
+  role: UserRole;
+  provider?: string;
+  provider_id?: number;
+  status: "active" | "banned";
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string;
+}
+
 export interface Accommodation {
   id: number;
   type: AccommodationType;
@@ -78,4 +94,8 @@ export interface Listing {
 export interface CalendarDate {
   date: Date | string;
   available: boolean;
+}
+
+export interface JwtPayloadwithUser extends JwtPayload {
+  user: UserSessionType;
 }

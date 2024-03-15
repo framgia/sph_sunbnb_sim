@@ -1,17 +1,16 @@
 "use server";
 
-import { JwtPayload, jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import config from "../../config/config";
 import type {
+  JwtPayloadwithUser,
+  PasswordUpdateType,
+  UserDetailsType,
   UserRegisterType,
-  UserSessionType,
-  PasswordUpdateType
+  UserSessionType
 } from "../../interfaces/types";
 import { cookies } from "next/headers";
 
-interface JwtPayloadwithUser extends JwtPayload {
-  user: UserSessionType;
-}
 export async function registerUser(
   user: UserRegisterType
 ): Promise<{ message: string }> {
@@ -65,7 +64,6 @@ export async function logoutUser(): Promise<{ message: string }> {
 
 export async function checkCookies(): Promise<UserSessionType | null> {
   const jwt = cookies().get("jwt")?.value;
-
   if (jwt !== undefined && jwt !== "") {
     const decodedJwt = jwtDecode(jwt) as JwtPayloadwithUser;
     if (decodedJwt.user !== undefined) {
@@ -104,7 +102,7 @@ export async function loginUser(
 export async function getUser(
   id: number,
   jwt: string
-): Promise<UserSessionType | null> {
+): Promise<UserDetailsType | null> {
   const fetchApi = await fetch(`${config.backendUrl}/user/${id}`, {
     method: "GET",
     headers: {
@@ -114,9 +112,8 @@ export async function getUser(
     }
   });
   const resData = await fetchApi.json();
-  console.log("get result", resData);
   if (resData.success as boolean) {
-    return resData.user as UserSessionType;
+    return resData.user as UserDetailsType;
   }
   return null;
 }
@@ -206,9 +203,9 @@ export async function loginWithGoogle(
     body: JSON.stringify({ id_token: idToken })
   });
   const resData = await response.json();
-  console.log("data received", resData);
+  const decodedJwt = jwtDecode(resData.token) as JwtPayloadwithUser;
   if (resData.success as boolean) {
-    if (resData.user.role === null) {
+    if (decodedJwt.user.role === null) {
       return { message: "no role" };
     } else {
       cookies().set("jwt", resData.token as string, {
@@ -234,7 +231,6 @@ export async function registerWithGoogle(
     body: JSON.stringify({ id_token: idToken, role: userRole })
   });
   const resData = await response.json();
-  console.log("data received", resData);
   if (resData.success as boolean) {
     const token = resData.token as string;
     const expireDate = new Date(resData.expires_in as string);
