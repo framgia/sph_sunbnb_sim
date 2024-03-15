@@ -3,15 +3,20 @@ import React, { useState } from "react";
 import LegalNameField from "./LegalNameField";
 import EmailField from "./EmailField";
 import PasswordField from "./PasswordField";
+import type { UserSessionType } from "@/app/interfaces/types";
 
-const ProfileComponent: React.FC = () => {
+interface ProfileComponentsProps {
+  user: UserSessionType | null;
+}
+
+const ProfileComponent: React.FC<ProfileComponentsProps> = ({ user }) => {
   const [PersonalSectionActive, setPersonalActive] = useState(true);
   const [LoginSectionActive, setLoginActive] = useState(true);
   const [LegalActive, setLegalActive] = useState(true);
   const [EmailActive, setEmailActive] = useState(true);
   const [PasswordActive, setPasswordActive] = useState(true);
+  const isProvider: boolean = user !== null && user.provider === null;
 
-  //  functions for handling dynamic changing of colors
   function ResetAll(): void {
     setPersonalActive(true);
     setLoginActive(true);
@@ -43,52 +48,56 @@ const ProfileComponent: React.FC = () => {
     setEmailActive(false);
     setPasswordActive(true);
   }
+
   return (
     <main className="flex flex-col">
-      <span
-        className={
-          "flex w-full text-lg font-semibold" +
-          (PersonalSectionActive ? " " : " text-foreground-300")
-        }
-      >
-        Personal Information
-      </span>
-      <div className="my-5 w-full">
-        <LegalNameField
-          firstName="John"
-          lastName="Doe"
-          onEdit={onFocusLegal}
-          onCancel={ResetAll}
-          onUpdate={() => {}}
-          enabled={LegalActive}
-        />
-      </div>
-      <span
-        className={
-          "flex w-full text-lg font-semibold" +
-          (LoginSectionActive ? " " : " text-foreground-300")
-        }
-      >
-        Login and Security
-      </span>
-      <div className="my-5 w-full">
-        <EmailField
-          email="john.doe@gmail.com"
-          onEdit={onFocusEmail}
-          onCancel={ResetAll}
-          onUpdate={() => {}}
-          enabled={EmailActive}
-        />
-      </div>
-      {/*  Passwordfield should be hidden if user is not using OAuth   */}
-      <div className="my-5 w-full">
-        <PasswordField
-          onEdit={onFocusPassword}
-          onCancel={ResetAll}
-          onUpdate={() => {}}
-          enabled={PasswordActive}
-        />
-      </div>
+      {user !== null && (
+        <>
+          <span
+            className={
+              "flex w-full text-lg font-semibold" +
+              (PersonalSectionActive ? " " : " text-foreground-300")
+            }
+          >
+            Personal Information
+          </span>
+          <div className="my-5 w-full">
+            <LegalNameField
+              user={user}
+              onEdit={onFocusLegal}
+              onCancel={ResetAll}
+              enabled={LegalActive}
+            />
+          </div>
+          <span
+            className={
+              "flex w-full text-lg font-semibold" +
+              (LoginSectionActive ? " " : " text-foreground-300")
+            }
+          >
+            Login and Security
+          </span>
+          <div className="my-5 w-full">
+            <EmailField
+              user={user}
+              onEdit={onFocusEmail}
+              onCancel={ResetAll}
+              enabled={EmailActive}
+              showUpdateButton={isProvider}
+            />
+          </div>
+          {isProvider && (
+            <div className="my-5 w-full">
+              <PasswordField
+                user={user}
+                onEdit={onFocusPassword}
+                onCancel={ResetAll}
+                enabled={PasswordActive}
+              />
+            </div>
+          )}
+        </>
+      )}
     </main>
   );
 };

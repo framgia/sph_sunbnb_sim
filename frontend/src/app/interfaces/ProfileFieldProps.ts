@@ -1,6 +1,8 @@
-export interface ProfileFieldProps{
-    onUpdate: () => void;
-    onEdit: () => void;
-    onCancel: ()=> void;
-    enabled: boolean;
+import type { UserSessionType } from "./types";
+
+export interface ProfileFieldProps {
+  user: UserSessionType;
+  onEdit: () => void;
+  onCancel: () => void;
+  enabled: boolean;
 }

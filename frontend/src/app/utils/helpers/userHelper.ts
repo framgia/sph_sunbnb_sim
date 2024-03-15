@@ -2,7 +2,11 @@
 
 import { jwtDecode } from "jwt-decode";
 import config from "../../config/config";
-import type { UserRegisterType, UserSessionType } from "../../interfaces/types";
+import type {
+  UserRegisterType,
+  UserSessionType,
+  PasswordUpdateType
+} from "../../interfaces/types";
 import { cookies } from "next/headers";
 
 export async function registerUser(
@@ -112,6 +116,79 @@ export async function getUser(
     return resData.user as UserSessionType;
   }
   return null;
+}
+
+export async function updateUser(
+  id: number,
+  updatedUserData: Partial<UserSessionType>
+): Promise<{ message: string; errors?: Record<string, string[]> }> {
+  const jwt = cookies().get("jwt")?.value;
+  if (jwt !== undefined) {
+    const fetchApi = await fetch(`${config.backendUrl}/user/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(updatedUserData)
+    });
+
+    const resData = await fetchApi.json();
+
+    if (resData.success as boolean) {
+      return {
+        message: "success"
+      };
+    } else {
+      return {
+        message: resData.message,
+        errors: resData.errors
+      };
+    }
+  } else {
+    return {
+      message: "User not authenticated"
+    };
+  }
+}
+
+export async function updatePassword(
+  id: number,
+  passwordUpdate: PasswordUpdateType
+): Promise<{ message: string; errors?: Record<string, string[]> }> {
+  const jwt = cookies().get("jwt")?.value;
+  if (jwt !== undefined) {
+    const fetchApi = await fetch(
+      `${config.backendUrl}/user/change-password/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(passwordUpdate)
+      }
+    );
+
+    const resData = await fetchApi.json();
+
+    if (resData.success as boolean) {
+      return {
+        message: "success"
+      };
+    } else {
+      return {
+        message: resData.message,
+        errors: resData.errors
+      };
+    }
+  } else {
+    return {
+      message: "User not authenticated"
+    };
+  }
 }
 
 export async function loginWithGoogle(
