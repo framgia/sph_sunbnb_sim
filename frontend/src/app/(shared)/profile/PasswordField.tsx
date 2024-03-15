@@ -16,8 +16,10 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
   const [passwordError, setPasswordError] = useState("");
   const [newPasswordError, setNewPasswordError] = useState("");
   const [confirmNewPasswordError, setConfirmNewPasswordError] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   const handleUpdate = async (): Promise<void> => {
+    setLoading(true);
     try {
       if (
         currentPassword === "" ||
@@ -79,6 +81,7 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
     } catch (error) {
       console.error("Unexpected error during update:", error);
     }
+    setLoading(false);
   };
 
   const handleCurrentPasswordChange = (
@@ -166,6 +169,7 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
               variant="solid"
               className="bg-primary-600 text-white"
               onPress={handleUpdate}
+              isDisabled={isLoading}
             >
               Update
             </Button>
