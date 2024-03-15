@@ -33,6 +33,12 @@ export interface UserSessionType {
   status: "active" | "banned";
 }
 
+export interface PasswordUpdateType {
+  current_password: string;
+  new_password: string;
+  new_password_confirmation: string;
+}
+
 export interface Accommodation {
   id: number;
   type: AccommodationType;
