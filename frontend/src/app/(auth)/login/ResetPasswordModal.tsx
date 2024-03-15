@@ -1,5 +1,5 @@
 import type { ModalProps } from "@/app/interfaces/ModalProps";
-import { Button, Input, Modal, ModalContent, Spinner } from "@nextui-org/react";
+import { Button, Input, Modal, ModalContent } from "@nextui-org/react";
 import React from "react";
 
 interface ResetModalProps extends ModalProps {

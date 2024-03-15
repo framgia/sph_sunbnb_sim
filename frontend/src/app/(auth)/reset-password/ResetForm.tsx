@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Input, Spinner } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 
 interface ResetPasswordFormProps {
   handleSubmit: (event: React.FormEvent) => void;
