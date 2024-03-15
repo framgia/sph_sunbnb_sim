@@ -93,10 +93,6 @@ export async function loginUser(
       httpOnly: true,
       expires: new Date(resData.expires_in as string)
     });
-    cookies().set("user", JSON.stringify(resData.user as string), {
-      httpOnly: true,
-      expires: new Date(resData.expires_in as string)
-    });
     return { message: "success" };
   }
   return { message: "login failed" };
@@ -193,4 +189,57 @@ export async function updatePassword(
       message: "User not authenticated"
     };
   }
+}
+
+export async function loginWithGoogle(
+  idToken: string
+): Promise<{ message: string }> {
+  const response = await fetch(`${config.backendUrl}/login/google`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify({ id_token: idToken })
+  });
+  const resData = await response.json();
+  console.log("data received", resData);
+  if (resData.success as boolean) {
+    if (resData.user.role === null) {
+      return { message: "no role" };
+    } else {
+      cookies().set("jwt", resData.token as string, {
+        httpOnly: true,
+        expires: new Date(resData.expires_in as string)
+      });
+      return { message: "success" };
+    }
+  }
+  return { message: "login failed" };
+}
+
+export async function registerWithGoogle(
+  idToken: string,
+  userRole: string
+): Promise<{ message: string }> {
+  const response = await fetch(`${config.backendUrl}/register/google`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify({ id_token: idToken, role: userRole })
+  });
+  const resData = await response.json();
+  console.log("data received", resData);
+  if (resData.success as boolean) {
+    const token = resData.token as string;
+    const expireDate = new Date(resData.expires_in as string);
+    cookies().set("jwt", token, {
+      httpOnly: true,
+      expires: expireDate
+    });
+    return { message: "success" };
+  }
+  return { message: "register failed" };
 }
