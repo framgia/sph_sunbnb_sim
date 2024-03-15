@@ -203,16 +203,19 @@ export async function loginWithGoogle(
     body: JSON.stringify({ id_token: idToken })
   });
   const resData = await response.json();
-  const decodedJwt = jwtDecode(resData.token) as JwtPayloadwithUser;
-  if (resData.success as boolean) {
-    if (decodedJwt.user.role === null) {
-      return { message: "no role" };
-    } else {
-      cookies().set("jwt", resData.token as string, {
-        httpOnly: true,
-        expires: new Date(resData.expires_in as string)
-      });
-      return { message: "success" };
+  console.log("Data received:", resData);
+  if (resData.token !== undefined && resData.token !== "") {
+    const decodedJwt = jwtDecode(resData.token) as JwtPayloadwithUser;
+    if (resData.success as boolean) {
+      if (decodedJwt.user.role === null) {
+        return { message: "no role" };
+      } else {
+        cookies().set("jwt", resData.token as string, {
+          httpOnly: true,
+          expires: new Date(resData.expires_in as string)
+        });
+        return { message: "success" };
+      }
     }
   }
   return { message: "login failed" };

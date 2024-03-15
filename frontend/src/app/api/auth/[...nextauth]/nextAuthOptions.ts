@@ -51,7 +51,6 @@ export function nextAuthOptions(
             }
           } else {
             result = await loginWithGoogle(account.id_token);
-            console.log("message", result.message);
             if (result.message === "success") {
               return "/";
             } else {
