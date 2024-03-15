@@ -28,14 +28,9 @@ export interface UserSessionType {
   first_name: string;
   last_name: string;
   email: string;
-  email_verified_at?: string;
   role: UserRole;
   provider?: string;
-  provider_id?: number;
   status: "active" | "banned";
-  created_at: string;
-  updated_at: string;
-  deleted_at?: string;
 }
 
 export interface Accommodation {

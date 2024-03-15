@@ -1,10 +1,13 @@
 "use server";
 
-import { jwtDecode } from "jwt-decode";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 import config from "../../config/config";
 import type { UserRegisterType, UserSessionType } from "../../interfaces/types";
 import { cookies } from "next/headers";
 
+interface JwtPayloadwithUser extends JwtPayload {
+  user: UserSessionType;
+}
 export async function registerUser(
   user: UserRegisterType
 ): Promise<{ message: string }> {
@@ -60,9 +63,9 @@ export async function checkCookies(): Promise<UserSessionType | null> {
   const jwt = cookies().get("jwt")?.value;
 
   if (jwt !== undefined && jwt !== "") {
-    const decodedJwt = jwtDecode(jwt);
-    const user = await getUser(Number(decodedJwt.sub), jwt);
-    if (user !== undefined && user !== null) {
+    const decodedJwt = jwtDecode(jwt) as JwtPayloadwithUser;
+    if (decodedJwt.user !== undefined) {
+      const user = decodedJwt.user;
       return user;
     }
   }
