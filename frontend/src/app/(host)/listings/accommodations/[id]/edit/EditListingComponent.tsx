@@ -1,18 +1,16 @@
 "use client";
 import DeleteModal from "@/app/components/DeleteModal";
-import EditListingForm from "@/app/components/EditListingForm";
+import EditListingForm from "@/app/(host)/listings/accommodations/[id]/edit/EditListingForm";
 import type {
   MediaUpdate,
   Accommodation
 } from "@/app/interfaces/AccomodationData";
 import { type Listing } from "@/app/interfaces/types";
-import {
-  updateAccommodation,
-  validateAccommodation
-} from "@/app/utils/helpers/accommodationHelper";
+import { updateAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { validateAccommodation } from "@/app/utils/helpers/accommodation/validation";
 
 interface EditListingComponentProps {
   listing: Listing;
@@ -80,7 +78,7 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
+    <main className="flex min-h-screen w-full flex-col items-center justify-between">
       <EditListingForm
         listingid={listing.id.toString()}
         onDelete={onOpen}

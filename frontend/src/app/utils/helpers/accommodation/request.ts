@@ -7,63 +7,6 @@ import type {
 import { type Listing } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 
-export async function validateAccommodation(
-  data: Accommodation,
-  media: string[] | MediaUpdate,
-  isUpdate = false
-): Promise<Record<string, string | boolean>> {
-  for (const [, value] of Object.entries(data)) {
-    if (typeof value === "string" && value.trim() === "") {
-      return {
-        hasError: true,
-        message: "All fields must be completed."
-      };
-    }
-    if (typeof value === "number" && (isNaN(value) || value <= 0)) {
-      return {
-        hasError: true,
-        message: "All fields containing numbers must be greater than 0."
-      };
-    }
-  }
-
-  if (
-    data.minimum_days != null &&
-    data.maximum_days != null &&
-    data.minimum_days > data.maximum_days
-  ) {
-    return {
-      hasError: true,
-      message: "Maximum days cannot be lower than minimum days."
-    };
-  }
-
-  if (data.amenities.length === 0) {
-    return {
-      hasError: true,
-      message: "At least one amenity must be provided."
-    };
-  }
-  if (!isUpdate && Array.isArray(media) && media.length === 0) {
-    return {
-      hasError: true,
-      message: "At least one photo must be provided."
-    };
-  }
-
-  if (isUpdate && typeof media === "object" && media !== null) {
-    const mediaUpdate = media as MediaUpdate;
-    if (mediaUpdate.prev.length === 0 && mediaUpdate.new.length === 0) {
-      return {
-        hasError: true,
-        message: "At least one photo must be provided."
-      };
-    }
-  }
-
-  return { hasError: false, message: "Validation successful." };
-}
-
 function setHeaders(): Record<string, string> {
   const jwt = cookies().get("jwt")?.value;
   if (jwt === undefined) throw new Error("No JWT found in cookies.");
@@ -74,7 +17,7 @@ function setHeaders(): Record<string, string> {
   };
 }
 
-export async function createAccommodation(
+async function createAccommodation(
   data: Accommodation,
   media: string[]
 ): Promise<Record<string, string | boolean>> {
@@ -111,7 +54,7 @@ export async function createAccommodation(
   }
 }
 
-export async function getAccommodation(id: number): Promise<Listing> {
+async function getAccommodation(id: number): Promise<Listing> {
   const response = await fetch(`${config.backendUrl}/accommodation/${id}`, {
     method: "GET",
     headers: setHeaders()
@@ -123,7 +66,7 @@ export async function getAccommodation(id: number): Promise<Listing> {
   } else throw new Error(responseData.error as string);
 }
 
-export async function updateAccommodation(
+async function updateAccommodation(
   id: number,
   data: Accommodation,
   media: MediaUpdate
@@ -163,7 +106,7 @@ export async function updateAccommodation(
   }
 }
 
-export async function handleDelete(id: number): Promise<{ message: string }> {
+async function deleteAccommodation(id: number): Promise<{ message: string }> {
   const jwt = cookies().get("jwt")?.value;
   if (jwt !== undefined) {
     console.log(jwt);
@@ -186,3 +129,10 @@ export async function handleDelete(id: number): Promise<{ message: string }> {
     };
   }
 }
+
+export {
+  createAccommodation,
+  getAccommodation,
+  updateAccommodation,
+  deleteAccommodation
+};

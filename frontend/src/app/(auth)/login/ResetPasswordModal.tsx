@@ -59,8 +59,13 @@ const ResetPasswordModal: React.FC<ResetModalProps> = ({
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" className="bg-primary-600 text-white">
-                    {loading ? <Spinner color="default" size="sm" /> : "Send"}
+                  <Button
+                    type="submit"
+                    className="bg-primary-600 text-white"
+                    isDisabled={loading}
+                    isLoading={loading}
+                  >
+                    Send
                   </Button>
                 </div>
               </form>
