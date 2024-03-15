@@ -65,7 +65,7 @@ export async function logoutUser(): Promise<{ message: string }> {
 export async function checkCookies(): Promise<UserSessionType | null> {
   const jwt = cookies().get("jwt")?.value;
   if (jwt !== undefined && jwt !== "") {
-    const decodedJwt = jwtDecode(jwt) as JwtPayloadwithUser;
+    const decodedJwt: JwtPayloadwithUser = jwtDecode(jwt);
     if (decodedJwt.user !== undefined) {
       const user = decodedJwt.user;
       return user;
@@ -205,7 +205,7 @@ export async function loginWithGoogle(
   const resData = await response.json();
   console.log("Data received:", resData);
   if (resData.token !== undefined && resData.token !== "") {
-    const decodedJwt = jwtDecode(resData.token) as JwtPayloadwithUser;
+    const decodedJwt: JwtPayloadwithUser = jwtDecode(resData.token as string);
     if (resData.success as boolean) {
       if (decodedJwt.user.role === null) {
         return { message: "no role" };

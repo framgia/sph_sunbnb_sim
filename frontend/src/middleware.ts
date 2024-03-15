@@ -8,7 +8,7 @@ export function middleware(request: NextRequest): NextResponse | undefined {
   const jwt = cookies().get("jwt")?.value;
   let user = null;
   if (jwt !== undefined && jwt !== "") {
-    const decodedJwt = jwtDecode(jwt) as JwtPayloadwithUser;
+    const decodedJwt: JwtPayloadwithUser = jwtDecode(jwt);
     if (decodedJwt.user !== undefined) {
       user = decodedJwt.user;
     }
