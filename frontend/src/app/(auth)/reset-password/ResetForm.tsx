@@ -47,8 +47,13 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
           required
         />
       </div>
-      <Button className="w-full bg-primary-600 text-white" type="submit">
-        {loading ? <Spinner color="default" size="sm" /> : "Reset"}
+      <Button
+        className="w-full bg-primary-600 text-white"
+        type="submit"
+        isDisabled={loading}
+        isLoading={loading}
+      >
+        Reset
       </Button>
     </form>
   );

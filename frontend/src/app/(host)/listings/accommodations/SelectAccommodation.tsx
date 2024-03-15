@@ -16,13 +16,13 @@ const SelectType: React.FC<AccommodationMoreDetailsProps> = ({
 }) => {
   return (
     <div>
-      <div className="mt-10 w-full text-left text-sm font-semibold leading-7 text-black max-md:max-w-full">
+      <div className="mt-5 w-full text-left text-sm font-semibold leading-7 text-black max-md:max-w-full">
         Type
       </div>
       <Select
         defaultSelectedKeys={data.type !== "" ? [data.type] : []}
-        className="mt-8"
-        placeholder="Select accommodation type"
+        className="mt-4"
+        label="Select accommodation type"
         variant="bordered"
         aria-label="Select Accommodation Type"
         onChange={(e) => {
