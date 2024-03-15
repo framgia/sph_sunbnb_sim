@@ -1,29 +1,54 @@
-"use client";
-import "@uploadthing/react/styles.css";
 import React, { useState } from "react";
 import { UploadDropzone } from "@/app/utils/uploadthing/uploadthing";
 import UploadIcon from "../svgs/UploadIcon";
 import type { MediaUpdate } from "@/app/interfaces/AccomodationData";
+import { ClientUploadedFileData } from "uploadthing/types";
 
 interface UploadthingDropzoneProps {
-  media: MediaUpdate;
-  setMedia: React.Dispatch<React.SetStateAction<MediaUpdate>>;
+  media: string[] | MediaUpdate;
+  setMedia:
+    | React.Dispatch<React.SetStateAction<string[]>>
+    | React.Dispatch<React.SetStateAction<MediaUpdate>>;
 }
 
-const UploadthingDropzoneUpdate: React.FC<UploadthingDropzoneProps> = ({
+const ListingUploader: React.FC<UploadthingDropzoneProps> = ({
   media,
   setMedia
 }) => {
   const [error, setError] = useState("");
-
+  type SetMediaUpdateState = React.Dispatch<React.SetStateAction<MediaUpdate>>;
+  type SetStringArrayState = React.Dispatch<React.SetStateAction<string[]>>;
   function handleUploadError(error: Error): void {
     setError(error.message);
     setTimeout(() => {
       setError("");
     }, 3000);
   }
-  const mediaCount = media.prev.length + media.new.length;
 
+  let mediaCount: number;
+  if (Array.isArray(media)) {
+    mediaCount = media.length;
+  } else {
+    mediaCount = media.prev.length + media.new.length;
+  }
+
+  const handleUploadComplete = (res: ClientUploadedFileData<any>[]) => {
+    res.forEach((val, index) => {
+      if (mediaCount + index < 5) {
+        if (Array.isArray(media)) {
+          (setMedia as SetStringArrayState)((prev: string[]) => [
+            ...prev,
+            val.url
+          ]);
+        } else {
+          (setMedia as SetMediaUpdateState)((prev: MediaUpdate) => ({
+            ...prev,
+            new: [...prev.new, val.url]
+          }));
+        }
+      }
+    });
+  };
   return (
     <>
       <UploadDropzone
@@ -34,7 +59,7 @@ const UploadthingDropzoneUpdate: React.FC<UploadthingDropzoneProps> = ({
           label: "text-black hover:text-primary-600 ",
           allowedContent: "text-sm",
           button:
-            "bg-primary-600 text-white after:hidden ut-uploading:opacity-50"
+            "bg-primary-600 text-white after:hidden ut-uploading:opacity-50 text-sm px-3 font-semibold cursor-pointer"
         }}
         content={{
           uploadIcon: <UploadIcon />,
@@ -48,16 +73,7 @@ const UploadthingDropzoneUpdate: React.FC<UploadthingDropzoneProps> = ({
         }}
         endpoint="imageUploader"
         config={{ mode: "auto" }}
-        onClientUploadComplete={(res) => {
-          res.forEach((val, index) => {
-            if (mediaCount + index < 5) {
-              setMedia((prev) => ({
-                ...prev,
-                new: [...prev.new, val.url]
-              }));
-            }
-          });
-        }}
+        onClientUploadComplete={handleUploadComplete}
         onUploadError={handleUploadError}
       />
       {error !== "" && <div className="red text-xs">{error}</div>}
@@ -65,4 +81,4 @@ const UploadthingDropzoneUpdate: React.FC<UploadthingDropzoneProps> = ({
   );
 };
 
-export default UploadthingDropzoneUpdate;
+export default ListingUploader;

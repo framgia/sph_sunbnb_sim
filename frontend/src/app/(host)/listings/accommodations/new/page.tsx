@@ -1,13 +1,11 @@
 "use client";
 import ApprovalModal from "@/app/components/ApprovalModal";
-import NewListingForm from "@/app/components/accommodation/NewListingForm";
+import NewListingForm from "@/app/(host)/listings/accommodations/new/NewListingForm";
 import type { Accommodation } from "@/app/interfaces/AccomodationData";
-import {
-  createAccommodation,
-  validateAccommodation
-} from "@/app/utils/helpers/accommodationHelper";
+import { createAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { useDisclosure } from "@nextui-org/react";
 import React, { useState } from "react";
+import { validateAccommodation } from "@/app/utils/helpers/accommodation/validation";
 
 const NewListingPage: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -59,7 +57,7 @@ const NewListingPage: React.FC = () => {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
+    <main className="min-w-1/2 flex min-h-screen flex-col items-center justify-between">
       <NewListingForm
         onPress={handleClick}
         data={data}
