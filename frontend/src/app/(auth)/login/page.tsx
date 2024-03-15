@@ -4,10 +4,8 @@ import LoginForm from "@/app/(auth)/login/LoginForm";
 import { useDisclosure } from "@nextui-org/react";
 import ResetPasswordModal from "./ResetPasswordModal";
 import LinkSuccessModal from "./LinkSuccessModal";
-import {
-  forgetPassword,
-  validateForgetPassword
-} from "@/app/utils/helpers/passwordHelper";
+import { forgetPassword } from "@/app/utils/helpers/password/request";
+import { validateForgetPassword } from "@/app/utils/helpers/password/validation";
 
 const LoginPage: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

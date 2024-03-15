@@ -3,6 +3,7 @@ import { UploadDropzone } from "@/app/utils/uploadthing/uploadthing";
 import UploadIcon from "../svgs/UploadIcon";
 import type { MediaUpdate } from "@/app/interfaces/AccomodationData";
 import { ClientUploadedFileData } from "uploadthing/types";
+import "@uploadthing/react/styles.css";
 
 interface UploadthingDropzoneProps {
   media: string[] | MediaUpdate;

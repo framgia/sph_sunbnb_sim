@@ -5,10 +5,8 @@ import ResetPasswordForm from "./ResetForm";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDisclosure } from "@nextui-org/react";
 import ResetSuccessModal from "./ResetSuccessModal";
-import {
-  resetPassword,
-  validateResetPassword
-} from "@/app/utils/helpers/passwordHelper";
+import { resetPassword } from "@/app/utils/helpers/password/request";
+import { validateResetPassword } from "@/app/utils/helpers/password/validation";
 
 const ResetPasswordPage: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

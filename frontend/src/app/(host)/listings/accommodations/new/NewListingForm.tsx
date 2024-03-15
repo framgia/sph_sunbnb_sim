@@ -80,7 +80,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
       </div>
       <div className="mt-16 flex gap-5 self-end whitespace-nowrap text-sm leading-5">
         <Button
-          disabled={loading}
+          isDisabled={loading}
           className="grow justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5"
         >
           Cancel
@@ -88,9 +88,10 @@ const NewListingForm: React.FC<NewListingProps> = ({
         <Button
           className="grow justify-center rounded-lg bg-primary-600 px-7 py-2.5 font-bold text-white drop-shadow-sm max-md:px-5 "
           onPress={onPress}
-          disabled={loading}
+          isDisabled={loading}
+          isLoading={loading}
         >
-          {loading ? <Spinner color="default" size="sm" /> : "Publish"}
+          Publish
         </Button>
       </div>
     </section>

@@ -84,6 +84,7 @@ const EditListingForm: React.FC<EditListingProps> = ({
       <div className="grid rounded-3xl outline outline-1 outline-neutral-300 md:grid-cols-2">
         <div className="p-8">
           <ListingUploader media={media} setMedia={setMedia} />
+
           <div className="mt-3 text-center text-xs">Maximum of 5 photos</div>
         </div>
         <div className="rounded-3xl bg-primary-50 outline outline-1 outline-neutral-300">
@@ -98,7 +99,7 @@ const EditListingForm: React.FC<EditListingProps> = ({
         )}
       </div>
       <div className="rounded-lg">
-        <div className="mt-9  flex gap-5 self-end whitespace-nowrap text-sm leading-5">
+        <div className="mt-16  flex justify-between gap-5 self-end whitespace-nowrap text-sm leading-5">
           <Button
             className=" gap-y-1.5 rounded-lg bg-danger px-4 text-white max-md:px-5"
             size="md"
@@ -109,23 +110,24 @@ const EditListingForm: React.FC<EditListingProps> = ({
             <TrashIcon />
             Delete
           </Button>
-          <div className="flex-grow"></div>{" "}
-          <Button
-            className="justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5"
-            size="md"
-            isDisabled={loading}
-          >
-            Cancel
-          </Button>
-          <Button
-            className="justify-center rounded-lg bg-primary-600 px-7 py-2.5 font-bold text-white drop-shadow-sm max-md:px-5 "
-            size="md"
-            onPress={onPress}
-            isDisabled={loading}
-            isLoading={loading}
-          >
-            Save
-          </Button>
+          <div className="flex gap-5">
+            <Button
+              className="justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5"
+              size="md"
+              isDisabled={loading}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="justify-center rounded-lg bg-primary-600 px-7 py-2.5 font-bold text-white drop-shadow-sm max-md:px-5 "
+              size="md"
+              onPress={onPress}
+              isDisabled={loading}
+              isLoading={loading}
+            >
+              Save
+            </Button>
+          </div>
         </div>
       </div>
     </section>
