@@ -91,6 +91,21 @@ export interface Listing {
   media: MediaType[];
 }
 
+export interface Pagination {
+  current_page: number;
+  per_page: number;
+  total: number;
+  next_page_url: string | null;
+  path: string;
+  prev_page_url: string | null;
+  to: number;
+}
+
+export interface PaginatedListing {
+  listings: Listing[];
+  pagination: Pagination;
+}
+
 export interface CalendarDate {
   date: Date | string;
   available: boolean;
