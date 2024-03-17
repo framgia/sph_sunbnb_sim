@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Button, Spinner } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import ListboxComponent from "../../../../components/accommodation/ListboxComponent";
 import AccommodationMoreDetails from "../AccommodationMoreDetails";
 import TypeSelect from "../SelectAccommodation";
