@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import ListingsDropdown from "./ListingsDropdown";
 import Calendar from "./Calendar";
 import AvailabilitySidebar from "./AvailabilitySidebar";
-import { getListingAvailability } from "@/app/utils/helpers/availabilityHelper";
+import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { type CalendarDate } from "@/app/interfaces/types";
 
 const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
@@ -45,7 +45,7 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
   }, [selectedListing, onTabChanged]);
 
   return (
-    <div className="flex w-full flex-col-reverse gap-4 sm:h-full sm:flex-row sm:gap-5">
+    <div className="flex min-h-[600px] w-full flex-col-reverse gap-4 md:h-full md:flex-row md:gap-5">
       <div
         className={`${selectedDates.length > 0 ? "px-6 sm:ms-auto" : "sm:m-auto sm:px-6"}
           flex w-full flex-col gap-2 sm:my-5 sm:max-w-[1024px] sm:gap-6

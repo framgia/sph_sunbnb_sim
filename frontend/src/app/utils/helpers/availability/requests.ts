@@ -1,7 +1,7 @@
 "use server";
 import { type CalendarDate, type Listing } from "@/app/interfaces/types";
 import config from "@/app/config/config";
-import { checkCookies } from "./userHelper";
+import { checkCookies } from "../userHelper";
 import { type AvailabilityListing } from "@/app/interfaces/AvailabilityCalendarProps";
 import { cookies } from "next/headers";
 
@@ -35,9 +35,7 @@ async function fetchApi(url: string, options = {}): Promise<any> {
   return await response.json();
 }
 
-export async function getListingNames(): Promise<
-  AvailabilityListing[] | undefined
-> {
+async function getListingNames(): Promise<AvailabilityListing[] | undefined> {
   try {
     const user = await checkCookies();
     if (user === null) throw new Error("No user found in cookies.");
@@ -54,7 +52,7 @@ export async function getListingNames(): Promise<
   }
 }
 
-export async function getListingAvailability(
+async function getListingAvailability(
   id: number
 ): Promise<CalendarDate[] | undefined> {
   try {
@@ -67,7 +65,7 @@ export async function getListingAvailability(
   }
 }
 
-export async function updateListingAvailability(
+async function updateListingAvailability(
   id: number,
   calendarDates: CalendarDate[]
 ): Promise<string | undefined> {
@@ -80,3 +78,5 @@ export async function updateListingAvailability(
     console.error("Failed to update listing availability.", error);
   }
 }
+
+export { getListingNames, getListingAvailability, updateListingAvailability };

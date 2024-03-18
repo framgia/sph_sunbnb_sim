@@ -20,15 +20,15 @@ const ListingsDropdown: React.FC<ListingDropdownProps> = ({
       <DropdownTrigger>
         <Button
           color="primary"
-          className="w-52"
+          className="w-60"
           endContent={<ChevronDownIcon />}
         >
-          {truncate(selectedListing.name, 20)}
+          {truncate(selectedListing.name, 25)}
         </Button>
       </DropdownTrigger>
       <DropdownMenu
         aria-label="Listings Names"
-        className="max-h-52 max-w-52 overflow-y-auto overflow-x-hidden"
+        className="max-h-52 max-w-60 overflow-y-auto overflow-x-hidden"
       >
         {listings.map((listing, index) => (
           <DropdownItem

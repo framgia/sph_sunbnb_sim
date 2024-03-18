@@ -11,7 +11,7 @@ import {
   isSameDay,
   DAYS_IN_CALENDAR_VIEW,
   DAYS_OF_WEEK
-} from "@/app/utils/calendar";
+} from "@/app/utils/helpers/availability/calendar";
 import { type CalendarProps } from "@/app/interfaces/CalendarProps";
 
 const Calendar: React.FC<CalendarProps> = ({
