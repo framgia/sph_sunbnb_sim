@@ -33,7 +33,17 @@ const ListingUploader: React.FC<UploadthingDropzoneProps> = ({
     mediaCount = media.prev.length + media.new.length;
   }
 
-  const handleUploadComplete = (res: ClientUploadedFileData<any>[]): void => {
+  function handleBeforeUploadBegin(files: File[]): File[] {
+    if (files.length > 5) {
+      setError("File limit exceeded.");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+      return [];
+    } else return files;
+  }
+
+  function handleUploadComplete(res: Array<ClientUploadedFileData<any>>): void {
     res.forEach((val, index) => {
       if (mediaCount + index < 5) {
         if (Array.isArray(media)) {
@@ -49,13 +59,15 @@ const ListingUploader: React.FC<UploadthingDropzoneProps> = ({
         }
       }
     });
-  };
+  }
   return (
     <>
       <UploadDropzone
         appearance={{
           container: `bg-primary-50 ${
-            mediaCount >= 5 ? "opacity-50 pointer-events-none" : ""
+            mediaCount >= 5 || error !== ""
+              ? "opacity-50 pointer-events-none"
+              : ""
           }`,
           label: "text-black hover:text-primary-600 ",
           allowedContent: "text-sm",
@@ -74,10 +86,11 @@ const ListingUploader: React.FC<UploadthingDropzoneProps> = ({
         }}
         endpoint="imageUploader"
         config={{ mode: "auto" }}
+        onBeforeUploadBegin={handleBeforeUploadBegin}
         onClientUploadComplete={handleUploadComplete}
         onUploadError={handleUploadError}
       />
-      {error !== "" && <div className="red text-xs">{error}</div>}
+      {error !== "" && <div className="mt-2 text-xs text-red-500">{error}</div>}
     </>
   );
 };

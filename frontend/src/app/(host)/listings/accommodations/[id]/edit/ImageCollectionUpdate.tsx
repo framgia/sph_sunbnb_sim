@@ -31,7 +31,7 @@ const AccommodationImageUpdate: React.FC<AccommodationImageProps> = ({
     <div className="grid grid-cols-3 p-5">
       {media.prev.map(({ id, url }) => (
         <div key={id} className="flex items-center justify-center">
-          <div key={id} className="relative inline-block p-2">
+          <div className="relative inline-block p-2">
             <span
               className="absolute right-0 top-0 z-50 scale-50 cursor-pointer rounded-full bg-white p-1"
               onClick={() => {
@@ -52,7 +52,7 @@ const AccommodationImageUpdate: React.FC<AccommodationImageProps> = ({
       ))}
       {media.new.map((url, index) => (
         <div key={index} className="flex items-center justify-center">
-          <div key={index} className="relative inline-block p-2">
+          <div className="relative inline-block p-2">
             <span
               className="absolute right-0 top-0 z-50 scale-50 cursor-pointer rounded-full bg-white p-1"
               onClick={() => {
