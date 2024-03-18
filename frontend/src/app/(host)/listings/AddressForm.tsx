@@ -1,4 +1,4 @@
-import { Accommodation } from "@/app/interfaces/AccomodationData";
+import type { Accommodation } from "@/app/interfaces/AccomodationData";
 import { Input } from "@nextui-org/react";
 import React from "react";
 

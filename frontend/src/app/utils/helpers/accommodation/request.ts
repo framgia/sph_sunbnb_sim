@@ -31,6 +31,7 @@ async function createAccommodation(
     });
 
     const responseData = await response.json();
+    console.log(responseData);
     if (response.ok) {
       return {
         hasError: false,

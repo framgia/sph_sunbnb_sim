@@ -1,4 +1,7 @@
-import { Accommodation, MediaUpdate } from "@/app/interfaces/AccomodationData";
+import type {
+  Accommodation,
+  MediaUpdate
+} from "@/app/interfaces/AccomodationData";
 
 async function validateAccommodation(
   data: Accommodation,

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { UploadDropzone } from "@/app/utils/uploadthing/uploadthing";
 import UploadIcon from "../svgs/UploadIcon";
 import type { MediaUpdate } from "@/app/interfaces/AccomodationData";
-import { ClientUploadedFileData } from "uploadthing/types";
+import type { ClientUploadedFileData } from "uploadthing/types";
 import "@uploadthing/react/styles.css";
 
 interface UploadthingDropzoneProps {
@@ -33,7 +33,7 @@ const ListingUploader: React.FC<UploadthingDropzoneProps> = ({
     mediaCount = media.prev.length + media.new.length;
   }
 
-  const handleUploadComplete = (res: ClientUploadedFileData<any>[]) => {
+  const handleUploadComplete = (res: ClientUploadedFileData<any>[]): void => {
     res.forEach((val, index) => {
       if (mediaCount + index < 5) {
         if (Array.isArray(media)) {
