@@ -35,7 +35,6 @@ export function nextAuthOptions(
         ) {
           const role = cookies().get("userRole")?.value;
           let result = { message: "" };
-          console.log("role? ", role);
           if (role !== undefined && role !== "") {
             result = await registerWithGoogle(account.id_token, role);
             if (result.message === "success") {
@@ -43,7 +42,6 @@ export function nextAuthOptions(
               return "/";
             } else {
               result = await loginWithGoogle(account.id_token);
-              console.log("message", result.message);
               if (result.message === "success") {
                 cookies().delete("userRole");
                 return "/";
