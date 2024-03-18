@@ -72,6 +72,7 @@ export interface Accommodation {
 export interface Listing {
   id: number;
   user_id: number;
+  user: UserDetailsType;
   status: ListingStatus;
   name: string;
   description: string;
