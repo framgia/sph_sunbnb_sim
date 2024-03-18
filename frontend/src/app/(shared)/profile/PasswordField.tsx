@@ -77,11 +77,13 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
         setPasswordError("");
         setNewPasswordError("");
         setConfirmNewPasswordError("");
+        user.updated_at = new Date().toISOString();
       }
     } catch (error) {
       console.error("Unexpected error during update:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleCurrentPasswordChange = (
@@ -169,7 +171,12 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
               variant="solid"
               className="bg-primary-600 text-white"
               onPress={handleUpdate}
-              isDisabled={isLoading}
+              isDisabled={
+                isLoading ||
+                newPasswordError !== "" ||
+                confirmNewPasswordError !== "" ||
+                passwordError !== ""
+              }
             >
               Update
             </Button>
