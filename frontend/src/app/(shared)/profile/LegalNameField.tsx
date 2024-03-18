@@ -21,7 +21,6 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
   const [lastName, setLastName] = useState(
     user?.last_name !== undefined ? user.last_name : ""
   );
-  const [isLoading, setLoading] = useState(false);
 
   const handleEdit = (): void => {
     setOriginalFirstName(firstName);
@@ -40,7 +39,6 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
   };
 
   const handleUpdate = async (): Promise<void> => {
-    setLoading(true);
     try {
       if (firstName === "" || lastName === "") {
         if (firstName === "") {
@@ -61,6 +59,8 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
       const result = await updateUser(user?.id, updatedUser);
 
       if (result.message === "success") {
+        user.first_name = firstName;
+        user.last_name = lastName;
         onCancel();
         setEditing(false);
       } else {
@@ -79,7 +79,6 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
     } catch (error) {
       console.error("Unexpected error during update:", error);
     }
-    setLoading(false);
   };
 
   const handleFirstNameChange = (
@@ -141,7 +140,6 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
                 variant="solid"
                 className="bg-primary-600 text-white"
                 onPress={handleUpdate}
-                isDisabled={isLoading}
               >
                 Save
               </Button>
