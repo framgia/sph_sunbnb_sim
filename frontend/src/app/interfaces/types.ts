@@ -72,6 +72,7 @@ export interface Accommodation {
 export interface Listing {
   id: number;
   user_id: number;
+  user: UserDetailsType;
   status: ListingStatus;
   name: string;
   description: string;
@@ -89,6 +90,21 @@ export interface Listing {
   deleted_at?: Date | null;
   listable: Accommodation;
   media: MediaType[];
+}
+
+export interface Pagination {
+  current_page: number;
+  per_page: number;
+  total: number;
+  next_page_url: string | null;
+  path: string;
+  prev_page_url: string | null;
+  to: number;
+}
+
+export interface PaginatedListing {
+  listings: Listing[];
+  pagination: Pagination;
 }
 
 export interface CalendarDate {

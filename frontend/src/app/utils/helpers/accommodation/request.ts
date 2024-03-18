@@ -4,8 +4,9 @@ import type {
   Accommodation,
   MediaUpdate
 } from "@/app/interfaces/AccomodationData";
-import { type Listing } from "@/app/interfaces/types";
+import { type PaginatedListing, type Listing } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
+import { checkCookies } from "../userHelper";
 
 function setHeaders(): Record<string, string> {
   const jwt = cookies().get("jwt")?.value;
@@ -30,6 +31,7 @@ async function createAccommodation(
     });
 
     const responseData = await response.json();
+    console.log(responseData);
     if (response.ok) {
       return {
         hasError: false,
@@ -130,9 +132,46 @@ async function deleteAccommodation(id: number): Promise<{ message: string }> {
   }
 }
 
+async function getAccommodationsByUser(
+  page: number,
+  limit: number
+): Promise<PaginatedListing | undefined> {
+  try {
+    const jwt = cookies().get("jwt")?.value;
+    if (jwt === undefined) throw new Error("No JWT found in cookies.");
+
+    const user = await checkCookies();
+    if (user === null) throw new Error("No user found in cookies.");
+
+    const response = await fetch(
+      `${config.backendUrl}/accommodation/user/${user.id}?page=${page}&per_page=${limit}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        }
+      }
+    );
+
+    if (!response.ok) throw new Error("Failed to fetch accommodations.");
+
+    const data = await response.json();
+
+    return {
+      listings: data.listings,
+      pagination: data.pagination
+    };
+  } catch (error) {
+    console.error("Failed to fetch accommodations.", error);
+  }
+}
+
 export {
   createAccommodation,
   getAccommodation,
   updateAccommodation,
-  deleteAccommodation
+  deleteAccommodation,
+  getAccommodationsByUser
 };

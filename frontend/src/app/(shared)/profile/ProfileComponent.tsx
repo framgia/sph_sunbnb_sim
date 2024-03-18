@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import LegalNameField from "./LegalNameField";
 import EmailField from "./EmailField";
 import PasswordField from "./PasswordField";
-import { UserDetailsType } from "@/app/interfaces/types";
+import type { UserDetailsType } from "@/app/interfaces/types";
 
 interface ProfileComponentsProps {
   user: UserDetailsType | null;
