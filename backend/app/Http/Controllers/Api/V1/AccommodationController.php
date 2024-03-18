@@ -17,19 +17,10 @@ class AccommodationController extends Controller {
     public function index(Request $request) {
         $listings = Listing::paginateListings($request);
 
-        return response()->json([
-            'success' => true,
-            'listings' => $listings->items(),
-            'pagination' => [
-                'current_page' => $listings->currentPage(),
-                'per_page' => $listings->perPage(),
-                'total' => $listings->total(),
-                'next_page_url' => $listings->nextPageUrl(),
-                'path' => $listings->path(),
-                'prev_page_url' => $listings->previousPageUrl(),
-                'to' => $listings->lastItem(),
-            ],
-        ], Response::HTTP_OK);
+        return response()->json(
+            Listing::listingsResponse($listings),
+            Response::HTTP_OK
+        );
     }
 
     public function show($listingId) {
@@ -60,19 +51,10 @@ class AccommodationController extends Controller {
 
         $listings = Listing::paginateListingsByUser($userId, $request);
 
-        return response()->json([
-            'success' => true,
-            'listings' => $listings->items(),
-            'pagination' => [
-                'current_page' => $listings->currentPage(),
-                'per_page' => $listings->perPage(),
-                'total' => $listings->total(),
-                'next_page_url' => $listings->nextPageUrl(),
-                'path' => $listings->path(),
-                'prev_page_url' => $listings->previousPageUrl(),
-                'to' => $listings->lastItem(),
-            ],
-        ], Response::HTTP_OK);
+        return response()->json(
+            Listing::listingsResponse($listings),
+            Response::HTTP_OK
+        );
     }
 
     public function store(AccommodationRequest $request) {
@@ -80,20 +62,17 @@ class AccommodationController extends Controller {
 
         return DB::transaction(function () use ($request) {
 
-            $accommodation = Accommodation::instantiateAccommodation($request);
-            $accommodation->save();
-
-            $listing = Listing::instantiateListing($request, $accommodation);
-            $listing->save();
+            $accommodation = Accommodation::createAccommodation($request);
+            $listing = Listing::createListing($request, $accommodation);
 
             foreach ($request->media as $mediaUrl) {
-                $media = Media::instantiateMedia($mediaUrl, $listing);
-                $media->save();
+                $media = Media::createMedia($mediaUrl, $listing);
             }
 
             return response()->json([
                 'success' => true,
                 'message' => 'Listing created successfully',
+                'data' => $listing,
             ], Response::HTTP_CREATED);
         });
     }

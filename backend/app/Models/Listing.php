@@ -13,7 +13,7 @@ class Listing extends Model {
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code', 'price', 'maximum_guests'];
+    protected $fillable = ['name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code', 'price', 'maximum_guests', 'user_id', 'listable_type', 'listable_id'];
 
     public function media(): HasMany {
         return $this->hasMany(Media::class);
@@ -48,20 +48,20 @@ class Listing extends Model {
     }
 
     public static function instantiateListing(Request $request, Accommodation $accommodation) {
-        $listing = new self;
-        $listing->name = $request->name;
-        $listing->description = $request->description;
-        $listing->province = $request->province;
-        $listing->city = $request->city;
-        $listing->barangay = $request->barangay;
-        $listing->street = $request->street;
-        $listing->zip_code = $request->zip_code;
-        $listing->price = $request->price;
-        $listing->maximum_guests = $request->maximum_guests;
-        $listing->listable()->associate($accommodation);
-        $listing->user()->associate(auth()->user());
+        $listingData = $request->all();
+        $listingData += [
+            'listable_id' => $accommodation->id,
+            'listable_type' => get_class($accommodation),
+            'user_id' => auth()->id(),
+        ];
 
-        return $listing;
+        return $listingData;
+    }
+
+    public static function createListing(Request $request, Accommodation $accommodation) {
+        $listingData = self::instantiateListing($request, $accommodation);
+
+        return self::create($listingData);
     }
 
     public static function updateMedia($listing, $mediaData) {
@@ -103,5 +103,21 @@ class Listing extends Model {
         return static::where('user_id', $userId)
             ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
             ->paginate($perPage);
+    }
+
+    public static function listingsResponse($listings) {
+        return [
+            'success' => true,
+            'listings' => $listings->items(),
+            'pagination' => [
+                'current_page' => $listings->currentPage(),
+                'per_page' => $listings->perPage(),
+                'total' => $listings->total(),
+                'next_page_url' => $listings->nextPageUrl(),
+                'path' => $listings->path(),
+                'prev_page_url' => $listings->previousPageUrl(),
+                'to' => $listings->lastItem(),
+            ],
+        ];
     }
 }

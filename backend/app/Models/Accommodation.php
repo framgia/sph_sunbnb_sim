@@ -18,16 +18,16 @@ class Accommodation extends Model {
     }
 
     public static function instantiateAccommodation(AccommodationRequest $request) {
-        $accommodation = new self;
-        $accommodation->type = $request->type;
-        $accommodation->bed_count = $request->bed_count;
-        $accommodation->bedroom_count = $request->bedroom_count;
-        $accommodation->bathroom_count = $request->bathroom_count;
-        $accommodation->minimum_days = $request->minimum_days;
-        $accommodation->maximum_days = $request->maximum_days;
-        $accommodation->amenities = json_encode($request->amenities);
+        $accommodationData = $request->all();
+        $accommodationData['amenities'] = json_encode($request->amenities);
 
-        return $accommodation;
+        return $accommodationData;
+    }
+
+    public static function createAccommodation(AccommodationRequest $request) {
+        $accommodationData = self::instantiateAccommodation($request);
+
+        return self::create($accommodationData);
     }
 
     public function getAmenitiesAttribute($value) {
