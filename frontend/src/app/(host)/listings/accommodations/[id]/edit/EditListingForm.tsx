@@ -41,8 +41,7 @@ const EditListingForm: React.FC<EditListingProps> = ({
 }) => {
   const deleteResult = async (): Promise<void> => {
     try {
-      const result = await deleteAccommodation(Number(listingid));
-      console.log(result);
+      await deleteAccommodation(Number(listingid));
     } catch (error) {
       console.error(error);
     }
