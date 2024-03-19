@@ -7,7 +7,6 @@ const WasherIcon: React.FC = () => {
       width="24"
       height="24"
       viewBox="0 0 32 32"
-      stroke="currentColor"
     >
       <g fill="none" fillRule="evenodd">
         <path d="M0 0h32v32H0z"></path>

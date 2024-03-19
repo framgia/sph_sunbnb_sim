@@ -37,7 +37,7 @@ const AmenityComponent: React.FC<AmenityComponentProps> = ({ amenity }) => {
     { name: "Beach Access", icon: <BeachAccessIcon /> },
     { name: "Cable", icon: <CableIcon /> },
     { name: "Crib", icon: <CribIcon /> },
-    { name: "Dryer", icon: DryerIcon },
+    { name: "Dryer", icon: <DryerIcon /> },
     { name: "Fan", icon: <FanIcon /> },
     { name: "Indoor Fireplace", icon: <FireplaceIcon /> },
     { name: "Gym", icon: <GymIcon /> },
