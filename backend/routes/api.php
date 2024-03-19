@@ -35,16 +35,16 @@ Route::group(['prefix' => 'register'], function () {
 
 Route::post('/forget-password', [PasswordController::class, 'forgotpassword']);
 Route::post('/reset-password', [PasswordController::class, 'resetpassword']);
+Route::get('/public-listingss', [ListingController::class, 'showPublicListings']);
 Route::get('/public-accommodations', [AccommodationController::class, 'showPublicAccommodations']);
+Route::get('/public-experiences', [ExperienceController::class, 'showPublicExperiences']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('accommodation', AccommodationController::class);
-    Route::get('/accommodation/user/{userId}', [AccommodationController::class, 'showAccommodationsByUser']);
-
     Route::apiResource('experience', ExperienceController::class);
-
-    Route::delete('/listing/{listingId}', [ListingController::class, 'destroy']);
+    Route::apiResource('/listing', ListingController::class);
+    Route::get('/listing/user/{userId}', [ListingController::class, 'showListingsByUser']);
 
     Route::put('/calendar/{listingId}', [CalendarController::class, 'set']);
     Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);

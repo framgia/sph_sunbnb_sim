@@ -6,6 +6,7 @@ use App\Http\Requests\V1\ExperienceRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 
 class Experience extends Model {
     use HasFactory;
@@ -35,5 +36,46 @@ class Experience extends Model {
         }
 
         return $listing;
+    }
+
+    private static function experienceResponse($experiences) {
+        return [
+            'success' => true,
+            'listings' => $experiences->items(),
+            'pagination' => [
+                'current_page' => $experiences->currentPage(),
+                'per_page' => $experiences->perPage(),
+                'total' => $experiences->total(),
+                'next_page_url' => $experiences->nextPageUrl(),
+                'path' => $experiences->path(),
+                'prev_page_url' => $experiences->previousPageUrl(),
+                'to' => $experiences->lastItem(),
+            ],
+        ];
+    }
+
+    public static function paginateExperienceListings(Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        $experiences = static::with(['listing.user', 'listing.media'])
+            ->paginate($perPage);
+
+        return self::experienceResponse($experiences);
+    }
+
+    public static function paginatePublicExperiences(Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        $experiences = static::whereHas('listing', function ($query) {
+            $query->where('status', 'active');
+        })
+            ->with(['listing.user', 'listing.media'])
+            ->paginate($perPage);
+
+        return self::experienceResponse($experiences);
+    }
+
+    public function getInclusionsAttribute($value) {
+        return json_decode($value, true);
     }
 }
