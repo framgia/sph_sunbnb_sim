@@ -26,8 +26,15 @@ class Accommodation extends Model {
 
     public static function createAccommodation(AccommodationRequest $request) {
         $accommodationData = self::instantiateAccommodation($request);
+        $accommodation = self::create($accommodationData);
 
-        return self::create($accommodationData);
+        $listing = Listing::createListing($request, $accommodation);
+
+        foreach ($request->media as $mediaUrl) {
+            $media = Media::createMedia($mediaUrl, $listing);
+        }
+
+        return $listing;
     }
 
     public function getAmenitiesAttribute($value) {

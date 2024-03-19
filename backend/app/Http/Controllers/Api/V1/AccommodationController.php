@@ -7,7 +7,6 @@ use App\Http\Requests\V1\AccommodationRequest;
 use App\Http\Requests\V1\AccommodationUpdateRequest;
 use App\Models\Accommodation;
 use App\Models\Listing;
-use App\Models\Media;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -61,18 +60,12 @@ class AccommodationController extends Controller {
         $request->validated();
 
         return DB::transaction(function () use ($request) {
-
             $accommodation = Accommodation::createAccommodation($request);
-            $listing = Listing::createListing($request, $accommodation);
-
-            foreach ($request->media as $mediaUrl) {
-                $media = Media::createMedia($mediaUrl, $listing);
-            }
 
             return response()->json([
                 'success' => true,
                 'message' => 'Listing created successfully',
-                'data' => $listing,
+                'data' => $accommodation,
             ], Response::HTTP_CREATED);
         });
     }

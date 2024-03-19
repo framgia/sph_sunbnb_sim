@@ -13,7 +13,7 @@ class Listing extends Model {
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code', 'price', 'maximum_guests', 'user_id', 'listable_type', 'listable_id'];
+    protected $fillable = ['name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code', 'price', 'maximum_guests'];
 
     public function media(): HasMany {
         return $this->hasMany(Media::class);
@@ -49,11 +49,6 @@ class Listing extends Model {
 
     public static function instantiateListing(Request $request, Accommodation $accommodation) {
         $listingData = $request->all();
-        $listingData += [
-            'listable_id' => $accommodation->id,
-            'listable_type' => get_class($accommodation),
-            'user_id' => auth()->id(),
-        ];
 
         return $listingData;
     }
@@ -61,7 +56,12 @@ class Listing extends Model {
     public static function createListing(Request $request, Accommodation $accommodation) {
         $listingData = self::instantiateListing($request, $accommodation);
 
-        return self::create($listingData);
+        $listing = new Listing($listingData);
+        $listing->user()->associate(auth()->user());
+        $listing->listable()->associate($accommodation);
+        $listing->save();
+
+        return $listing;
     }
 
     public static function updateMedia($listing, $mediaData) {

@@ -11,7 +11,7 @@ class Media extends Model {
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['media', 'listing_id'];
+    protected $fillable = ['media'];
 
     public function listing(): BelongsTo {
         return $this->belongsTo(Listing::class);
@@ -20,13 +20,13 @@ class Media extends Model {
     public static function instantiateMedia(string $mediaUrl, Listing $listing) {
         return [
             'media' => $mediaUrl,
-            'listing_id' => $listing->id,
         ];
     }
 
     public static function createMedia(string $mediaUrl, Listing $listing) {
         $mediaData = self::instantiateMedia($mediaUrl, $listing);
+        $media = $listing->media()->create($mediaData);
 
-        return self::create($mediaData);
+        return $media;
     }
 }
