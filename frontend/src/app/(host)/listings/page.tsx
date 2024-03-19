@@ -1,11 +1,11 @@
 import React from "react";
 import HostListings from "@/app/components/listings/HostListings";
-import ListingHeader from "@/app/components/listings/ListingHeader";
 import {
   LISTINGS_DEFAULT_PAGE,
   LISTINGS_DEFAULT_SIZE
 } from "@/app/interfaces/ListingsProps";
 import { getAccommodationsByUser } from "@/app/utils/helpers/accommodation/request";
+import HostListingHeader from "@/app/components/listings/HostListingHeader";
 
 const ListingsPage: React.FC = async ({
   searchParams
@@ -26,7 +26,7 @@ const ListingsPage: React.FC = async ({
     <main className="flex flex-col">
       {paginatedAccommodations !== undefined && (
         <div className="min-h-[600px]">
-          <ListingHeader type="accommodations" />
+          <HostListingHeader type="accommodations" />
           <HostListings
             listings={paginatedAccommodations.listings}
             pagination={paginatedAccommodations.pagination}
@@ -38,7 +38,7 @@ const ListingsPage: React.FC = async ({
       )}
       {/* TODO: Fetch experiences */}
       <div className="mt-16 min-h-[600px]">
-        <ListingHeader type="experiences" />
+        <HostListingHeader type="experiences" />
         <HostListings
           listings={[]}
           pagination={null}
