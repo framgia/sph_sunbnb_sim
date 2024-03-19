@@ -23,7 +23,7 @@ class ExperienceUpdateRequest extends FormRequest {
         return [
             'type' => ['required', 'string', 'in:'.implode(',', ExperienceType::getConstants())],
             'duration' => 'required|integer|min:1',
-            'language' => 'required|string',
+            'language' => ['required', 'string', 'in:'.implode(',', LanguageType::getConstants())],
             'inclusions' => ['array', 'in:'.implode(',', Inclusion::getConstants())],
             'name' => 'required|string',
             'description' => 'required',

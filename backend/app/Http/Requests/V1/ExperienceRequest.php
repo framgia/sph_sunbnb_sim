@@ -4,6 +4,7 @@ namespace App\Http\Requests\V1;
 
 use App\Enums\ExperienceType;
 use App\Enums\Inclusion;
+use App\Enums\LanguageType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ExperienceRequest extends FormRequest {
@@ -23,7 +24,7 @@ class ExperienceRequest extends FormRequest {
         return [
             'type' => ['required', 'string', 'in:'.implode(',', ExperienceType::getConstants())],
             'duration' => 'required|integer|min:1',
-            'language' => 'required|string',
+            'language' => ['required', 'string', 'in:'.implode(',', LanguageType::getConstants())],
             'inclusions' => ['array', 'in:'.implode(',', Inclusion::getConstants())],
             'name' => 'required|string',
             'description' => 'required',

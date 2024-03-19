@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ExperienceType;
+use App\Enums\LanguageType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->enum('type', ExperienceType::getConstants());
             $table->integer('duration');
-            $table->string('language');
+            $table->enum('language', LanguageType::getConstants());
             $table->json('inclusions')->nullable();
             $table->timestamps();
             $table->softDeletes();
