@@ -42,7 +42,11 @@ Route::get('/public-experiences', [ExperienceController::class, 'showPublicExper
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('accommodation', AccommodationController::class);
+    Route::get('/accommodation/user/{userId}', [ListingController::class, 'showAccommodationsByUser']);
+
     Route::apiResource('experience', ExperienceController::class);
+    Route::get('/experience/user/{userId}', [ListingController::class, 'showExperiencesByUser']);
+
     Route::apiResource('/listing', ListingController::class);
     Route::get('/listing/user/{userId}', [ListingController::class, 'showListingsByUser']);
 

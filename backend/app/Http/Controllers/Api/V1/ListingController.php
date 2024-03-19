@@ -52,6 +52,42 @@ class ListingController extends Controller {
         );
     }
 
+    public function showAccommodationsByUser($userId, Request $request) {
+        $user = User::find($userId);
+
+        if (! $user) {
+            return response()->json([
+                'success' => false,
+                'error' => 'User not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $listings = Listing::paginateAccommodationsByUser($userId, $request);
+
+        return response()->json(
+            Listing::listingsResponse($listings),
+            Response::HTTP_OK
+        );
+    }
+
+    public function showExperiencesByUser($userId, Request $request) {
+        $user = User::find($userId);
+
+        if (! $user) {
+            return response()->json([
+                'success' => false,
+                'error' => 'User not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $listings = Listing::paginateExperiencesByUser($userId, $request);
+
+        return response()->json(
+            Listing::listingsResponse($listings),
+            Response::HTTP_OK
+        );
+    }
+
     public function showPublicListings(Request $request) {
         $listings = Listing::paginatePublicListings($request);
 
