@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\ExperienceRequest;
+use App\Http\Requests\V1\ExperienceUpdateRequest;
 use App\Models\Experience;
+use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +35,29 @@ class ExperienceController extends Controller {
                 'message' => 'Experience listing created successfully',
                 'data' => $experience,
             ], Response::HTTP_CREATED);
+        });
+    }
+
+    public function update(ExperienceUpdateRequest $request, $listingId) {
+        $request->validated();
+
+        return DB::transaction(function () use ($request, $listingId) {
+
+            $listing = Listing::findOrFail($listingId);
+            $experience = $listing->listable;
+
+            $experience->update($request->only([
+                'type', 'duration', 'language', 'inclusions',
+            ]));
+
+            $listing->update($request->only([
+                'name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code',
+                'price', 'maximum_guests',
+            ]));
+
+            $listing->updateMedia($listing, $request->media);
+
+            return response()->json(['message' => 'Experience listing updated successfully'], Response::HTTP_OK);
         });
     }
 }

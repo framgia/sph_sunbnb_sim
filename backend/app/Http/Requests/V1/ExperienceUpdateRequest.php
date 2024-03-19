@@ -6,7 +6,7 @@ use App\Enums\ExperienceType;
 use App\Enums\Inclusion;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ExperienceRequest extends FormRequest {
+class ExperienceUpdateRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -34,8 +34,11 @@ class ExperienceRequest extends FormRequest {
             'zip_code' => 'required|numeric',
             'price' => 'required|numeric',
             'maximum_guests' => 'required|integer|min:1',
-            'media' => ['required', 'array', 'min:1'],
-            'media.*' => 'url',
+            'media.*' => ['array'],
+            'media.delete' => ['array'],
+            'media.delete.*' => 'integer',
+            'media.new' => ['array'],
+            'media.new.*' => 'url',
         ];
     }
 }

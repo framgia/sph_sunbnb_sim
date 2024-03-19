@@ -19,17 +19,7 @@ class ListingRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'name' => 'required|string',
-            'description' => 'required',
-            'province' => 'required|string',
-            'city' => 'required|string',
-            'barangay' => 'required|string',
-            'street' => 'required|string',
-            'zip_code' => 'required|numeric',
-            'price' => 'required|numeric',
-            'maximum_guests' => 'required|integer|min:1',
-            'media' => ['required', 'array', 'min:1'],
-            'media.*' => 'url',
+
         ];
     }
 }
