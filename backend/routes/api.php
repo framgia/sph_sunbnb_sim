@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CalendarController;
 use App\Http\Controllers\Api\V1\GoogleAuthController;
 use App\Http\Controllers\Api\V1\PasswordController;
+use App\Http\Controllers\Api\V1\ReviewController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,12 +36,16 @@ Route::post('/forget-password', [PasswordController::class, 'forgotpassword']);
 Route::post('/reset-password', [PasswordController::class, 'resetpassword']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('accommodation', AccommodationController::class);
     Route::get('/accommodation/user/{userId}', [AccommodationController::class, 'showAccommodationsByUser']);
+
     Route::put('/calendar/{listingId}', [CalendarController::class, 'set']);
     Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
 
     Route::apiResource('user', UserController::class);
     Route::put('/user/change-password/{userId}', [UserController::class, 'updatePassword']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::post('/review/{listingId}', [ReviewController::class, 'store']);
+    Route::get('/review/{listingId}', [ReviewController::class, 'getByListing']);
 });
