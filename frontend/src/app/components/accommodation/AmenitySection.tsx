@@ -11,15 +11,18 @@ const AmenitySection: React.FC<AmenitySectionProps> = ({ amenities }) => {
       <span className="text-xl font-semibold">Features</span>
       <div className="my-10 w-2/4">
         <div className="grid grid-cols-2">
-          {amenities.map((amenity, i) => {
+          {amenities.slice(0, 6).map((amenity, i) => {
             return <AmenityComponent key={i} amenity={amenity} />;
           })}
         </div>
       </div>
-
-      <Button className="bg-primary-600 font-semibold text-white">
-        Show All Amenities
-      </Button>
+      {amenities.length > 6 ? (
+        <Button className="bg-primary-600 font-semibold text-white">
+          Show All Amenities
+        </Button>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

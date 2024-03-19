@@ -21,18 +21,22 @@ import ShowerIcon from "../svgs/Amenities/ShowerIcon";
 import TVIcon from "../svgs/Amenities/TVIcon";
 import WasherIcon from "../svgs/Amenities/WasherIcon";
 import WifiIcon from "../svgs/Amenities/WifiIcon";
+import BathtubIcon from "../svgs/Amenities/BathtubIcon";
+import CribIcon from "../svgs/Amenities/CribIcon";
 
 interface AmenityComponentProps {
   amenity: string;
 }
 const AmenityComponent: React.FC<AmenityComponentProps> = ({ amenity }) => {
   const amenities = [
-    { name: "Air Con", icon: <AirConIcon /> },
+    { name: "Air Conditioning", icon: <AirConIcon /> },
     { name: "Backyard", icon: <BackyardIcon /> },
     { name: "Balcony", icon: <BalconyIcon /> },
+    { name: "Bathtub", icon: <BathtubIcon /> },
     { name: "BBQ Grill", icon: <BBQGrillIcon /> },
     { name: "Beach Access", icon: <BeachAccessIcon /> },
     { name: "Cable", icon: <CableIcon /> },
+    { name: "Crib", icon: <CribIcon /> },
     { name: "Dryer", icon: DryerIcon },
     { name: "Fan", icon: <FanIcon /> },
     { name: "Indoor Fireplace", icon: <FireplaceIcon /> },
@@ -41,11 +45,12 @@ const AmenityComponent: React.FC<AmenityComponentProps> = ({ amenity }) => {
     { name: "Iron", icon: <IronIcon /> },
     { name: "Jacuzzi", icon: <JacuzziIcon /> },
     { name: "Kitchen", icon: <KitchenIcon /> },
+    { name: "Outdoor Fireplace", icon: <FireplaceIcon /> },
     { name: "Parking", icon: <ParkingIcon /> },
     { name: "Pets Allowed", icon: <PetsAllowedIcon /> },
     { name: "Pool", icon: <PoolIcon /> },
     { name: "Shower", icon: <ShowerIcon /> },
-    { name: "Television", icon: <TVIcon /> },
+    { name: "TV", icon: <TVIcon /> },
     { name: "Washer", icon: <WasherIcon /> },
     { name: "Wifi", icon: <WifiIcon /> }
   ];
