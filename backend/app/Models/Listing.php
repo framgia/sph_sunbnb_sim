@@ -73,8 +73,7 @@ class Listing extends Model {
         }
 
         foreach ($mediaData['new'] as $newItem) {
-            $newMedia = Media::instantiateMedia($newItem, $listing);
-            $newMedia->save();
+            Media::createMedia($newItem, $listing);
         }
     }
 
