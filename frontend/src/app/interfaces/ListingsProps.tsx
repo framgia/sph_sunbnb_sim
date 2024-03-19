@@ -33,3 +33,7 @@ export interface ListingPaginationProps {
   onPageChange: (page: number) => void;
   onPageSizeChange: (size: number) => void;
 }
+
+export interface GuestListingsProps {
+  type: "accommodations" | "experiences";
+}
