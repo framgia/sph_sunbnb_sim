@@ -21,7 +21,7 @@ export interface HostingListingsSkeletonProps {
   number: number;
 }
 
-export interface ListingHeaderProps {
+export interface HostListingHeaderProps {
   type: "accommodations" | "experiences";
 }
 
@@ -30,4 +30,6 @@ export interface ListingPaginationProps {
   currentPage: number;
   perPage: number;
   type: "accommodations" | "experiences";
+  onPageChange: (page: number) => void;
+  onPageSizeChange: (size: number) => void;
 }
