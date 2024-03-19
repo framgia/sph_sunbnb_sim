@@ -203,7 +203,6 @@ export async function loginWithGoogle(
     body: JSON.stringify({ id_token: idToken })
   });
   const resData = await response.json();
-  console.log("Data received:", resData);
   if (resData.token !== undefined && resData.token !== "") {
     const decodedJwt: JwtPayloadwithUser = jwtDecode(resData.token as string);
     if (resData.success as boolean) {

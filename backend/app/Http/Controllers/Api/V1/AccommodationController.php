@@ -7,7 +7,6 @@ use App\Http\Requests\V1\AccommodationRequest;
 use App\Http\Requests\V1\AccommodationUpdateRequest;
 use App\Models\Accommodation;
 use App\Models\Listing;
-use App\Models\Media;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -17,19 +16,10 @@ class AccommodationController extends Controller {
     public function index(Request $request) {
         $listings = Listing::paginateListings($request);
 
-        return response()->json([
-            'success' => true,
-            'listings' => $listings->items(),
-            'pagination' => [
-                'current_page' => $listings->currentPage(),
-                'per_page' => $listings->perPage(),
-                'total' => $listings->total(),
-                'next_page_url' => $listings->nextPageUrl(),
-                'path' => $listings->path(),
-                'prev_page_url' => $listings->previousPageUrl(),
-                'to' => $listings->lastItem(),
-            ],
-        ], Response::HTTP_OK);
+        return response()->json(
+            Listing::listingsResponse($listings),
+            Response::HTTP_OK
+        );
     }
 
     public function show($listingId) {
@@ -60,40 +50,22 @@ class AccommodationController extends Controller {
 
         $listings = Listing::paginateListingsByUser($userId, $request);
 
-        return response()->json([
-            'success' => true,
-            'listings' => $listings->items(),
-            'pagination' => [
-                'current_page' => $listings->currentPage(),
-                'per_page' => $listings->perPage(),
-                'total' => $listings->total(),
-                'next_page_url' => $listings->nextPageUrl(),
-                'path' => $listings->path(),
-                'prev_page_url' => $listings->previousPageUrl(),
-                'to' => $listings->lastItem(),
-            ],
-        ], Response::HTTP_OK);
+        return response()->json(
+            Listing::listingsResponse($listings),
+            Response::HTTP_OK
+        );
     }
 
     public function store(AccommodationRequest $request) {
         $request->validated();
 
         return DB::transaction(function () use ($request) {
-
-            $accommodation = Accommodation::instantiateAccommodation($request);
-            $accommodation->save();
-
-            $listing = Listing::instantiateListing($request, $accommodation);
-            $listing->save();
-
-            foreach ($request->media as $mediaUrl) {
-                $media = Media::instantiateMedia($mediaUrl, $listing);
-                $media->save();
-            }
+            $accommodation = Accommodation::createAccommodation($request);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Listing created successfully',
+                'data' => $accommodation,
             ], Response::HTTP_CREATED);
         });
     }

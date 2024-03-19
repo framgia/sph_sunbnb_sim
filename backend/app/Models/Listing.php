@@ -48,18 +48,18 @@ class Listing extends Model {
     }
 
     public static function instantiateListing(Request $request, Accommodation $accommodation) {
-        $listing = new self;
-        $listing->name = $request->name;
-        $listing->description = $request->description;
-        $listing->province = $request->province;
-        $listing->city = $request->city;
-        $listing->barangay = $request->barangay;
-        $listing->street = $request->street;
-        $listing->zip_code = $request->zip_code;
-        $listing->price = $request->price;
-        $listing->maximum_guests = $request->maximum_guests;
-        $listing->listable()->associate($accommodation);
+        $listingData = $request->all();
+
+        return $listingData;
+    }
+
+    public static function createListing(Request $request, Accommodation $accommodation) {
+        $listingData = self::instantiateListing($request, $accommodation);
+
+        $listing = new Listing($listingData);
         $listing->user()->associate(auth()->user());
+        $listing->listable()->associate($accommodation);
+        $listing->save();
 
         return $listing;
     }
@@ -73,8 +73,7 @@ class Listing extends Model {
         }
 
         foreach ($mediaData['new'] as $newItem) {
-            $newMedia = Media::instantiateMedia($newItem, $listing);
-            $newMedia->save();
+            Media::createMedia($newItem, $listing);
         }
     }
 
@@ -103,6 +102,22 @@ class Listing extends Model {
         return static::where('user_id', $userId)
             ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
             ->paginate($perPage);
+    }
+
+    public static function listingsResponse($listings) {
+        return [
+            'success' => true,
+            'listings' => $listings->items(),
+            'pagination' => [
+                'current_page' => $listings->currentPage(),
+                'per_page' => $listings->perPage(),
+                'total' => $listings->total(),
+                'next_page_url' => $listings->nextPageUrl(),
+                'path' => $listings->path(),
+                'prev_page_url' => $listings->previousPageUrl(),
+                'to' => $listings->lastItem(),
+            ],
+        ];
     }
 
     public function handleCalendarEntries($dates) {
