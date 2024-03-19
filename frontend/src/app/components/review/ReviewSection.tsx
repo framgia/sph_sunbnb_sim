@@ -1,7 +1,6 @@
 import React from "react";
 import ReviewComponent from "./ReviewComponent";
 import ReviewHeader from "./ReviewHeader";
-import { Pagination } from "@nextui-org/react";
 import ReviewPaginate from "./ReviewPaginate";
 
 const ReviewSection: React.FC = () => {

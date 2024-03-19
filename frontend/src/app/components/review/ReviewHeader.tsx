@@ -1,4 +1,4 @@
-import { ReviewType } from "@/app/interfaces/types";
+import type { ReviewType } from "@/app/interfaces/types";
 import { Progress } from "@nextui-org/react";
 import React from "react";
 import CleanlinessIcon from "../svgs/Review/CleanlinessIcon";

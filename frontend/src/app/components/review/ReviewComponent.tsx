@@ -18,10 +18,10 @@ const ReviewComponent: React.FC<ReviewComponentProps> = ({
   return (
     <div className="p-2">
       <div className="mb-2 flex flex-row">
-        <div className="m-0 mr-2 items-center">
+        <div className="m-0 items-center p-2">
           <Avatar name={getInitials(name)} />
         </div>
-        <div className="flex flex-col pl-2">
+        <div className="flex flex-col p-1 pl-2">
           <span className="text-xl">{name}</span>
           <span className="text-sm font-light leading-5 text-foreground-500">
             {date}
