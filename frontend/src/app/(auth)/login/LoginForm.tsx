@@ -48,7 +48,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
     if (loginResult.message === "success") {
       // Redirect to "/" after successful login
       router.push("/");
-      console.log("Login successful");
     } else {
       // Handle failed login, such as displaying an error message
       setError("Incorrect Credentials, please input them again.");
