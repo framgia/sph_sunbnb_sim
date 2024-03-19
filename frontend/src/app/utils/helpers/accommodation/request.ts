@@ -31,7 +31,6 @@ async function createAccommodation(
     });
 
     const responseData = await response.json();
-    console.log(responseData);
     if (response.ok) {
       return {
         hasError: false,
@@ -83,7 +82,6 @@ async function updateAccommodation(
     });
 
     const responseData = await response.json();
-    console.log(responseData);
     if (response.ok) {
       return {
         hasError: false,
@@ -111,7 +109,6 @@ async function updateAccommodation(
 async function deleteAccommodation(id: number): Promise<{ message: string }> {
   const jwt = cookies().get("jwt")?.value;
   if (jwt !== undefined) {
-    console.log(jwt);
     const fetchApi = await fetch(`${config.backendUrl}/accommodation/${id}`, {
       method: "DELETE",
       headers: {
@@ -121,7 +118,6 @@ async function deleteAccommodation(id: number): Promise<{ message: string }> {
       }
     });
     const resData = await fetchApi.json();
-    console.log(resData);
     return {
       message: resData.message
     };
