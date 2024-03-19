@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class Listing extends Model {
     use HasFactory;
@@ -124,6 +125,13 @@ class Listing extends Model {
             })
             ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
             ->paginate($perPage);
+    }
+
+    public static function userNotFoundResponse() {
+        return response()->json([
+            'success' => false,
+            'error' => 'User not found',
+        ], Response::HTTP_NOT_FOUND);
     }
 
     public static function listingsResponse($listings) {

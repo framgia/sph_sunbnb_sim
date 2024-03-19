@@ -38,10 +38,7 @@ class ListingController extends Controller {
         $user = User::find($userId);
 
         if (! $user) {
-            return response()->json([
-                'success' => false,
-                'error' => 'User not found',
-            ], Response::HTTP_NOT_FOUND);
+            return Listing::userNotFoundResponse();
         }
 
         $listings = Listing::paginateListingsByUser($userId, $request);
@@ -56,10 +53,7 @@ class ListingController extends Controller {
         $user = User::find($userId);
 
         if (! $user) {
-            return response()->json([
-                'success' => false,
-                'error' => 'User not found',
-            ], Response::HTTP_NOT_FOUND);
+            return Listing::userNotFoundResponse();
         }
 
         $listings = Listing::paginateAccommodationsByUser($userId, $request);
@@ -74,10 +68,7 @@ class ListingController extends Controller {
         $user = User::find($userId);
 
         if (! $user) {
-            return response()->json([
-                'success' => false,
-                'error' => 'User not found',
-            ], Response::HTTP_NOT_FOUND);
+            return Listing::userNotFoundResponse();
         }
 
         $listings = Listing::paginateExperiencesByUser($userId, $request);
