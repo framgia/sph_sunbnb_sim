@@ -34,7 +34,8 @@ async function createAccommodation(
     if (response.ok) {
       return {
         hasError: false,
-        message: "Listing created successfully."
+        message: "Listing created successfully.",
+        id: responseData.data.id
       };
     } else if (responseData.error !== undefined) {
       throw new Error(responseData.error as string);
@@ -82,7 +83,6 @@ async function updateAccommodation(
     });
 
     const responseData = await response.json();
-    console.log(responseData);
     if (response.ok) {
       return {
         hasError: false,

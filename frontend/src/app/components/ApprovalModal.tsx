@@ -12,7 +12,7 @@ import type { ModalProps } from "../interfaces/ModalProps";
 import { useRouter } from "next/navigation";
 
 interface ApprovalModalProps extends ModalProps {
-  id: number;
+  id: string;
 }
 
 const ApprovalModal: React.FC<ApprovalModalProps> = ({
