@@ -33,6 +33,7 @@ Route::group(['prefix' => 'register'], function () {
 
 Route::post('/forget-password', [PasswordController::class, 'forgotpassword']);
 Route::post('/reset-password', [PasswordController::class, 'resetpassword']);
+Route::get('/public-accommodations', [AccommodationController::class, 'showPublicAccommodations']);
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);

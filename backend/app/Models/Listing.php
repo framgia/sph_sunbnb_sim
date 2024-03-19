@@ -104,6 +104,16 @@ class Listing extends Model {
             ->paginate($perPage);
     }
 
+    public static function paginatePublicListings(Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        return static::whereHas('listable', function ($query) {
+            $query->where('status', 'active');
+        })
+            ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
+            ->paginate($perPage);
+    }
+
     public static function listingsResponse($listings) {
         return [
             'success' => true,

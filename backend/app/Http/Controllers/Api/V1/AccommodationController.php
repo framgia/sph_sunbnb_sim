@@ -56,6 +56,15 @@ class AccommodationController extends Controller {
         );
     }
 
+    public function showPublicAccommodations(Request $request) {
+        $listings = Listing::paginatePublicListings($request);
+
+        return response()->json(
+            Listing::listingsResponse($listings),
+            Response::HTTP_OK
+        );
+    }
+
     public function store(AccommodationRequest $request) {
         $request->validated();
 
