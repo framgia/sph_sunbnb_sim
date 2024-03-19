@@ -31,7 +31,7 @@ class Accommodation extends Model {
         $listing = Listing::createListing($request, $accommodation);
 
         foreach ($request->media as $mediaUrl) {
-            $media = Media::createMedia($mediaUrl, $listing);
+            Media::createMedia($mediaUrl, $listing);
         }
 
         return $listing;
