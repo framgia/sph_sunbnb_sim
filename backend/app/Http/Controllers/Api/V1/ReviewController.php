@@ -26,7 +26,7 @@ class ReviewController extends Controller {
         $request->validated();
         $review = Review::createReview($request, $listingId);
         if ($review) {
-            return response()->json(['message' => 'Review created successfully', 'data' => $review], Response::HTTP_CREATED);
+            return response()->json(['message' => 'Review created successfully'], Response::HTTP_CREATED);
         } else {
             return response()->json(['message' => 'No review created'], Response::HTTP_NOT_FOUND);
         }
