@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { type ListingHeaderProps } from "@/app/interfaces/HostListingsProps";
+import { type ListingHeaderProps } from "@/app/interfaces/ListingsProps";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import AddIcon from "../svgs/Listings/AddIcon";
