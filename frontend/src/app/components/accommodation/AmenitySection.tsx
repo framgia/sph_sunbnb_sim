@@ -8,7 +8,7 @@ interface AmenitySectionProps {
 const AmenitySection: React.FC<AmenitySectionProps> = ({ amenities }) => {
   return (
     <div>
-      <span className="text-xl font-semibold">Features</span>
+      <span className="text-xl font-semibold">What this place offers</span>
       <div className="my-10 w-2/4">
         <div className="grid grid-cols-2">
           {amenities.slice(0, 6).map((amenity, i) => {
