@@ -4,7 +4,9 @@ use App\Http\Controllers\Api\V1\AccommodationController;
 use App\Http\Controllers\Api\V1\AdminAuthController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CalendarController;
+use App\Http\Controllers\Api\V1\ExperienceController;
 use App\Http\Controllers\Api\V1\GoogleAuthController;
+use App\Http\Controllers\Api\V1\ListingController;
 use App\Http\Controllers\Api\V1\PasswordController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +41,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('accommodation', AccommodationController::class);
     Route::get('/accommodation/user/{userId}', [AccommodationController::class, 'showAccommodationsByUser']);
+
+    Route::apiResource('experience', ExperienceController::class);
+
+    Route::delete('/listing/{listingId}', [ListingController::class, 'destroy']);
+
     Route::put('/calendar/{listingId}', [CalendarController::class, 'set']);
     Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
 

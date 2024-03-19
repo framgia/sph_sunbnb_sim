@@ -102,22 +102,4 @@ class AccommodationController extends Controller {
             return response()->json(['message' => 'Listing updated successfully'], Response::HTTP_OK);
         });
     }
-
-    public function destroy($listingId) {
-        $listing = Listing::with(['listable', 'media'])->find($listingId);
-
-        if ($listing) {
-            $listing->deleteListing();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Listing is deleted successfully',
-            ], Response::HTTP_OK);
-        } else {
-            return response()->json([
-                'success' => false,
-                'error' => 'Listing not found',
-            ], Response::HTTP_NOT_FOUND);
-        }
-    }
 }

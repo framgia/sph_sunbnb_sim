@@ -12,10 +12,9 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('listing_id')->constrained();
+            $table->enum('type', ExperienceType::getConstants());
             $table->integer('duration');
             $table->string('language');
-            $table->enum('name', ExperienceType::getConstants());
             $table->json('inclusions')->nullable();
             $table->timestamps();
             $table->softDeletes();

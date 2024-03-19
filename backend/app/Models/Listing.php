@@ -31,10 +31,6 @@ class Listing extends Model {
         return $this->hasMany(Report::class);
     }
 
-    public function experiences(): HasMany {
-        return $this->hasMany(Experience::class);
-    }
-
     public function reviews(): HasMany {
         return $this->hasMany(Review::class);
     }
@@ -47,18 +43,12 @@ class Listing extends Model {
         return $this->belongsTo(User::class);
     }
 
-    public static function instantiateListing(Request $request, Accommodation $accommodation) {
+    public static function createListing(Request $request, $listable) {
         $listingData = $request->all();
-
-        return $listingData;
-    }
-
-    public static function createListing(Request $request, Accommodation $accommodation) {
-        $listingData = self::instantiateListing($request, $accommodation);
 
         $listing = new Listing($listingData);
         $listing->user()->associate(auth()->user());
-        $listing->listable()->associate($accommodation);
+        $listing->listable()->associate($listable);
         $listing->save();
 
         return $listing;
