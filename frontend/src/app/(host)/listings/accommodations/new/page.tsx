@@ -9,6 +9,7 @@ import { validateAccommodation } from "@/app/utils/helpers/accommodation/validat
 
 const NewListingPage: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [id, setId] = useState("");
   const [error, setError] = useState<Record<string, string | boolean>>({
     hasError: false,
     message: ""
@@ -51,6 +52,7 @@ const NewListingPage: React.FC = () => {
           hasError: result.hasError
         });
       } else {
+        setId(result.id as string);
         onOpen();
       }
     }
@@ -67,7 +69,7 @@ const NewListingPage: React.FC = () => {
         loading={isLoading}
         error={error}
       />
-      <ApprovalModal isOpen={isOpen} onClose={onClose} size={"full"} />
+      <ApprovalModal isOpen={isOpen} onClose={onClose} size={"full"} id={id} />
     </main>
   );
 };
