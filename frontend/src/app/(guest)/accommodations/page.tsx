@@ -1,11 +1,14 @@
+import GuestListingHeader from "@/app/components/listings/GuestListingHeader";
+import GuestListings from "@/app/components/listings/GuestListings";
 import React from "react";
 
 const AccommodationsPage: React.FC = () => {
-    return (
-        <>
-            <h1>Accommodations Page</h1>
-        </>
-    );
+  return (
+    <main className="flex flex-col">
+      <GuestListingHeader type="accommodations" />
+      <GuestListings />
+    </main>
+  );
 };
 
 export default AccommodationsPage;

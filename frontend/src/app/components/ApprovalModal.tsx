@@ -9,8 +9,23 @@ import {
 } from "@nextui-org/react";
 import WatchIcon from "./svgs/WatchIcon";
 import type { ModalProps } from "../interfaces/ModalProps";
+import { useRouter } from "next/navigation";
 
-const ApprovalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+interface ApprovalModalProps extends ModalProps {
+  id: string;
+}
+
+const ApprovalModal: React.FC<ApprovalModalProps> = ({
+  isOpen,
+  onClose,
+  id
+}) => {
+  const router = useRouter();
+
+  function handleClick(): void {
+    router.push(`/listings/accommodations/${id}`);
+    onClose();
+  }
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -38,7 +53,7 @@ const ApprovalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                   <Button
                     className="mb-5 bg-primary-600 text-white"
                     variant="light"
-                    onPress={onClose}
+                    onPress={handleClick}
                   >
                     Preview
                   </Button>

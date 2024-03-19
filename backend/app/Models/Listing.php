@@ -24,7 +24,7 @@ class Listing extends Model {
     }
 
     public function bookings(): HasMany {
-        return $this->hasMany(Accommodation::class);
+        return $this->hasMany(Booking::class);
     }
 
     public function reports(): HasMany {
@@ -118,5 +118,28 @@ class Listing extends Model {
                 'to' => $listings->lastItem(),
             ],
         ];
+    }
+
+    public function handleCalendarEntries($dates) {
+        foreach ($dates as $date) {
+            $calendarEntry = $this->calendars()->where('date', $date['date'])->first();
+
+            if ($calendarEntry) {
+                $calendarEntry->update(['available' => $date['available']]);
+            } else {
+                $this->createCalendarEntry($date);
+            }
+        }
+    }
+
+    private function createCalendarEntry($date) {
+        $createdEntry = $this->calendars()->create([
+            'date' => $date['date'],
+            'available' => $date['available'],
+        ]);
+
+        if (! $createdEntry) {
+            throw new \Exception('No new entries were created.');
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\CalendarRequest;
 use App\Models\Calendar;
 use App\Models\Listing;
 use Illuminate\Http\Response;
@@ -18,41 +19,16 @@ class CalendarController extends Controller {
         }
     }
 
-    public function set($listingId) {
+    public function set(CalendarRequest $request, $listingId) {
         try {
-            $data = request()->validate([
-                'dates' => 'required|array',
-                'dates.*.date' => 'required|date',
-                'dates.*.available' => 'required|boolean',
-            ]);
+            $request->validated();
 
-            $dates = $data['dates'];
-            $createdEntry = null;
+            $listing = Listing::find($listingId);
 
-            foreach ($dates as $date) {
-                $listing = Listing::find($listingId);
-
-                if (! $listing) {
-                    return response()->json(['message' => 'Listing not found.'], Response::HTTP_NOT_FOUND);
-                }
-
-                $calendarEntry = Calendar::where('listing_id', $listingId)
-                    ->where('date', $date['date'])
-                    ->first();
-
-                if ($calendarEntry) {
-                    $calendarEntry->update(['available' => $date['available']]);
-                } else {
-                    $createdEntry = $listing->calendars()->create([
-                        'date' => $date['date'],
-                        'available' => $date['available'],
-                    ]);
-
-                    if (! $createdEntry) {
-                        return response()->json(['message' => 'No new entries were created.'], Response::HTTP_BAD_REQUEST);
-                    }
-                }
+            if (! $listing) {
+                return response()->json(['message' => 'Listing not found.'], Response::HTTP_NOT_FOUND);
             }
+            $listing->handleCalendarEntries($request->input('dates'));
 
             return response()->json(['message' => 'Calendar availability has been set successfully'], Response::HTTP_CREATED);
         } catch (\Exception $e) {
