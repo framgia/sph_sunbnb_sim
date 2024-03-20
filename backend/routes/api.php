@@ -46,6 +46,6 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/user/change-password/{userId}', [UserController::class, 'updatePassword']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::post('/review/{listingId}', [ReviewController::class, 'store']);
+    Route::post('/review/{listingId}', [ReviewController::class, 'store'])->middleware('role:guest');
     Route::get('/review/{listingId}', [ReviewController::class, 'getByListing']);
 });
