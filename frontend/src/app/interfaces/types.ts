@@ -115,3 +115,13 @@ export interface CalendarDate {
 export interface JwtPayloadwithUser extends JwtPayload {
   user: UserSessionType;
 }
+
+export interface ReviewType {
+  name: string;
+  created_at: string;
+  overall_rating: number;
+  cleanliness_rating: number;
+  location_rating: number;
+  value_rating: number;
+  comment: string;
+}

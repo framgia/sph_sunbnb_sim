@@ -1,7 +1,9 @@
 import AmenitySection from "@/app/components/accommodation/AmenitySection";
 import ListingHeader from "@/app/components/accommodation/ListingHeader";
+import ReviewSection from "@/app/components/review/ReviewSection";
 import { getAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { Divider } from "@nextui-org/react";
+import { redirect } from "next/navigation";
 import React from "react";
 
 interface ListingDetailsPageProps {
@@ -13,8 +15,12 @@ interface ListingDetailsPageProps {
 const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
   params
 }) => {
-  /* based on backend data format */
-  const accData = await getAccommodation(Number(params.id));
+  let accData;
+  try {
+    accData = await getAccommodation(Number(params.id));
+  } catch (err) {
+    redirect("/not-found");
+  }
 
   return (
     <>
@@ -57,14 +63,7 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
           <Divider className="my-10 w-full " />
           <AmenitySection amenities={accData.listable.amenities} />
           <Divider className="my-10 w-full " />
-          {/* Separate Ratings and Reviews to a different component in the future */}
-          <span className="text-xl font-semibold">
-            {" "}
-            Ratings and Reviews (0){" "}
-          </span>
-          <div className="flex h-40 w-full items-center justify-center">
-            <span className="text-zinc-500">No reviews yet.</span>
-          </div>
+          <ReviewSection />
         </>
       ) : (
         <></>
