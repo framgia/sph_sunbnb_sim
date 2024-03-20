@@ -10,7 +10,6 @@ import {
   DropdownTrigger
 } from "@nextui-org/react";
 import MenuIcon from "../svgs/Navbar/MenuIcon";
-import Link from "next/link";
 import { UserRole } from "@/app/utils/enums";
 import { type NavbarProps } from "@/app/interfaces/NavbarProps";
 import { getInitials } from "@/app/utils/helpers/getInitials";
@@ -63,8 +62,12 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = (props) => {
       <DropdownMenu aria-label="Profile Actions">
         <DropdownSection showDivider={props.role !== UserRole.DEFAULT}>
           {actions[props.role].map((action, index) => (
-            <DropdownItem key={index} textValue={action.label}>
-              <Link href={action.path}>{action.label}</Link>
+            <DropdownItem
+              href={action.path}
+              key={index}
+              textValue={action.label}
+            >
+              {action.label}
             </DropdownItem>
           ))}
         </DropdownSection>
@@ -82,11 +85,11 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = (props) => {
           </DropdownSection>
         ) : (
           <DropdownSection>
-            <DropdownItem key="login" textValue="Login">
-              <Link href="/login">Login</Link>
+            <DropdownItem href="/login" key="login" textValue="Login">
+              Login
             </DropdownItem>
-            <DropdownItem key="signup" textValue="Sign up">
-              <Link href="/signup">Sign Up</Link>
+            <DropdownItem href="/signup" key="signup" textValue="Sign up">
+              Sign Up
             </DropdownItem>
           </DropdownSection>
         )}

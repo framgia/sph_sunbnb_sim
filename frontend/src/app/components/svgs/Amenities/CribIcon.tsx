@@ -10,7 +10,7 @@ const CribIcon: React.FC = () => {
       viewBox="0 0 48 48"
     >
       <path
-        fill="currentColor"
+        stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="4"
