@@ -24,7 +24,8 @@ class CheckOwnership {
                 if ($userId != $request->route('userId')) {
                     abort(403, 'Unauthorized action.');
                 }
-                break;
+
+                return $next($request);
             default:
                 abort(400, 'Invalid resource type.');
         }

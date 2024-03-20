@@ -61,8 +61,11 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/calendar/{listingId}', [CalendarController::class, 'set'])->middleware('role:host');
     Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
 
-    Route::apiResource('user', UserController::class);
-    Route::put('/user/change-password/{userId}', [UserController::class, 'updatePassword']);
+    Route::apiResource('user', UserController::class)->except(['update']);
+    Route::put('user/{userId}', [UserController::class, 'update'])
+        ->middleware('check.owner:user');
+    Route::put('/user/change-password/{userId}', [UserController::class, 'updatePassword'])
+        ->middleware('check.owner:user');
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::post('/review/{listingId}', [ReviewController::class, 'store'])->middleware('role:guest');
