@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Calendar;
 use App\Models\Listing;
 use Closure;
 use Illuminate\Http\Request;
@@ -18,11 +17,8 @@ class CheckOwnership {
     public function handle(Request $request, Closure $next, $type): Response {
         $userId = Auth::id();
         switch ($type) {
-            case 'accommodation':
-                $resource = Listing::findOrFail($request->route('accommodation'));
-                break;
-            case 'calendar':
-                $resource = Calendar::findOrFail($request->route('listingId'));
+            case 'listing':
+                $resource = Listing::findOrFail($request->route('listingId'));
                 break;
             case 'user':
                 if ($userId != $request->route('userId')) {

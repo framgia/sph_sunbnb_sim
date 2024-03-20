@@ -41,18 +41,24 @@ Route::get('/public-accommodations', [AccommodationController::class, 'showPubli
 Route::get('/public-experiences', [ExperienceController::class, 'showPublicExperiences']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::apiResource('accommodation', AccommodationController::class)
-        ->only(['update'])
-        ->middleware('check.owner:accommodation');
+    Route::apiResource('accommodation', AccommodationController::class)->except(['update', 'store']);
+    Route::post('accommodation', [AccommodationController::class, 'store'])->middleware('role:host');
+    Route::put('accommodation/{listingId}', [AccommodationController::class, 'update'])
+        ->middleware('check.owner:listing');
     Route::get('/accommodation/user/{userId}', [ListingController::class, 'showAccommodationsByUser']);
 
-    Route::apiResource('experience', ExperienceController::class);
+    Route::apiResource('experience', ExperienceController::class)->except(['update', 'store']);
+    Route::post('experience', [ExperienceController::class, 'store'])->middleware('role:host');
+    Route::put('experience/{listingId}', [ExperienceController::class, 'update'])
+        ->middleware('check.owner:listing');
     Route::get('/experience/user/{userId}', [ListingController::class, 'showExperiencesByUser']);
 
-    Route::apiResource('/listing', ListingController::class);
+    Route::apiResource('/listing', ListingController::class)->except(['destroy']);
+    Route::delete('listing/{listingId}', [ListingController::class, 'destroy'])
+        ->middleware('check.owner:listing');
     Route::get('/listing/user/{userId}', [ListingController::class, 'showListingsByUser']);
 
-    Route::put('/calendar/{listingId}', [CalendarController::class, 'set']);
+    Route::put('/calendar/{listingId}', [CalendarController::class, 'set'])->middleware('role:host');
     Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
 
     Route::apiResource('user', UserController::class);
