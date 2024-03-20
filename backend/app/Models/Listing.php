@@ -172,4 +172,39 @@ class Listing extends Model {
             throw new \Exception('No new entries were created.');
         }
     }
+
+    public static function filter($filters) {
+        $query = self::query()->whereHasMorph('listable', [Accommodation::class], function ($query) {
+            $query->where('listable_type', Accommodation::class);
+        });
+
+        if (isset($filters['search'])) {
+            $query->where('name', 'like', '%'.$filters['search'].'%');
+        }
+
+        if (isset($filters['price_range'])) {
+            $priceRange = explode('-', $filters['price_range']);
+            $minPrice = floatval($priceRange[0]);
+            $maxPrice = floatval($priceRange[1]);
+            $query->whereBetween('price', [$minPrice, $maxPrice]);
+        }
+
+        if (isset($filters['ratings'])) {
+            $ratings = explode('-', $filters['ratings']);
+            $query->whereHas('reviews', function ($query) use ($ratings) {
+                $query->whereBetween('overall_rating', [$ratings[0], $ratings[1]]);
+            });
+        }
+
+        if (isset($filters['date_range'])) {
+            $dateRange = explode(':', $filters['date_range']);
+
+            $query->whereHas('calendars', function ($query) use ($dateRange) {
+                $query->whereBetween('date', [$dateRange[0], $dateRange[1]])
+                    ->where('available', true);
+            });
+        }
+
+        return $query->get();
+    }
 }

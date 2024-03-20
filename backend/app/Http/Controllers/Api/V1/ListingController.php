@@ -9,13 +9,24 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ListingController extends Controller {
-    public function index(Request $request) {
-        $listings = Listing::paginateListings($request);
+    // public function index(Request $request) {
+    //     $listings = Listing::paginateListings($request);
 
-        return response()->json(
-            Listing::listingsResponse($listings),
-            Response::HTTP_OK
-        );
+    //     return response()->json(
+    //         Listing::listingsResponse($listings),
+    //         Response::HTTP_OK
+    //     );
+    // }
+
+    public function index(Request $request) {
+        $filters = $request->only(['search', 'price_range', 'ratings', 'date_range']);
+
+        $listings = Listing::filter($filters);
+
+        return response()->json([
+            'success' => true,
+            'listings' => $listings,
+        ], Response::HTTP_OK);
     }
 
     public function show($listingId) {

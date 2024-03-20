@@ -28,6 +28,7 @@ class Experience extends Model {
 
     public static function instantiateExperience(ExperienceRequest $request) {
         $experienceData = $request->all();
+        $experienceData['language'] = json_encode($request->language);
         $experienceData['inclusions'] = json_encode($request->inclusions);
 
         return $experienceData;
@@ -62,7 +63,7 @@ class Experience extends Model {
             'type' => $request->type,
             'start_time' => $startTime,
             'end_time' => $endTime,
-            'language' => $request->language,
+            'language' => json_encode($request->language),
             'inclusions' => json_encode($request->inclusions),
         ]);
     }
@@ -116,6 +117,10 @@ class Experience extends Model {
     }
 
     public function getInclusionsAttribute($value) {
+        return json_decode($value, true);
+    }
+
+    public function getLanguageAttribute($value) {
         return json_decode($value, true);
     }
 }
