@@ -36,7 +36,9 @@ Route::post('/forget-password', [PasswordController::class, 'forgotpassword']);
 Route::post('/reset-password', [PasswordController::class, 'resetpassword']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::apiResource('accommodation', AccommodationController::class);
+    Route::apiResource('accommodation', AccommodationController::class)
+        ->only(['update'])
+        ->middleware('check.owner:accommodation');
     Route::get('/accommodation/user/{userId}', [AccommodationController::class, 'showAccommodationsByUser']);
 
     Route::put('/calendar/{listingId}', [CalendarController::class, 'set']);
