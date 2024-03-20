@@ -42,20 +42,10 @@ class ExperienceController extends Controller {
         $request->validated();
 
         return DB::transaction(function () use ($request, $listingId) {
-
             $listing = Listing::findOrFail($listingId);
             $experience = $listing->listable;
 
-            $experience->update($request->only([
-                'type', 'duration', 'language', 'inclusions',
-            ]));
-
-            $listing->update($request->only([
-                'name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code',
-                'price', 'maximum_guests',
-            ]));
-
-            $listing->updateMedia($listing, $request->media);
+            $experience->updateExperience($request);
 
             return response()->json(['message' => 'Experience listing updated successfully'], Response::HTTP_OK);
         });

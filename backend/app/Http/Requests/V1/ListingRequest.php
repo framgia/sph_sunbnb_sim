@@ -9,7 +9,7 @@ class ListingRequest extends FormRequest {
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool {
-        return false;
+        return true;
     }
 
     /**
@@ -19,7 +19,15 @@ class ListingRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-
+            'name' => 'required|string',
+            'description' => 'required',
+            'province' => 'required|string',
+            'city' => 'required|string',
+            'barangay' => 'required|string',
+            'street' => 'required|string',
+            'zip_code' => 'required|numeric',
+            'price' => 'required|numeric',
+            'maximum_guests' => 'required|integer|min:1',
         ];
     }
 }

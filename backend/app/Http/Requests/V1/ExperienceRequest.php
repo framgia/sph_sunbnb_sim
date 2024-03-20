@@ -21,23 +21,16 @@ class ExperienceRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-        return [
+        $listingRequest = new ListingRequest();
+
+        return array_merge($listingRequest->rules(), [
             'type' => ['required', 'string', 'in:'.implode(',', ExperienceType::getConstants())],
             'start_time' => 'required|string|date_format:H:i',
             'end_time' => 'required|string|date_format:H:i',
             'language' => ['required', 'string', 'in:'.implode(',', LanguageType::getConstants())],
             'inclusions' => ['array', 'in:'.implode(',', Inclusion::getConstants())],
-            'name' => 'required|string',
-            'description' => 'required',
-            'province' => 'required|string',
-            'city' => 'required|string',
-            'barangay' => 'required|string',
-            'street' => 'required|string',
-            'zip_code' => 'required|numeric',
-            'price' => 'required|numeric',
-            'maximum_guests' => 'required|integer|min:1',
             'media' => ['required', 'array', 'min:1'],
             'media.*' => 'url',
-        ];
+        ]);
     }
 }

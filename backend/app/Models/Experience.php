@@ -3,17 +3,24 @@
 namespace App\Models;
 
 use App\Http\Requests\V1\ExperienceRequest;
+use App\Http\Requests\V1\ExperienceUpdateRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class Experience extends Model {
     use HasFactory;
     use SoftDeletes;
 
     protected $fillable = ['type', 'start_time', 'end_time', 'language', 'inclusions'];
+
+    protected $casts = [
+        'start_time' => 'datetime:H:i',
+        'end_time' => 'datetime:H:i',
+    ];
 
     public function listing() {
         return $this->morphOne(Listing::class, 'listable');
@@ -37,6 +44,38 @@ class Experience extends Model {
         }
 
         return $listing;
+    }
+
+    public function updateExperience(ExperienceUpdateRequest $request) {
+        DB::transaction(function () use ($request) {
+            $this->updateExperienceDetails($request);
+            $this->updateListingDetails($request);
+            $this->updateListingMedia($request->media);
+        });
+    }
+
+    private function updateExperienceDetails(ExperienceUpdateRequest $request) {
+        $startTime = Carbon::createFromFormat('H:i', $request->start_time);
+        $endTime = Carbon::createFromFormat('H:i', $request->end_time);
+
+        $this->update([
+            'type' => $request->type,
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            'language' => $request->language,
+            'inclusions' => json_encode($request->inclusions),
+        ]);
+    }
+
+    private function updateListingDetails(ExperienceUpdateRequest $request) {
+        $this->listing->update($request->only([
+            'name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code',
+            'price', 'maximum_guests',
+        ]));
+    }
+
+    private function updateListingMedia($media) {
+        $this->listing->updateMedia($this->listing, $media);
     }
 
     private static function experienceResponse($experiences) {
@@ -78,13 +117,5 @@ class Experience extends Model {
 
     public function getInclusionsAttribute($value) {
         return json_decode($value, true);
-    }
-
-    public function getStartTimeAttribute($value) {
-        return Carbon::createFromFormat('H:i:s', $value)->format('H:i');
-    }
-
-    public function getEndTimeAttribute($value) {
-        return Carbon::createFromFormat('H:i:s', $value)->format('H:i');
     }
 }

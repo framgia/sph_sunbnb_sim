@@ -20,7 +20,9 @@ class AccommodationRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-        return [
+        $listingRequest = new ListingRequest();
+
+        return array_merge($listingRequest->rules(), [
             'type' => ['required', 'string', 'in:'.implode(',', AccommodationType::getConstants())],
             'bed_count' => 'required|integer|min:1',
             'bedroom_count' => 'required|integer|min:1',
@@ -28,17 +30,8 @@ class AccommodationRequest extends FormRequest {
             'minimum_days' => 'required|integer|min:1',
             'maximum_days' => 'required|integer|min:1',
             'amenities' => ['array', 'in:'.implode(',', Amenity::getConstants())],
-            'name' => 'required|string',
-            'description' => 'required',
-            'province' => 'required|string',
-            'city' => 'required|string',
-            'barangay' => 'required|string',
-            'street' => 'required|string',
-            'zip_code' => 'required|numeric',
-            'price' => 'required|numeric',
-            'maximum_guests' => 'required|integer|min:1',
             'media' => ['required', 'array', 'min:1'],
             'media.*' => 'url',
-        ];
+        ]);
     }
 }
