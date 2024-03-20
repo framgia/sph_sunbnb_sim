@@ -1,4 +1,4 @@
-import { ModalProps } from "@/app/interfaces/ModalProps";
+import type { ModalProps } from "@/app/interfaces/ModalProps";
 import { Modal, ModalContent } from "@nextui-org/react";
 import React from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
