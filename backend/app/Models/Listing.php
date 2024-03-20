@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class Listing extends Model {
     use HasFactory;
@@ -31,10 +32,6 @@ class Listing extends Model {
         return $this->hasMany(Report::class);
     }
 
-    public function experiences(): HasMany {
-        return $this->hasMany(Experience::class);
-    }
-
     public function reviews(): HasMany {
         return $this->hasMany(Review::class);
     }
@@ -47,18 +44,12 @@ class Listing extends Model {
         return $this->belongsTo(User::class);
     }
 
-    public static function instantiateListing(Request $request, Accommodation $accommodation) {
+    public static function createListing(Request $request, $listable) {
         $listingData = $request->all();
-
-        return $listingData;
-    }
-
-    public static function createListing(Request $request, Accommodation $accommodation) {
-        $listingData = self::instantiateListing($request, $accommodation);
 
         $listing = new Listing($listingData);
         $listing->user()->associate(auth()->user());
-        $listing->listable()->associate($accommodation);
+        $listing->listable()->associate($listable);
         $listing->save();
 
         return $listing;
@@ -102,6 +93,45 @@ class Listing extends Model {
         return static::where('user_id', $userId)
             ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
             ->paginate($perPage);
+    }
+
+    public static function paginatePublicListings(Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        return static::whereHas('listable', function ($query) {
+            $query->where('status', 'active');
+        })
+            ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
+            ->paginate($perPage);
+    }
+
+    public static function paginateAccommodationsByUser($userId, Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        return static::where('user_id', $userId)
+            ->whereHasMorph('listable', [Accommodation::class], function ($query, $type) {
+                $query->where('listable_type', '=', Accommodation::class);
+            })
+            ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
+            ->paginate($perPage);
+    }
+
+    public static function paginateExperiencesByUser($userId, Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        return static::where('user_id', $userId)
+            ->whereHasMorph('listable', [Experience::class], function ($query, $type) {
+                $query->where('listable_type', '=', Experience::class);
+            })
+            ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
+            ->paginate($perPage);
+    }
+
+    public static function userNotFoundResponse() {
+        return response()->json([
+            'success' => false,
+            'error' => 'User not found',
+        ], Response::HTTP_NOT_FOUND);
     }
 
     public static function listingsResponse($listings) {

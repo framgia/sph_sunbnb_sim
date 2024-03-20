@@ -4,7 +4,9 @@ use App\Http\Controllers\Api\V1\AccommodationController;
 use App\Http\Controllers\Api\V1\AdminAuthController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CalendarController;
+use App\Http\Controllers\Api\V1\ExperienceController;
 use App\Http\Controllers\Api\V1\GoogleAuthController;
+use App\Http\Controllers\Api\V1\ListingController;
 use App\Http\Controllers\Api\V1\PasswordController;
 use App\Http\Controllers\Api\V1\ReviewController;
 use App\Http\Controllers\Api\V1\UserController;
@@ -34,10 +36,19 @@ Route::group(['prefix' => 'register'], function () {
 
 Route::post('/forget-password', [PasswordController::class, 'forgotpassword']);
 Route::post('/reset-password', [PasswordController::class, 'resetpassword']);
+Route::get('/public-listingss', [ListingController::class, 'showPublicListings']);
+Route::get('/public-accommodations', [AccommodationController::class, 'showPublicAccommodations']);
+Route::get('/public-experiences', [ExperienceController::class, 'showPublicExperiences']);
 
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('accommodation', AccommodationController::class);
-    Route::get('/accommodation/user/{userId}', [AccommodationController::class, 'showAccommodationsByUser']);
+    Route::get('/accommodation/user/{userId}', [ListingController::class, 'showAccommodationsByUser']);
+
+    Route::apiResource('experience', ExperienceController::class);
+    Route::get('/experience/user/{userId}', [ListingController::class, 'showExperiencesByUser']);
+
+    Route::apiResource('/listing', ListingController::class);
+    Route::get('/listing/user/{userId}', [ListingController::class, 'showListingsByUser']);
 
     Route::put('/calendar/{listingId}', [CalendarController::class, 'set']);
     Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
