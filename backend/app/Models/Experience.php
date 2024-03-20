@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class Experience extends Model {
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['type', 'duration', 'language', 'inclusions'];
+    protected $fillable = ['type', 'start_time', 'end_time', 'language', 'inclusions'];
 
     public function listing() {
         return $this->morphOne(Listing::class, 'listable');
@@ -77,5 +78,13 @@ class Experience extends Model {
 
     public function getInclusionsAttribute($value) {
         return json_decode($value, true);
+    }
+
+    public function getStartTimeAttribute($value) {
+        return Carbon::createFromFormat('H:i:s', $value)->format('H:i');
+    }
+
+    public function getEndTimeAttribute($value) {
+        return Carbon::createFromFormat('H:i:s', $value)->format('H:i');
     }
 }

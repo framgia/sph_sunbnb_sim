@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-class Language {
+class LanguageType {
     const FILIPINO = 'Filipino';
 
     const CEBUANO = 'Cebuano';

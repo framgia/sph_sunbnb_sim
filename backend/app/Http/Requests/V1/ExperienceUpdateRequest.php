@@ -22,7 +22,8 @@ class ExperienceUpdateRequest extends FormRequest {
     public function rules(): array {
         return [
             'type' => ['required', 'string', 'in:'.implode(',', ExperienceType::getConstants())],
-            'duration' => 'required|integer|min:1',
+            'start_time' => 'required|string|date_format:H:i',
+            'end_time' => 'required|string|date_format:H:i',
             'language' => ['required', 'string', 'in:'.implode(',', LanguageType::getConstants())],
             'inclusions' => ['array', 'in:'.implode(',', Inclusion::getConstants())],
             'name' => 'required|string',

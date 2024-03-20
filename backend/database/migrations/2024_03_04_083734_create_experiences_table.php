@@ -14,7 +14,8 @@ return new class extends Migration {
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
             $table->enum('type', ExperienceType::getConstants());
-            $table->integer('duration');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->enum('language', LanguageType::getConstants());
             $table->json('inclusions')->nullable();
             $table->timestamps();
