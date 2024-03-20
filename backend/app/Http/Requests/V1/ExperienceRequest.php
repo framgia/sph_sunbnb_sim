@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests\V1;
 
-use App\Enums\AccommodationType;
-use App\Enums\Amenity;
+use App\Enums\ExperienceType;
+use App\Enums\Inclusion;
+use App\Enums\LanguageType;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AccommodationRequest extends FormRequest {
+class ExperienceRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -23,13 +24,11 @@ class AccommodationRequest extends FormRequest {
         $listingRequest = new ListingRequest();
 
         return array_merge($listingRequest->rules(), [
-            'type' => ['required', 'string', 'in:'.implode(',', AccommodationType::getConstants())],
-            'bed_count' => 'required|integer|min:1',
-            'bedroom_count' => 'required|integer|min:1',
-            'bathroom_count' => 'required|integer|min:1',
-            'minimum_days' => 'required|integer|min:1',
-            'maximum_days' => 'required|integer|min:1',
-            'amenities' => ['array', 'in:'.implode(',', Amenity::getConstants())],
+            'type' => ['required', 'string', 'in:'.implode(',', ExperienceType::getConstants())],
+            'start_time' => 'required|string|date_format:H:i',
+            'end_time' => 'required|string|date_format:H:i',
+            'language' => ['required', 'string', 'in:'.implode(',', LanguageType::getConstants())],
+            'inclusions' => ['array', 'in:'.implode(',', Inclusion::getConstants())],
             'media' => ['required', 'array', 'min:1'],
             'media.*' => 'url',
         ]);

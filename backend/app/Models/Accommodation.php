@@ -6,6 +6,7 @@ use App\Http\Requests\V1\AccommodationRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 
 class Accommodation extends Model {
     use HasFactory;
@@ -35,6 +36,43 @@ class Accommodation extends Model {
         }
 
         return $listing;
+    }
+
+    private static function accommodationResponse($accommodations) {
+        return [
+            'success' => true,
+            'listings' => $accommodations->items(),
+            'pagination' => [
+                'current_page' => $accommodations->currentPage(),
+                'per_page' => $accommodations->perPage(),
+                'total' => $accommodations->total(),
+                'next_page_url' => $accommodations->nextPageUrl(),
+                'path' => $accommodations->path(),
+                'prev_page_url' => $accommodations->previousPageUrl(),
+                'to' => $accommodations->lastItem(),
+            ],
+        ];
+    }
+
+    public static function paginateAccommodationListings(Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        $accommodations = static::with(['listing.user', 'listing.media'])
+            ->paginate($perPage);
+
+        return self::accommodationResponse($accommodations);
+    }
+
+    public static function paginatePublicAccommodations(Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        $accommodations = static::whereHas('listing', function ($query) {
+            $query->where('status', 'active');
+        })
+            ->with(['listing.user', 'listing.media'])
+            ->paginate($perPage);
+
+        return self::accommodationResponse($accommodations);
     }
 
     public function getAmenitiesAttribute($value) {
