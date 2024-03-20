@@ -49,6 +49,13 @@ export enum Amenity {
   PETS_ALLOWED = "Pets Allowed"
 }
 
+export enum Inclusion {
+  FOOD = "Food",
+  DRINKS = "Drinks",
+  TICKETS = "Tickets",
+  TRANSPORTATION = "Transportation"
+}
+
 export enum ListingStatus {
   PENDING = "Pending",
   REFUSED = "Refused",

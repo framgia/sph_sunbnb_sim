@@ -3,7 +3,8 @@ import type {
   UserRole,
   Amenity,
   AccommodationType,
-  ListingStatus
+  ListingStatus,
+  Inclusion
 } from "../utils/enums";
 
 export interface MediaType {
@@ -69,6 +70,18 @@ export interface Accommodation {
   deleted_at?: Date | null;
 }
 
+export interface Experience {
+  id: number;
+  type: string;
+  start_time: string;
+  end_time: string;
+  language: string[];
+  inclusions: Inclusion[];
+  created_at: string;
+  updated_at: string;
+  deleted_at: null;
+}
+
 export interface Listing {
   id: number;
   user_id: number;
@@ -89,6 +102,31 @@ export interface Listing {
   updated_at: Date;
   deleted_at?: Date | null;
   listable: Accommodation;
+  media: MediaType[];
+}
+
+/* Must be created since typing listable as Accommodation | Experience in Listing will only allow 
+assignment of values overlapping Accommodation and Experience Type*/
+export interface Listing_Experience {
+  id: number;
+  user_id: number;
+  user: UserDetailsType;
+  status: ListingStatus;
+  name: string;
+  description: string;
+  province: string;
+  city: string;
+  barangay: string;
+  street: string;
+  zip_code: number;
+  price: number;
+  maximum_guests: number;
+  listable_type: string;
+  listable_id: number;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at?: Date | null;
+  listable: Experience;
   media: MediaType[];
 }
 
