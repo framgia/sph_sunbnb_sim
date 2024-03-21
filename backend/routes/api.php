@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\AccommodationController;
 use App\Http\Controllers\Api\V1\AdminAuthController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\BookingController;
 use App\Http\Controllers\Api\V1\CalendarController;
 use App\Http\Controllers\Api\V1\ExperienceController;
 use App\Http\Controllers\Api\V1\GoogleAuthController;
@@ -70,4 +71,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/review/{listingId}', [ReviewController::class, 'store'])->middleware('role:guest');
     Route::get('/review/{listingId}', [ReviewController::class, 'getByListing']);
+
+    Route::apiResource('booking', BookingController::class)->except(['store']);
+    Route::post('/booking', [BookingController::class, 'store'])->middleware('role:guest');
 });

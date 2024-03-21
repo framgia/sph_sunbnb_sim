@@ -9,14 +9,11 @@ import {
   Button
 } from "@nextui-org/react";
 
-import { useRouter } from "next/navigation";
 import WatchIcon from "../svgs/WatchIcon";
+import type { ModalProps } from "@/app/interfaces/ModalProps";
 
-const ExperienceApprovalModal: React.FC<any> = ({ isOpen, onClose, id }) => {
-  const router = useRouter();
-
+const ExperienceApprovalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   function handleClick(): void {
-    // router.push(`/listings/accommodations/${id}`);
     console.log("Preview");
     onClose();
   }

@@ -32,7 +32,7 @@ class GoogleAuthController extends Controller {
     public function register(GoogleRegistrationRequest $request) {
         $request->validated();
         $payload = $this->googleClient->verifyIdToken($request->input('id_token'));
-        $user = User::instantiateGoogleUser($payload, $request->input('role'));
+        $user = User::createGoogleUser($payload, $request->input('role'));
         $userToken = $user->createToken('Personal Access Token');
 
         return response()->json([

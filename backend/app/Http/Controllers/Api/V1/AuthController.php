@@ -23,7 +23,7 @@ class AuthController extends Controller {
 
     public function register(RegistrationRequest $request) {
         $request->validated();
-        $user = User::instantiateUser($request->all());
+        $user = User::createUser($request->all());
         $userToken = $user->createToken('Personal Access Token');
 
         return response()->json([
