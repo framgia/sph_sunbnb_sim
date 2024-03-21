@@ -6,6 +6,8 @@ import LocationSmallIcon from "../svgs/Review/LocationSmallIcon";
 import ValueSmallIcon from "../svgs/Review/ValueSmallIcon";
 import CleanlinessSmallIcon from "../svgs/Review/CleanlinessSmallIcon";
 import { type ReviewData } from "@/app/interfaces/types";
+import { validateReview } from "@/app/utils/helpers/review/validation";
+import { createReview } from "@/app/utils/helpers/review/request";
 
 interface AddReviewFormProps {
   listingId: number;
@@ -16,6 +18,11 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({
   listingId,
   onClose
 }) => {
+  const [error, setError] = useState<Record<string, string | boolean>>({
+    hasError: false,
+    message: ""
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const [rating, setRating] = useState<ReviewData>({
     cleanliness_rating: 0,
     location_rating: 0,
@@ -23,9 +30,27 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({
     comment: ""
   });
 
-  function handleClick(): void {
+  async function handleClick(): Promise<void> {
     console.log(rating);
-    onClose();
+    const validateData = await validateReview(rating);
+    if (validateData.hasError as boolean) {
+      setError({
+        message: validateData.message,
+        hasError: validateData.hasError
+      });
+    } else {
+      setIsLoading(true);
+      const result = await createReview(listingId, rating);
+      setIsLoading(false);
+      if (result.hasError === true) {
+        setError({
+          message: result.message,
+          hasError: result.hasError
+        });
+      } else {
+        onClose();
+      }
+    }
   }
 
   return (
@@ -71,6 +96,7 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({
           className="mt-2"
           maxRows={10}
           minRows={10}
+          isInvalid={error.hasError === true && rating.comment.trim() === ""}
           variant="bordered"
           placeholder="Leave a comment..."
           value={rating.comment}
@@ -79,8 +105,19 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({
           }}
         />
       </div>
+      <div>
+        {error.hasError === true && (
+          <div className="mt-5 text-xs text-red-500">{error.message}</div>
+        )}
+      </div>
       <div className="flex w-full justify-end px-5 py-2">
-        <Button color="primary" variant="solid" onClick={handleClick}>
+        <Button
+          color="primary"
+          variant="solid"
+          onClick={handleClick}
+          isLoading={isLoading}
+          isDisabled={isLoading}
+        >
           Submit
         </Button>
       </div>
