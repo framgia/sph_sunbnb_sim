@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\AccommodationType;
+use App\Enums\ExperienceType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -173,38 +175,86 @@ class Listing extends Model {
         }
     }
 
-    public static function filter($filters) {
-        $query = self::query()->whereHasMorph('listable', [Accommodation::class], function ($query) {
-            $query->where('listable_type', Accommodation::class);
+    public static function paginateFilteredItems(Request $request, $filterMethod) {
+        $filters = $request->only(['search', 'price_range', 'ratings', 'date_range', 'type']);
+        $perPage = $request->query('per_page', 3);
+
+        $query = self::$filterMethod($filters);
+
+        return $query->paginate($perPage);
+    }
+
+    public static function paginateFilteredAccommodations(Request $request) {
+        return self::paginateFilteredItems($request, 'filterAccommodation');
+    }
+
+    public static function paginateFilteredExperiences(Request $request) {
+        return self::paginateFilteredItems($request, 'filterExperiences');
+    }
+
+    public static function filterAccommodation($filters) {
+        return self::filterListings($filters, Accommodation::class, AccommodationType::getConstants());
+    }
+
+    public static function filterExperiences($filters) {
+        return self::filterListings($filters, Experience::class, ExperienceType::getConstants());
+    }
+
+    public static function filterListings($filters, $listableType, $constants) {
+        $query = self::query()->whereHasMorph('listable', [$listableType], function ($query) use ($listableType) {
+            $query->where('listable_type', $listableType)->where('status', 'active');
+        })->with('listable:id,type', 'media');
+
+        $filterMethods = [
+            'search' => 'applySearchFilter',
+            'price_range' => 'applyPriceRangeFilter',
+            'ratings' => 'applyRatingsFilter',
+            'date_range' => 'applyDateRangeFilter',
+            'type' => 'applyTypeFilter',
+        ];
+
+        foreach ($filterMethods as $filterKey => $methodName) {
+            if (isset($filters[$filterKey])) {
+                self::$methodName($query, $filters[$filterKey], $listableType, $constants);
+            }
+        }
+
+        return $query;
+    }
+
+    private static function applySearchFilter($query, $search) {
+        $query->where('name', 'like', '%'.$search.'%');
+    }
+
+    private static function applyPriceRangeFilter($query, $priceRange) {
+        $priceRange = explode('-', $priceRange);
+        $minPrice = floatval($priceRange[0]);
+        $maxPrice = floatval($priceRange[1]);
+        $query->whereBetween('price', [$minPrice, $maxPrice]);
+    }
+
+    private static function applyRatingsFilter($query, $ratings) {
+        $ratings = explode('-', $ratings);
+        $query->whereHas('reviews', function ($query) use ($ratings) {
+            $query->whereBetween('overall_rating', [$ratings[0], $ratings[1]]);
         });
+    }
 
-        if (isset($filters['search'])) {
-            $query->where('name', 'like', '%'.$filters['search'].'%');
+    private static function applyDateRangeFilter($query, $dateRange) {
+        $dateRange = explode(':', $dateRange);
+        $query->whereHas('calendars', function ($query) use ($dateRange) {
+            $query->whereBetween('date', [$dateRange[0], $dateRange[1]])
+                ->where('available', true);
+        });
+    }
+
+    private static function applyTypeFilter($query, $type, $listableType, $constants) {
+        if (! in_array($type, $constants)) {
+            throw new \InvalidArgumentException('Invalid type provided.');
         }
 
-        if (isset($filters['price_range'])) {
-            $priceRange = explode('-', $filters['price_range']);
-            $minPrice = floatval($priceRange[0]);
-            $maxPrice = floatval($priceRange[1]);
-            $query->whereBetween('price', [$minPrice, $maxPrice]);
-        }
-
-        if (isset($filters['ratings'])) {
-            $ratings = explode('-', $filters['ratings']);
-            $query->whereHas('reviews', function ($query) use ($ratings) {
-                $query->whereBetween('overall_rating', [$ratings[0], $ratings[1]]);
-            });
-        }
-
-        if (isset($filters['date_range'])) {
-            $dateRange = explode(':', $filters['date_range']);
-
-            $query->whereHas('calendars', function ($query) use ($dateRange) {
-                $query->whereBetween('date', [$dateRange[0], $dateRange[1]])
-                    ->where('available', true);
-            });
-        }
-
-        return $query->get();
+        $query->whereHas('listable', function ($query) use ($type) {
+            $query->where('type', $type);
+        });
     }
 }

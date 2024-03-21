@@ -18,11 +18,11 @@ class ExperienceController extends Controller {
         return response()->json($response, Response::HTTP_OK);
     }
 
-    public function showPublicExperiences(Request $request) {
-        $response = Experience::paginatePublicExperiences($request);
+    // public function showPublicExperiences(Request $request) {
+    //     $response = Experience::paginatePublicExperiences($request);
 
-        return response()->json($response, Response::HTTP_OK);
-    }
+    //     return response()->json($response, Response::HTTP_OK);
+    // }
 
     public function store(ExperienceRequest $request) {
         $request->validated();

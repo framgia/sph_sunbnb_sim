@@ -104,17 +104,17 @@ class Experience extends Model {
         return self::experienceResponse($experiences);
     }
 
-    public static function paginatePublicExperiences(Request $request) {
-        $perPage = $request->query('per_page', 3);
+    // public static function paginatePublicExperiences(Request $request) {
+    //     $perPage = $request->query('per_page', 3);
 
-        $experiences = static::whereHas('listing', function ($query) {
-            $query->where('status', 'active');
-        })
-            ->with(['listing.user', 'listing.media'])
-            ->paginate($perPage);
+    //     $experiences = static::whereHas('listing', function ($query) {
+    //         $query->where('status', 'active');
+    //     })
+    //         ->with(['listing.user', 'listing.media'])
+    //         ->paginate($perPage);
 
-        return self::experienceResponse($experiences);
-    }
+    //     return self::experienceResponse($experiences);
+    // }
 
     public function getInclusionsAttribute($value) {
         return json_decode($value, true);

@@ -18,11 +18,11 @@ class AccommodationController extends Controller {
         return response()->json($response, Response::HTTP_OK);
     }
 
-    public function showPublicAccommodations(Request $request) {
-        $response = Accommodation::paginatePublicAccommodations($request);
+    // public function showPublicAccommodations(Request $request) {
+    //     $response = Accommodation::paginatePublicAccommodations($request);
 
-        return response()->json($response, Response::HTTP_OK);
-    }
+    //     return response()->json($response, Response::HTTP_OK);
+    // }
 
     public function store(AccommodationRequest $request) {
         $request->validated();

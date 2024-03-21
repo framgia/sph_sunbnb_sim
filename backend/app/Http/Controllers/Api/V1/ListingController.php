@@ -9,24 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ListingController extends Controller {
-    // public function index(Request $request) {
-    //     $listings = Listing::paginateListings($request);
-
-    //     return response()->json(
-    //         Listing::listingsResponse($listings),
-    //         Response::HTTP_OK
-    //     );
-    // }
-
     public function index(Request $request) {
-        $filters = $request->only(['search', 'price_range', 'ratings', 'date_range']);
+        $listings = Listing::paginateListings($request);
 
-        $listings = Listing::filter($filters);
-
-        return response()->json([
-            'success' => true,
-            'listings' => $listings,
-        ], Response::HTTP_OK);
+        return response()->json(
+            Listing::listingsResponse($listings),
+            Response::HTTP_OK
+        );
     }
 
     public function show($listingId) {
@@ -92,6 +81,24 @@ class ListingController extends Controller {
 
     public function showPublicListings(Request $request) {
         $listings = Listing::paginatePublicListings($request);
+
+        return response()->json(
+            Listing::listingsResponse($listings),
+            Response::HTTP_OK
+        );
+    }
+
+    public function showPublicAccommodations(Request $request) {
+        $accommodations = Listing::paginateFilteredAccommodations($request);
+
+        return response()->json(
+            Listing::listingsResponse($accommodations),
+            Response::HTTP_OK
+        );
+    }
+
+    public function showPublicExperiences(Request $request) {
+        $listings = Listing::paginateFilteredExperiences($request);
 
         return response()->json(
             Listing::listingsResponse($listings),
