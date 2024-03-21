@@ -13,7 +13,7 @@ function setHeaders(): Record<string, string> {
   };
 }
 
-async function getReviews(id: number): Promise<ReviewType> {
+async function getReviews(id: number): Promise<ReviewType[]> {
   const response = await fetch(`${config.backendUrl}/review/${id}`, {
     method: "GET",
     headers: setHeaders()
@@ -21,7 +21,7 @@ async function getReviews(id: number): Promise<ReviewType> {
 
   const responseData = await response.json();
   if (response.ok) {
-    return responseData.listing;
+    return responseData.listings;
   } else throw new Error(responseData.error as string);
 }
 

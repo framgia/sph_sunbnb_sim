@@ -155,13 +155,16 @@ export interface JwtPayloadwithUser extends JwtPayload {
 }
 
 export interface ReviewType {
-  name: string;
   created_at: string;
   overall_rating: number;
   cleanliness_rating: number;
   location_rating: number;
   value_rating: number;
   comment: string;
+  user: {
+    first_name: string;
+    last_name: string;
+  };
 }
 
 export interface ReviewData {
