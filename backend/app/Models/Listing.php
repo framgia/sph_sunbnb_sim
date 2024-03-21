@@ -155,7 +155,10 @@ class Listing extends Model {
             $calendarEntry = $this->calendars()->where('date', $date['date'])->first();
 
             if ($calendarEntry) {
-                $calendarEntry->update(['available' => $date['available']]);
+                $calendarEntry->update([
+                    'available' => $date['available'],
+                    'booking_id' => $date['booking_id'] ?? null,
+                ]);
             } else {
                 $this->createCalendarEntry($date);
             }
@@ -166,6 +169,7 @@ class Listing extends Model {
         $createdEntry = $this->calendars()->create([
             'date' => $date['date'],
             'available' => $date['available'],
+            'booking_id' => $date['booking_id'] ?? null,
         ]);
 
         if (! $createdEntry) {
