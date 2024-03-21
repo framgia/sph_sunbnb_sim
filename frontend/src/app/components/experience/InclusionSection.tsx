@@ -1,6 +1,6 @@
 import React from "react";
 import InclusionItem from "./InclusionItem";
-import { Inclusion } from "@/app/utils/enums";
+import type { Inclusion } from "@/app/utils/enums";
 
 interface InclusionSectionProps {
   inclusions: Inclusion[];

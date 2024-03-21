@@ -149,7 +149,7 @@ const EditExperienceForm: React.FC<EditExperienceFormProps> = ({
             Delete
           </Button>
           <div className="flex gap-5">
-            <Link href={`/listings`}>
+            <Link href="/listings">
               <Button
                 className="justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5"
                 size="md"

@@ -2,11 +2,10 @@ import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
 import ReviewSection from "@/app/components/review/ReviewSection";
 import type {
-  Experience,
   Listing_Experience,
   UserDetailsType
 } from "@/app/interfaces/types";
-import { Inclusion, ListingStatus } from "@/app/utils/enums";
+import type { Inclusion, ListingStatus } from "@/app/utils/enums";
 import { Divider } from "@nextui-org/react";
 import React from "react";
 
@@ -39,7 +38,7 @@ const ExperienceDetailsPage: React.FC = () => {
       created_at: "2024-03-20T03:39:10.000000Z",
       updated_at: "2024-03-20T03:39:10.000000Z",
       deleted_at: null
-    } as Experience,
+    },
     media: [
       {
         id: 22,
@@ -75,7 +74,7 @@ const ExperienceDetailsPage: React.FC = () => {
       last_name: "Encabo",
       email: "user2@example.com",
       created_at: "2024-03-20T03:19:29.000000Z"
-    } as UserDetailsType
+    } as unknown as UserDetailsType
   };
   return (
     <>

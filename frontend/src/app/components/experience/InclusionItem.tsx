@@ -16,7 +16,7 @@ const InclusionItem: React.FC<InclusionItemProp> = ({ inclusion }) => {
   ];
 
   const inclusionObj = inclusions.find((inclsn) => {
-    return inclsn.name == inclusion;
+    return inclsn.name === inclusion;
   });
 
   return (

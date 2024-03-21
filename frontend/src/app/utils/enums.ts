@@ -70,13 +70,6 @@ export enum ExperienceType {
   SPORTS = "Sports"
 }
 
-export enum Inclusions {
-  FOOD = "Food",
-  DRINKS = "Drinks",
-  TRANSPORTATION = "Transportation",
-  TICKETS = "Tickets"
-}
-
 export enum Languages {
   FILIPINO = "Filipino",
   CEBUANO = "Cebuano",
