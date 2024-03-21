@@ -39,10 +39,10 @@ async function getListingNames(): Promise<AvailabilityListing[] | undefined> {
   try {
     const user = await checkCookies();
     if (user === null) throw new Error("No user found in cookies.");
-    const { listings: accommodations } = await fetchApi(
-      `${config.backendUrl}/accommodation/user/${user.id}?per_page=${1000}`
+    const { listings } = await fetchApi(
+      `${config.backendUrl}/listing/user/${user.id}?per_page=${1000}`
     );
-    return accommodations.map(({ id, name, price }: Listing) => ({
+    return listings.map(({ id, name, price }: Listing) => ({
       id,
       name,
       price

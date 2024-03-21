@@ -57,7 +57,7 @@ async function createAccommodation(
 }
 
 async function getAccommodation(id: number): Promise<Listing> {
-  const response = await fetch(`${config.backendUrl}/accommodation/${id}`, {
+  const response = await fetch(`${config.backendUrl}/listing/${id}`, {
     method: "GET",
     headers: setHeaders()
   });
@@ -110,7 +110,7 @@ async function updateAccommodation(
 async function deleteAccommodation(id: number): Promise<{ message: string }> {
   const jwt = cookies().get("jwt")?.value;
   if (jwt !== undefined) {
-    const fetchApi = await fetch(`${config.backendUrl}/accommodation/${id}`, {
+    const fetchApi = await fetch(`${config.backendUrl}/listing/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${jwt}`,

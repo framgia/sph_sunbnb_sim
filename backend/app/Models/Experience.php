@@ -28,6 +28,7 @@ class Experience extends Model {
 
     public static function instantiateExperience(ExperienceRequest $request) {
         $experienceData = $request->all();
+        $experienceData['language'] = json_encode($request->language);
         $experienceData['inclusions'] = json_encode($request->inclusions);
 
         return $experienceData;
@@ -62,7 +63,7 @@ class Experience extends Model {
             'type' => $request->type,
             'start_time' => $startTime,
             'end_time' => $endTime,
-            'language' => $request->language,
+            'language' => json_encode($request->language),
             'inclusions' => json_encode($request->inclusions),
         ]);
     }
@@ -103,19 +104,11 @@ class Experience extends Model {
         return self::experienceResponse($experiences);
     }
 
-    public static function paginatePublicExperiences(Request $request) {
-        $perPage = $request->query('per_page', 3);
-
-        $experiences = static::whereHas('listing', function ($query) {
-            $query->where('status', 'active');
-        })
-            ->with(['listing.user', 'listing.media'])
-            ->paginate($perPage);
-
-        return self::experienceResponse($experiences);
+    public function getInclusionsAttribute($value) {
+        return json_decode($value, true);
     }
 
-    public function getInclusionsAttribute($value) {
+    public function getLanguageAttribute($value) {
         return json_decode($value, true);
     }
 }

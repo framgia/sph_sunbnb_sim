@@ -88,6 +88,24 @@ class ListingController extends Controller {
         );
     }
 
+    public function showPublicAccommodations(Request $request) {
+        $accommodations = Listing::paginateFilteredAccommodations($request);
+
+        return response()->json(
+            Listing::listingsResponse($accommodations),
+            Response::HTTP_OK
+        );
+    }
+
+    public function showPublicExperiences(Request $request) {
+        $listings = Listing::paginateFilteredExperiences($request);
+
+        return response()->json(
+            Listing::listingsResponse($listings),
+            Response::HTTP_OK
+        );
+    }
+
     public function destroy($listingId) {
         $listing = Listing::with(['listable', 'media'])->find($listingId);
 
