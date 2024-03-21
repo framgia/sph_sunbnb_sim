@@ -16,6 +16,9 @@ export function middleware(request: NextRequest): NextResponse | undefined {
 
   //    if there is no user signed in
   if (user === null || user === undefined) {
+    if (request.nextUrl.pathname.startsWith("/login")) {
+      return NextResponse.next();
+    }
     if (request.nextUrl.pathname.startsWith("/profile")) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
@@ -37,3 +40,7 @@ export function middleware(request: NextRequest): NextResponse | undefined {
     }
   }
 }
+
+export const config = {
+  matcher: ["/((?!api|_next|.*\\..*).*)"]
+};
