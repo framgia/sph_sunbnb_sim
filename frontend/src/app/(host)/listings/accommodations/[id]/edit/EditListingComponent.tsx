@@ -6,7 +6,10 @@ import type {
   Accommodation
 } from "@/app/interfaces/AccomodationData";
 import { type Listing } from "@/app/interfaces/types";
-import { updateAccommodation } from "@/app/utils/helpers/accommodation/request";
+import {
+  deleteAccommodation,
+  updateAccommodation
+} from "@/app/utils/helpers/accommodation/request";
 import { useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -66,7 +69,7 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
       const result = await updateAccommodation(listing.id, data, media);
       setIsLoading(false);
       if (result.hasError === false) {
-        router.push("/listings");
+        router.push(`/listings/accommodations/${listing.id}`);
       }
       if (result.hasError === true) {
         setError({
@@ -74,6 +77,14 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
           hasError: result.hasError
         });
       }
+    }
+  }
+
+  async function handleDelete(): Promise<void> {
+    try {
+      await deleteAccommodation(Number(listing.id));
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -90,7 +101,12 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
         loading={isLoading}
         onPress={handleClick}
       />
-      <DeleteModal isOpen={isOpen} onClose={onClose} size={"full"} />
+      <DeleteModal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={"full"}
+        onDelete={handleDelete}
+      />
     </main>
   );
 };

@@ -11,15 +11,20 @@ import {
 import type { ModalProps } from "../interfaces/ModalProps";
 import DeleteIcon from "./svgs/DeleteIcon";
 
-const DeleteModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+interface DeleteModalProps extends ModalProps {
+  onDelete: () => void;
+}
+
+const DeleteModal: React.FC<DeleteModalProps> = ({
+  isOpen,
+  onClose,
+  onDelete
+}) => {
   const [isDeleted, setIsDeleted] = useState(false);
 
   const handleDelete = (): void => {
-    // Here, you can add your logic to handle the deletion process.
-    // Once deletion is successful, update the state.
-    // For example:
-    // performDelete().then(() => setIsDeleted(true));
     setIsDeleted(true);
+    onDelete();
   };
 
   return (
