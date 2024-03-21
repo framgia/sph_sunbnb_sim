@@ -110,7 +110,7 @@ async function updateAccommodation(
 async function deleteAccommodation(id: number): Promise<{ message: string }> {
   const jwt = cookies().get("jwt")?.value;
   if (jwt !== undefined) {
-    const fetchApi = await fetch(`${config.backendUrl}/accommodation/${id}`, {
+    const fetchApi = await fetch(`${config.backendUrl}/listing/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${jwt}`,
