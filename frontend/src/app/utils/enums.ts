@@ -54,3 +54,38 @@ export enum ListingStatus {
   REFUSED = "Refused",
   ACTIVE = "Active"
 }
+
+export enum ExperienceType {
+  FOOD_AND_DRINKS = "Food and Drinks",
+  ART_AND_CULTURE = "Art and Culture",
+  ENTERTAINMENT = "Entertainment",
+  TOURS = "Tours",
+  SPORTS = "Sports"
+}
+
+export enum Inclusions {
+  FOOD = "Food",
+  DRINKS = "Drinks",
+  TRANSPORTATION = "Transportation",
+  TICKETS = "Tickets"
+}
+
+export enum Languages {
+  FILIPINO = "Filipino",
+  CEBUANO = "Cebuano",
+  ILOCANO = "Ilocano",
+  HILIGAYNON = "Hiligaynon",
+  ENGLISH = "English",
+  JAPANESE = "Japanese",
+  MANDARIN = "Mandarin",
+  HINDI = "Hindi",
+  SPANISH = "Spanish",
+  FRENCH = "French",
+  ARABIC = "Arabic",
+  BENGALI = "Bengali",
+  PORTUGUESE = "Portuguese",
+  RUSSIAN = "Russian",
+  URDU = "Urdu",
+  INDONESIAN = "Indonesian",
+  GERMAN = "German"
+}
