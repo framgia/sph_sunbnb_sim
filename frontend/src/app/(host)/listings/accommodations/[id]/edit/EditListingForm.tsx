@@ -14,7 +14,7 @@ import AddressForm from "../../../AddressForm";
 import DetailForm from "../../DetailForm";
 import PriceForm from "../../../PriceForm";
 import ListingUploader from "@/app/components/accommodation/ListingUploader";
-import { deleteAccommodation } from "@/app/utils/helpers/accommodation/request";
+import Link from "next/link";
 
 interface EditListingProps {
   onDelete: () => void; // Function to handle delete action
@@ -39,14 +39,6 @@ const EditListingForm: React.FC<EditListingProps> = ({
   loading,
   onPress
 }) => {
-  const deleteResult = async (): Promise<void> => {
-    try {
-      await deleteAccommodation(Number(listingid));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <section className="flex w-full flex-col px-5">
       <header className="w-full text-left text-lg font-semibold leading-7 text-black max-md:max-w-full">
@@ -103,20 +95,22 @@ const EditListingForm: React.FC<EditListingProps> = ({
             className=" gap-y-1.5 rounded-lg bg-danger px-4 text-white max-md:px-5"
             size="md"
             onPress={onDelete}
-            onClick={deleteResult}
             isDisabled={loading}
           >
             <TrashIcon />
             Delete
           </Button>
           <div className="flex gap-5">
-            <Button
-              className="justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5"
-              size="md"
-              isDisabled={loading}
-            >
-              Cancel
-            </Button>
+            <Link href={`/listings/accommodations/${listingid}`}>
+              <Button
+                className="justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5"
+                size="md"
+                isDisabled={loading}
+              >
+                Cancel
+              </Button>
+            </Link>
+
             <Button
               className="justify-center rounded-lg bg-primary-600 px-7 py-2.5 font-bold text-white drop-shadow-sm max-md:px-5 "
               size="md"
