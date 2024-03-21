@@ -125,3 +125,10 @@ export interface ReviewType {
   value_rating: number;
   comment: string;
 }
+
+export interface ReviewData {
+  cleanliness_rating: number;
+  location_rating: number;
+  value_rating: number;
+  comment: string;
+}
