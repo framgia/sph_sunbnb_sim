@@ -17,11 +17,9 @@ class MinMaxDaysRule implements DataAwareRule, ValidationRule {
 
     public function validate(string $attribute, mixed $value, Closure $fail): void {
         $numberOfDays = Carbon::parse($this->data['start_date'])->diffInDays(Carbon::parse($this->data['end_date']));
-        echo $numberOfDays;
         $listing = Listing::find($this->data['listing_id']);
 
         if ($listing && $listing->listable_type === 'App\Models\Accommodation') {
-            echo $listing->listable->minimum_days;
             if ($numberOfDays < $listing->listable->minimum_days || $numberOfDays > $listing->listable->maximum_days) {
                 $fail(
                     'The number of days should be at least '
