@@ -1,3 +1,4 @@
+"use client";
 import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
 import ReviewSection from "@/app/components/review/ReviewSection";
