@@ -1,6 +1,6 @@
 import React from "react";
 import { Listbox, ListboxItem } from "@nextui-org/react";
-import { Inclusions } from "@/app/utils/enums";
+import { Inclusion } from "@/app/utils/enums";
 
 // interface ListboxProps {
 //   data?: Accommodation;
@@ -8,8 +8,8 @@ import { Inclusions } from "@/app/utils/enums";
 // }
 
 const InclusionsListbox: React.FC = () => {
-  const options = new Map<Inclusions, string>();
-  Object.values(Inclusions).forEach((inclusion) => {
+  const options = new Map<Inclusion, string>();
+  Object.values(Inclusion).forEach((inclusion) => {
     options.set(inclusion, inclusion);
   });
 
@@ -17,7 +17,7 @@ const InclusionsListbox: React.FC = () => {
     new Set(["Food"])
   );
   const selectedValues = [...selectedKeys]
-    .map((key: Inclusions) => key.toString())
+    .map((key: Inclusion) => key.toString())
     .join(", ");
 
   return (

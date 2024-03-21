@@ -1,11 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import NewExperienceForm from "./NewExperienceForm";
 import ExperienceApprovalModal from "@/app/components/experiences/ExperienceApprovalModal";
 import { useDisclosure } from "@nextui-org/react";
 
 const NewExperiencePage: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   async function handleClick(): Promise<void> {
     onOpen();
