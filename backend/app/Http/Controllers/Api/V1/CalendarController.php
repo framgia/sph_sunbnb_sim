@@ -11,7 +11,8 @@ use Illuminate\Http\Response;
 class CalendarController extends Controller {
     public function show($listingId) {
         try {
-            $calendarDates = Calendar::where('listing_id', $listingId)->get();
+            $calendarDates = Calendar::with(['booking:id,user_id', 'booking.user:id,first_name,last_name'])
+                ->where('listing_id', $listingId)->get();
 
             return response()->json(['calendar_dates' => $calendarDates], Response::HTTP_OK);
         } catch (\Exception $e) {
