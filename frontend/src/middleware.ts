@@ -38,6 +38,12 @@ export function middleware(request: NextRequest): NextResponse | undefined {
     if (request.nextUrl.pathname.startsWith("/reset-password")) {
       return NextResponse.redirect(new URL("/", request.url));
     }
+    if (
+      user.role === "guest" &&
+      request.nextUrl.pathname.startsWith("/listings")
+    ) {
+      return NextResponse.redirect(new URL("/not-found", request.url));
+    }
   }
 }
 

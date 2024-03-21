@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
-import { Avatar, Image } from "@nextui-org/react";
+import { Avatar, Button, Image } from "@nextui-org/react";
 import type { MediaType } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
+import { useRouter } from "next/navigation";
 
 interface ListingHeaderProps {
   accomodationName: string;
@@ -19,6 +20,8 @@ interface ListingHeaderProps {
   modifiedAt: string;
   address: string;
   images: MediaType[];
+  isHost: boolean;
+  id: string;
 }
 const ListingHeader: React.FC<ListingHeaderProps> = ({
   accomodationName,
@@ -34,12 +37,33 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
   hostName,
   createdAt,
   modifiedAt,
-  images
+  images,
+  isHost,
+  id
 }) => {
+  const router = useRouter();
   return (
     <div>
-      <div className="mb-2">
-        <span className="text-lg font-bold leading-7">{accomodationName}</span>
+      <div className="mb-2 flex justify-between">
+        <div>
+          <span className="text-lg font-bold leading-7">
+            {accomodationName}
+          </span>
+        </div>
+        {isHost ? (
+          <div>
+            <Button
+              onPress={() => {
+                router.push(`${id}/edit`);
+              }}
+              color="primary"
+            >
+              Edit
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
       <div className="mb-5 flex h-80 w-full flex-row items-center justify-center">
         <div className="relative mr-2 h-full w-2/4 overflow-hidden rounded-2xl">

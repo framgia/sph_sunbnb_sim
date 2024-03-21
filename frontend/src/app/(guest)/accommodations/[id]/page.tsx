@@ -1,20 +1,21 @@
 import AmenitySection from "@/app/components/accommodation/AmenitySection";
 import ListingHeader from "@/app/components/accommodation/ListingHeader";
+import AccommodationBookingSticky from "@/app/components/booking/AccommodationBookingSticky";
 import ReviewSection from "@/app/components/review/ReviewSection";
 import { getAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { Divider } from "@nextui-org/react";
 import { redirect } from "next/navigation";
 import React from "react";
 
-interface ListingDetailsPageProps {
+interface GuestAccommodationDetailseProps {
   params: {
     id: string;
   };
 }
 
-const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
-  params
-}) => {
+const GuestAccommodationsDetails: React.FC<
+  GuestAccommodationDetailseProps
+> = async ({ params }) => {
   let accData;
   try {
     accData = await getAccommodation(Number(params.id));
@@ -57,16 +58,26 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
               accData.zip_code
             }
             images={accData.media}
-            isHost={true}
+            isHost={false}
             id={params.id}
           />
-          <div>
-            <Divider className="my-10 " />
-            <span className="text-sm">{accData.description}</span>
-            <Divider className="my-10 " />
-            <AmenitySection amenities={accData.listable.amenities} />
-            <Divider className="my-10 " />
-            <ReviewSection />
+          <div className="flex h-fit flex-row items-start">
+            <div>
+              <Divider className="my-10 " />
+              <span className="text-sm">{accData.description}</span>
+              <Divider className="my-10 " />
+              <AmenitySection amenities={accData.listable.amenities} />
+              <Divider className="my-10 " />
+              <ReviewSection />
+            </div>
+            <div className="w-90 h-90 sticky top-[30px] z-50 ml-5 block self-start pt-10">
+              <AccommodationBookingSticky
+                price={accData.price}
+                maxGuests={accData.maximum_guests}
+                minNights={accData.listable.minimum_days}
+                maxNights={accData.listable.maximum_days}
+              />
+            </div>
           </div>
         </>
       ) : (
@@ -76,4 +87,4 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
   );
 };
 
-export default AccommodationDetailsPage;
+export default GuestAccommodationsDetails;
