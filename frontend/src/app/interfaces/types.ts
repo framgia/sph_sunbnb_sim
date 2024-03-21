@@ -106,7 +106,7 @@ export interface Listing {
 }
 
 /* Must be created since typing listable as Accommodation | Experience in Listing will only allow 
-assignment of values overlapping Accommodation and Experience Type*/
+  assignment of values overlapping Accommodation and Experience Type  */
 export interface Listing_Experience {
   id: number;
   user_id: number;

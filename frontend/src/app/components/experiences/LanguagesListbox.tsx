@@ -1,6 +1,6 @@
 import React from "react";
 import { Listbox, ListboxItem } from "@nextui-org/react";
-import { Inclusions, Languages } from "@/app/utils/enums";
+import { Languages } from "@/app/utils/enums";
 
 // interface ListboxProps {
 //   data?: Accommodation;

@@ -1,4 +1,4 @@
-import { MediaType } from "@/app/interfaces/types";
+import type { MediaType } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import { Avatar } from "@nextui-org/react";
 import Image from "next/image";
