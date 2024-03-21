@@ -38,8 +38,8 @@ Route::group(['prefix' => 'register'], function () {
 Route::post('/forget-password', [PasswordController::class, 'forgotpassword']);
 Route::post('/reset-password', [PasswordController::class, 'resetpassword']);
 Route::get('/public-listingss', [ListingController::class, 'showPublicListings']);
-Route::get('/public-accommodations', [AccommodationController::class, 'showPublicAccommodations']);
-Route::get('/public-experiences', [ExperienceController::class, 'showPublicExperiences']);
+Route::get('/public-accommodations', [ListingController::class, 'showPublicAccommodations']);
+Route::get('/public-experiences', [ListingController::class, 'showPublicExperiences']);
 
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('accommodation', AccommodationController::class)->except(['update', 'store']);
