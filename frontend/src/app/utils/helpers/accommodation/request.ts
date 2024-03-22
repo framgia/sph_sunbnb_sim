@@ -189,7 +189,7 @@ async function getPublicAccommodations(
           Accept: "application/json"
         },
         next: {
-          revalidate: 60
+          revalidate: 30
         }
       }
     );
