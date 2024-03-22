@@ -1,6 +1,7 @@
-import { Input, Button, Chip, Pagination } from "@nextui-org/react";
 import React from "react";
+import { Input, Pagination } from "@nextui-org/react";
 import SearchIcon from "./svgs/SearchIcon";
+import BookingStatus from "./BookingStatus"; // Import the BookingStatus component
 
 const dummyData = [
   {
@@ -38,70 +39,6 @@ const dummyData = [
 ];
 
 const BookingHistory: React.FC = () => {
-  const getStatusColor = (status: string): string => {
-    switch (status) {
-      case "Upcoming":
-        return "bg-blue-300 text-indigo-500";
-      case "Cancelled":
-        return "bg-danger-200 text-red-500";
-      case "Done":
-        return "bg-success-200 text-green-500";
-      case "Pending":
-        return "bg-warning-200 text-yellow-500";
-      default:
-        return "bg-gray-500 text-white";
-    }
-  };
-
-  const getAction = (status: string): JSX.Element => {
-    switch (status) {
-      case "Upcoming":
-        return (
-          <Button
-            size="sm"
-            color="primary"
-            className="text-md rounded-full px-5 font-bold"
-          >
-            Cancel
-          </Button>
-        );
-      case "Cancelled":
-        return (
-          <Button
-            size="sm"
-            color="primary"
-            variant="bordered"
-            className="text-md rounded-full px-5 font-bold"
-          >
-            Delete
-          </Button>
-        );
-      case "Done":
-        return (
-          <Button
-            size="sm"
-            color="primary"
-            className="text-md rounded-full px-5 font-bold"
-          >
-            Review
-          </Button>
-        );
-      case "Pending":
-        return (
-          <Button
-            size="sm"
-            color="primary"
-            variant="bordered"
-            className="text-md rounded-full px-5 font-bold"
-          >
-            Cancel
-          </Button>
-        );
-      default:
-        return <></>;
-    }
-  };
-
   return (
     <>
       <div className="mt-5 font-semibold">Your booking history</div>
@@ -152,18 +89,7 @@ const BookingHistory: React.FC = () => {
           <div className="flex items-center justify-center px-12">
             {booking.bill}
           </div>
-          <div className="flex w-full items-center justify-center">
-            <Chip
-              className={`w-full rounded-full border p-2 text-center font-semibold ${getStatusColor(booking.status)}`}
-              size="lg"
-            >
-              {booking.status}
-            </Chip>
-          </div>
-
-          <div className="flex items-center justify-center">
-            {getAction(booking.status)}
-          </div>
+          <BookingStatus status={booking.status} />
         </div>
       ))}
       <Pagination
