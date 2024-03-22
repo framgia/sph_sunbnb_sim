@@ -64,7 +64,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
           message="Make sure you entered the correct email and password"
         />
       )}
-      <div className="mt-8 flex flex-col">
+      <div className="mt-2 flex flex-col">
         <label htmlFor="email"></label>
         <div>
           <Input
