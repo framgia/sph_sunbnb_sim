@@ -2,6 +2,7 @@ import { getInitials } from "@/app/utils/helpers/getInitials";
 import { Avatar } from "@nextui-org/react";
 import React from "react";
 import StarComponent from "./StarsComponent";
+import { formatTimestamp } from "@/app/utils/date";
 
 interface ReviewComponentProps {
   name: string;
@@ -24,12 +25,12 @@ const ReviewComponent: React.FC<ReviewComponentProps> = ({
         <div className="flex flex-col p-1 pl-2">
           <span className="text-xl">{name}</span>
           <span className="text-sm font-light leading-5 text-foreground-500">
-            {date}
+            {formatTimestamp(date)}
           </span>
         </div>
       </div>
       <div className="my-2">
-        <StarComponent score={rating} />
+        <StarComponent score={Math.round(rating)} />
       </div>
       <div className="line-clamp-3">{comment}</div>
     </div>

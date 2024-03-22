@@ -244,3 +244,8 @@ export async function registerWithGoogle(
   }
   return { message: "register failed" };
 }
+
+export async function userRole(): Promise<string> {
+  const user = await checkCookies();
+  return user?.role ?? "none";
+}
