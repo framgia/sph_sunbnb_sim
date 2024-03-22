@@ -4,7 +4,16 @@ import React from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
 import AddReviewForm from "./AddReviewForm";
 
-const ReviewModal: React.FC<ModalProps> = ({ isOpen, onClose, size }) => {
+interface ReviewModalProps extends ModalProps {
+  listingId: number;
+}
+
+const ReviewModal: React.FC<ReviewModalProps> = ({
+  isOpen,
+  onClose,
+  size,
+  listingId
+}) => {
   return (
     <div>
       <Modal
@@ -35,7 +44,7 @@ const ReviewModal: React.FC<ModalProps> = ({ isOpen, onClose, size }) => {
                   </div>
                 </div>
               </div>
-              <AddReviewForm />
+              <AddReviewForm listingId={listingId} onClose={onClose} />
             </div>
           )}
         </ModalContent>
