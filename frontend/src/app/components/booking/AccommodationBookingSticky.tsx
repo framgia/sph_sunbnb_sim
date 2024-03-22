@@ -13,7 +13,6 @@ import GuestCounter from "./GuestCounter";
 import { DateRange, type Range } from "react-date-range";
 import { getDateString } from "@/app/utils/helpers/getDateString";
 import addDays from "date-fns/addDays";
-import { CalendarDate } from "@/app/interfaces/types";
 
 interface AccommodationBookingStickyProps {
   price: number;
@@ -46,7 +45,6 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
 
   useEffect(() => {
     if (nights > maxNights) {
-      console.log("adjusting...");
       setEnd(addDays(startDate, maxNights));
       setDates([
         {
@@ -64,7 +62,7 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
         <div className="mb-5">
           <span className="text-xl font-semibold">
             {" "}
-            ₱ {price * guestCount} night{" "}
+            ₱ {price * guestCount} / night{" "}
           </span>
         </div>
 
@@ -102,11 +100,6 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
                         new Date(item.selection.startDate.toUTCString())
                       );
                       setEnd(new Date(item.selection.endDate.toUTCString()));
-                    }
-                    if (nights > maxNights) {
-                      console.log("adjusting...");
-                      setEnd(addDays(startDate, maxNights));
-                      item.selection.endDate = endDate;
                     }
                     setDates([item.selection]);
                   }}

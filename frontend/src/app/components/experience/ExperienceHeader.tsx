@@ -1,7 +1,9 @@
+"use client";
 import type { MediaType } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
-import { Avatar } from "@nextui-org/react";
+import { Avatar, Button } from "@nextui-org/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface ExperienceHeaderProps {
@@ -18,6 +20,8 @@ interface ExperienceHeaderProps {
   hostName: string;
   createdAt: string;
   modifiedAt: string;
+  isHost: boolean;
+  id: number;
 }
 const ExperienceHeader: React.FC<ExperienceHeaderProps> = ({
   experienceName,
@@ -32,7 +36,9 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = ({
   endTime,
   hostName,
   createdAt,
-  modifiedAt
+  modifiedAt,
+  isHost,
+  id
 }) => {
   function getDuration(start: string, end: string): number {
     const startArr = start.split(":");
@@ -42,10 +48,29 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = ({
     const diff = Math.abs(endSec - startSec);
     return Math.floor(diff / 3600);
   }
+
+  const router = useRouter();
+
   return (
     <div>
-      <div className="mb-2">
-        <span className="text-lg font-bold leading-7">{experienceName}</span>
+      <div className="mb-2 flex justify-between">
+        <div>
+          <span className="text-lg font-bold leading-7">{experienceName}</span>
+        </div>
+        {isHost ? (
+          <div>
+            <Button
+              onPress={() => {
+                router.push(`${id}/edit`);
+              }}
+              color="primary"
+            >
+              Edit
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
       <div className="mb-5 flex h-80 w-full flex-row items-center justify-center">
         <div className="relative mr-2 h-full w-2/4 overflow-hidden rounded-2xl">

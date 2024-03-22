@@ -73,7 +73,7 @@ const GuestAccommodationsDetails: React.FC<
             id={params.id}
           />
           <div className="flex h-fit flex-row items-start">
-            <div>
+            <div className="w-full">
               <Divider className="my-10 " />
               <span className="text-sm">{accData.description}</span>
               <Divider className="my-10 " />

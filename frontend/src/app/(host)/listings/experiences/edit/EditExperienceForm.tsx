@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
-import InclusionsListbox from "@/app/components/experiences/InclusionsListbox";
+import InclusionsListbox from "@/app/components/experience/InclusionsListbox";
 import LanguagesListbox from "@/app/components/experiences/LanguagesListbox";
 import TrashIcon from "@/app/components/svgs/TrashIcon";
 import Link from "next/link";
