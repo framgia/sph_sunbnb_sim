@@ -38,7 +38,7 @@ class ListingController extends Controller {
         $user = User::find($userId);
 
         if (! $user) {
-            return Listing::userNotFoundResponse();
+            return User::userNotFoundResponse();
         }
 
         $listings = Listing::paginateListingsByUser($userId, $request);
@@ -53,7 +53,7 @@ class ListingController extends Controller {
         $user = User::find($userId);
 
         if (! $user) {
-            return Listing::userNotFoundResponse();
+            return User::userNotFoundResponse();
         }
 
         $listings = Listing::paginateAccommodationsByUser($userId, $request);
@@ -68,7 +68,7 @@ class ListingController extends Controller {
         $user = User::find($userId);
 
         if (! $user) {
-            return Listing::userNotFoundResponse();
+            return User::userNotFoundResponse();
         }
 
         $listings = Listing::paginateExperiencesByUser($userId, $request);

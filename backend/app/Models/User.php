@@ -9,6 +9,7 @@ use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Response;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -156,5 +157,12 @@ class User extends Authenticatable {
             abort(403, 'Cannot update password if using provider.');
         }
         $this->update($data);
+    }
+
+    public static function userNotFoundResponse() {
+        return response()->json([
+            'success' => false,
+            'error' => 'User not found',
+        ], Response::HTTP_NOT_FOUND);
     }
 }
