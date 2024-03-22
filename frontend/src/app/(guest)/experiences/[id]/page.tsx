@@ -1,4 +1,3 @@
-import AccommodationBookingSticky from "@/app/components/booking/AccommodationBookingSticky";
 import ExperienceBookingSticky from "@/app/components/booking/ExperienceBookingSticky";
 import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
