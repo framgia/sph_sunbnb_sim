@@ -2,13 +2,16 @@
 import React, { useState } from "react";
 import StarIcon from "../svgs/Review/StarIcon";
 import FilledStarIcon from "../svgs/Review/FilledStarIcon";
+import type { ReviewData } from "@/app/interfaces/types";
 
 interface StarsAddReviewProps {
-  rating: number;
-  setScore: (value: number) => void;
+  rating: ReviewData;
+  field: keyof ReviewData;
+  setScore: React.Dispatch<React.SetStateAction<ReviewData>>;
 }
 const StarsAddReview: React.FC<StarsAddReviewProps> = ({
   rating,
+  field,
   setScore
 }) => {
   const [targetRating, setTarget] = useState(0);
@@ -25,7 +28,7 @@ const StarsAddReview: React.FC<StarsAddReviewProps> = ({
                 name="rating"
                 value={score}
                 onClick={() => {
-                  setScore(score);
+                  setScore({ ...rating, [field]: score });
                 }}
               />
               <div
@@ -37,7 +40,7 @@ const StarsAddReview: React.FC<StarsAddReviewProps> = ({
                   setTarget(0);
                 }}
               >
-                {score <= rating || score <= targetRating ? (
+                {score <= Number(rating[field]) || score <= targetRating ? (
                   <FilledStarIcon />
                 ) : (
                   <StarIcon />

@@ -1,33 +1,82 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\BookingRequest;
 use App\Models\Booking;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
 
 class BookingController extends Controller {
-    public function store(Request $request) {
+    public function show($id) {
+        $booking = Booking::with(['listing', 'user'])->findOrFail($id);
 
-        try {
+        return response()->json([
+            'success' => true,
+            'booking' => $booking,
+        ], Response::HTTP_OK);
+    }
 
-            $validatedData = $request->validate([
-                'listing_id' => 'required|exists:listings,id',
-                'start_date' => 'required|date',
-                'end_date' => 'required|date|after:start_date',
-                'number_of_guests' => 'required|integer|min:1',
-                'total_price' => 'required|numeric|min:0',
-                'status' => 'required|string',
-            ]);
-            $guestId = Auth::id();
+    public function showBookingsByUser($userId, Request $request) {
+        $user = User::find($userId);
 
-            $validatedData['guest_id'] = $guestId;
+        if (! $user) {
+            return User::userNotFoundResponse();
+        }
 
-            Booking::create($validatedData);
+        $bookings = Booking::paginateBookingsByUser($userId, $request);
 
-            return response()->json(['message' => 'Booking successful'], 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Something went wrong. Please contact administrator.'], 500);
+        return response()->json(
+            Booking::bookingsResponse($bookings),
+            Response::HTTP_OK
+        );
+    }
+
+    public function store(BookingRequest $request) {
+        $request->validated();
+        $booking = Booking::createBooking($request);
+
+        return response()->json([
+            'success' => true,
+            'booking' => $booking,
+        ], Response::HTTP_CREATED);
+    }
+
+    public function update($id) {
+        $booking = Booking::find($id);
+
+        if ($booking) {
+            $booking->cancelBooking();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Booking cancelled successfully',
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'success' => false,
+                'error' => 'Booking not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    public function destroy($id) {
+        $booking = Booking::find($id);
+
+        if ($booking) {
+            $booking->deleteBooking();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Booking deleted successfully',
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'success' => false,
+                'error' => 'Booking not found',
+            ], Response::HTTP_NOT_FOUND);
         }
     }
 }

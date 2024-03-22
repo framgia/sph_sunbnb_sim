@@ -29,7 +29,7 @@ const ReviewComponent: React.FC<ReviewComponentProps> = ({
         </div>
       </div>
       <div className="my-2">
-        <StarComponent score={rating} />
+        <StarComponent score={Math.round(rating)} />
       </div>
       <div className="line-clamp-3">{comment}</div>
     </div>

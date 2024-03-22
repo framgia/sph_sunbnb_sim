@@ -27,7 +27,7 @@ class ExperienceRequest extends FormRequest {
             'type' => ['required', 'string', 'in:'.implode(',', ExperienceType::getConstants())],
             'start_time' => 'required|string|date_format:H:i',
             'end_time' => 'required|string|date_format:H:i',
-            'language' => ['required', 'string', 'in:'.implode(',', LanguageType::getConstants())],
+            'language' => ['array', 'in:'.implode(',', LanguageType::getConstants())],
             'inclusions' => ['array', 'in:'.implode(',', Inclusion::getConstants())],
             'media' => ['required', 'array', 'min:1'],
             'media.*' => 'url',

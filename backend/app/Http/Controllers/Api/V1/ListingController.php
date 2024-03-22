@@ -38,7 +38,7 @@ class ListingController extends Controller {
         $user = User::find($userId);
 
         if (! $user) {
-            return Listing::userNotFoundResponse();
+            return User::userNotFoundResponse();
         }
 
         $listings = Listing::paginateListingsByUser($userId, $request);
@@ -53,7 +53,7 @@ class ListingController extends Controller {
         $user = User::find($userId);
 
         if (! $user) {
-            return Listing::userNotFoundResponse();
+            return User::userNotFoundResponse();
         }
 
         $listings = Listing::paginateAccommodationsByUser($userId, $request);
@@ -68,7 +68,7 @@ class ListingController extends Controller {
         $user = User::find($userId);
 
         if (! $user) {
-            return Listing::userNotFoundResponse();
+            return User::userNotFoundResponse();
         }
 
         $listings = Listing::paginateExperiencesByUser($userId, $request);
@@ -81,6 +81,24 @@ class ListingController extends Controller {
 
     public function showPublicListings(Request $request) {
         $listings = Listing::paginatePublicListings($request);
+
+        return response()->json(
+            Listing::listingsResponse($listings),
+            Response::HTTP_OK
+        );
+    }
+
+    public function showPublicAccommodations(Request $request) {
+        $accommodations = Listing::paginateFilteredAccommodations($request);
+
+        return response()->json(
+            Listing::listingsResponse($accommodations),
+            Response::HTTP_OK
+        );
+    }
+
+    public function showPublicExperiences(Request $request) {
+        $listings = Listing::paginateFilteredExperiences($request);
 
         return response()->json(
             Listing::listingsResponse($listings),

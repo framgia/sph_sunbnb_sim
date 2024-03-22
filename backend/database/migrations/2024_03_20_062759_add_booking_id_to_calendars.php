@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\Inclusion;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,10 +9,8 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('inclusions', function (Blueprint $table) {
-            $table->id();
-            $table->enum('name', Inclusion::getConstants());
-            $table->timestamps();
+        Schema::table('calendars', function (Blueprint $table) {
+            $table->foreignId('booking_id')->nullable()->after('available')->constrained();
         });
     }
 
@@ -21,6 +18,9 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('inclusions');
+        Schema::table('calendars', function (Blueprint $table) {
+            $table->dropForeign(['booking_id']);
+            $table->dropColumn('booking_id');
+        });
     }
 };

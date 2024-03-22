@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\AccommodationController;
 use App\Http\Controllers\Api\V1\AdminAuthController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\BookingController;
 use App\Http\Controllers\Api\V1\CalendarController;
 use App\Http\Controllers\Api\V1\ExperienceController;
 use App\Http\Controllers\Api\V1\GoogleAuthController;
@@ -37,8 +38,8 @@ Route::group(['prefix' => 'register'], function () {
 Route::post('/forget-password', [PasswordController::class, 'forgotpassword']);
 Route::post('/reset-password', [PasswordController::class, 'resetpassword']);
 Route::get('/public-listingss', [ListingController::class, 'showPublicListings']);
-Route::get('/public-accommodations', [AccommodationController::class, 'showPublicAccommodations']);
-Route::get('/public-experiences', [ExperienceController::class, 'showPublicExperiences']);
+Route::get('/public-accommodations', [ListingController::class, 'showPublicAccommodations']);
+Route::get('/public-experiences', [ListingController::class, 'showPublicExperiences']);
 
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('accommodation', AccommodationController::class)->except(['update', 'store']);
@@ -70,4 +71,12 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/review/{listingId}', [ReviewController::class, 'store'])->middleware('role:guest');
     Route::get('/review/{listingId}', [ReviewController::class, 'getByListing']);
+
+    Route::apiResource('booking', BookingController::class)->except(['store', 'update', 'destroy']);
+    Route::post('/booking', [BookingController::class, 'store'])->middleware('role:guest');
+    Route::get('/booking/user/{userId}', [BookingController::class, 'showBookingsByUser']);
+    Route::put('booking/{bookingId}', [BookingController::class, 'update'])
+        ->middleware('check.owner:booking');
+    Route::delete('booking/{bookingId}', [BookingController::class, 'destroy'])
+        ->middleware('check.owner:booking');
 });

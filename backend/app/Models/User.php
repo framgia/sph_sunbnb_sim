@@ -9,6 +9,7 @@ use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Response;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -99,7 +100,7 @@ class User extends Authenticatable {
         return $user;
     }
 
-    public static function instantiateGoogleUser($payload, $role): self {
+    public static function createGoogleUser($payload, $role): self {
         abort_unless($payload && isset($payload['sub']) && isset($payload['email']), 400, 'Invalid Google payload.');
         abort_unless(self::where('email', $payload['email'])->doesntExist(), 400, 'User already exists.');
 
@@ -116,7 +117,7 @@ class User extends Authenticatable {
         return self::create($data);
     }
 
-    public static function instantiateUser($request): self {
+    public static function createUser($request): self {
         abort_unless(is_array($request), 400, 'Invalid user data.');
         $data = [
             'email' => $request['email'],
@@ -156,5 +157,12 @@ class User extends Authenticatable {
             abort(403, 'Cannot update password if using provider.');
         }
         $this->update($data);
+    }
+
+    public static function userNotFoundResponse() {
+        return response()->json([
+            'success' => false,
+            'error' => 'User not found',
+        ], Response::HTTP_NOT_FOUND);
     }
 }

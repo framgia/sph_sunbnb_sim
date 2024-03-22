@@ -63,18 +63,6 @@ class Accommodation extends Model {
         return self::accommodationResponse($accommodations);
     }
 
-    public static function paginatePublicAccommodations(Request $request) {
-        $perPage = $request->query('per_page', 3);
-
-        $accommodations = static::whereHas('listing', function ($query) {
-            $query->where('status', 'active');
-        })
-            ->with(['listing.user', 'listing.media'])
-            ->paginate($perPage);
-
-        return self::accommodationResponse($accommodations);
-    }
-
     public function getAmenitiesAttribute($value) {
         return json_decode($value, true);
     }

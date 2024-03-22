@@ -28,7 +28,7 @@ const ListingsDropdown: React.FC<ListingDropdownProps> = ({
       </DropdownTrigger>
       <DropdownMenu
         aria-label="Listings Names"
-        className="max-h-52 max-w-60 overflow-y-auto overflow-x-hidden"
+        className="max-h-52 w-60 overflow-y-auto overflow-x-hidden"
       >
         {listings.map((listing, index) => (
           <DropdownItem
