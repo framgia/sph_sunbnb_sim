@@ -106,6 +106,15 @@ class ListingController extends Controller {
         );
     }
 
+    public function showFilteredAccommodationsByUser(Request $request) {
+        $accommodations = Listing::paginateFilteredAccommodationsHost($request);
+
+        return response()->json(
+            Listing::listingsResponse($accommodations),
+            Response::HTTP_OK
+        );
+    }
+
     public function destroy($listingId) {
         $listing = Listing::with(['listable', 'media'])->find($listingId);
 

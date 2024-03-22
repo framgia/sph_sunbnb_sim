@@ -218,6 +218,61 @@ class Listing extends Model {
         return $query;
     }
 
+    // host
+
+    public static function filterListingsHost($filters, $listableType, $constants, $userId) {
+        $query = self::query()->where('user_id', $userId)
+            ->whereHasMorph('listable', [$listableType], function ($query) use ($listableType) {
+                $query->where('listable_type', $listableType);
+            })
+            ->with('listable:id,type', 'media');
+
+        $filterMethods = [
+            'search' => 'applySearchFilter',
+            'price_range' => 'applyPriceRangeFilter',
+            'ratings' => 'applyRatingsFilter',
+            'status' => 'applyStatusFilter',
+            'type' => 'applyTypeFilter',
+        ];
+
+        // can be refactored
+        foreach ($filterMethods as $filterKey => $methodName) {
+            if (isset($filters[$filterKey])) {
+                self::$methodName($query, $filters[$filterKey], $listableType, $constants);
+            }
+        }
+
+        return $query;
+    }
+
+    public static function filterAccommodationHost($filters, $userId) {
+        return self::filterListingsHost($filters, Accommodation::class, AccommodationType::getConstants(), $userId);
+    }
+
+    public static function paginateFilteredItemsHost(Request $request, $filterMethod, $userId) {
+        $filters = $request->only(['search', 'price_range', 'ratings', 'status', 'type']);
+        $perPage = $request->query('per_page', 3);
+
+        $query = self::$filterMethod($filters, $userId);
+
+        return $query->paginate($perPage);
+    }
+
+    public static function paginateFilteredAccommodationsHost(Request $request) {
+        $user = auth()->user();
+        if ($user) {
+            $userId = $user->id;
+
+            return self::paginateFilteredItemsHost($request, 'filterAccommodationHost', $userId);
+        } else {
+            abort(400, 'User not found.');
+        }
+    }
+
+    private static function applyStatusFilter($query, $status) {
+        $query->where('status', $status);
+    }
+
     private static function applySearchFilter($query, $search) {
         $query->where('name', 'like', '%'.$search.'%');
     }
