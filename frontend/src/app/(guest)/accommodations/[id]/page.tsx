@@ -79,7 +79,7 @@ const GuestAccommodationsDetails: React.FC<
               <Divider className="my-10 " />
               <AmenitySection amenities={accData.listable.amenities} />
               <Divider className="my-10 " />
-              <ReviewSection />
+              <ReviewSection listingId={Number(params.id)} />
             </div>
             <div className="w-90 h-90 sticky top-[30px] z-50 ml-5 block self-start pt-10">
               <AccommodationBookingSticky
