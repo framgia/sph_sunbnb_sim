@@ -181,12 +181,15 @@ async function getPublicAccommodations(
         ${query !== undefined ? `&search=${query}` : ""}
         ${rating !== undefined ? `&ratings=${rating}` : ""}
         ${price !== undefined ? `&price_range=${price}` : ""}
-        ${date !== undefined ? `&date=${date}` : ""}`,
+        ${date !== undefined ? `&date_range=${date}` : ""}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json"
+        },
+        next: {
+          revalidate: 60
         }
       }
     );
