@@ -2,7 +2,9 @@ import AmenitySection from "@/app/components/accommodation/AmenitySection";
 import ListingHeader from "@/app/components/accommodation/ListingHeader";
 import AccommodationBookingSticky from "@/app/components/booking/AccommodationBookingSticky";
 import ReviewSection from "@/app/components/review/ReviewSection";
+import { CalendarDate } from "@/app/interfaces/types";
 import { getAccommodation } from "@/app/utils/helpers/accommodation/request";
+import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { Divider } from "@nextui-org/react";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -17,10 +19,19 @@ const GuestAccommodationsDetails: React.FC<
   GuestAccommodationDetailseProps
 > = async ({ params }) => {
   let accData;
+  let accAvailability;
   try {
     accData = await getAccommodation(Number(params.id));
+    accAvailability = await getListingAvailability(Number(params.id));
   } catch (err) {
     redirect("/not-found");
+  }
+
+  let blockedDates: Date[] = [];
+  if (accAvailability !== undefined && accAvailability !== null) {
+    blockedDates = accAvailability.map((calDate, i) => {
+      return new Date(calDate.date);
+    });
   }
 
   return (
@@ -72,6 +83,7 @@ const GuestAccommodationsDetails: React.FC<
             </div>
             <div className="w-90 h-90 sticky top-[30px] z-50 ml-5 block self-start pt-10">
               <AccommodationBookingSticky
+                exclude={blockedDates}
                 price={accData.price}
                 maxGuests={accData.maximum_guests}
                 minNights={accData.listable.minimum_days}

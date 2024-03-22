@@ -13,18 +13,21 @@ import GuestCounter from "./GuestCounter";
 import { DateRange, type Range } from "react-date-range";
 import { getDateString } from "@/app/utils/helpers/getDateString";
 import addDays from "date-fns/addDays";
+import { CalendarDate } from "@/app/interfaces/types";
 
 interface AccommodationBookingStickyProps {
   price: number;
   maxGuests: number;
   minNights: number;
   maxNights: number;
+  exclude: Date[];
 }
 const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
   price,
   maxGuests,
   minNights,
-  maxNights
+  maxNights,
+  exclude
 }) => {
   const [guestCount, setGuests] = useState(1);
   const [startDate, setStart] = useState(new Date());
@@ -111,6 +114,7 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
                   ranges={dates}
                   minDate={new Date()}
                   rangeColors={["#FF2200"]}
+                  disabledDates={exclude}
                 />
               </PopoverContent>
             </Popover>
