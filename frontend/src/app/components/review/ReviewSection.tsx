@@ -15,8 +15,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = async ({ listingId }) => {
     <>
       <div className="mb-5">
         <span className="text-xl font-semibold">
-          {" "}
-          Ratings and Reviews ({reviews.length}){" "}
+          Ratings and Reviews ({reviews.length})
         </span>
       </div>
 

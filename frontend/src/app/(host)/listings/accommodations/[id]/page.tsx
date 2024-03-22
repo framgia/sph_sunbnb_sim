@@ -27,6 +27,7 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
       {accData !== undefined ? (
         <>
           <ListingHeader
+            id={Number(params.id)}
             accomodationName={accData.name}
             type={accData.listable.type}
             city={accData.city}
@@ -63,7 +64,7 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
           <Divider className="my-10 w-full " />
           <AmenitySection amenities={accData.listable.amenities} />
           <Divider className="my-10 w-full " />
-          <ReviewSection />
+          <ReviewSection listingId={Number(params.id)} />
         </>
       ) : (
         <></>
