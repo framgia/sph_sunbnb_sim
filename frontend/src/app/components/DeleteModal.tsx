@@ -21,10 +21,11 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   onDelete
 }) => {
   const [isDeleted, setIsDeleted] = useState(false);
-
+  const [error, setError] = useState(false);
   async function handleDelete(): Promise<void> {
-    const isDeleted = await onDelete();
-    setIsDeleted(isDeleted);
+    const deleted = await onDelete();
+    setIsDeleted(deleted);
+    setError(!deleted);
   }
 
   return (
@@ -44,10 +45,14 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
                   {isDeleted
                     ? "The listing has been successfully deleted."
                     : "Are you sure you want to delete this listing?"}
-                  <br />
-                  <br />
                 </p>
+                {error === true && (
+                  <div className="mt-5 text-center text-xs text-red-500">
+                    {"Failed to delete listing."}
+                  </div>
+                )}
               </ModalBody>
+
               <ModalFooter>
                 <div className="flex w-full justify-center gap-5">
                   {isDeleted ? (
