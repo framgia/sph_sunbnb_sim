@@ -4,32 +4,23 @@ import React from "react";
 import CleanlinessIcon from "../svgs/Review/CleanlinessIcon";
 import ValueIcon from "../svgs/Review/ValueIcon";
 import LocationIcon from "../svgs/Review/LocationIcon";
+import {
+  calculateRatingCount,
+  calculateAverageRating
+} from "@/app/utils/helpers/review/calculate";
 
 interface ReviewHeaderProps {
   reviews: ReviewType[];
 }
 const ReviewHeader: React.FC<ReviewHeaderProps> = ({ reviews }) => {
-  let fiveCount = 0;
-  let fourCount = 0;
-  let threeCount = 0;
-  let twoCount = 0;
-  let OneCount = 0;
-
-  fiveCount = reviews.reduce((sum, review) => {
-    return review.overall_rating === 5 ? sum + 1 : sum;
-  }, 0);
-  fourCount = reviews.reduce((sum, review) => {
-    return review.overall_rating === 4 ? sum + 1 : sum;
-  }, 0);
-  threeCount = reviews.reduce((sum, review) => {
-    return review.overall_rating === 3 ? sum + 1 : sum;
-  }, 0);
-  twoCount = reviews.reduce((sum, review) => {
-    return review.overall_rating === 2 ? sum + 1 : sum;
-  }, 0);
-  OneCount = reviews.reduce((sum, review) => {
-    return review.overall_rating === 1 ? sum + 1 : sum;
-  }, 0);
+  const fiveCount = calculateRatingCount(reviews, 5);
+  const fourCount = calculateRatingCount(reviews, 4);
+  const threeCount = calculateRatingCount(reviews, 3);
+  const twoCount = calculateRatingCount(reviews, 2);
+  const oneCount = calculateRatingCount(reviews, 1);
+  const cleanliness = calculateAverageRating(reviews, "cleanliness_rating");
+  const value = calculateAverageRating(reviews, "value_rating");
+  const location = calculateAverageRating(reviews, "location_rating");
 
   return (
     <div className="border-b-1 border-foreground-300">
@@ -95,7 +86,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({ reviews }) => {
                 size="sm"
                 className="w-3/4 self-center"
                 color="default"
-                value={OneCount}
+                value={oneCount}
                 maxValue={reviews.length}
                 aria-label="1 overall ratings"
               />
@@ -105,21 +96,21 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({ reviews }) => {
         <div className="flex w-1/4 flex-col justify-between px-5 py-2">
           <div className="flex flex-col">
             <span className="mb-2 text-xl">Cleanliness</span>
-            <div className="text-xl font-bold"> 5 </div>
+            <div className="text-xl font-bold"> {cleanliness.toFixed(0)} </div>
           </div>
           <CleanlinessIcon />
         </div>
         <div className="flex w-1/4 flex-col justify-between px-5 py-2">
           <div className="flex flex-col">
             <span className="mb-2 text-xl">Value</span>
-            <div className="text-xl font-bold"> 5 </div>
+            <div className="text-xl font-bold"> {value.toFixed(0)} </div>
           </div>
           <ValueIcon />
         </div>
         <div className="flex w-1/4 flex-col justify-between px-5 py-2">
           <div className="flex flex-col">
             <span className="mb-2 text-xl">Location</span>
-            <div className="text-xl font-bold"> 5 </div>
+            <div className="text-xl font-bold"> {location.toFixed(0)} </div>
           </div>
           <LocationIcon />
         </div>
