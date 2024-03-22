@@ -176,7 +176,12 @@ async function getPublicAccommodations(
 ): Promise<PaginatedListing | undefined> {
   try {
     const response = await fetch(
-      `${config.backendUrl}/public-accommodations?page=${page}&per_page=${limit}${type !== undefined ? `&type${type}` : ""}${query !== undefined ? `&search=${query}` : ""}${rating !== undefined ? `&ratings=${rating}` : ""}${price !== undefined ? `&price_range=${price}` : ""}${date !== undefined ? `&date=${date}` : ""}`,
+      `${config.backendUrl}/public-accommodations?page=${page}&per_page=${limit}
+        ${type !== undefined ? `&type=${type}` : ""}
+        ${query !== undefined ? `&search=${query}` : ""}
+        ${rating !== undefined ? `&ratings=${rating}` : ""}
+        ${price !== undefined ? `&price_range=${price}` : ""}
+        ${date !== undefined ? `&date=${date}` : ""}`,
       {
         method: "GET",
         headers: {

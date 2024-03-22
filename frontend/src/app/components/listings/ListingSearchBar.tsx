@@ -1,5 +1,6 @@
 "use client";
 import {
+  Badge,
   Button,
   Input,
   Popover,
@@ -30,7 +31,6 @@ const ListingSearchBar: React.FC = () => {
 
   const handleFilterChange = useCallback(() => {
     const params = new URLSearchParams(searchParams);
-
     if (filters.query !== "") params.set("query", filters.query);
     else params.delete("query");
     if (filters.price.min !== MIN_PRICE || filters.price.max !== MAX_PRICE)
@@ -55,12 +55,10 @@ const ListingSearchBar: React.FC = () => {
   const handleFilterClear = useCallback(() => {
     const params = new URLSearchParams(searchParams);
     setFilters(INITIAL_FILTER);
-
     params.delete("query");
     params.delete("price");
     params.delete("rating");
     params.delete("date");
-
     router.replace(`${pathname}?${params.toString()}`);
   }, [pathname, router, searchParams]);
 
@@ -86,17 +84,25 @@ const ListingSearchBar: React.FC = () => {
         }}
       />
       <Popover placement="bottom" showArrow offset={10}>
-        <PopoverTrigger>
-          <Button
-            variant="light"
-            size="lg"
-            fullWidth
-            className="max-w-40 justify-between rounded-none border-x text-sm capitalize text-zinc-500"
-            endContent={<ChevronDownIcon />}
-          >
-            Price
-          </Button>
-        </PopoverTrigger>
+        <Badge
+          color="default"
+          size="lg"
+          shape="circle"
+          content=""
+          isInvisible={searchParams.get("price") === null}
+        >
+          <PopoverTrigger>
+            <Button
+              variant="light"
+              size="lg"
+              fullWidth
+              className="max-w-40 justify-between rounded-none border-x text-sm capitalize text-zinc-500"
+              endContent={<ChevronDownIcon />}
+            >
+              Price
+            </Button>
+          </PopoverTrigger>
+        </Badge>
         <PopoverContent className="h-20 w-96">
           <Slider
             label="Price Range"
@@ -119,17 +125,25 @@ const ListingSearchBar: React.FC = () => {
         </PopoverContent>
       </Popover>
       <Popover placement="bottom" showArrow offset={10}>
-        <PopoverTrigger>
-          <Button
-            variant="light"
-            size="lg"
-            fullWidth
-            className="max-w-40  justify-between rounded-none border-x text-sm capitalize text-zinc-500"
-            endContent={<ChevronDownIcon />}
-          >
-            Ratings
-          </Button>
-        </PopoverTrigger>
+        <Badge
+          color="default"
+          size="lg"
+          shape="circle"
+          content=""
+          isInvisible={searchParams.get("rating") === null}
+        >
+          <PopoverTrigger>
+            <Button
+              variant="light"
+              size="lg"
+              fullWidth
+              className="max-w-40  justify-between rounded-none border-x text-sm capitalize text-zinc-500"
+              endContent={<ChevronDownIcon />}
+            >
+              Ratings
+            </Button>
+          </PopoverTrigger>
+        </Badge>
         <PopoverContent className="h-20 w-96">
           <Slider
             label="Rating Range"
@@ -152,17 +166,25 @@ const ListingSearchBar: React.FC = () => {
         </PopoverContent>
       </Popover>
       <Popover placement="bottom" showArrow offset={10}>
-        <PopoverTrigger>
-          <Button
-            variant="light"
-            size="lg"
-            fullWidth
-            className="max-w-40  justify-between rounded-none border-x text-sm capitalize text-zinc-500"
-            endContent={<ChevronDownIcon />}
-          >
-            Date
-          </Button>
-        </PopoverTrigger>
+        <Badge
+          color="default"
+          size="lg"
+          shape="circle"
+          content=""
+          isInvisible={searchParams.get("date") === null}
+        >
+          <PopoverTrigger>
+            <Button
+              variant="light"
+              size="lg"
+              fullWidth
+              className="max-w-40  justify-between rounded-none border-x text-sm capitalize text-zinc-500"
+              endContent={<ChevronDownIcon />}
+            >
+              Date
+            </Button>
+          </PopoverTrigger>
+        </Badge>
         <PopoverContent>
           <DateRange
             onChange={(date) => {

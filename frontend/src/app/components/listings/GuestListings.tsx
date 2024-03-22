@@ -17,7 +17,8 @@ const GuestListings: React.FC<GuestListingsProps> = ({
   const handlePageChange = useCallback(
     (page: number): void => {
       const params = new URLSearchParams(searchParams);
-      params.set("page", page.toString());
+      if (page === 1) params.delete("page");
+      else params.set("page", page.toString());
       router.replace(`${pathname}?${params.toString()}`);
     },
     [searchParams, pathname, router]
@@ -26,8 +27,8 @@ const GuestListings: React.FC<GuestListingsProps> = ({
   const handlePageSizeChange = useCallback(
     (size: number): void => {
       const params = new URLSearchParams(searchParams);
-      params.set("limit", size.toString());
-      params.set("page", "1");
+      params.set("size", size.toString());
+      params.delete("page");
       router.replace(`${pathname}?${params.toString()}`);
     },
     [searchParams, pathname, router]
@@ -47,10 +48,17 @@ const GuestListings: React.FC<GuestListingsProps> = ({
         <div className="min-h-56 w-full">
           <p className="mx-auto text-center text-zinc-500">
             No {type} available.
+            {searchParams.get("query") !== null ||
+            searchParams.get("type") !== null ||
+            searchParams.get("price") !== null ||
+            searchParams.get("rating") !== null ||
+            searchParams.get("date") !== null
+              ? " Try changing your filter parameters."
+              : ""}
           </p>
         </div>
       )}
-      {pagination !== null && (
+      {pagination !== null && listings.length > 0 && (
         <ListingPagination
           total={pagination.total}
           currentPage={pagination.current_page}

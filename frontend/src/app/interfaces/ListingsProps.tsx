@@ -30,8 +30,6 @@ export const INITIAL_FILTER: ListingFilter = {
 export interface HostListingsProps {
   listings: Listing[];
   pagination: Pagination | null;
-  page: number;
-  size: number;
   type: "accommodations" | "experiences";
 }
 
@@ -62,9 +60,9 @@ export interface GuestListingHeaderProps {
 }
 
 export interface GuestListingsProps {
-  type: "accommodations" | "experiences";
   listings: Listing[];
   pagination: Pagination | null;
+  type: "accommodations" | "experiences";
 }
 
 export interface GuestListingItemProps {
