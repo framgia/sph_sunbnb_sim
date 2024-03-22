@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Booking;
 use App\Models\Listing;
 use Closure;
 use Illuminate\Http\Request;
@@ -19,6 +20,9 @@ class CheckOwnership {
         switch ($type) {
             case 'listing':
                 $resource = Listing::findOrFail($request->route('listingId'));
+                break;
+            case 'booking':
+                $resource = Booking::findOrFail($request->route('bookingId'));
                 break;
             case 'user':
                 if ($userId != $request->route('userId')) {

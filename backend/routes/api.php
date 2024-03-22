@@ -72,6 +72,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/review/{listingId}', [ReviewController::class, 'store'])->middleware('role:guest');
     Route::get('/review/{listingId}', [ReviewController::class, 'getByListing']);
 
-    Route::apiResource('booking', BookingController::class)->except(['store']);
+    Route::apiResource('booking', BookingController::class)->except(['store', 'update', 'destroy']);
     Route::post('/booking', [BookingController::class, 'store'])->middleware('role:guest');
+    Route::get('/booking/user/{userId}', [BookingController::class, 'showBookingsByUser']);
+    Route::put('booking/{bookingId}', [BookingController::class, 'update'])
+        ->middleware('check.owner:booking');
+    Route::delete('booking/{bookingId}', [BookingController::class, 'destroy'])
+        ->middleware('check.owner:booking');
 });
