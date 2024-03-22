@@ -14,7 +14,7 @@ const PriceForm: React.FC<PriceFormProps> = ({ data, setData, error }) => {
       <div className="mw-full mt-10 text-left text-sm font-semibold leading-5 text-black max-md:max-w-full ">
         Set your price
       </div>
-      <div>
+      <div className="mb-2">
         <Input
           aria-label="Price"
           type="number"

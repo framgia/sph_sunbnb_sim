@@ -8,6 +8,7 @@ import CleanlinessSmallIcon from "../svgs/Review/CleanlinessSmallIcon";
 import { type ReviewData } from "@/app/interfaces/types";
 import { validateReview } from "@/app/utils/helpers/review/validation";
 import { createReview } from "@/app/utils/helpers/review/request";
+import ErrorMessage from "../ErrorMessage";
 
 interface AddReviewFormProps {
   listingId: number;
@@ -107,7 +108,7 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({
       </div>
       <div>
         {error.hasError === true && (
-          <div className="mt-5 text-xs text-red-500">{error.message}</div>
+          <ErrorMessage message={error.message as string} />
         )}
       </div>
       <div className="flex w-full justify-end px-5 py-2">
