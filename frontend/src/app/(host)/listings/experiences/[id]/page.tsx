@@ -1,3 +1,4 @@
+"use server";
 import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
 import ReviewSection from "@/app/components/review/ReviewSection";
@@ -9,7 +10,15 @@ import type { Inclusion, ListingStatus } from "@/app/utils/enums";
 import { Divider } from "@nextui-org/react";
 import React from "react";
 
-const ExperienceDetailsPage: React.FC = () => {
+interface ExperienceDetailsProps {
+  params: {
+    id: number;
+  };
+}
+
+const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = ({
+  params
+}) => {
   const expData: Listing_Experience = {
     id: 4,
     user_id: 1,
@@ -113,7 +122,7 @@ const ExperienceDetailsPage: React.FC = () => {
       <Divider className="my-10 w-full " />
       <InclusionSection inclusions={expData.listable.inclusions} />
       <Divider className="my-10 w-full " />
-      <ReviewSection />
+      <ReviewSection listingId={params.id} />
     </>
   );
 };
