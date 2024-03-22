@@ -1,12 +1,45 @@
 import GuestListingHeader from "@/app/components/listings/GuestListingHeader";
 import GuestListings from "@/app/components/listings/GuestListings";
+import {
+  LISTINGS_DEFAULT_PAGE,
+  LISTINGS_DEFAULT_SIZE
+} from "@/app/interfaces/ListingsProps";
+import { getPublicAccommodations } from "@/app/utils/helpers/accommodation/request";
 import React from "react";
 
-const AccommodationsPage: React.FC = () => {
+const AccommodationsPage: React.FC = async ({
+  searchParams
+}: {
+  searchParams?: {
+    page?: number;
+    size?: number;
+    query?: string;
+    type?: string;
+    price?: string;
+    rating?: string;
+    date?: string;
+  };
+}) => {
+  const paginatedListings = await getPublicAccommodations(
+    searchParams?.page ?? LISTINGS_DEFAULT_PAGE,
+    searchParams?.size ?? LISTINGS_DEFAULT_SIZE,
+    searchParams?.type,
+    searchParams?.query,
+    searchParams?.rating,
+    searchParams?.price,
+    searchParams?.date
+  );
+
   return (
     <main className="flex flex-col">
       <GuestListingHeader type="accommodations" />
-      <GuestListings />
+      {paginatedListings?.listings !== undefined && (
+        <GuestListings
+          type="accommodations"
+          listings={paginatedListings?.listings}
+          pagination={paginatedListings?.pagination}
+        />
+      )}
     </main>
   );
 };

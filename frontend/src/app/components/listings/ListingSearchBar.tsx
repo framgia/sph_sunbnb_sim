@@ -1,3 +1,4 @@
+"use client";
 import {
   Button,
   Input,
@@ -6,19 +7,62 @@ import {
   PopoverTrigger,
   Slider
 } from "@nextui-org/react";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import ChevronDownIcon from "../svgs/Calendar/ChevronDownIcon";
 import SearchIcon from "../svgs/SearchIcon";
-import { DateRange, type Range } from "react-date-range";
+import { DateRange } from "react-date-range";
+import {
+  INITIAL_FILTER,
+  MIN_PRICE,
+  MAX_PRICE,
+  MIN_RATING,
+  MAX_RATING,
+  MIN_DATE
+} from "@/app/interfaces/ListingsProps";
+import { type ListingFilter } from "@/app/interfaces/types";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const ListingSearchBar: React.FC = () => {
-  const [dates, setDates] = useState<Range[]>([
-    {
-      startDate: new Date(),
-      endDate: undefined,
-      key: "selection"
-    }
-  ]);
+  const [filters, setFilters] = useState<ListingFilter>(INITIAL_FILTER);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleFilterChange = useCallback(() => {
+    const params = new URLSearchParams(searchParams);
+
+    if (filters.query !== "") params.set("query", filters.query);
+    else params.delete("query");
+    if (filters.price.min !== MIN_PRICE || filters.price.max !== MAX_PRICE)
+      params.set("price", `${filters.price.min}-${filters.price.max}`);
+    else params.delete("price");
+    if (filters.rating.min !== MIN_RATING || filters.rating.max !== MAX_RATING)
+      params.set("rating", `${filters.rating.min}-${filters.rating.max}`);
+    else params.delete("rating");
+    if (
+      filters.date[0].startDate !== MIN_DATE &&
+      filters.date[0].endDate !== undefined
+    )
+      params.set(
+        "date",
+        `${filters.date[0].startDate.toISOString().slice(0, 10)}:${filters.date[0].endDate.toISOString().slice(0, 10)}`
+      );
+    else params.delete("date");
+
+    router.replace(`${pathname}?${params.toString()}`);
+  }, [filters, pathname, router, searchParams]);
+
+  const handleFilterClear = useCallback(() => {
+    const params = new URLSearchParams(searchParams);
+    setFilters(INITIAL_FILTER);
+
+    params.delete("query");
+    params.delete("price");
+    params.delete("rating");
+    params.delete("date");
+
+    router.replace(`${pathname}?${params.toString()}`);
+  }, [pathname, router, searchParams]);
 
   return (
     <div className="mt-[-20px] flex items-center rounded-lg bg-white px-2 shadow-md">
@@ -36,6 +80,10 @@ const ListingSearchBar: React.FC = () => {
           innerWrapper: ["bg-white"]
         }}
         startContent={<SearchIcon width={14} height={14} />}
+        value={filters.query}
+        onChange={(e) => {
+          setFilters({ ...filters, query: e.target.value });
+        }}
       />
       <Popover placement="bottom" showArrow offset={10}>
         <PopoverTrigger>
@@ -55,11 +103,18 @@ const ListingSearchBar: React.FC = () => {
             step={10000}
             size="sm"
             showSteps
-            minValue={0}
-            maxValue={100000}
-            defaultValue={[0, 100000]}
+            minValue={MIN_PRICE}
+            maxValue={MAX_PRICE}
+            value={[filters.price.min, filters.price.max]}
             formatOptions={{ style: "currency", currency: "PHP" }}
             className="max-w-md p-1"
+            onChange={(price) => {
+              if (Array.isArray(price) && price.length === 2)
+                setFilters({
+                  ...filters,
+                  price: { min: price[0], max: price[1] }
+                });
+            }}
           />
         </PopoverContent>
       </Popover>
@@ -81,11 +136,18 @@ const ListingSearchBar: React.FC = () => {
             step={1}
             size="sm"
             showSteps
-            minValue={0}
-            maxValue={5}
-            defaultValue={[0, 5]}
+            minValue={MIN_RATING}
+            maxValue={MAX_RATING}
+            value={[filters.rating.min, filters.rating.max]}
             getValue={(rating) => `${String(rating).replace(",", "-")} Stars`}
             className="max-w-md p-1"
+            onChange={(rating) => {
+              if (Array.isArray(rating) && rating.length === 2)
+                setFilters({
+                  ...filters,
+                  rating: { min: rating[0], max: rating[1] }
+                });
+            }}
           />
         </PopoverContent>
       </Popover>
@@ -103,18 +165,37 @@ const ListingSearchBar: React.FC = () => {
         </PopoverTrigger>
         <PopoverContent>
           <DateRange
-            onChange={(item) => {
-              setDates([item.selection]);
+            onChange={(date) => {
+              if (date.selection.startDate !== undefined) {
+                setFilters({
+                  ...filters,
+                  date: [
+                    {
+                      startDate: date.selection.startDate,
+                      endDate: date.selection.endDate,
+                      key: "selection"
+                    }
+                  ]
+                });
+              }
             }}
             moveRangeOnFirstSelection={false}
-            ranges={dates}
-            minDate={new Date()}
+            ranges={filters.date}
+            minDate={MIN_DATE}
             rangeColors={["#FF2200"]}
           />
         </PopoverContent>
       </Popover>
-      <Button color="primary" size="sm" className="ms-2">
+      <Button
+        color="primary"
+        size="sm"
+        className="ms-2"
+        onClick={handleFilterChange}
+      >
         FILTER
+      </Button>
+      <Button size="sm" className="ms-2" onClick={handleFilterClear}>
+        CLEAR
       </Button>
     </div>
   );

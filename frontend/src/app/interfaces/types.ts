@@ -163,3 +163,22 @@ export interface ReviewType {
   value_rating: number;
   comment: string;
 }
+
+export interface ListingFilter {
+  query: string;
+  price: {
+    min: number;
+    max: number;
+  };
+  rating: {
+    min: number;
+    max: number;
+  };
+  date: [
+    {
+      startDate: Date;
+      endDate: Date | undefined;
+      key: string;
+    }
+  ];
+}
