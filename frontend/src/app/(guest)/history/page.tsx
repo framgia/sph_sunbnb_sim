@@ -1,11 +1,12 @@
+import BookingHistory from "@/app/components/BookingHistory";
 import React from "react";
 
 const HistoryPage: React.FC = () => {
-    return (
-        <>
-            <h1>History Page</h1>
-        </>
-    );
+  return (
+    <div className="w-full">
+      <BookingHistory />
+    </div>
+  );
 };
 
 export default HistoryPage;
