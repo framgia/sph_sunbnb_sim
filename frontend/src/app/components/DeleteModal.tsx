@@ -12,7 +12,7 @@ import type { ModalProps } from "../interfaces/ModalProps";
 import DeleteIcon from "./svgs/DeleteIcon";
 
 interface DeleteModalProps extends ModalProps {
-  onDelete: () => void;
+  onDelete: () => Promise<boolean>;
 }
 
 const DeleteModal: React.FC<DeleteModalProps> = ({
@@ -22,10 +22,10 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
 }) => {
   const [isDeleted, setIsDeleted] = useState(false);
 
-  const handleDelete = (): void => {
-    setIsDeleted(true);
-    onDelete();
-  };
+  async function handleDelete(): Promise<void> {
+    const isDeleted = await onDelete();
+    setIsDeleted(isDeleted);
+  }
 
   return (
     <>
