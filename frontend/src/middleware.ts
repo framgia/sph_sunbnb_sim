@@ -44,6 +44,13 @@ export function middleware(request: NextRequest): NextResponse | undefined {
     ) {
       return NextResponse.redirect(new URL("/not-found", request.url));
     }
+    if (
+      user.role === "host" &&
+      (request.nextUrl.pathname.startsWith("/accommodations") ||
+        request.nextUrl.pathname.startsWith("/experiences"))
+    ) {
+      return NextResponse.redirect(new URL("/not-found", request.url));
+    }
   }
 }
 

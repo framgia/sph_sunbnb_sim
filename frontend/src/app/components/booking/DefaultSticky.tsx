@@ -21,8 +21,8 @@ const DefaultSticky: React.FC<DefaultStickyProps> = ({ ForAccommodation }) => {
           <DividerText>or continue using</DividerText>
           <div className="p-2">
             <GoogleButton
-              onPress={() => {
-                signIn("google");
+              onPress={async () => {
+                await signIn("google");
               }}
             />
           </div>

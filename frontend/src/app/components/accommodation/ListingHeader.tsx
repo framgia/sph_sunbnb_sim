@@ -1,6 +1,6 @@
 "use server";
 import React from "react";
-import { Avatar, Button, Image } from "@nextui-org/react";
+import { Avatar, Image } from "@nextui-org/react";
 import type { MediaType } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import ToEditButton from "@/app/components/ToEditButton";
@@ -22,8 +22,6 @@ interface ListingHeaderProps {
   modifiedAt: string;
   address: string;
   images: MediaType[];
-  isHost: boolean;
-  id: string;
 }
 const ListingHeader: React.FC<ListingHeaderProps> = async ({
   id,
@@ -40,9 +38,7 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
   hostName,
   createdAt,
   modifiedAt,
-  images,
-  isHost,
-  id
+  images
 }) => {
   async function checkIsHost(): Promise<boolean> {
     return (await userRole()) === "host";

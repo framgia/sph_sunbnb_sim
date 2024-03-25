@@ -14,18 +14,21 @@ import GuestCounter from "./GuestCounter";
 import FlagIcon from "../svgs/Report/FlagIcon";
 import ExperienceBookOption from "./ExperienceBookOption";
 import { addDays, eachDayOfInterval } from "date-fns";
+import { useRouter } from "next/navigation";
 
 interface ExperienceBookingStickyProps {
   price: number;
   startTime: string;
   endTime: string;
   maxGuest: number;
+  listingId: number;
 }
 const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
   price,
   startTime,
   endTime,
-  maxGuest
+  maxGuest,
+  listingId
 }) => {
   const [guestCount, setGuestCount] = useState(1);
   const [startDate, setStart] = useState(new Date());
@@ -39,7 +42,7 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
     }
   ]);
   const [DateArr, setDateArr] = useState<Date[]>([new Date()]);
-
+  const router = useRouter();
   function getDatesInRange(start: Date, end: Date): Date[] {
     return eachDayOfInterval({
       start: new Date(start),
@@ -84,7 +87,13 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
                 </span>
               </div>
               <PopoverTrigger>
-                <Button className="w-1/4 self-center bg-white" isIconOnly>
+                <Button
+                  className="w-1/4 self-center bg-white"
+                  isIconOnly
+                  onPress={() => {
+                    router.push(`${listingId}/book`);
+                  }}
+                >
                   <ChevronDownIcon />
                 </Button>
               </PopoverTrigger>
@@ -150,6 +159,8 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
                   price={price}
                   startTime={startTime}
                   endTime={endTime}
+                  guests={guestCount}
+                  listingId={listingId}
                 />
               );
             })
@@ -163,6 +174,8 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
                     price={price}
                     startTime={startTime}
                     endTime={endTime}
+                    guests={guestCount}
+                    listingId={listingId}
                   />
                 );
               })}

@@ -1,12 +1,11 @@
 "use server";
 import type { MediaType } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
-import { Avatar, Button } from "@nextui-org/react";
+import { Avatar } from "@nextui-org/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import React from "react";
 import ToEditButton from "../ToEditButton";
-import { userRole } from "@/app/utils/helpers/userHelper";
+import { checkCookies, userRole } from "@/app/utils/helpers/userHelper";
 
 interface ExperienceHeaderProps {
   id: number;
@@ -23,8 +22,7 @@ interface ExperienceHeaderProps {
   hostName: string;
   createdAt: string;
   modifiedAt: string;
-  isHost: boolean;
-  id: number;
+  hostId?: number;
 }
 const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
   id,
@@ -41,11 +39,11 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
   hostName,
   createdAt,
   modifiedAt,
-  isHost,
-  id
+  hostId
 }) => {
   async function checkIsHost(): Promise<boolean> {
-    return (await userRole()) === "host";
+    const user = await checkCookies();
+    return (await userRole()) === "host" && user?.id === hostId;
   }
   function getDuration(start: string, end: string): number {
     const startArr = start.split(":");
@@ -55,8 +53,6 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
     const diff = Math.abs(endSec - startSec);
     return Math.floor(diff / 3600);
   }
-
-  const router = useRouter();
 
   return (
     <div>

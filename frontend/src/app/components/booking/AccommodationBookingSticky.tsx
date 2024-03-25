@@ -13,6 +13,7 @@ import GuestCounter from "./GuestCounter";
 import { DateRange, type Range } from "react-date-range";
 import { getDateString } from "@/app/utils/helpers/getDateString";
 import addDays from "date-fns/addDays";
+import { useRouter } from "next/navigation";
 
 interface AccommodationBookingStickyProps {
   price: number;
@@ -20,41 +21,45 @@ interface AccommodationBookingStickyProps {
   minNights: number;
   maxNights: number;
   exclude: Date[];
+  listingId: number;
 }
 const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
   price,
   maxGuests,
   minNights,
   maxNights,
-  exclude
+  exclude,
+  listingId
 }) => {
   const [guestCount, setGuests] = useState(1);
-  const [startDate, setStart] = useState(new Date());
-  const [endDate, setEnd] = useState(addDays(new Date(), minNights));
+  const [startDateState, setStart] = useState(new Date());
+  const [endDateState, setEnd] = useState(addDays(new Date(), minNights));
   const [nights, setNights] = useState(1);
   const [dates, setDates] = useState<Range[]>([
     {
-      startDate: startDate,
-      endDate: endDate,
+      startDate: startDateState,
+      endDate: endDateState,
       key: "selection"
     }
   ]);
+  const router = useRouter();
+
   useEffect(() => {
-    setNights(endDate.getDate() - startDate.getDate());
-  }, [startDate, endDate]);
+    setNights(endDateState.getDate() - startDateState.getDate());
+  }, [startDateState, endDateState]);
 
   useEffect(() => {
     if (nights > maxNights) {
-      setEnd(addDays(startDate, maxNights));
+      setEnd(addDays(startDateState, maxNights));
       setDates([
         {
-          startDate: startDate,
-          endDate: addDays(startDate, maxNights),
+          startDate: startDateState,
+          endDate: addDays(startDateState, maxNights),
           key: "selection"
         }
       ]);
     }
-  }, [nights]);
+  }, [nights, maxNights, startDateState]);
 
   return (
     <div className="w-80">
@@ -76,7 +81,7 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
                       Check-in
                     </span>
                     <span className="w-full pt-0 text-center">
-                      {getDateString(startDate)}
+                      {getDateString(startDateState)}
                     </span>
                   </div>
                   <div className="m-0 flex w-full flex-col p-2">
@@ -84,7 +89,9 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
                       Check-out
                     </span>
                     <span className="w-full pt-0 text-center">
-                      {nights < 1 ? "Add Checkout" : getDateString(endDate)}
+                      {nights < 1
+                        ? "Add Checkout"
+                        : getDateString(endDateState)}
                     </span>
                   </div>
                 </Button>
@@ -152,6 +159,11 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
             className="w-full font-bold"
             color="primary"
             isDisabled={nights < 1 || nights > maxNights}
+            onPress={() => {
+              router.push(
+                `${listingId}/checkout?guests=${guestCount}&nights=${nights}&start=${startDateState.toISOString()}`
+              );
+            }}
           >
             Book
           </Button>

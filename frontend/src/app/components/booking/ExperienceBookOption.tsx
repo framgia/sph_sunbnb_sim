@@ -1,4 +1,6 @@
+"use client";
 import { Button } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface ExperienceBookOptionProps {
@@ -6,14 +8,19 @@ interface ExperienceBookOptionProps {
   price: number;
   startTime: string;
   endTime: string;
+  guests: number;
+  listingId: number;
 }
 const ExperienceBookOption: React.FC<ExperienceBookOptionProps> = ({
   date,
   price,
   startTime,
-  endTime
+  endTime,
+  listingId,
+  guests
 }) => {
   const DateArr = date.toDateString().split(" ");
+  const router = useRouter();
   function convertToAMPM(time: string) {
     let timeArr: string[] = time
       .toString()
@@ -47,7 +54,15 @@ const ExperienceBookOption: React.FC<ExperienceBookOptionProps> = ({
           <span className="text-sm font-bold"> / Person</span>
         </div>
         <div className="flex justify-end">
-          <Button color="primary" size="sm">
+          <Button
+            color="primary"
+            size="sm"
+            onPress={() => {
+              router.push(
+                `${listingId}/checkout?guests=${guests}&date=${date.toISOString()}`
+              );
+            }}
+          >
             Choose
           </Button>
         </div>

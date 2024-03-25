@@ -1,10 +1,11 @@
 import AmenitySection from "@/app/components/accommodation/AmenitySection";
 import ListingHeader from "@/app/components/accommodation/ListingHeader";
 import AccommodationBookingSticky from "@/app/components/booking/AccommodationBookingSticky";
+import DefaultSticky from "@/app/components/booking/DefaultSticky";
 import ReviewSection from "@/app/components/review/ReviewSection";
-import { CalendarDate } from "@/app/interfaces/types";
-import { getAccommodation } from "@/app/utils/helpers/accommodation/request";
+import { publicGetAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
+import { checkCookies } from "@/app/utils/helpers/userHelper";
 import { Divider } from "@nextui-org/react";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -20,8 +21,9 @@ const GuestAccommodationsDetails: React.FC<
 > = async ({ params }) => {
   let accData;
   let accAvailability;
+  const user = await checkCookies();
   try {
-    accData = await getAccommodation(Number(params.id));
+    accData = await publicGetAccommodation(Number(params.id));
     accAvailability = await getListingAvailability(Number(params.id));
   } catch (err) {
     redirect("/not-found");
@@ -69,8 +71,7 @@ const GuestAccommodationsDetails: React.FC<
               accData.zip_code
             }
             images={accData.media}
-            isHost={false}
-            id={params.id}
+            id={Number(params.id)}
           />
           <div className="flex h-fit flex-row items-start">
             <div className="w-full">
@@ -82,13 +83,18 @@ const GuestAccommodationsDetails: React.FC<
               <ReviewSection listingId={Number(params.id)} />
             </div>
             <div className="w-90 h-90 sticky top-[30px] z-50 ml-5 block self-start pt-10">
-              <AccommodationBookingSticky
-                exclude={blockedDates}
-                price={accData.price}
-                maxGuests={accData.maximum_guests}
-                minNights={accData.listable.minimum_days}
-                maxNights={accData.listable.maximum_days}
-              />
+              {user !== undefined && user !== null ? (
+                <AccommodationBookingSticky
+                  exclude={blockedDates}
+                  price={accData.price}
+                  maxGuests={accData.maximum_guests}
+                  minNights={accData.listable.minimum_days}
+                  maxNights={accData.listable.maximum_days}
+                  listingId={Number(params.id)}
+                />
+              ) : (
+                <DefaultSticky ForAccommodation={true} />
+              )}
             </div>
           </div>
         </>

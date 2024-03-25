@@ -1,18 +1,24 @@
+import DefaultSticky from "@/app/components/booking/DefaultSticky";
 import ExperienceBookingSticky from "@/app/components/booking/ExperienceBookingSticky";
 import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
 import ReviewSection from "@/app/components/review/ReviewSection";
-import { Listing_Experience, UserDetailsType } from "@/app/interfaces/types";
-import { Inclusion, ListingStatus } from "@/app/utils/enums";
+import type {
+  Listing_Experience,
+  UserDetailsType
+} from "@/app/interfaces/types";
+import type { Inclusion, ListingStatus } from "@/app/utils/enums";
+import { checkCookies } from "@/app/utils/helpers/userHelper";
 import { Divider } from "@nextui-org/react";
 import React from "react";
 
 interface GuestExperienceDetailsProps {
   params: { id: number };
 }
-const GuestExperienceDetailsPage: React.FC<GuestExperienceDetailsProps> = ({
-  params
-}) => {
+const GuestExperienceDetailsPage: React.FC<
+  GuestExperienceDetailsProps
+> = async ({ params }) => {
+  const user = await checkCookies();
   const expData: Listing_Experience = {
     id: 4,
     user_id: 1,
@@ -103,8 +109,8 @@ const GuestExperienceDetailsPage: React.FC<GuestExperienceDetailsProps> = ({
           .split(" ")
           .slice(1)
           .join(" ")}
-        isHost={false}
         id={params.id}
+        hostId={user?.id}
       />
       <div className="flex h-fit flex-row items-start">
         <div className="w-full">
@@ -123,12 +129,17 @@ const GuestExperienceDetailsPage: React.FC<GuestExperienceDetailsProps> = ({
           <ReviewSection listingId={params.id} />
         </div>
         <div className="w-90 h-90 sticky top-[30px]  ml-5 block self-start pt-10">
-          <ExperienceBookingSticky
-            maxGuest={expData.maximum_guests}
-            price={expData.price}
-            startTime={expData.listable.start_time}
-            endTime={expData.listable.end_time}
-          />
+          {user !== undefined && user !== null ? (
+            <ExperienceBookingSticky
+              maxGuest={expData.maximum_guests}
+              price={expData.price}
+              startTime={expData.listable.start_time}
+              endTime={expData.listable.end_time}
+              listingId={Number(params.id)}
+            />
+          ) : (
+            <DefaultSticky ForAccommodation={false} />
+          )}
         </div>
       </div>
     </>
