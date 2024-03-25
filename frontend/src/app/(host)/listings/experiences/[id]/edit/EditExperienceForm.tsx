@@ -1,30 +1,41 @@
 "use client";
-import React from "react";
-import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
+import ListingUploader from "@/app/components/accommodation/ListingUploader";
+import ExperienceAddressForm from "@/app/components/experience/ExperienceAddressForm";
 import InclusionsListbox from "@/app/components/experiences/InclusionsListbox";
 import LanguagesListbox from "@/app/components/experiences/LanguagesListbox";
+import { Experience, MediaUpdate } from "@/app/interfaces/ExperienceData";
+import { ExperienceType } from "@/app/utils/enums";
+import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
+import React from "react";
+import AccommodationImageUpdate from "../../../accommodations/[id]/edit/ImageCollectionUpdate";
+import ErrorMessage from "@/app/components/ErrorMessage";
 import TrashIcon from "@/app/components/svgs/TrashIcon";
 import Link from "next/link";
+import ExperiencePriceForm from "@/app/components/experience/ExperiencePriceForm";
 
-interface EditExperienceFormProps {
+interface EditListingProps {
   onDelete: () => void;
+  listingid: string;
+  data: Experience;
+  setData: React.Dispatch<React.SetStateAction<Experience>>;
+  media: MediaUpdate;
+  setMedia: React.Dispatch<React.SetStateAction<MediaUpdate>>;
+  error: Record<string, string | boolean>;
   loading: boolean;
-  onClick: () => void;
+  onPress: () => void;
 }
 
-const EditExperienceForm: React.FC<EditExperienceFormProps> = ({
+const EditExperienceForm: React.FC<EditListingProps> = ({
   onDelete,
+  listingid,
+  data,
+  setData,
+  media,
+  setMedia,
+  error,
   loading,
-  onClick
+  onPress
 }) => {
-  const experienceOptions = [
-    { value: "Food & Drinks", label: "Food & Drinks" },
-    { value: "Art & Culture", label: "Art & Culture" },
-    { value: "Entertainment", label: "Entertainment" },
-    { value: "Tours", label: "Tours" },
-    { value: "Sports", label: "Sports" }
-  ];
-
   return (
     <section className="flex w-full flex-col px-5">
       <header className="w-full text-left text-lg font-semibold leading-7 text-black max-md:max-w-full">
@@ -36,11 +47,24 @@ const EditExperienceForm: React.FC<EditExperienceFormProps> = ({
         className="mt-4"
         label="Title"
         variant="bordered"
+        isInvalid={error.hasError === true && data.name.trim() === ""}
+        value={data.name}
+        onChange={(e) => {
+          setData({ ...data, name: e.target.value });
+        }}
       />
-      <Select className="mt-4" label="Experience Type" variant="bordered">
-        {experienceOptions.map((option) => (
-          <SelectItem key={option.value} value={option.value}>
-            {option.label}
+      <Select
+        className="mt-4"
+        label="Select Experience Type"
+        variant="bordered"
+        defaultSelectedKeys={data.type !== "" ? [data.type] : []}
+        onChange={(e) => {
+          setData({ ...data, type: e.target.value });
+        }}
+      >
+        {Object.values(ExperienceType).map((type) => (
+          <SelectItem key={type} value={type} aria-label="Experience Type Item">
+            {type}
           </SelectItem>
         ))}
       </Select>
@@ -51,55 +75,22 @@ const EditExperienceForm: React.FC<EditExperienceFormProps> = ({
         maxRows={5}
         minRows={5}
         variant="bordered"
+        isInvalid={error.hasError === true && data.description.trim() === ""}
+        value={data.description}
+        onChange={(e) => {
+          setData({ ...data, description: e.target.value });
+        }}
       />
+
       <div className="mt-5 w-full text-left text-lg font-semibold leading-7 text-black max-md:max-w-full">
         Address
       </div>
-      <Input
-        aria-label="Province"
-        type="text"
-        className="mt-4"
-        label="Province"
-        variant="bordered"
-      />
-      <div className="mt-2 flex w-full justify-between gap-5 whitespace-nowrap text-base leading-6 text-zinc-500 max-md:max-w-full max-md:flex-wrap">
-        <Input
-          aria-label="Street"
-          type="text"
-          className="mt-4"
-          label="Street"
-          variant="bordered"
-        />
-        <Input
-          aria-label="Barangay"
-          type="text"
-          className="mt-4"
-          label="Barangay"
-          variant="bordered"
-        />
-      </div>
-      <div className="mt-2 flex w-full justify-between gap-5 whitespace-nowrap text-base leading-6 text-zinc-500 max-md:max-w-full max-md:flex-wrap">
-        <Input
-          aria-label="City"
-          type="text"
-          className="mt-4"
-          label="City"
-          variant="bordered"
-        />
-        <Input
-          pattern="[0-9]*"
-          aria-label="Zip Code"
-          type="text"
-          className="mt-4"
-          label="Zip Code"
-          variant="bordered"
-        />
-      </div>
-      <div className="mt-5 rounded-lg border-[1.3px] border-solid border-[color:var(--Blues-Gray2,#B8BBC2)] px-10">
+      <ExperienceAddressForm data={data} setData={setData} error={error} />
+      <div className="mt-5 rounded-lg border-[1.3px] border-solid border-[color:var(--Blues-Gray2,#B8BBC2)] p-10">
         <div className="mb-10 mt-10 grid grid-cols-2">
           <div className="font-semibold">
             Inclusions
-            <InclusionsListbox />
+            <InclusionsListbox setData={setData} data={data} />
           </div>
 
           <div className="w-full text-left text-sm font-semibold leading-5 text-black max-md:max-w-full">
@@ -107,38 +98,66 @@ const EditExperienceForm: React.FC<EditExperienceFormProps> = ({
             <div className="mt-5 grid grid-cols-2 gap-2 font-light">
               <div>
                 Start Time
-                <Input width="186px" type="time" className="mt-5" />
+                <Input
+                  width="186px"
+                  type="time"
+                  className="mt-5"
+                  isInvalid={
+                    error.hasError === true && data.start_time.trim() === ""
+                  }
+                  value={data.start_time}
+                  onChange={(e) => {
+                    setData({ ...data, start_time: e.target.value });
+                  }}
+                />
               </div>
               <div>
                 End Time
-                <Input width="186px" type="time" className="mt-5" />
+                <Input
+                  width="186px"
+                  type="time"
+                  className="mt-5"
+                  isInvalid={
+                    error.hasError === true && data.end_time.trim() === ""
+                  }
+                  value={data.end_time}
+                  onChange={(e) => {
+                    setData({ ...data, end_time: e.target.value });
+                  }}
+                />
               </div>
             </div>
             <div className="mt-5">
               I speak...
-              <LanguagesListbox />
+              <LanguagesListbox data={data} setData={setData} />
             </div>
           </div>
         </div>
       </div>
-      <div className="mt-10 w-full text-left text-lg font-semibold leading-5 text-black max-md:max-w-full">
+
+      <hr className="mt-12 min-h-[3px] w-full bg-zinc-200 max-md:mt-10 max-md:max-w-full" />
+      <div className="mb-10 mt-10 w-full text-left text-lg font-semibold leading-5 text-black max-md:max-w-full">
         Upload photos of your place
       </div>
-      <div className="mw-full mt-10 text-left text-sm font-semibold leading-5 text-black max-md:max-w-full ">
-        Set your price
+      <div className="grid rounded-3xl outline outline-1 outline-neutral-300 md:grid-cols-2">
+        <div className="p-8">
+          <ListingUploader media={media} setMedia={setMedia} />
+
+          <div className="mt-3 text-center text-xs">Maximum of 5 photos</div>
+        </div>
+        <div className="rounded-3xl bg-primary-50 outline outline-1 outline-neutral-300">
+          <AccommodationImageUpdate media={media} setMedia={setMedia} />
+        </div>
       </div>
+
+      <ExperiencePriceForm data={data} setData={setData} error={error} />
       <div>
-        <Input
-          aria-label="Price"
-          type="number"
-          className="mt-4"
-          startContent="₱"
-          variant="bordered"
-          placeholder="0"
-        />
+        {error.hasError === true && (
+          <ErrorMessage message={error.message as string} />
+        )}
       </div>
       <div className="rounded-lg">
-        <div className="mt-16  flex justify-between gap-5 self-end whitespace-nowrap text-sm leading-5">
+        <div className="mt-8  flex justify-between gap-5 self-end whitespace-nowrap text-sm leading-5">
           <Button
             className=" gap-y-1.5 rounded-lg bg-danger px-4 text-white max-md:px-5"
             size="md"
@@ -149,7 +168,7 @@ const EditExperienceForm: React.FC<EditExperienceFormProps> = ({
             Delete
           </Button>
           <div className="flex gap-5">
-            <Link href="/listings">
+            <Link href={`/listings/experiences/${listingid}`}>
               <Button
                 className="justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5"
                 size="md"
@@ -158,12 +177,13 @@ const EditExperienceForm: React.FC<EditExperienceFormProps> = ({
                 Cancel
               </Button>
             </Link>
+
             <Button
               className="justify-center rounded-lg bg-primary-600 px-7 py-2.5 font-bold text-white drop-shadow-sm max-md:px-5 "
               size="md"
+              onPress={onPress}
               isDisabled={loading}
               isLoading={loading}
-              onPress={onClick}
             >
               Save
             </Button>
@@ -173,5 +193,4 @@ const EditExperienceForm: React.FC<EditExperienceFormProps> = ({
     </section>
   );
 };
-
 export default EditExperienceForm;
