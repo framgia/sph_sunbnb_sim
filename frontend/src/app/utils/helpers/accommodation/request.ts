@@ -121,23 +121,46 @@ async function updateAccommodation(
   }
 }
 
-async function deleteAccommodation(id: number): Promise<{ message: string }> {
+async function deleteAccommodation(
+  id: number
+): Promise<Record<string, string | boolean>> {
   const jwt = cookies().get("jwt")?.value;
   if (jwt !== undefined) {
-    const fetchApi = await fetch(`${config.backendUrl}/listing/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-        "Content-Type": "application/json",
-        Accept: "application/json"
+    try {
+      const response = await fetch(`${config.backendUrl}/listing/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        }
+      });
+      const responseData = await response.json();
+      if (response.ok) {
+        return {
+          hasError: false,
+          message: responseData.message
+        };
+      } else if (responseData.error !== undefined) {
+        throw new Error(responseData.error as string);
+      } else {
+        return {
+          hasError: true,
+          message: "Unknown error occurred. Please contact the administrator."
+        };
       }
-    });
-    const resData = await fetchApi.json();
-    return {
-      message: resData.message
-    };
+    } catch (error) {
+      return {
+        hasError: true,
+        message:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred. Please contact the administrator."
+      };
+    }
   } else {
     return {
+      hasError: true,
       message: "Nothing to delete"
     };
   }

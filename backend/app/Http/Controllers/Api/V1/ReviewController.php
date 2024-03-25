@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\ReviewRequest;
+use App\Http\Requests\V1\AccommodationReviewRequest;
+use App\Http\Requests\V1\ExperienceReviewRequest;
+use App\Models\Accommodation;
+use App\Models\Experience;
 use App\Models\Listing;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -22,9 +25,30 @@ class ReviewController extends Controller {
         return response()->json(Review::reviewResponse($reviews), Response::HTTP_OK);
     }
 
-    public function store(ReviewRequest $request, $listingId) {
+    public function storeAccommodation(AccommodationReviewRequest $request, $listingId) {
         $request->validated();
-        $review = Review::createReview($request, $listingId);
+        $listing = Listing::findOrFail($listingId);
+        $listableType = $listing->listable_type;
+        if ($listableType !== Accommodation::class) {
+            return response()->json(['message' => 'This is not a type of accommodation.'], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $review = Review::createAccommodationReview($request, $listingId);
+        if ($review) {
+            return response()->json(['message' => 'Review created successfully'], Response::HTTP_CREATED);
+        } else {
+            return response()->json(['message' => 'No review created'], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    public function storeExperience(ExperienceReviewRequest $request, $listingId) {
+        $request->validated();
+        $review = Review::createExperienceReview($request, $listingId);
+        $listing = Listing::findOrFail($listingId);
+        $listableType = $listing->listable_type;
+        if ($listableType !== Experience::class) {
+            return response()->json(['message' => 'This is not a type of experience.'], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
         if ($review) {
             return response()->json(['message' => 'Review created successfully'], Response::HTTP_CREATED);
         } else {
