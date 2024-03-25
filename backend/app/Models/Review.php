@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class Review extends Model {
     use HasFactory;
@@ -25,6 +26,7 @@ class Review extends Model {
     public static function instantiateAccommodationReview(AccommodationReviewRequest $request) {
 
         $reviewData = $request->all();
+        $reviewData = Arr::only($reviewData, array_keys((new AccommodationReviewRequest())->rules()));
         $totalRating = ($reviewData['cleanliness_rating'] + $reviewData['location_rating'] + $reviewData['value_rating']) / 3;
         $reviewData['overall_rating'] = round($totalRating, 2);
 
@@ -32,8 +34,7 @@ class Review extends Model {
     }
 
     public static function createAccommodationReview(AccommodationReviewRequest $request, $listingId) {
-        $reviewData = self::instantiateReview($request);
-
+        $reviewData = self::instantiateAccommodationReview($request);
         $review = new Review($reviewData);
 
         $review->listing()->associate(Listing::find($listingId));
@@ -45,7 +46,7 @@ class Review extends Model {
 
     public static function createExperienceReview(ExperienceReviewRequest $request, $listingId) {
         $reviewData = $request->all();
-
+        $reviewData = Arr::only($reviewData, array_keys((new ExperienceReviewRequest())->rules()));
         $review = new Review($reviewData);
 
         $review->listing()->associate(Listing::find($listingId));
