@@ -1,20 +1,23 @@
 "use client";
 import React from "react";
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
-import InclusionsListbox from "@/app/components/experiences/InclusionsListbox";
-import LanguagesListbox from "@/app/components/experiences/LanguagesListbox";
-import type { Experience } from "@/app/interfaces/ExperienceData";
+
 import ListingUploader from "@/app/components/accommodation/ListingUploader";
 import AccommodationImage from "../../accommodations/new/ImageCollection";
-import ExperienceAddressForm from "@/app/components/experience/ExperienceAddressForm";
+
 import { ExperienceType } from "@/app/utils/enums";
-import ExperiencePriceForm from "@/app/components/experience/ExperiencePriceForm";
+
 import ErrorMessage from "@/app/components/ErrorMessage";
+import InclusionsListbox from "@/app/components/experience/InclusionsListbox";
+import LanguagesListbox from "@/app/components/experience/LanguagesListbox";
+import { ExperienceData } from "@/app/interfaces/ExperienceData";
+import ExperienceAddressForm from "@/app/components/experience/ExperienceAddressForm";
+import ExperiencePriceForm from "@/app/components/experience/ExperiencePriceForm";
 
 interface NewExperienceFormProps {
   onPress: () => void;
-  data: Experience;
-  setData: React.Dispatch<React.SetStateAction<Experience>>;
+  data: ExperienceData;
+  setData: React.Dispatch<React.SetStateAction<ExperienceData>>;
   loading: boolean;
   error: Record<string, string | boolean>;
   media: string[];

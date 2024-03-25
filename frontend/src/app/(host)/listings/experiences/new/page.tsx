@@ -2,10 +2,10 @@
 import React, { useState } from "react";
 import NewExperienceForm from "./NewExperienceForm";
 import { useDisclosure } from "@nextui-org/react";
-import type { Experience } from "@/app/interfaces/ExperienceData";
 import { createExperience } from "@/app/utils/helpers/experience/request";
-import { validateExperience } from "@/app/utils/helpers/experience/validation";
 import ApprovalModal from "@/app/components/ApprovalModal";
+import { ExperienceData } from "@/app/interfaces/ExperienceData";
+import { validateExperience } from "@/app/utils/helpers/experience/validation";
 
 const NewExperiencePage: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -20,7 +20,7 @@ const NewExperiencePage: React.FC = () => {
 
   const [media, setMedia] = useState<string[]>([]);
 
-  const [data, setData] = useState<Experience>({
+  const [data, setData] = useState<ExperienceData>({
     name: "",
     description: "",
     province: "",

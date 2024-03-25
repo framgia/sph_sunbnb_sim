@@ -1,6 +1,6 @@
 import type { Inclusion, Language } from "../utils/enums";
 
-interface Experience {
+interface ExperienceData {
   name: string;
   description: string;
   province: string;
@@ -26,4 +26,4 @@ interface MediaUpdate {
   new: string[];
 }
 
-export type { Experience, MediaUpdate };
+export type { ExperienceData, MediaUpdate };

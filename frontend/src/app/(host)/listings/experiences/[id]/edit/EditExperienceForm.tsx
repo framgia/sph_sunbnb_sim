@@ -1,8 +1,6 @@
 "use client";
 import ListingUploader from "@/app/components/accommodation/ListingUploader";
 import ExperienceAddressForm from "@/app/components/experience/ExperienceAddressForm";
-import InclusionsListbox from "@/app/components/experiences/InclusionsListbox";
-import LanguagesListbox from "@/app/components/experiences/LanguagesListbox";
 import type { Experience, MediaUpdate } from "@/app/interfaces/ExperienceData";
 import { ExperienceType } from "@/app/utils/enums";
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
@@ -11,7 +9,9 @@ import AccommodationImageUpdate from "../../../accommodations/[id]/edit/ImageCol
 import ErrorMessage from "@/app/components/ErrorMessage";
 import TrashIcon from "@/app/components/svgs/TrashIcon";
 import Link from "next/link";
+import InclusionsListbox from "@/app/components/experience/InclusionsListbox";
 import ExperiencePriceForm from "@/app/components/experience/ExperiencePriceForm";
+import LanguagesListbox from "@/app/components/experience/LanguagesListbox";
 
 interface EditListingProps {
   onDelete: () => void;
