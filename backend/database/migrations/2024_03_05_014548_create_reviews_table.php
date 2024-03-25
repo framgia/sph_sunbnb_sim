@@ -14,9 +14,9 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained();
             $table->foreignId('listing_id')->constrained();
             $table->decimal('overall_rating', $precision = 4, $scale = 2);
-            $table->decimal('cleanliness_rating', $precision = 4, $scale = 2);
-            $table->decimal('location_rating', $precision = 4, $scale = 2);
-            $table->decimal('value_rating', $precision = 4, $scale = 2);
+            $table->decimal('cleanliness_rating', $precision = 4, $scale = 2)->nullable();
+            $table->decimal('location_rating', $precision = 4, $scale = 2)->nullable();
+            $table->decimal('value_rating', $precision = 4, $scale = 2)->nullable();
             $table->text('comment');
             $table->timestamps();
             $table->softDeletes();
