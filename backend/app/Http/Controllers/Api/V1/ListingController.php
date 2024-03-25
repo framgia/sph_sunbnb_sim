@@ -49,36 +49,6 @@ class ListingController extends Controller {
         );
     }
 
-    public function showAccommodationsByUser($userId, Request $request) {
-        $user = User::find($userId);
-
-        if (! $user) {
-            return User::userNotFoundResponse();
-        }
-
-        $listings = Listing::paginateAccommodationsByUser($userId, $request);
-
-        return response()->json(
-            Listing::listingsResponse($listings),
-            Response::HTTP_OK
-        );
-    }
-
-    public function showExperiencesByUser($userId, Request $request) {
-        $user = User::find($userId);
-
-        if (! $user) {
-            return User::userNotFoundResponse();
-        }
-
-        $listings = Listing::paginateExperiencesByUser($userId, $request);
-
-        return response()->json(
-            Listing::listingsResponse($listings),
-            Response::HTTP_OK
-        );
-    }
-
     public function showPublicListings(Request $request) {
         $listings = Listing::paginatePublicListings($request);
 
@@ -111,6 +81,15 @@ class ListingController extends Controller {
 
         return response()->json(
             Listing::listingsResponse($accommodations),
+            Response::HTTP_OK
+        );
+    }
+
+    public function showFilteredExperiencesByUser(Request $request) {
+        $experiences = Listing::paginateFilteredExperiencesHost($request);
+
+        return response()->json(
+            Listing::listingsResponse($experiences),
             Response::HTTP_OK
         );
     }
