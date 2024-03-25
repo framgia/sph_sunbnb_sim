@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Http\Requests\V1\ReviewRequest;
+use App\Http\Requests\V1\AccommodationReviewRequest;
+use App\Http\Requests\V1\ExperienceReviewRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,7 +22,7 @@ class Review extends Model {
         return $this->belongsTo(User::class);
     }
 
-    public static function instantiateReview(ReviewRequest $request) {
+    public static function instantiateAccommodationReview(AccommodationReviewRequest $request) {
 
         $reviewData = $request->all();
         $totalRating = ($reviewData['cleanliness_rating'] + $reviewData['location_rating'] + $reviewData['value_rating']) / 3;
@@ -30,8 +31,20 @@ class Review extends Model {
         return $reviewData;
     }
 
-    public static function createReview(ReviewRequest $request, $listingId) {
+    public static function createAccommodationReview(AccommodationReviewRequest $request, $listingId) {
         $reviewData = self::instantiateReview($request);
+
+        $review = new Review($reviewData);
+
+        $review->listing()->associate(Listing::find($listingId));
+        $review->user()->associate(auth()->user());
+        $review->save();
+
+        return $review;
+    }
+
+    public static function createExperienceReview(ExperienceReviewRequest $request, $listingId) {
+        $reviewData = $request->all();
 
         $review = new Review($reviewData);
 
