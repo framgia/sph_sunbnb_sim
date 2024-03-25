@@ -1,10 +1,14 @@
+"use server";
 import type { MediaType } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import { Avatar } from "@nextui-org/react";
 import Image from "next/image";
 import React from "react";
+import ToEditButton from "../ToEditButton";
+import { userRole } from "@/app/utils/helpers/userHelper";
 
 interface ExperienceHeaderProps {
+  id: number;
   experienceName: string;
   images: MediaType[];
   street: string;
@@ -19,7 +23,8 @@ interface ExperienceHeaderProps {
   createdAt: string;
   modifiedAt: string;
 }
-const ExperienceHeader: React.FC<ExperienceHeaderProps> = ({
+const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
+  id,
   experienceName,
   images,
   street,
@@ -34,6 +39,9 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = ({
   createdAt,
   modifiedAt
 }) => {
+  async function checkIsHost(): Promise<boolean> {
+    return (await userRole()) === "host";
+  }
   function getDuration(start: string, end: string): number {
     const startArr = start.split(":");
     const endArr = end.split(":");
@@ -44,8 +52,15 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = ({
   }
   return (
     <div>
-      <div className="mb-2">
-        <span className="text-lg font-bold leading-7">{experienceName}</span>
+      <div className="mb-2 flex items-center justify-between">
+        <div>
+          <span className="text-lg font-bold leading-7">{experienceName}</span>
+        </div>
+        {(await checkIsHost()) && (
+          <div>
+            <ToEditButton path={`/listings/experiences/${id}/edit`} />
+          </div>
+        )}
       </div>
       <div className="mb-5 flex h-80 w-full flex-row items-center justify-center">
         <div className="relative mr-2 h-full w-2/4 overflow-hidden rounded-2xl">
