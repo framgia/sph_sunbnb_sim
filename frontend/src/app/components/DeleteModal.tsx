@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import type { ModalProps } from "../interfaces/ModalProps";
 import DeleteIcon from "./svgs/DeleteIcon";
+import ErrorMessage from "./ErrorMessage";
 
 interface DeleteModalProps extends ModalProps {
   onDelete: () => Promise<boolean>;
@@ -46,11 +47,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
                     ? "The listing has been successfully deleted."
                     : "Are you sure you want to delete this listing?"}
                 </p>
-                {error === true && (
-                  <div className="mt-5 text-center text-xs text-red-500">
-                    {"Failed to delete listing."}
-                  </div>
-                )}
+                {error && <ErrorMessage message="Failed to delete listing." />}
               </ModalBody>
 
               <ModalFooter>
