@@ -43,7 +43,6 @@ Route::get('/public-experiences', [ListingController::class, 'showPublicExperien
 Route::get('/listing/{listingId}', [ListingController::class, 'show']);
 Route::get('/review/{listingId}', [ReviewController::class, 'getByListing']);
 
-Route::get('/review/{listingId}', [ReviewController::class, 'getByListing']);
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('accommodation', AccommodationController::class)->except(['update', 'store']);
     Route::post('accommodation', [AccommodationController::class, 'store'])->middleware('role:host');
@@ -59,7 +58,7 @@ Route::middleware('auth:api')->group(function () {
     
     Route::apiResource('/listing', ListingController::class)->except(['destroy']);
     Route::delete('listing/{listingId}', [ListingController::class, 'destroy'])
-    ->middleware('check.owner:listing');
+        ->middleware('check.owner:listing');
     Route::get('/listing/user/{userId}', [ListingController::class, 'showListingsByUser']);
     
     Route::put('/calendar/{listingId}', [CalendarController::class, 'set'])->middleware('role:host');
