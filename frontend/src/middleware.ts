@@ -38,6 +38,19 @@ export function middleware(request: NextRequest): NextResponse | undefined {
     if (request.nextUrl.pathname.startsWith("/reset-password")) {
       return NextResponse.redirect(new URL("/", request.url));
     }
+    if (
+      user.role === "guest" &&
+      request.nextUrl.pathname.startsWith("/listings")
+    ) {
+      return NextResponse.redirect(new URL("/not-found", request.url));
+    }
+    if (
+      user.role === "host" &&
+      (request.nextUrl.pathname.startsWith("/accommodations") ||
+        request.nextUrl.pathname.startsWith("/experiences"))
+    ) {
+      return NextResponse.redirect(new URL("/not-found", request.url));
+    }
   }
 }
 

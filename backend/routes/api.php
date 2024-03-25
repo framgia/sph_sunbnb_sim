@@ -40,8 +40,9 @@ Route::post('/reset-password', [PasswordController::class, 'resetpassword']);
 Route::get('/public-listingss', [ListingController::class, 'showPublicListings']);
 Route::get('/public-accommodations', [ListingController::class, 'showPublicAccommodations']);
 Route::get('/public-experiences', [ListingController::class, 'showPublicExperiences']);
-
+Route::get('/listing/{listingId}', [ListingController::class, 'show']);
 Route::get('/review/{listingId}', [ReviewController::class, 'getByListing']);
+
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('accommodation', AccommodationController::class)->except(['update', 'store']);
     Route::post('accommodation', [AccommodationController::class, 'store'])->middleware('role:host');

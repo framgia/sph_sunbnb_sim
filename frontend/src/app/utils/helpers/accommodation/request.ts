@@ -68,6 +68,20 @@ async function getAccommodation(id: number): Promise<Listing> {
   } else throw new Error(responseData.error as string);
 }
 
+async function publicGetAccommodation(id: number): Promise<Listing> {
+  const response = await fetch(`${config.backendUrl}/listing/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    }
+  });
+  const responseData = await response.json();
+  if (response.ok) {
+    return responseData.listing;
+  } else throw new Error(responseData.error as string);
+}
+
 async function updateAccommodation(
   id: number,
   data: Accommodation,
@@ -193,5 +207,6 @@ export {
   getAccommodation,
   updateAccommodation,
   deleteAccommodation,
-  getAccommodationsByUser
+  getAccommodationsByUser,
+  publicGetAccommodation
 };

@@ -59,12 +59,14 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
             }
             images={accData.media}
           />
-          <Divider className="my-10 w-full" />
-          <span className="text-sm">{accData.description}</span>
-          <Divider className="my-10 w-full " />
-          <AmenitySection amenities={accData.listable.amenities} />
-          <Divider className="my-10 w-full " />
-          <ReviewSection listingId={Number(params.id)} />
+          <div>
+            <Divider className="my-10 " />
+            <span className="text-sm">{accData.description}</span>
+            <Divider className="my-10 " />
+            <AmenitySection amenities={accData.listable.amenities} />
+            <Divider className="my-10 " />
+            <ReviewSection listingId={Number(params.id)} />
+          </div>
         </>
       ) : (
         <></>
