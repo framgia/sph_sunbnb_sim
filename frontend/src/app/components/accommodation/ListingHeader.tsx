@@ -1,11 +1,13 @@
-"use client";
+"use server";
 import React from "react";
 import { Avatar, Button, Image } from "@nextui-org/react";
 import type { MediaType } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
-import { useRouter } from "next/navigation";
+import ToEditButton from "@/app/components/ToEditButton";
+import { userRole } from "@/app/utils/helpers/userHelper";
 
 interface ListingHeaderProps {
+  id: number;
   accomodationName: string;
   guests: number;
   bedrooms: number;
@@ -23,7 +25,8 @@ interface ListingHeaderProps {
   isHost: boolean;
   id: string;
 }
-const ListingHeader: React.FC<ListingHeaderProps> = ({
+const ListingHeader: React.FC<ListingHeaderProps> = async ({
+  id,
   accomodationName,
   guests,
   bedrooms,
@@ -41,28 +44,21 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
   isHost,
   id
 }) => {
-  const router = useRouter();
+  async function checkIsHost(): Promise<boolean> {
+    return (await userRole()) === "host";
+  }
   return (
     <div>
-      <div className="mb-2 flex justify-between">
+      <div className="mb-2 flex items-center justify-between">
         <div>
           <span className="text-lg font-bold leading-7">
             {accomodationName}
           </span>
         </div>
-        {isHost ? (
+        {(await checkIsHost()) && (
           <div>
-            <Button
-              onPress={() => {
-                router.push(`${id}/edit`);
-              }}
-              color="primary"
-            >
-              Edit
-            </Button>
+            <ToEditButton path={`/listings/accommodations/${id}/edit`} />
           </div>
-        ) : (
-          <></>
         )}
       </div>
       <div className="mb-5 flex h-80 w-full flex-row items-center justify-center">

@@ -5,7 +5,7 @@ import DividerText from "../../components/DividerText";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/app/utils/helpers/userHelper";
-import WarningIcon from "@/app/components/svgs/WarnIcon";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 interface LoginFormProps {
   onResetPress: () => void;
@@ -59,19 +59,12 @@ const LoginForm: React.FC<LoginFormProps> = ({
   return (
     <form className="flex w-96 flex-col px-5" onSubmit={handleSubmit}>
       {error !== "" && (
-        <div className="mt-8 h-20 w-full rounded-xl border border-2 border-danger-500 bg-danger-50 p-2 text-danger-500">
-          <div className="flex flex-row">
-            <div className="p-2">
-              <WarningIcon />
-            </div>
-            <div className="flex flex-col p-2 text-xs">
-              <span className="font-bold">Invalid Credentials</span>
-              <span>Make sure you entered the correct email and password</span>
-            </div>
-          </div>
-        </div>
+        <ErrorMessage
+          header="Invalid Credentials"
+          message="Make sure you entered the correct email and password"
+        />
       )}
-      <div className="mt-8 flex flex-col">
+      <div className="mt-2 flex flex-col">
         <label htmlFor="email"></label>
         <div>
           <Input
