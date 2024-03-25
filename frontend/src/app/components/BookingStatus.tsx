@@ -17,7 +17,7 @@ const BookingStatus: React.FC<{ status: string }> = ({ status }) => {
     }
   };
 
-  const getAction = (status: string): JSX.Element => {
+  const getAction = (status: string): React.JSX.Element => {
     switch (status.toLowerCase()) {
       case "upcoming":
         return (

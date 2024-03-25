@@ -1,24 +1,13 @@
-"use server";
-import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
-import InclusionSection from "@/app/components/experience/InclusionSection";
-import ReviewSection from "@/app/components/review/ReviewSection";
+import ExperienceBookingConfirm from "@/app/components/booking/ExperienceBookingConfirm";
 import type {
   Listing_Experience,
   UserDetailsType
 } from "@/app/interfaces/types";
 import type { Inclusion, ListingStatus } from "@/app/utils/enums";
-import { Divider } from "@nextui-org/react";
+
 import React from "react";
 
-interface ExperienceDetailsProps {
-  params: {
-    id: number;
-  };
-}
-
-const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
-  params
-}) => {
+const ExperienceCheckoutPage: React.FC = () => {
   const expData: Listing_Experience = {
     id: 4,
     user_id: 1,
@@ -86,47 +75,13 @@ const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
     } as unknown as UserDetailsType
   };
   return (
-    <>
-      <ExperienceHeader
-        id={Number(params.id)}
-        experienceName={expData.name}
-        images={expData.media}
-        street={expData.street}
-        barangay={expData.barangay}
-        city={expData.city}
-        type={expData.listable.type}
-        zipCode={expData.zip_code}
-        languages={expData.listable.language}
-        startTime={expData.listable.start_time}
-        endTime={expData.listable.end_time}
-        hostName={expData.user.first_name + " " + expData.user.last_name}
-        createdAt={new Date(expData.created_at)
-          .toDateString()
-          .split(" ")
-          .slice(1)
-          .join(" ")}
-        modifiedAt={new Date(expData.updated_at)
-          .toDateString()
-          .split(" ")
-          .slice(1)
-          .join(" ")}
-        hostId={expData.user.id}
-      />
-      <Divider className="my-10 w-full" />
-      <span className="text-sm">
-        <div className="flex flex-col">
-          <span className="mb-5 text-xl font-semibold">
-            What you&apos;ll do
-          </span>
-          <span>{expData.description}</span>
-        </div>
-      </span>
-      <Divider className="my-10 w-full " />
-      <InclusionSection inclusions={expData.listable.inclusions} />
-      <Divider className="my-10 w-full " />
-      <ReviewSection listingId={params.id} />
-    </>
+    <div>
+      {/* To_do: Add datesExcluded prop (type Date[]) for the dates not available for the experience so that we
+      can validate if the date in checkout page is a blocked date or not and users cannot book block dates by
+      entering date through url */}
+      <ExperienceBookingConfirm listing={expData} />
+    </div>
   );
 };
 
-export default ExperienceDetailsPage;
+export default ExperienceCheckoutPage;

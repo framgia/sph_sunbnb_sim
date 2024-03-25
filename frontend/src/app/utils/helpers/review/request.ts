@@ -16,7 +16,7 @@ function setHeaders(): Record<string, string> {
 async function getReviews(id: number): Promise<ReviewType[]> {
   const response = await fetch(`${config.backendUrl}/review/${id}`, {
     method: "GET",
-    headers: setHeaders()
+    headers: { "Content-Type": "application/json", Accept: "application/json" }
   });
 
   const responseData = await response.json();

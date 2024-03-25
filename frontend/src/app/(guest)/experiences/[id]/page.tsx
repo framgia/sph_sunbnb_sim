@@ -1,4 +1,5 @@
-"use server";
+import DefaultSticky from "@/app/components/booking/DefaultSticky";
+import ExperienceBookingSticky from "@/app/components/booking/ExperienceBookingSticky";
 import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
 import ReviewSection from "@/app/components/review/ReviewSection";
@@ -7,18 +8,17 @@ import type {
   UserDetailsType
 } from "@/app/interfaces/types";
 import type { Inclusion, ListingStatus } from "@/app/utils/enums";
+import { checkCookies } from "@/app/utils/helpers/userHelper";
 import { Divider } from "@nextui-org/react";
 import React from "react";
 
-interface ExperienceDetailsProps {
-  params: {
-    id: number;
-  };
+interface GuestExperienceDetailsProps {
+  params: { id: number };
 }
-
-const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
-  params
-}) => {
+const GuestExperienceDetailsPage: React.FC<
+  GuestExperienceDetailsProps
+> = async ({ params }) => {
+  const user = await checkCookies();
   const expData: Listing_Experience = {
     id: 4,
     user_id: 1,
@@ -88,7 +88,6 @@ const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
   return (
     <>
       <ExperienceHeader
-        id={Number(params.id)}
         experienceName={expData.name}
         images={expData.media}
         street={expData.street}
@@ -110,23 +109,41 @@ const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
           .split(" ")
           .slice(1)
           .join(" ")}
-        hostId={expData.user.id}
+        id={params.id}
+        hostId={user?.id}
       />
-      <Divider className="my-10 w-full" />
-      <span className="text-sm">
-        <div className="flex flex-col">
-          <span className="mb-5 text-xl font-semibold">
-            What you&apos;ll do
+      <div className="flex h-fit flex-row items-start">
+        <div className="w-full">
+          <Divider className="my-10 w-full" />
+          <span className="text-sm">
+            <div className="flex flex-col">
+              <span className="mb-5 text-xl font-semibold">
+                What you&apos;ll do
+              </span>
+              <span>{expData.description}</span>
+            </div>
           </span>
-          <span>{expData.description}</span>
+          <Divider className="my-10 w-full " />
+          <InclusionSection inclusions={expData.listable.inclusions} />
+          <Divider className="my-10 w-full " />
+          <ReviewSection listingId={params.id} />
         </div>
-      </span>
-      <Divider className="my-10 w-full " />
-      <InclusionSection inclusions={expData.listable.inclusions} />
-      <Divider className="my-10 w-full " />
-      <ReviewSection listingId={params.id} />
+        <div className="w-90 h-90 sticky top-[30px]  ml-5 block self-start pt-10">
+          {user !== undefined && user !== null ? (
+            <ExperienceBookingSticky
+              maxGuest={expData.maximum_guests}
+              price={expData.price}
+              startTime={expData.listable.start_time}
+              endTime={expData.listable.end_time}
+              listingId={Number(params.id)}
+            />
+          ) : (
+            <DefaultSticky ForAccommodation={false} />
+          )}
+        </div>
+      </div>
     </>
   );
 };
 
-export default ExperienceDetailsPage;
+export default GuestExperienceDetailsPage;

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import NewExperienceForm from "./NewExperienceForm";
-import ExperienceApprovalModal from "@/app/components/experiences/ExperienceApprovalModal";
+import ExperienceApprovalModal from "@/app/components/experience/ExperienceApprovalModal";
 import { useDisclosure } from "@nextui-org/react";
 
 const NewExperiencePage: React.FC = () => {
