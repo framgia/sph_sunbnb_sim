@@ -15,6 +15,7 @@ import PriceForm from "../../../PriceForm";
 import ListingUploader from "@/app/components/accommodation/ListingUploader";
 import Link from "next/link";
 import AccommodationAddressForm from "../../../../../components/accommodation/AccommodationAddressForm";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 interface EditListingProps {
   onDelete: () => void;
@@ -86,11 +87,11 @@ const EditListingForm: React.FC<EditListingProps> = ({
       <PriceForm data={data} setData={setData} error={error} />
       <div>
         {error.hasError === true && (
-          <div className="mt-5 text-xs text-red-500">{error.message}</div>
+          <ErrorMessage message={error.message as string} />
         )}
       </div>
       <div className="rounded-lg">
-        <div className="mt-16  flex justify-between gap-5 self-end whitespace-nowrap text-sm leading-5">
+        <div className="mt-8  flex justify-between gap-5 self-end whitespace-nowrap text-sm leading-5">
           <Button
             className=" gap-y-1.5 rounded-lg bg-danger px-4 text-white max-md:px-5"
             size="md"
