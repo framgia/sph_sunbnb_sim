@@ -1,4 +1,4 @@
-import { Inclusion } from "../utils/enums";
+import { Inclusion, Language } from "../utils/enums";
 
 interface Experience {
   name: string;
@@ -11,9 +11,10 @@ interface Experience {
   price: number;
   maximum_guests: number;
   type: string;
-  minimum_days: number;
-  maximum_days: number;
+  start_time: string;
+  end_time: string;
   inclusions: Inclusion[];
+  language: Language[];
 }
 
 interface MediaUpdate {

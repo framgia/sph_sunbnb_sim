@@ -70,7 +70,7 @@ export enum ExperienceType {
   SPORTS = "Sports"
 }
 
-export enum Languages {
+export enum Language {
   FILIPINO = "Filipino",
   CEBUANO = "Cebuano",
   ILOCANO = "Ilocano",

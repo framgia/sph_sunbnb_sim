@@ -20,6 +20,7 @@ async function createExperience(
 ): Promise<Record<string, string | boolean>> {
   try {
     const experienceWithMedia = { ...data, media };
+    console.log(experienceWithMedia);
     const response = await fetch(`${config.backendUrl}/experience`, {
       method: "POST",
       headers: setHeaders(),
@@ -27,6 +28,7 @@ async function createExperience(
     });
 
     const responseData = await response.json();
+    console.log(responseData);
     if (response.ok) {
       return {
         hasError: false,
@@ -42,6 +44,7 @@ async function createExperience(
       };
     }
   } catch (error) {
+    console.log(error);
     return {
       hasError: true,
       message:

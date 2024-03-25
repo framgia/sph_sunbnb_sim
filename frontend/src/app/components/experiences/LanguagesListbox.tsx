@@ -1,22 +1,20 @@
 import React from "react";
 import { Listbox, ListboxItem } from "@nextui-org/react";
-import { Languages } from "@/app/utils/enums";
+import { Experience } from "@/app/interfaces/ExperienceData";
+import { Language } from "@/app/utils/enums";
 
-// interface ListboxProps {
-//   data?: Accommodation;
-//   setData: React.Dispatch<React.SetStateAction<Accommodation>>;
-// }
+interface ListboxProps {
+  data: Experience;
+  setData: React.Dispatch<React.SetStateAction<Experience>>;
+}
 
-const LanguagesListbox: React.FC = () => {
-  const options = new Map<Languages, string>();
-  Object.values(Languages).forEach((language) => {
+const LanguagesListbox: React.FC<ListboxProps> = ({ data, setData }) => {
+  const options = new Map<Language, string>();
+  Object.values(Language).forEach((language) => {
     options.set(language, language);
   });
 
-  const [selectedKeys, setSelectedKeys] = React.useState<any>(
-    new Set(["Filipino"])
-  );
-  const selectedValues = [...selectedKeys]
+  const selectedValues = Array.from(data.language)
     .map((key) => key.toString())
     .join(", ");
 
@@ -30,15 +28,20 @@ const LanguagesListbox: React.FC = () => {
             variant="flat"
             disallowEmptySelection
             selectionMode="multiple"
-            selectedKeys={selectedKeys}
-            onSelectionChange={setSelectedKeys}
+            selectedKeys={data.language}
+            onSelectionChange={(keys) => {
+              setData((prevData) => ({
+                ...prevData,
+                language: Array.from(keys) as Language[]
+              }));
+            }}
           >
             {Array.from(options).map(([key, value]) => (
               <ListboxItem key={key}>{value}</ListboxItem>
             ))}
           </Listbox>
         </div>
-        <p className="mt-2 text-sm font-bold">Selected:</p>
+        <p className="mt-1 text-sm font-bold">Selected:</p>
         <p className="mb-10 text-xs text-default-500">{selectedValues}</p>
       </div>
     </>

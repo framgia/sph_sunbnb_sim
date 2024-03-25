@@ -21,20 +21,20 @@ async function validateExperience(
   }
 
   if (
-    data.minimum_days != null &&
-    data.maximum_days != null &&
-    data.minimum_days > data.maximum_days
+    data.start_time != null &&
+    data.end_time != null &&
+    data.start_time > data.end_time
   ) {
     return {
       hasError: true,
-      message: "Maximum days cannot be lower than minimum days."
+      message: " Start time must be before end time."
     };
   }
 
   if (data.inclusions.length === 0) {
     return {
       hasError: true,
-      message: "At least one amenity must be provided."
+      message: "At least one inclusion must be provided."
     };
   }
   if (!isUpdate && Array.isArray(media) && media.length === 0) {

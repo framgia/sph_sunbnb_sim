@@ -8,7 +8,11 @@ interface AddressFormProps {
   error: Record<string, string | boolean>;
 }
 
-const AddressForm: React.FC<AddressFormProps> = ({ data, setData, error }) => {
+const AccommodationAddressForm: React.FC<AddressFormProps> = ({
+  data,
+  setData,
+  error
+}) => {
   return (
     <>
       <div className="mt-4 w-full text-left text-sm font-semibold leading-7 text-black max-md:max-w-full">
@@ -91,4 +95,4 @@ const AddressForm: React.FC<AddressFormProps> = ({ data, setData, error }) => {
   );
 };
 
-export default AddressForm;
+export default AccommodationAddressForm;

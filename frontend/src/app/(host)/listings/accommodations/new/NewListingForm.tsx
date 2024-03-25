@@ -6,10 +6,10 @@ import AccommodationMoreDetails from "../AccommodationMoreDetails";
 import TypeSelect from "../SelectAccommodation";
 import type { Accommodation } from "@/app/interfaces/AccomodationData";
 import AccommodationImage from "./ImageCollection";
-import AddressForm from "../../AddressForm";
 import DetailForm from "../DetailForm";
 import PriceForm from "../../PriceForm";
 import ListingUploader from "@/app/components/accommodation/ListingUploader";
+import AccommodationAddressForm from "../../../../components/accommodation/AccommodationAddressForm";
 
 interface NewListingProps {
   onPress: () => void;
@@ -36,7 +36,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
         List Accommodation
       </header>
       <TypeSelect data={data} setData={setData} error={error} />
-      <AddressForm data={data} setData={setData} error={error} />
+      <AccommodationAddressForm data={data} setData={setData} error={error} />
       <hr className="mt-12 min-h-[3px] w-full bg-zinc-200 max-md:mt-10 max-md:max-w-full" />
       <DetailForm data={data} setData={setData} error={error} />
       <div className="mt-5 rounded-lg border-[1.3px] border-solid border-[color:var(--Blues-Gray2,#B8BBC2)] p-10">
