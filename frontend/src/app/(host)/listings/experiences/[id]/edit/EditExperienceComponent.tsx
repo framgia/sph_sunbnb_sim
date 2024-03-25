@@ -5,8 +5,8 @@ import type { MediaUpdate } from "@/app/interfaces/AccomodationData";
 import { useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { Experience } from "@/app/interfaces/ExperienceData";
-import { ExperienceListing } from "@/app/interfaces/types";
+import type { Experience } from "@/app/interfaces/ExperienceData";
+import type { ExperienceListing } from "@/app/interfaces/types";
 import { validateExperience } from "@/app/utils/helpers/experience/validation";
 import {
   deleteExperience,
@@ -77,11 +77,17 @@ const EditExperienceComponent: React.FC<EditListingComponentProps> = ({
     }
   }
 
-  async function handleDelete(): Promise<void> {
+  async function handleDelete(): Promise<boolean> {
     try {
-      await deleteExperience(Number(listing.id));
+      setIsLoading(true);
+      const result = await deleteExperience(Number(listing.id));
+      setIsLoading(false);
+      if (result.hasError === false) return true;
+      else return false;
     } catch (error) {
-      console.error(error);
+      console.error("Error occurred during accommodation deletion:", error);
+      setIsLoading(false);
+      return false;
     }
   }
 

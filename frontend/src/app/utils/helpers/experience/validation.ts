@@ -1,4 +1,4 @@
-import { Experience, MediaUpdate } from "@/app/interfaces/ExperienceData";
+import type { Experience, MediaUpdate } from "@/app/interfaces/ExperienceData";
 
 async function validateExperience(
   data: Experience,

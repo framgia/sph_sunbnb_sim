@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import NewExperienceForm from "./NewExperienceForm";
-import ExperienceApprovalModal from "@/app/components/experiences/ExperienceApprovalModal";
 import { useDisclosure } from "@nextui-org/react";
-import { Experience } from "@/app/interfaces/ExperienceData";
+import type { Experience } from "@/app/interfaces/ExperienceData";
 import { createExperience } from "@/app/utils/helpers/experience/request";
 import { validateExperience } from "@/app/utils/helpers/experience/validation";
+import ApprovalModal from "@/app/components/ApprovalModal";
 
 const NewExperiencePage: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,9 +38,8 @@ const NewExperiencePage: React.FC = () => {
   });
 
   async function handleClick(): Promise<void> {
-    console.log(data);
     const validateData = await validateExperience(data, media);
-    console.log(validateData);
+
     if (validateData.hasError as boolean) {
       setError({
         message: validateData.message,
@@ -48,7 +47,6 @@ const NewExperiencePage: React.FC = () => {
       });
     } else {
       setIsLoading(true);
-      console.log("clicked");
       const result = await createExperience(data, media);
       setIsLoading(false);
       if (result.hasError === true) {
@@ -74,10 +72,12 @@ const NewExperiencePage: React.FC = () => {
         media={media}
         setMedia={setMedia}
       />
-      <ExperienceApprovalModal
+      <ApprovalModal
         isOpen={isOpen}
         onClose={onClose}
         size={"full"}
+        id={id}
+        type="experience"
       />
     </main>
   );

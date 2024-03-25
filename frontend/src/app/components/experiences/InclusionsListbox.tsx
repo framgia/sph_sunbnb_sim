@@ -1,6 +1,6 @@
 import React from "react";
 import { Listbox, ListboxItem } from "@nextui-org/react";
-import { Experience } from "@/app/interfaces/ExperienceData";
+import type { Experience } from "@/app/interfaces/ExperienceData";
 import { Inclusion } from "@/app/utils/enums";
 import ExperienceCounter from "../experience/ExperienceCounter";
 

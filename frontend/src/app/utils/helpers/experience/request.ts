@@ -1,17 +1,13 @@
 "use server";
 import config from "@/app/config/config";
+import type { MediaUpdate } from "@/app/interfaces/AccomodationData";
 import type {
-  Accommodation,
-  MediaUpdate
-} from "@/app/interfaces/AccomodationData";
-import {
-  type PaginatedListing,
-  type Listing,
+  PaginatedListing,
   ExperienceListing
 } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 import { checkCookies } from "../userHelper";
-import { Experience } from "@/app/interfaces/ExperienceData";
+import type { Experience } from "@/app/interfaces/ExperienceData";
 
 function setHeaders(): Record<string, string> {
   const jwt = cookies().get("jwt")?.value;
@@ -28,11 +24,11 @@ async function createExperience(
   media: string[]
 ): Promise<Record<string, string | boolean>> {
   try {
-    const accommodationWithMedia = { ...data, media };
+    const experiencewithMedia = { ...data, media };
     const response = await fetch(`${config.backendUrl}/experience`, {
       method: "POST",
       headers: setHeaders(),
-      body: JSON.stringify(accommodationWithMedia)
+      body: JSON.stringify(experiencewithMedia)
     });
 
     const responseData = await response.json();
@@ -112,26 +108,46 @@ async function updateExperience(
   }
 }
 
-async function deleteExperience(id: number): Promise<{ message: string }> {
+async function deleteExperience(
+  id: number
+): Promise<Record<string, string | boolean>> {
   const jwt = cookies().get("jwt")?.value;
   if (jwt !== undefined) {
-    const fetchApi = await fetch(
-      `${config.backendUrl}/listing/experiences/${id}`,
-      {
+    try {
+      const response = await fetch(`${config.backendUrl}/listing/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${jwt}`,
           "Content-Type": "application/json",
           Accept: "application/json"
         }
+      });
+      const responseData = await response.json();
+      if (response.ok) {
+        return {
+          hasError: false,
+          message: responseData.message
+        };
+      } else if (responseData.error !== undefined) {
+        throw new Error(responseData.error as string);
+      } else {
+        return {
+          hasError: true,
+          message: "Unknown error occurred. Please contact the administrator."
+        };
       }
-    );
-    const resData = await fetchApi.json();
-    return {
-      message: resData.message
-    };
+    } catch (error) {
+      return {
+        hasError: true,
+        message:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred. Please contact the administrator."
+      };
+    }
   } else {
     return {
+      hasError: true,
       message: "Nothing to delete"
     };
   }

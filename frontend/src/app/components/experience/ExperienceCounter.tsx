@@ -2,7 +2,7 @@ import React from "react";
 import PlusIcon from "../svgs/PlusIcon";
 import MinusIcon from "../svgs/MinusIcon";
 import { Button } from "@nextui-org/react";
-import { Experience } from "@/app/interfaces/ExperienceData";
+import type { Experience } from "@/app/interfaces/ExperienceData";
 
 interface CounterProps {
   name: string;

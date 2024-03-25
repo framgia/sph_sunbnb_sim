@@ -3,7 +3,7 @@ import ListingUploader from "@/app/components/accommodation/ListingUploader";
 import ExperienceAddressForm from "@/app/components/experience/ExperienceAddressForm";
 import InclusionsListbox from "@/app/components/experiences/InclusionsListbox";
 import LanguagesListbox from "@/app/components/experiences/LanguagesListbox";
-import { Experience, MediaUpdate } from "@/app/interfaces/ExperienceData";
+import type { Experience, MediaUpdate } from "@/app/interfaces/ExperienceData";
 import { ExperienceType } from "@/app/utils/enums";
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import React from "react";

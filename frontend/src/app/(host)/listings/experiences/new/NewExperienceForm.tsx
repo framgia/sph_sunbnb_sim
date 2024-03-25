@@ -3,12 +3,13 @@ import React from "react";
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import InclusionsListbox from "@/app/components/experiences/InclusionsListbox";
 import LanguagesListbox from "@/app/components/experiences/LanguagesListbox";
-import { Experience } from "@/app/interfaces/ExperienceData";
+import type { Experience } from "@/app/interfaces/ExperienceData";
 import ListingUploader from "@/app/components/accommodation/ListingUploader";
 import AccommodationImage from "../../accommodations/new/ImageCollection";
 import ExperienceAddressForm from "@/app/components/experience/ExperienceAddressForm";
 import { ExperienceType } from "@/app/utils/enums";
 import ExperiencePriceForm from "@/app/components/experience/ExperiencePriceForm";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 interface NewExperienceFormProps {
   onPress: () => void;
@@ -129,6 +130,11 @@ const NewExperienceForm: React.FC<NewExperienceFormProps> = ({
         </div>
       </div>
       <ExperiencePriceForm data={data} setData={setData} error={error} />
+      <div>
+        {error.hasError === true && (
+          <ErrorMessage message={error.message as string} />
+        )}
+      </div>
       <div className="mt-16 flex gap-5 self-end whitespace-nowrap text-sm leading-5">
         <Button
           className="grow justify-center rounded-lg bg-primary-600 px-7 py-2.5 font-bold text-white drop-shadow-sm max-md:px-5"

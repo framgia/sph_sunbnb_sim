@@ -1,4 +1,4 @@
-import { Inclusion, Language } from "../utils/enums";
+import type { Inclusion, Language } from "../utils/enums";
 
 interface Experience {
   name: string;

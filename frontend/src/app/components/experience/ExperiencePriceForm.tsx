@@ -1,4 +1,4 @@
-import { Experience } from "@/app/interfaces/ExperienceData";
+import type { Experience } from "@/app/interfaces/ExperienceData";
 import { Input } from "@nextui-org/react";
 import React from "react";
 
