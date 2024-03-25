@@ -7,7 +7,7 @@ import type {
 } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 import { checkCookies } from "../userHelper";
-import type { Experience } from "@/app/interfaces/ExperienceData";
+import type { ExperienceData } from "@/app/interfaces/ExperienceData";
 
 function setHeaders(): Record<string, string> {
   const jwt = cookies().get("jwt")?.value;
@@ -20,7 +20,7 @@ function setHeaders(): Record<string, string> {
 }
 
 async function createExperience(
-  data: Experience,
+  data: ExperienceData,
   media: string[]
 ): Promise<Record<string, string | boolean>> {
   try {
@@ -71,7 +71,7 @@ async function getExperience(id: number): Promise<ExperienceListing> {
 
 async function updateExperience(
   id: number,
-  data: Experience,
+  data: ExperienceData,
   media: MediaUpdate
 ): Promise<Record<string, string | boolean>> {
   try {

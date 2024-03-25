@@ -10,7 +10,7 @@ import { ExperienceType } from "@/app/utils/enums";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import InclusionsListbox from "@/app/components/experience/InclusionsListbox";
 import LanguagesListbox from "@/app/components/experience/LanguagesListbox";
-import { ExperienceData } from "@/app/interfaces/ExperienceData";
+import type { ExperienceData } from "@/app/interfaces/ExperienceData";
 import ExperienceAddressForm from "@/app/components/experience/ExperienceAddressForm";
 import ExperiencePriceForm from "@/app/components/experience/ExperiencePriceForm";
 

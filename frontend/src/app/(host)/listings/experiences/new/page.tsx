@@ -4,7 +4,7 @@ import NewExperienceForm from "./NewExperienceForm";
 import { useDisclosure } from "@nextui-org/react";
 import { createExperience } from "@/app/utils/helpers/experience/request";
 import ApprovalModal from "@/app/components/ApprovalModal";
-import { ExperienceData } from "@/app/interfaces/ExperienceData";
+import type { ExperienceData } from "@/app/interfaces/ExperienceData";
 import { validateExperience } from "@/app/utils/helpers/experience/validation";
 
 const NewExperiencePage: React.FC = () => {

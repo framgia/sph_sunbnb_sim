@@ -1,11 +1,11 @@
 import React from "react";
 import { Listbox, ListboxItem } from "@nextui-org/react";
-import type { Experience } from "@/app/interfaces/ExperienceData";
 import { Inclusion } from "@/app/utils/enums";
+import type { ExperienceData } from "@/app/interfaces/ExperienceData";
 
 interface ListboxProps {
-  data: Experience;
-  setData: React.Dispatch<React.SetStateAction<Experience>>;
+  data: ExperienceData;
+  setData: React.Dispatch<React.SetStateAction<ExperienceData>>;
 }
 
 const ListboxComponent: React.FC<ListboxProps> = ({ data, setData }) => {

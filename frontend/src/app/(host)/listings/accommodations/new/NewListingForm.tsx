@@ -9,8 +9,8 @@ import AccommodationImage from "./ImageCollection";
 import DetailForm from "../DetailForm";
 import PriceForm from "../../PriceForm";
 import ListingUploader from "@/app/components/accommodation/ListingUploader";
-import AccommodationAddressForm from "../../../../components/accommodation/AccommodationAddressForm";
 import ErrorMessage from "@/app/components/ErrorMessage";
+import AccommodationAddressForm from "@/app/components/accommodation/AccommodationAddressForm";
 
 interface NewListingProps {
   onPress: () => void;

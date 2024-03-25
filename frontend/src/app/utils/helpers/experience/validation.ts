@@ -1,7 +1,10 @@
-import type { Experience, MediaUpdate } from "@/app/interfaces/ExperienceData";
+import type {
+  ExperienceData,
+  MediaUpdate
+} from "@/app/interfaces/ExperienceData";
 
 async function validateExperience(
-  data: Experience,
+  data: ExperienceData,
   media: string[] | MediaUpdate,
   isUpdate = false
 ): Promise<Record<string, string | boolean>> {
