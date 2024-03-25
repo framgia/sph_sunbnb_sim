@@ -56,14 +56,14 @@ Route::middleware('auth:api')->group(function () {
     Route::put('experience/{listingId}', [ExperienceController::class, 'update'])
         ->middleware('check.owner:listing');
     Route::get('/experience/user/{userId}', [ListingController::class, 'showExperiencesByUser']);
-    Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
-
+    
     Route::apiResource('/listing', ListingController::class)->except(['destroy']);
     Route::delete('listing/{listingId}', [ListingController::class, 'destroy'])
-        ->middleware('check.owner:listing');
+    ->middleware('check.owner:listing');
     Route::get('/listing/user/{userId}', [ListingController::class, 'showListingsByUser']);
-
+    
     Route::put('/calendar/{listingId}', [CalendarController::class, 'set'])->middleware('role:host');
+    Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
 
     Route::apiResource('user', UserController::class)->except(['update']);
     Route::put('user/{userId}', [UserController::class, 'update'])
