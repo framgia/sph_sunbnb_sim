@@ -1,6 +1,6 @@
 "use client";
 import { Button, Divider } from "@nextui-org/react";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
 import type { Listing } from "@/app/interfaces/types";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -17,7 +17,9 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
   const searchQuery = useSearchParams();
   const guests = Number(searchQuery.get("guests"));
   const nights = Number(searchQuery.get("nights"));
-  const startDate = new Date(searchQuery.get("start") as string);
+  const startDate = useMemo(() => {
+    return new Date(searchQuery?.get("start") ?? "");
+  }, [searchQuery]);
   const endDate = addDays(startDate, nights);
 
   const isInvalid = useCallback(() => {
@@ -32,7 +34,14 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
       isNaN(startDate.valueOf()) ||
       isNaN(endDate.valueOf())
     );
-  }, []);
+  }, [
+    endDate,
+    guests,
+    listing.listable.maximum_days,
+    listing.maximum_guests,
+    nights,
+    startDate
+  ]);
 
   useEffect(() => {
     if (isInvalid()) {

@@ -1,6 +1,6 @@
 "use client";
 import { Button, Divider } from "@nextui-org/react";
-import React from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Listing_Experience } from "@/app/interfaces/types";
@@ -14,10 +14,12 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
 }) => {
   const searchParam = useSearchParams();
   const guests = Number(searchParam.get("guests"));
-  const date = new Date(searchParam.get("date") as string);
+  const date = useMemo(() => {
+    return new Date(searchParam?.get("date") ?? "");
+  }, [searchParam]);
   const router = useRouter();
 
-  function isInvalid(): boolean {
+  const isInvalid = useCallback(() => {
     return (
       guests < 1 ||
       (date.getTime() < new Date().getTime() &&
@@ -26,7 +28,14 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
       isNaN(guests) ||
       isNaN(date.valueOf())
     );
-  }
+  }, [date, guests, listing.maximum_guests]);
+
+  useEffect(() => {
+    if (isInvalid()) {
+      router.replace("/");
+    }
+  }, [isInvalid, router]);
+
   return (
     <div className="p-2">
       {isInvalid() ? (

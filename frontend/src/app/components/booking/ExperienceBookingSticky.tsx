@@ -1,8 +1,6 @@
 "use client";
-import { getDateString } from "@/app/utils/helpers/getDateString";
 import {
   Button,
-  Input,
   Popover,
   PopoverContent,
   PopoverTrigger
@@ -13,7 +11,7 @@ import ChevronDownIcon from "../svgs/Calendar/ChevronDownIcon";
 import GuestCounter from "./GuestCounter";
 import FlagIcon from "../svgs/Report/FlagIcon";
 import ExperienceBookOption from "./ExperienceBookOption";
-import { addDays, eachDayOfInterval } from "date-fns";
+import { eachDayOfInterval } from "date-fns";
 import { useRouter } from "next/navigation";
 
 interface ExperienceBookingStickyProps {
@@ -31,13 +29,13 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
   listingId
 }) => {
   const [guestCount, setGuestCount] = useState(1);
-  const [startDate, setStart] = useState(new Date());
-  const [endDate, setEnd] = useState(new Date());
+  const [startDateState, setStart] = useState(new Date());
+  const [endDateState, setEnd] = useState(new Date());
   const [slice, setSlice] = useState(3);
   const [dates, setDates] = useState<Range[]>([
     {
-      startDate: startDate,
-      endDate: endDate,
+      startDate: startDateState,
+      endDate: endDateState,
       key: "selection"
     }
   ]);
@@ -59,9 +57,9 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
   }
 
   useEffect(() => {
-    const newArr = getDatesInRange(startDate, endDate);
+    const newArr = getDatesInRange(startDateState, endDateState);
     setDateArr(newArr);
-  }, [dates]);
+  }, [dates, endDateState, startDateState]);
   return (
     <div className="w-96">
       <div className="mb-1 w-full rounded-xl border border-1 border-black p-5 shadow-lg">
@@ -75,15 +73,15 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
               <div className="flex w-3/4 flex-col px-5 py-2">
                 <span className="text-xs font-bold">Date</span>
                 <span className="w-full text-sm">
-                  {isEqualDate(startDate, endDate)
-                    ? startDate.toDateString().split(" ")[1] +
+                  {isEqualDate(startDateState, endDateState)
+                    ? startDateState.toDateString().split(" ")[1] +
                       " " +
-                      startDate.getDate()
-                    : startDate.toDateString().split(" ")[1] +
+                      startDateState.getDate()
+                    : startDateState.toDateString().split(" ")[1] +
                       " " +
-                      startDate.getDate() +
+                      startDateState.getDate() +
                       " - " +
-                      endDate.getDate()}
+                      endDateState.getDate()}
                 </span>
               </div>
               <PopoverTrigger>

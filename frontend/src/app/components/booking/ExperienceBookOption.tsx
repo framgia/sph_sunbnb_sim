@@ -21,15 +21,18 @@ const ExperienceBookOption: React.FC<ExperienceBookOptionProps> = ({
 }) => {
   const DateArr = date.toDateString().split(" ");
   const router = useRouter();
-  function convertToAMPM(time: string) {
+  function convertToAMPM(time: string): string {
     let timeArr: string[] = time
       .toString()
-      .match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+      .match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) ?? [time];
 
     if (timeArr.length > 1) {
       timeArr = timeArr.slice(1);
       timeArr[5] = +timeArr[0] < 12 ? " AM" : " PM";
-      timeArr[0] = (+timeArr[0] % 12).toString() || (12).toString();
+      timeArr[0] =
+        (+timeArr[0] % 12).toString() !== null
+          ? (+timeArr[0] % 12).toString()
+          : (12).toString();
     }
     return timeArr.join("");
   }

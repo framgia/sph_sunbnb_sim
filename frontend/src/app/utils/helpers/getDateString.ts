@@ -1,4 +1,4 @@
-export function getDateString(date: Date) {
+export function getDateString(date: Date): string {
   return (
     date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
   );

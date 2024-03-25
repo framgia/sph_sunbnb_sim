@@ -1,7 +1,6 @@
 import React from "react";
 import PlusIcon from "../svgs/PlusIcon";
 import MinusIcon from "../svgs/MinusIcon";
-import type { Accommodation } from "@/app/interfaces/AccomodationData";
 import { Button } from "@nextui-org/react";
 
 interface GuestCounterProps {
