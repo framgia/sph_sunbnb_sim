@@ -4,7 +4,8 @@ import type {
   Amenity,
   AccommodationType,
   ListingStatus,
-  Inclusion
+  Inclusion,
+  Language
 } from "../utils/enums";
 
 export interface MediaType {
@@ -75,7 +76,7 @@ export interface Experience {
   type: string;
   start_time: string;
   end_time: string;
-  language: string[];
+  language: Language[];
   inclusions: Inclusion[];
   created_at: string;
   updated_at: string;
@@ -102,6 +103,29 @@ export interface Listing {
   updated_at: Date;
   deleted_at?: Date | null;
   listable: Accommodation;
+  media: MediaType[];
+}
+
+export interface ExperienceListing {
+  id: number;
+  user_id: number;
+  user: UserDetailsType;
+  status: ListingStatus;
+  name: string;
+  description: string;
+  province: string;
+  city: string;
+  barangay: string;
+  street: string;
+  zip_code: number;
+  price: number;
+  maximum_guests: number;
+  listable_type: string;
+  listable_id: number;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at?: Date | null;
+  listable: Experience;
   media: MediaType[];
 }
 

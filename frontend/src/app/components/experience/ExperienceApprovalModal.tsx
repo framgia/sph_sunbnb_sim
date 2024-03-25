@@ -14,7 +14,6 @@ import type { ModalProps } from "@/app/interfaces/ModalProps";
 
 const ExperienceApprovalModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   function handleClick(): void {
-    console.log("Preview");
     onClose();
   }
   return (
