@@ -11,8 +11,12 @@ import {
 
 interface ReviewHeaderProps {
   reviews: ReviewType[];
+  listingType: "accommodation" | "experience";
 }
-const ReviewHeader: React.FC<ReviewHeaderProps> = ({ reviews }) => {
+const ReviewHeader: React.FC<ReviewHeaderProps> = ({
+  reviews,
+  listingType
+}) => {
   const fiveCount = calculateRatingCount(reviews, 5);
   const fourCount = calculateRatingCount(reviews, 4);
   const threeCount = calculateRatingCount(reviews, 3);
@@ -25,7 +29,9 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({ reviews }) => {
   return (
     <div className="border-b-1 border-foreground-300">
       <div className="flex w-full flex-row divide-x-2">
-        <div className="flex w-1/4 flex-col px-5 pb-5">
+        <div
+          className={`flex flex-col px-5 pb-5 ${listingType === "accommodation" ? "w-1/4" : "w-full"}`}
+        >
           <span className="mb-2 py-2 text-xl">Overall Rating</span>
           <div className="flex w-full flex-row items-center ">
             <div className="mr-2">5</div>
@@ -93,27 +99,33 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({ reviews }) => {
             </div>
           </div>
         </div>
-        <div className="flex w-1/4 flex-col justify-between px-5 py-2">
-          <div className="flex flex-col">
-            <span className="mb-2 text-xl">Cleanliness</span>
-            <div className="text-xl font-bold"> {cleanliness.toFixed(0)} </div>
-          </div>
-          <CleanlinessIcon />
-        </div>
-        <div className="flex w-1/4 flex-col justify-between px-5 py-2">
-          <div className="flex flex-col">
-            <span className="mb-2 text-xl">Value</span>
-            <div className="text-xl font-bold"> {value.toFixed(0)} </div>
-          </div>
-          <ValueIcon />
-        </div>
-        <div className="flex w-1/4 flex-col justify-between px-5 py-2">
-          <div className="flex flex-col">
-            <span className="mb-2 text-xl">Location</span>
-            <div className="text-xl font-bold"> {location.toFixed(0)} </div>
-          </div>
-          <LocationIcon />
-        </div>
+        {listingType === "accommodation" && (
+          <>
+            <div className="flex w-1/4 flex-col justify-between px-5 py-2">
+              <div className="flex flex-col">
+                <span className="mb-2 text-xl">Cleanliness</span>
+                <div className="text-xl font-bold">
+                  {cleanliness.toFixed(0)}
+                </div>
+              </div>
+              <CleanlinessIcon />
+            </div>
+            <div className="flex w-1/4 flex-col justify-between px-5 py-2">
+              <div className="flex flex-col">
+                <span className="mb-2 text-xl">Value</span>
+                <div className="text-xl font-bold"> {value.toFixed(0)} </div>
+              </div>
+              <ValueIcon />
+            </div>
+            <div className="flex w-1/4 flex-col justify-between px-5 py-2">
+              <div className="flex flex-col">
+                <span className="mb-2 text-xl">Location</span>
+                <div className="text-xl font-bold"> {location.toFixed(0)} </div>
+              </div>
+              <LocationIcon />
+            </div>
+          </>
+        )}
       </div>
       <div className="h-4 w-full" />
     </div>

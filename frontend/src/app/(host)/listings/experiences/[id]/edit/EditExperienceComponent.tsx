@@ -5,7 +5,7 @@ import type { MediaUpdate } from "@/app/interfaces/AccomodationData";
 import { useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import type { Experience } from "@/app/interfaces/ExperienceData";
+import type { ExperienceData } from "@/app/interfaces/ExperienceData";
 import type { ExperienceListing } from "@/app/interfaces/types";
 import { validateExperience } from "@/app/utils/helpers/experience/validation";
 import {
@@ -28,7 +28,7 @@ const EditExperienceComponent: React.FC<EditListingComponentProps> = ({
     message: ""
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<Experience>({
+  const [data, setData] = useState<ExperienceData>({
     name: listing.name,
     description: listing.description,
     province: listing.province,

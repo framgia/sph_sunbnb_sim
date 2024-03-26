@@ -191,9 +191,14 @@ export interface ReviewType {
   };
 }
 
-export interface ReviewData {
+export interface AccommodationReviewData {
   cleanliness_rating: number;
   location_rating: number;
   value_rating: number;
+  comment: string;
+}
+
+export interface ExperienceReviewData {
+  overall_rating: number;
   comment: string;
 }

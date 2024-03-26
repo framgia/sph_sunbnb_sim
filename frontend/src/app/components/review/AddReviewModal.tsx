@@ -2,17 +2,20 @@ import type { ModalProps } from "@/app/interfaces/ModalProps";
 import { Button, Modal, ModalContent } from "@nextui-org/react";
 import React from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
-import AddReviewForm from "./AddReviewForm";
+import AccommodationReviewForm from "./AccommodationReviewForm";
+import ExperienceReviewForm from "./ExperienceReviewForm";
 
 interface ReviewModalProps extends ModalProps {
   listingId: number;
+  listingType: "accommodation" | "experience";
 }
 
 const ReviewModal: React.FC<ReviewModalProps> = ({
   isOpen,
   onClose,
   size,
-  listingId
+  listingId,
+  listingType
 }) => {
   return (
     <div>
@@ -44,7 +47,14 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                   </div>
                 </div>
               </div>
-              <AddReviewForm listingId={listingId} onClose={onClose} />
+              {listingType === "accommodation" ? (
+                <AccommodationReviewForm
+                  listingId={listingId}
+                  onClose={onClose}
+                />
+              ) : (
+                <ExperienceReviewForm listingId={listingId} onClose={onClose} />
+              )}
             </div>
           )}
         </ModalContent>

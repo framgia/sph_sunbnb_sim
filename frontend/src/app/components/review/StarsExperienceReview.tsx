@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import StarIcon from "../svgs/Review/StarIcon";
 import FilledStarIcon from "../svgs/Review/FilledStarIcon";
-import type { ReviewData } from "@/app/interfaces/types";
+import type { ExperienceReviewData } from "@/app/interfaces/types";
 
 interface StarsAddReviewProps {
-  rating: ReviewData;
-  field: keyof ReviewData;
-  setScore: React.Dispatch<React.SetStateAction<ReviewData>>;
+  rating: ExperienceReviewData;
+  field: keyof ExperienceReviewData;
+  setScore: React.Dispatch<React.SetStateAction<ExperienceReviewData>>;
 }
 const StarsAddReview: React.FC<StarsAddReviewProps> = ({
   rating,
