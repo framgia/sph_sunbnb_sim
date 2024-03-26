@@ -68,7 +68,7 @@ async function getAccommodation(id: number): Promise<Listing> {
   } else throw new Error(responseData.error as string);
 }
 
-async function publicGetAccommodation(id: number): Promise<Listing> {
+async function getPublicAccommodation(id: number): Promise<Listing> {
   const response = await fetch(`${config.backendUrl}/listing/${id}`, {
     method: "GET",
     headers: {
@@ -208,5 +208,5 @@ export {
   updateAccommodation,
   deleteAccommodation,
   getAccommodationsByUser,
-  publicGetAccommodation
+  getPublicAccommodation
 };

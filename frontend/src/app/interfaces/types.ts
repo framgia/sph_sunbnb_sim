@@ -5,7 +5,8 @@ import type {
   AccommodationType,
   ListingStatus,
   Inclusion,
-  Language
+  Language,
+  BookingStatus
 } from "../utils/enums";
 
 export interface MediaType {
@@ -196,4 +197,20 @@ export interface ReviewData {
   location_rating: number;
   value_rating: number;
   comment: string;
+}
+
+export interface BookingType {
+  id: number;
+  user_id: number;
+  listing_id: number;
+  start_date: string;
+  end_date: string;
+  number_of_guests: number;
+  total_price: number;
+  status: BookingStatus;
+  host_deleted: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null;
+  user: UserDetailsType;
 }
