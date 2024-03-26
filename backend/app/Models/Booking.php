@@ -33,6 +33,14 @@ class Booking extends Model {
         return $this->hasMany(Calendar::class);
     }
 
+    public static function paginateBookingsByListing($listingId, Request $request) {
+        $perPage = $request->query('per_page', 3);
+
+        return static::where('listing_id', $listingId)
+            ->with(['user:id,first_name,last_name,email'])
+            ->paginate($perPage);
+    }
+
     public static function createBooking($request): self {
         $listing = Listing::findOrFail($request->listing_id);
 

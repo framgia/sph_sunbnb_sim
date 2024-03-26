@@ -34,6 +34,15 @@ class BookingController extends Controller {
         );
     }
 
+    public function showBookingsByListing($listingId, Request $request) {
+        $bookings = Booking::paginateBookingsByListing($listingId, $request);
+
+        return response()->json(
+            Booking::bookingsResponse($bookings),
+            Response::HTTP_OK
+        );
+    }
+
     public function store(BookingRequest $request) {
         $request->validated();
         $booking = Booking::createBooking($request);

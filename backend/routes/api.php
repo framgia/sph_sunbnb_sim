@@ -55,12 +55,12 @@ Route::middleware('auth:api')->group(function () {
     Route::put('experience/{listingId}', [ExperienceController::class, 'update'])
         ->middleware('check.owner:listing');
     Route::get('/experience/user/{userId}', [ListingController::class, 'showExperiencesByUser']);
-    
+
     Route::apiResource('/listing', ListingController::class)->except(['destroy']);
     Route::delete('listing/{listingId}', [ListingController::class, 'destroy'])
         ->middleware('check.owner:listing');
     Route::get('/listing/user/{userId}', [ListingController::class, 'showListingsByUser']);
-    
+
     Route::put('/calendar/{listingId}', [CalendarController::class, 'set'])->middleware('role:host');
     Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
 
@@ -77,6 +77,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('booking', BookingController::class)->except(['store', 'update', 'destroy']);
     Route::post('/booking', [BookingController::class, 'store'])->middleware('role:guest');
     Route::get('/booking/user/{userId}', [BookingController::class, 'showBookingsByUser']);
+    Route::get('/booking/listing/{listingId}', [BookingController::class, 'showBookingsByListing']);
     Route::put('booking/{bookingId}', [BookingController::class, 'update'])
         ->middleware('check.owner:booking');
     Route::delete('booking/{bookingId}', [BookingController::class, 'destroy'])
