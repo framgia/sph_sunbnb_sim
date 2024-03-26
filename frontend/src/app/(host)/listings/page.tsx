@@ -30,8 +30,6 @@ const ListingsPage: React.FC = async ({
           <HostListings
             listings={paginatedAccommodations.listings}
             pagination={paginatedAccommodations.pagination}
-            page={searchParams?.apage ?? LISTINGS_DEFAULT_PAGE}
-            size={searchParams?.asize ?? LISTINGS_DEFAULT_SIZE}
             type="accommodations"
           />
         </div>
@@ -39,13 +37,7 @@ const ListingsPage: React.FC = async ({
       {/* TODO: Fetch experiences */}
       <div className="mt-16 min-h-[600px]">
         <HostListingHeader type="experiences" />
-        <HostListings
-          listings={[]}
-          pagination={null}
-          page={searchParams?.epage ?? LISTINGS_DEFAULT_PAGE}
-          size={searchParams?.esize ?? LISTINGS_DEFAULT_SIZE}
-          type="experiences"
-        />
+        <HostListings listings={[]} pagination={null} type="experiences" />
       </div>
     </main>
   );

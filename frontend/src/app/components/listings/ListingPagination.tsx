@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -20,6 +20,12 @@ const ListingPagination: React.FC<ListingPaginationProps> = ({
   onPageChange,
   onPageSizeChange
 }) => {
+  const [page, setPage] = useState(currentPage);
+
+  useEffect(() => {
+    onPageChange(page);
+  }, [page, onPageChange]);
+
   return (
     <div className="flex flex-col items-center">
       <div className="mt-5 flex w-full items-center justify-between">
@@ -67,7 +73,7 @@ const ListingPagination: React.FC<ListingPaginationProps> = ({
         page={currentPage}
         color="primary"
         onChange={(page) => {
-          onPageChange(page);
+          setPage(page);
         }}
       />
     </div>
