@@ -106,4 +106,22 @@ class BookingController extends Controller {
             ], Response::HTTP_NOT_FOUND);
         }
     }
+
+    public function updateGuestBooking($id) {
+        $booking = Booking::find($id);
+
+        if ($booking) {
+            $booking->updateGuestBooking();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Booking removed successfully',
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'success' => false,
+                'error' => 'Booking not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+    }
 }

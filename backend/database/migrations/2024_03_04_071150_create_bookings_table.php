@@ -19,9 +19,9 @@ return new class extends Migration {
             $table->integer('number_of_guests');
             $table->decimal('total_price', 10, 2);
             $table->enum('status', BookingStatus::getConstants());
+            $table->boolean('host_deleted')->default(false);
             $table->timestamps();
             $table->softDeletes();
-
         });
     }
 

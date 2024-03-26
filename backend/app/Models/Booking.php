@@ -19,7 +19,7 @@ class Booking extends Model {
     use SoftDeletes;
 
     protected $fillable = [
-        'start_date', 'end_date', 'number_of_guests', 'total_price', 'status',
+        'start_date', 'end_date', 'number_of_guests', 'total_price', 'status', 'host_deleted',
     ];
 
     public function user(): BelongsTo {
@@ -37,7 +37,10 @@ class Booking extends Model {
     public static function paginateBookingsByListing($listingId, Request $request) {
         $perPage = $request->query('per_page', 3);
 
-        return static::where('listing_id', $listingId)
+        return static::where([
+            ['listing_id', $listingId],
+            ['host_deleted', false],
+        ])
             ->with(['user:id,first_name,last_name,email'])
             ->paginate($perPage);
     }
@@ -123,7 +126,7 @@ class Booking extends Model {
         $perPage = $request->query('per_page', 5);
 
         return static::where('user_id', $userId)
-            ->with(['listing', 'user'])
+            ->with(['listing', 'user', 'listing.media'])
             ->paginate($perPage);
     }
 
@@ -135,7 +138,8 @@ class Booking extends Model {
             abort(Response::HTTP_BAD_REQUEST, 'Invalid action provided');
         }
 
-        if ($this->status !== BookingStatus::PENDING) {
+        if (! in_array($this->status, [BookingStatus::PENDING, BookingStatus::UPCOMING]) ||
+        ($this->status === BookingStatus::UPCOMING && $action === 'approve')) {
             abort(Response::HTTP_BAD_REQUEST, 'Booking cannot be '.$action.'d.');
         }
 
@@ -157,5 +161,15 @@ class Booking extends Model {
                 'to' => $bookings->lastItem(),
             ],
         ];
+    }
+
+    public function updateGuestBooking() {
+        $allowedStatuses = [BookingStatus::DONE, BookingStatus::CANCELLED, BookingStatus::REFUSED];
+
+        if (in_array($this->status, $allowedStatuses)) {
+            $this->update(['host_deleted' => true]);
+        } else {
+            abort(Response::HTTP_BAD_REQUEST, 'Booking cannot be deleted.');
+        }
     }
 }
