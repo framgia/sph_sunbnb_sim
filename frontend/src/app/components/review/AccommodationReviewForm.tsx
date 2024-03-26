@@ -13,11 +13,13 @@ import ErrorMessage from "../ErrorMessage";
 interface AddReviewFormProps {
   listingId: number;
   onClose: () => void;
+  onOpen: () => void;
 }
 
 const AccommodationReviewForm: React.FC<AddReviewFormProps> = ({
   listingId,
-  onClose
+  onClose,
+  onOpen
 }) => {
   const [error, setError] = useState<Record<string, string | boolean>>({
     hasError: false,
@@ -50,6 +52,7 @@ const AccommodationReviewForm: React.FC<AddReviewFormProps> = ({
         });
       } else {
         onClose();
+        onOpen();
       }
     }
   }

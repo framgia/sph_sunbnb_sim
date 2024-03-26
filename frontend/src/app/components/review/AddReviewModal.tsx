@@ -1,9 +1,10 @@
 import type { ModalProps } from "@/app/interfaces/ModalProps";
-import { Button, Modal, ModalContent } from "@nextui-org/react";
+import { Button, Modal, ModalContent, useDisclosure } from "@nextui-org/react";
 import React from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
 import AccommodationReviewForm from "./AccommodationReviewForm";
 import ExperienceReviewForm from "./ExperienceReviewForm";
+import ReviewSuccessModal from "./ReviewSuccessModal";
 
 interface ReviewModalProps extends ModalProps {
   listingId: number;
@@ -17,6 +18,12 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   listingId,
   listingType
 }) => {
+  const {
+    isOpen: successOpen,
+    onOpen: successOnOpen,
+    onClose: successOnClose
+  } = useDisclosure();
+
   return (
     <div>
       <Modal
@@ -51,14 +58,26 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                 <AccommodationReviewForm
                   listingId={listingId}
                   onClose={onClose}
+                  onOpen={successOnOpen}
                 />
               ) : (
-                <ExperienceReviewForm listingId={listingId} onClose={onClose} />
+                <ExperienceReviewForm
+                  listingId={listingId}
+                  onClose={onClose}
+                  onOpen={successOnOpen}
+                />
               )}
             </div>
           )}
         </ModalContent>
       </Modal>
+      <ReviewSuccessModal
+        isOpen={successOpen}
+        onClose={successOnClose}
+        size="md"
+        id={listingId}
+        type={listingType}
+      />
     </div>
   );
 };

@@ -10,11 +10,13 @@ import StarsExperienceReview from "./StarsExperienceReview";
 interface AddReviewFormProps {
   listingId: number;
   onClose: () => void;
+  onOpen: () => void;
 }
 
 const ExperienceReviewForm: React.FC<AddReviewFormProps> = ({
   listingId,
-  onClose
+  onClose,
+  onOpen
 }) => {
   const [error, setError] = useState<Record<string, string | boolean>>({
     hasError: false,
@@ -45,6 +47,7 @@ const ExperienceReviewForm: React.FC<AddReviewFormProps> = ({
         });
       } else {
         onClose();
+        onOpen();
       }
     }
   }
