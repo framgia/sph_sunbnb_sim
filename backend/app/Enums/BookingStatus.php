@@ -3,15 +3,15 @@
 namespace App\Enums;
 
 class BookingStatus {
-    const PENDING = 'pending';
+    const PENDING = 'Pending';
 
-    const CANCELLED = 'cancelled';
+    const CANCELLED = 'Cancelled';
 
-    const REFUSED = 'refused';
+    const REFUSED = 'Refused';
 
-    const UPCOMING = 'upcoming';
+    const UPCOMING = 'Upcoming';
 
-    const DONE = 'done';
+    const DONE = 'Done';
 
     public static function getConstants(): array {
         $reflectionClass = new \ReflectionClass(__CLASS__);

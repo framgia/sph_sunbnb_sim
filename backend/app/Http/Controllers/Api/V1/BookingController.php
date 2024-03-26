@@ -34,6 +34,15 @@ class BookingController extends Controller {
         );
     }
 
+    public function showBookingsByListing($listingId, Request $request) {
+        $bookings = Booking::paginateBookingsByListing($listingId, $request);
+
+        return response()->json(
+            Booking::bookingsResponse($bookings),
+            Response::HTTP_OK
+        );
+    }
+
     public function store(BookingRequest $request) {
         $request->validated();
         $booking = Booking::createBooking($request);
@@ -71,6 +80,42 @@ class BookingController extends Controller {
             return response()->json([
                 'success' => true,
                 'message' => 'Booking deleted successfully',
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'success' => false,
+                'error' => 'Booking not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    public function updateBookingStatus(Request $request, $id) {
+        $booking = Booking::find($id);
+
+        if ($booking) {
+            $booking->approveRefuseBooking($request);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Successful transaction',
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'success' => false,
+                'error' => 'Booking not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    public function updateGuestBooking($id) {
+        $booking = Booking::find($id);
+
+        if ($booking) {
+            $booking->updateGuestBooking();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Booking removed successfully',
             ], Response::HTTP_OK);
         } else {
             return response()->json([
