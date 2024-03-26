@@ -26,16 +26,16 @@ class CheckOwnership {
                 break;
             case 'user':
                 if ($userId != $request->route('userId')) {
-                    abort(403, 'Unauthorized action.');
+                    abort(Response::HTTP_FORBIDDEN, 'Unauthorized action.');
                 }
 
                 return $next($request);
             default:
-                abort(400, 'Invalid resource type.');
+                abort(Response::HTTP_BAD_REQUEST, 'Invalid resource type.');
         }
 
         if ($userId != $resource->user_id) {
-            abort(403, 'Unauthorized action.');
+            abort(Response::HTTP_FORBIDDEN, 'Unauthorized action.');
         }
 
         return $next($request);
