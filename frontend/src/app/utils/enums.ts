@@ -63,14 +63,14 @@ export enum ListingStatus {
 }
 
 export enum ExperienceType {
-  FOOD_AND_DRINKS = "Food and Drinks",
-  ART_AND_CULTURE = "Art and Culture",
+  FOOD_AND_DRINKS = "Food & Drinks",
+  ART_AND_CULTURE = "Art & Culture",
   ENTERTAINMENT = "Entertainment",
   TOURS = "Tours",
   SPORTS = "Sports"
 }
 
-export enum Languages {
+export enum Language {
   FILIPINO = "Filipino",
   CEBUANO = "Cebuano",
   ILOCANO = "Ilocano",
