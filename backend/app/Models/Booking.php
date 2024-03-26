@@ -35,7 +35,7 @@ class Booking extends Model {
     }
 
     public static function paginateBookingsByListing($listingId, Request $request) {
-        $perPage = $request->query('per_page', 3);
+        $perPage = $request->query('per_page', 5);
 
         return static::where([
             ['listing_id', $listingId],
