@@ -3,7 +3,7 @@ import ListingHeader from "@/app/components/accommodation/ListingHeader";
 import AccommodationBookingSticky from "@/app/components/booking/AccommodationBookingSticky";
 import DefaultSticky from "@/app/components/booking/DefaultSticky";
 import ReviewSection from "@/app/components/review/ReviewSection";
-import { publicGetAccommodation } from "@/app/utils/helpers/accommodation/request";
+import { getPublicAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { checkCookies } from "@/app/utils/helpers/userHelper";
 import { Divider } from "@nextui-org/react";
@@ -23,7 +23,7 @@ const GuestAccommodationsDetails: React.FC<
   let accAvailability;
   const user = await checkCookies();
   try {
-    accData = await publicGetAccommodation(Number(params.id));
+    accData = await getPublicAccommodation(Number(params.id));
     accAvailability = await getListingAvailability(Number(params.id));
   } catch (err) {
     redirect("/not-found");
@@ -80,7 +80,10 @@ const GuestAccommodationsDetails: React.FC<
               <Divider className="my-10 " />
               <AmenitySection amenities={accData.listable.amenities} />
               <Divider className="my-10 " />
-              <ReviewSection listingId={Number(params.id)} />
+              <ReviewSection
+                listingId={Number(params.id)}
+                listingType="accommodation"
+              />
             </div>
             <div className="w-90 h-90 sticky top-[30px] z-50 ml-5 block self-start pt-10">
               {user !== undefined && user !== null ? (

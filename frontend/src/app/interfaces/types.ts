@@ -207,9 +207,49 @@ export interface ReviewType {
   };
 }
 
-export interface ReviewData {
+export interface AccommodationReviewData {
   cleanliness_rating: number;
   location_rating: number;
   value_rating: number;
   comment: string;
+}
+
+export interface BookingType {
+  id: number;
+  user_id: number;
+  listing_id: number;
+  start_date: string;
+  end_date: string;
+  number_of_guests: number;
+  total_price: number;
+  status: BookingStatus;
+  host_deleted: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: null;
+  user: UserDetailsType;
+}
+
+export interface ExperienceReviewData {
+  overall_rating: number;
+  comment: string;
+}
+
+export interface ListingFilter {
+  query: string;
+  price: {
+    min: number;
+    max: number;
+  };
+  rating: {
+    min: number;
+    max: number;
+  };
+  date: [
+    {
+      startDate: Date;
+      endDate: Date | undefined;
+      key: string;
+    }
+  ];
 }

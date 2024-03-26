@@ -87,22 +87,22 @@ class User extends Authenticatable {
     }
 
     public static function authenticateUser($credentials) {
-        abort_unless(Auth::attempt($credentials), 401, 'Invalid credentials.');
+        abort_unless(Auth::attempt($credentials), Response::HTTP_UNAUTHORIZED, 'Invalid credentials.');
 
         return self::find(Auth::user()->id);
     }
 
     public static function authenticateGoogleUser($payload): self {
-        abort_unless($payload && isset($payload['sub']), 400, 'Invalid Google payload.');
+        abort_unless($payload && isset($payload['sub']), Response::HTTP_BAD_REQUEST, 'Invalid Google payload.');
         $user = self::where('provider_id', $payload['sub'])->first();
-        abort_unless($user, 401, 'User not found.');
+        abort_unless($user, Response::HTTP_UNAUTHORIZED, 'User not found.');
 
         return $user;
     }
 
     public static function createGoogleUser($payload, $role): self {
-        abort_unless($payload && isset($payload['sub']) && isset($payload['email']), 400, 'Invalid Google payload.');
-        abort_unless(self::where('email', $payload['email'])->doesntExist(), 400, 'User already exists.');
+        abort_unless($payload && isset($payload['sub']) && isset($payload['email']), Response::HTTP_BAD_REQUEST, 'Invalid Google payload.');
+        abort_unless(self::where('email', $payload['email'])->doesntExist(), Response::HTTP_BAD_REQUEST, 'User already exists.');
 
         $data = [
             'email' => $payload['email'],
@@ -118,7 +118,7 @@ class User extends Authenticatable {
     }
 
     public static function createUser($request): self {
-        abort_unless(is_array($request), 400, 'Invalid user data.');
+        abort_unless(is_array($request), Response::HTTP_BAD_REQUEST, 'Invalid user data.');
         $data = [
             'email' => $request['email'],
             'password' => $request['password'],
@@ -147,14 +147,14 @@ class User extends Authenticatable {
     public function updatePassword($request): void {
         if ($this->shouldAllowUpdate()) {
             if ($request->has('current_password') && ! $this->checkPassword($request->input('current_password'))) {
-                abort(403, 'Current password is incorrect.');
+                abort(Response::HTTP_FORBIDDEN, 'Current password is incorrect.');
             }
 
             $data['password'] = $request->input('new_password')
                 ? $request->input('new_password')
                 : $this->password;
         } else {
-            abort(403, 'Cannot update password if using provider.');
+            abort(Response::HTTP_FORBIDDEN, 'Cannot update password if using provider.');
         }
         $this->update($data);
     }

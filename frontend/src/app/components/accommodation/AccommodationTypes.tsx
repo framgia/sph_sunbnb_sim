@@ -5,6 +5,7 @@ import { AccommodationType } from "@/app/utils/enums";
 const AccommodationTypes: React.FC = () => {
   return (
     <div className="mt-5 flex flex w-full justify-between overflow-x-auto">
+      <AccommodationTypeItem accommodation="All" />
       {Object.values(AccommodationType).map((type, index) => (
         <AccommodationTypeItem key={index} accommodation={type} />
       ))}
