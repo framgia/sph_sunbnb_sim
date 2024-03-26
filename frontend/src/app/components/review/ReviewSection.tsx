@@ -7,9 +7,13 @@ import { getReviews } from "@/app/utils/helpers/review/request";
 
 interface ReviewSectionProps {
   listingId: number;
+  listingType: "accommodation" | "experience";
 }
 
-const ReviewSection: React.FC<ReviewSectionProps> = async ({ listingId }) => {
+const ReviewSection: React.FC<ReviewSectionProps> = async ({
+  listingId,
+  listingType
+}) => {
   const reviews = await getReviews(listingId);
   return (
     <>
@@ -25,7 +29,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = async ({ listingId }) => {
         </div>
       ) : (
         <>
-          <ReviewHeader reviews={reviews} />
+          <ReviewHeader reviews={reviews} listingType={listingType} />
           <div className="mt-5 grid grid-cols-2">
             {reviews.map((review, i) => {
               return (

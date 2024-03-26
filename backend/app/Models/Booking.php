@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class Booking extends Model {
@@ -18,7 +19,7 @@ class Booking extends Model {
     use SoftDeletes;
 
     protected $fillable = [
-        'start_date', 'end_date', 'number_of_guests', 'total_price', 'status',
+        'start_date', 'end_date', 'number_of_guests', 'total_price', 'status', 'host_deleted',
     ];
 
     public function user(): BelongsTo {
@@ -31,6 +32,17 @@ class Booking extends Model {
 
     public function calendars(): HasMany {
         return $this->hasMany(Calendar::class);
+    }
+
+    public static function paginateBookingsByListing($listingId, Request $request) {
+        $perPage = $request->query('per_page', 5);
+
+        return static::where([
+            ['listing_id', $listingId],
+            ['host_deleted', false],
+        ])
+            ->with(['user:id,first_name,last_name,email'])
+            ->paginate($perPage);
     }
 
     public static function createBooking($request): self {
@@ -83,9 +95,9 @@ class Booking extends Model {
             $this->deleteCalendarEntries();
             $this->delete();
         } elseif ($this->status === BookingStatus::PENDING) {
-            abort(400, 'Cancel your booking first.');
+            abort(Response::HTTP_BAD_REQUEST, 'Cancel your booking first.');
         } elseif ($this->status === BookingStatus::UPCOMING) {
-            abort(400, "You can't delete this booking.");
+            abort(Response::HTTP_BAD_REQUEST, "You can't delete this booking.");
         }
     }
 
@@ -95,12 +107,12 @@ class Booking extends Model {
         }
     }
 
-    public function cancelBooking(): void {
+    public function cancelBooking() {
         if (in_array($this->status, [BookingStatus::PENDING, BookingStatus::UPCOMING])) {
             $this->update(['status' => BookingStatus::CANCELLED]);
             $this->updateCalendarEntries(true);
         } else {
-            abort(400, "You can't cancel this booking.");
+            abort(Response::HTTP_BAD_REQUEST, "You can't cancel this booking.");
         }
     }
 
@@ -114,8 +126,29 @@ class Booking extends Model {
         $perPage = $request->query('per_page', 5);
 
         return static::where('user_id', $userId)
-            ->with(['listing', 'user'])
+            ->with(['listing', 'user', 'listing.media'])
             ->paginate($perPage);
+    }
+
+    public function approveRefuseBooking($request) {
+        $validActions = ['approve', 'refuse'];
+        $action = $request->input('action');
+
+        if (! in_array($action, $validActions)) {
+            abort(Response::HTTP_BAD_REQUEST, 'Invalid action provided');
+        }
+
+        if (! in_array($this->status, [BookingStatus::PENDING, BookingStatus::UPCOMING]) ||
+        ($this->status === BookingStatus::UPCOMING && $action === 'approve')) {
+            abort(Response::HTTP_BAD_REQUEST, 'Booking cannot be '.$action.'d.');
+        }
+
+        $statusToUpdate = ($action === 'approve') ? BookingStatus::UPCOMING : BookingStatus::REFUSED;
+        $this->update(['status' => $statusToUpdate]);
+
+        if ($statusToUpdate === BookingStatus::REFUSED) {
+            $this->updateCalendarEntries(true);
+        }
     }
 
     public static function bookingsResponse($bookings) {
@@ -132,5 +165,15 @@ class Booking extends Model {
                 'to' => $bookings->lastItem(),
             ],
         ];
+    }
+
+    public function updateGuestBooking() {
+        $allowedStatuses = [BookingStatus::DONE, BookingStatus::CANCELLED, BookingStatus::REFUSED];
+
+        if (in_array($this->status, $allowedStatuses)) {
+            $this->update(['host_deleted' => true]);
+        } else {
+            abort(Response::HTTP_BAD_REQUEST, 'Booking cannot be deleted.');
+        }
     }
 }

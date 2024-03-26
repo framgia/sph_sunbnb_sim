@@ -77,8 +77,11 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('booking', BookingController::class)->except(['store', 'update', 'destroy']);
     Route::post('/booking', [BookingController::class, 'store'])->middleware('role:guest');
     Route::get('/booking/user/{userId}', [BookingController::class, 'showBookingsByUser']);
+    Route::get('/booking/listing/{listingId}', [BookingController::class, 'showBookingsByListing']);
     Route::put('booking/{bookingId}', [BookingController::class, 'update'])
         ->middleware('check.owner:booking');
     Route::delete('booking/{bookingId}', [BookingController::class, 'destroy'])
         ->middleware('check.owner:booking');
+    Route::put('booking/approve-refuse/{bookingId}', [BookingController::class, 'updateBookingStatus'])->middleware('role:host');
+    Route::put('booking/delete/{bookingId}', [BookingController::class, 'updateGuestBooking'])->middleware('role:host');
 });

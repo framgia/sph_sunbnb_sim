@@ -65,7 +65,10 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
             <Divider className="my-10 " />
             <AmenitySection amenities={accData.listable.amenities} />
             <Divider className="my-10 " />
-            <ReviewSection listingId={Number(params.id)} />
+            <ReviewSection
+              listingId={Number(params.id)}
+              listingType="accommodation"
+            />
           </div>
         </>
       ) : (

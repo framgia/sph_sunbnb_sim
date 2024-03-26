@@ -61,6 +61,7 @@ class Review extends Model {
 
         return static::where('listing_id', $listingId)
             ->with(['user:id,first_name,last_name,email,created_at'])
+            ->orderBy('created_at', 'desc')
             ->paginate($perPage);
     }
 

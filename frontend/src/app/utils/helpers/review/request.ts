@@ -1,6 +1,10 @@
 "use server";
 import config from "@/app/config/config";
-import type { ReviewData, ReviewType } from "@/app/interfaces/types";
+import type {
+  AccommodationReviewData,
+  ExperienceReviewData,
+  ReviewType
+} from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 
 function setHeaders(): Record<string, string> {
@@ -25,22 +29,25 @@ async function getReviews(id: number): Promise<ReviewType[]> {
   } else throw new Error(responseData.error as string);
 }
 
-async function createReview(
+async function createAccommodationReview(
   id: number,
-  data: ReviewData
+  data: AccommodationReviewData
 ): Promise<Record<string, string | boolean>> {
   try {
-    const response = await fetch(`${config.backendUrl}/review/${id}`, {
-      method: "POST",
-      headers: setHeaders(),
-      body: JSON.stringify(data)
-    });
+    const response = await fetch(
+      `${config.backendUrl}/review/accommodation/${id}`,
+      {
+        method: "POST",
+        headers: setHeaders(),
+        body: JSON.stringify(data)
+      }
+    );
 
     const responseData = await response.json();
     if (response.ok) {
       return {
         hasError: false,
-        message: "Listing updated successfully."
+        message: "Review added successfully."
       };
     } else if (responseData.error !== undefined) {
       throw new Error(responseData.error as string);
@@ -61,4 +68,43 @@ async function createReview(
   }
 }
 
-export { getReviews, createReview };
+async function createExperienceReview(
+  id: number,
+  data: ExperienceReviewData
+): Promise<Record<string, string | boolean>> {
+  try {
+    const response = await fetch(
+      `${config.backendUrl}/review/experience/${id}`,
+      {
+        method: "POST",
+        headers: setHeaders(),
+        body: JSON.stringify(data)
+      }
+    );
+
+    const responseData = await response.json();
+    if (response.ok) {
+      return {
+        hasError: false,
+        message: "Review added successfully."
+      };
+    } else if (responseData.error !== undefined) {
+      throw new Error(responseData.error as string);
+    } else {
+      return {
+        hasError: true,
+        message: "Unknown error occurred. Please contact the administrator."
+      };
+    }
+  } catch (error) {
+    return {
+      hasError: true,
+      message:
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred. Please contact the administrator."
+    };
+  }
+}
+
+export { getReviews, createAccommodationReview, createExperienceReview };

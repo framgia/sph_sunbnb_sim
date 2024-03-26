@@ -1,7 +1,10 @@
-import type { ReviewData } from "@/app/interfaces/types";
+import type {
+  ExperienceReviewData,
+  AccommodationReviewData
+} from "@/app/interfaces/types";
 
 async function validateReview(
-  data: ReviewData
+  data: AccommodationReviewData | ExperienceReviewData
 ): Promise<Record<string, string | boolean>> {
   for (const [, value] of Object.entries(data)) {
     if (typeof value === "string" && value.trim() === "") {

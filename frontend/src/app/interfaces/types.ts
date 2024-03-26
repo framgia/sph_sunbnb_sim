@@ -192,7 +192,7 @@ export interface ReviewType {
   };
 }
 
-export interface ReviewData {
+export interface AccommodationReviewData {
   cleanliness_rating: number;
   location_rating: number;
   value_rating: number;
@@ -214,6 +214,11 @@ export interface BookingType {
   deleted_at: null;
   user: UserDetailsType;
 }
+export interface ExperienceReviewData {
+  overall_rating: number;
+  comment: string;
+}
+
 export interface ListingFilter {
   query: string;
   price: {
