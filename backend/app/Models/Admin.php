@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Response;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
@@ -36,7 +37,7 @@ class Admin extends Authenticatable {
 
     public static function authenticateAdmin($request): self {
         $admin = self::where('email', $request['email'])->first();
-        abort_unless($admin && Hash::check($request['password'], $admin->password), 401, 'Unauthorized');
+        abort_unless($admin && Hash::check($request['password'], $admin->password), Response::HTTP_UNAUTHORIZED, 'Unauthorized');
 
         return $admin;
     }

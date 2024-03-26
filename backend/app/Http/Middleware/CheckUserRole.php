@@ -19,6 +19,6 @@ class CheckUserRole {
             return $next($request);
         }
 
-        return response()->json(['error' => 'Unauthorized Access'], 403);
+        return response()->json(['error' => 'Unauthorized Access'], Response::HTTP_FORBIDDEN);
     }
 }
