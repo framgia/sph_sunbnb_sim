@@ -17,11 +17,9 @@ const HostListings: React.FC<HostListingsProps> = ({
   const handlePageChange = useCallback(
     (page: number): void => {
       const params = new URLSearchParams(searchParams);
-      if (type === "accommodations") {
-        params.set("apage", page.toString());
-      } else {
-        params.set("epage", page.toString());
-      }
+      const pageKey = type === "accommodations" ? "apage" : "epage";
+      if (page === 1) params.delete(pageKey);
+      else params.set(pageKey, page.toString());
       router.replace(`${pathname}?${params.toString()}`);
     },
     [searchParams, pathname, router, type]
@@ -32,10 +30,10 @@ const HostListings: React.FC<HostListingsProps> = ({
       const params = new URLSearchParams(searchParams);
       if (type === "accommodations") {
         params.set("asize", size.toString());
-        params.set("apage", "1");
+        params.delete("apage");
       } else {
         params.set("esize", size.toString());
-        params.set("epage", "1");
+        params.delete("epage");
       }
       router.replace(`${pathname}?${params.toString()}`);
     },
@@ -59,7 +57,7 @@ const HostListings: React.FC<HostListingsProps> = ({
           </p>
         </div>
       )}
-      {pagination !== null && (
+      {pagination !== null && listings.length > 0 && (
         <ListingPagination
           total={pagination.total}
           currentPage={pagination.current_page}
