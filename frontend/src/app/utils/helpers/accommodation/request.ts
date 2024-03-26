@@ -248,5 +248,6 @@ export {
   updateAccommodation,
   deleteAccommodation,
   getAccommodationsByUser,
-  getPublicAccommodation
+  getPublicAccommodation,
+  getPublicAccommodations
 };

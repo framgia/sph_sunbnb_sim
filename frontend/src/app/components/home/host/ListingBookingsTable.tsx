@@ -83,6 +83,7 @@ const ListingBookingsTable: React.FC<{ bookings: BookingType[] }> = ({
               <DropdownItem key={BookingStatus.CANCELLED}>
                 Cancelled
               </DropdownItem>
+              <DropdownItem key={"status"}>All</DropdownItem>
             </DropdownMenu>
           </Dropdown>
 
