@@ -107,28 +107,6 @@ class Listing extends Model {
             ->paginate($perPage);
     }
 
-    public static function paginateAccommodationsByUser($userId, Request $request) {
-        $perPage = $request->query('per_page', 3);
-
-        return static::where('user_id', $userId)
-            ->whereHasMorph('listable', [Accommodation::class], function ($query, $type) {
-                $query->where('listable_type', '=', Accommodation::class);
-            })
-            ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
-            ->paginate($perPage);
-    }
-
-    public static function paginateExperiencesByUser($userId, Request $request) {
-        $perPage = $request->query('per_page', 3);
-
-        return static::where('user_id', $userId)
-            ->whereHasMorph('listable', [Experience::class], function ($query, $type) {
-                $query->where('listable_type', '=', Experience::class);
-            })
-            ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
-            ->paginate($perPage);
-    }
-
     public static function listingsResponse($listings) {
         return [
             'success' => true,
