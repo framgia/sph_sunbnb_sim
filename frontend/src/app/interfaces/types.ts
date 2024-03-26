@@ -214,6 +214,7 @@ export interface BookingType {
   deleted_at: null;
   user: UserDetailsType;
 }
+
 export interface ExperienceReviewData {
   overall_rating: number;
   comment: string;
