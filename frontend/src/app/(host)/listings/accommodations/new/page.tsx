@@ -69,7 +69,13 @@ const NewListingPage: React.FC = () => {
         loading={isLoading}
         error={error}
       />
-      <ApprovalModal isOpen={isOpen} onClose={onClose} size={"full"} id={id} />
+      <ApprovalModal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={"full"}
+        id={id}
+        type="accommodation"
+      />
     </main>
   );
 };

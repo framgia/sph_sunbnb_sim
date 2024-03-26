@@ -1,20 +1,20 @@
 import React from "react";
 import { Listbox, ListboxItem } from "@nextui-org/react";
+import { Inclusion } from "@/app/utils/enums";
 import type { ExperienceData } from "@/app/interfaces/ExperienceData";
-import { Language } from "@/app/utils/enums";
 
 interface ListboxProps {
   data: ExperienceData;
   setData: React.Dispatch<React.SetStateAction<ExperienceData>>;
 }
 
-const LanguagesListbox: React.FC<ListboxProps> = ({ data, setData }) => {
-  const options = new Map<Language, string>();
-  Object.values(Language).forEach((language) => {
-    options.set(language, language);
+const ListboxComponent: React.FC<ListboxProps> = ({ data, setData }) => {
+  const options = new Map<Inclusion, string>();
+  Object.values(Inclusion).forEach((inclusion) => {
+    options.set(inclusion, inclusion);
   });
 
-  const selectedValues = Array.from(data.language)
+  const selectedValues = Array.from(data.inclusions)
     .map((key) => key.toString())
     .join(", ");
 
@@ -23,16 +23,16 @@ const LanguagesListbox: React.FC<ListboxProps> = ({ data, setData }) => {
       <div className="pr-0 md:pr-10">
         <div className="w-full rounded-small border-small border-default-200 px-1 py-2 dark:border-default-100">
           <Listbox
-            className="h-36 overflow-auto rounded-small px-1 py-2 "
+            className="h-72 overflow-auto rounded-small px-1 py-2 "
             aria-label="Multiple selection example"
             variant="flat"
             disallowEmptySelection
             selectionMode="multiple"
-            selectedKeys={data.language}
+            selectedKeys={data.inclusions}
             onSelectionChange={(keys) => {
               setData((prevData) => ({
                 ...prevData,
-                language: Array.from(keys) as Language[]
+                inclusions: Array.from(keys) as Inclusion[]
               }));
             }}
           >
@@ -41,11 +41,11 @@ const LanguagesListbox: React.FC<ListboxProps> = ({ data, setData }) => {
             ))}
           </Listbox>
         </div>
-        <p className="mt-1 text-sm font-bold">Selected:</p>
+        <p className="mt-1 text-sm font-bold">Your Inclusions:</p>
         <p className="mb-10 text-xs text-default-500">{selectedValues}</p>
       </div>
     </>
   );
 };
 
-export default LanguagesListbox;
+export default ListboxComponent;

@@ -48,13 +48,13 @@ Route::middleware('auth:api')->group(function () {
     Route::post('accommodation', [AccommodationController::class, 'store'])->middleware('role:host');
     Route::put('accommodation/{listingId}', [AccommodationController::class, 'update'])
         ->middleware('check.owner:listing');
-    Route::get('/accommodation/user/{userId}', [ListingController::class, 'showAccommodationsByUser']);
+    Route::get('/accommodation/user/{userId}', [ListingController::class, 'showFilteredAccommodationsByUser']);
 
     Route::apiResource('experience', ExperienceController::class)->except(['update', 'store']);
     Route::post('experience', [ExperienceController::class, 'store'])->middleware('role:host');
     Route::put('experience/{listingId}', [ExperienceController::class, 'update'])
         ->middleware('check.owner:listing');
-    Route::get('/experience/user/{userId}', [ListingController::class, 'showExperiencesByUser']);
+    Route::get('/experience/user/{userId}', [ListingController::class, 'showFilteredExperiencesByUser']);
 
     Route::apiResource('/listing', ListingController::class)->except(['destroy']);
     Route::delete('listing/{listingId}', [ListingController::class, 'destroy'])
