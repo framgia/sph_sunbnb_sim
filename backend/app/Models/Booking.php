@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class Booking extends Model {
@@ -91,9 +92,9 @@ class Booking extends Model {
             $this->deleteCalendarEntries();
             $this->delete();
         } elseif ($this->status === BookingStatus::PENDING) {
-            abort(400, 'Cancel your booking first.');
+            abort(Response::HTTP_BAD_REQUEST, 'Cancel your booking first.');
         } elseif ($this->status === BookingStatus::UPCOMING) {
-            abort(400, "You can't delete this booking.");
+            abort(Response::HTTP_BAD_REQUEST, "You can't delete this booking.");
         }
     }
 
@@ -103,12 +104,12 @@ class Booking extends Model {
         }
     }
 
-    public function cancelBooking(): void {
+    public function cancelBooking() {
         if (in_array($this->status, [BookingStatus::PENDING, BookingStatus::UPCOMING])) {
             $this->update(['status' => BookingStatus::CANCELLED]);
             $this->updateCalendarEntries(true);
         } else {
-            abort(400, "You can't cancel this booking.");
+            abort(Response::HTTP_BAD_REQUEST, "You can't cancel this booking.");
         }
     }
 
@@ -124,6 +125,22 @@ class Booking extends Model {
         return static::where('user_id', $userId)
             ->with(['listing', 'user'])
             ->paginate($perPage);
+    }
+
+    public function approveRefuseBooking($request) {
+        $validActions = ['approve', 'refuse'];
+        $action = $request->input('action');
+
+        if (! in_array($action, $validActions)) {
+            abort(Response::HTTP_BAD_REQUEST, 'Invalid action provided');
+        }
+
+        if ($this->status !== BookingStatus::PENDING) {
+            abort(Response::HTTP_BAD_REQUEST, 'Booking cannot be '.$action.'d.');
+        }
+
+        $statusToUpdate = ($action === 'approve') ? BookingStatus::UPCOMING : BookingStatus::REFUSED;
+        $this->update(['status' => $statusToUpdate]);
     }
 
     public static function bookingsResponse($bookings) {

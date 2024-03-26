@@ -88,4 +88,22 @@ class BookingController extends Controller {
             ], Response::HTTP_NOT_FOUND);
         }
     }
+
+    public function updateBookingStatus(Request $request, $id) {
+        $booking = Booking::find($id);
+
+        if ($booking) {
+            $booking->approveRefuseBooking($request);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Successful transaction',
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'success' => false,
+                'error' => 'Booking not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+    }
 }
