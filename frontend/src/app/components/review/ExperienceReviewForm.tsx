@@ -1,33 +1,30 @@
 "use client";
 import { Button, Textarea } from "@nextui-org/react";
 import React, { useState } from "react";
-import StarsAddReview from "./StarsAddReview";
-import LocationSmallIcon from "../svgs/Review/LocationSmallIcon";
-import ValueSmallIcon from "../svgs/Review/ValueSmallIcon";
-import CleanlinessSmallIcon from "../svgs/Review/CleanlinessSmallIcon";
-import { type ReviewData } from "@/app/interfaces/types";
+import { type ExperienceReviewData } from "@/app/interfaces/types";
 import { validateReview } from "@/app/utils/helpers/review/validation";
-import { createReview } from "@/app/utils/helpers/review/request";
+import { createExperienceReview } from "@/app/utils/helpers/review/request";
 import ErrorMessage from "../ErrorMessage";
+import StarsExperienceReview from "./StarsExperienceReview";
 
 interface AddReviewFormProps {
   listingId: number;
   onClose: () => void;
+  onOpen: () => void;
 }
 
-const AddReviewForm: React.FC<AddReviewFormProps> = ({
+const ExperienceReviewForm: React.FC<AddReviewFormProps> = ({
   listingId,
-  onClose
+  onClose,
+  onOpen
 }) => {
   const [error, setError] = useState<Record<string, string | boolean>>({
     hasError: false,
     message: ""
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [rating, setRating] = useState<ReviewData>({
-    cleanliness_rating: 0,
-    location_rating: 0,
-    value_rating: 0,
+  const [rating, setRating] = useState<ExperienceReviewData>({
+    overall_rating: 0,
     comment: ""
   });
 
@@ -41,7 +38,7 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({
       });
     } else {
       setIsLoading(true);
-      const result = await createReview(listingId, rating);
+      const result = await createExperienceReview(listingId, rating);
       setIsLoading(false);
       if (result.hasError === true) {
         setError({
@@ -50,43 +47,18 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({
         });
       } else {
         onClose();
+        onOpen();
       }
     }
   }
 
   return (
     <>
-      <div className="mb-2 flex w-full flex-row justify-center">
-        <div className="m-5 flex flex-col justify-center">
-          <div className="flex w-full justify-center">
-            <CleanlinessSmallIcon />
-          </div>
-          <span className="w-full text-center text-sm">Cleanliness</span>
-          <StarsAddReview
+      <div className="mb-2 flex w-full flex-row px-10">
+        <div className="flex flex-col">
+          <StarsExperienceReview
             rating={rating}
-            field="cleanliness_rating"
-            setScore={setRating}
-          />
-        </div>
-        <div className="m-5 flex flex-col justify-center">
-          <div className="flex w-full justify-center">
-            <ValueSmallIcon />
-          </div>
-          <span className="w-full text-center text-sm ">Value</span>
-          <StarsAddReview
-            rating={rating}
-            field="location_rating"
-            setScore={setRating}
-          />
-        </div>
-        <div className="m-5 flex flex-col justify-center">
-          <div className="flex w-full justify-center">
-            <LocationSmallIcon />
-          </div>
-          <span className="w-full text-center text-sm ">Location</span>
-          <StarsAddReview
-            rating={rating}
-            field="value_rating"
+            field="overall_rating"
             setScore={setRating}
           />
         </div>
@@ -126,4 +98,4 @@ const AddReviewForm: React.FC<AddReviewFormProps> = ({
   );
 };
 
-export default AddReviewForm;
+export default ExperienceReviewForm;

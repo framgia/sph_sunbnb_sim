@@ -57,7 +57,7 @@ const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
       <Divider className="my-10 w-full " />
       <InclusionSection inclusions={expData.listable.inclusions} />
       <Divider className="my-10 w-full " />
-      <ReviewSection listingId={params.id} />
+      <ReviewSection listingId={params.id} listingType="experience" />
     </>
   );
 };
