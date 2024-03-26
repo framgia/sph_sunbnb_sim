@@ -225,9 +225,7 @@ async function getPublicAccommodations(
           "Content-Type": "application/json",
           Accept: "application/json"
         },
-        next: {
-          revalidate: 60
-        }
+        cache: "no-store"
       }
     );
 

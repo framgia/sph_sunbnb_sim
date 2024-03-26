@@ -48,13 +48,14 @@ const ListingSearchBar: React.FC = () => {
         `${filters.date[0].startDate.toISOString().slice(0, 10)}:${filters.date[0].endDate.toISOString().slice(0, 10)}`
       );
     else params.delete("date");
-
+    params.delete("page");
     router.replace(`${pathname}?${params.toString()}`);
   }, [filters, pathname, router, searchParams]);
 
   const handleFilterClear = useCallback(() => {
     const params = new URLSearchParams(searchParams);
     setFilters(INITIAL_FILTER);
+    params.delete("page");
     params.delete("query");
     params.delete("price");
     params.delete("rating");
