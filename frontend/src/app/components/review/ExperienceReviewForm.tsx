@@ -51,8 +51,8 @@ const ExperienceReviewForm: React.FC<AddReviewFormProps> = ({
 
   return (
     <>
-      <div className="mb-2 flex w-full flex-row justify-center">
-        <div className="m-5 flex flex-col justify-center">
+      <div className="mb-2 flex w-full flex-row px-10">
+        <div className="flex flex-col">
           <StarsExperienceReview
             rating={rating}
             field="overall_rating"
