@@ -3,8 +3,9 @@ import ListingBookingsTable from "./ListingBookingsTable";
 import type { BookingType, UserDetailsType } from "@/app/interfaces/types";
 import { BookingStatus } from "@/app/utils/enums";
 import PendingCardsSlicer from "./PendingCardsSlicer";
+import { checkCookies } from "@/app/utils/helpers/userHelper";
 
-const HostDashboard: React.FC = () => {
+const HostDashboard: React.FC<{ userName: string }> = ({ userName }) => {
   //  dummy data, replace with fetch in integration
   const PendingListings = [
     { id: 1, name: "My First Listing" },
@@ -163,7 +164,7 @@ const HostDashboard: React.FC = () => {
 
   return (
     <>
-      <span className="text-lg font-semibold">Welcome back, User!</span>
+      <span className="text-lg font-semibold">Welcome back, {userName}!</span>
       <PendingCardsSlicer cards={PendingListings} />
       <div className="flex flex-col py-2">
         <div className="mb-5">
