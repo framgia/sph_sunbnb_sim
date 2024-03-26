@@ -3,7 +3,6 @@ import ListingBookingsTable from "./ListingBookingsTable";
 import type { BookingType, UserDetailsType } from "@/app/interfaces/types";
 import { BookingStatus } from "@/app/utils/enums";
 import PendingCardsSlicer from "./PendingCardsSlicer";
-import { checkCookies } from "@/app/utils/helpers/userHelper";
 
 const HostDashboard: React.FC<{ userName: string }> = ({ userName }) => {
   //  dummy data, replace with fetch in integration
