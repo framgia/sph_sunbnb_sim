@@ -1,25 +1,43 @@
+"use client";
 import React from "react";
-import samplePhoto from "../../../../public/images/sample-photo.jpg";
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { formatCurrency } from "@/app/utils/currency";
+import { type GuestListingItemProps } from "@/app/interfaces/ListingsProps";
+import { useRouter } from "next/navigation";
 
-const GuestListingItem: React.FC = () => {
+const GuestListingItem: React.FC<GuestListingItemProps> = ({
+  listing,
+  type
+}) => {
+  const router = useRouter();
+
+  function handleCardPress(): void {
+    router.push(`/${type}/${listing.id}`);
+  }
+
   return (
-    <Card shadow="none" className="w-full" isPressable>
+    <Card
+      shadow="none"
+      className="w-full"
+      isPressable
+      onClick={handleCardPress}
+    >
       <CardBody className="flex items-center justify-center rounded-xl bg-zinc-50 p-0">
         <Image
           alt="Sample Photo"
           className="h-56 overflow-hidden rounded-xl"
-          src={samplePhoto.src}
+          src={listing.media[0].media}
         />
       </CardBody>
       <CardFooter className="flex flex-col items-start">
         <p className="truncate text-sm font-bold capitalize">
-          Hut in Balian Beach, Indonesia
+          {`${listing.name} in ${listing.province}`}
         </p>
         <p className="text-sm">
-          <span className="font-bold">{formatCurrency("PHP", 2, 6574)}</span>
-          {" per night"}
+          <span className="font-bold">
+            {formatCurrency("PHP", 2, listing.price)}
+          </span>
+          {type === "accommodations" ? " per night" : " per pax"}
         </p>
       </CardFooter>
     </Card>
