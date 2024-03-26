@@ -40,6 +40,8 @@ Route::post('/reset-password', [PasswordController::class, 'resetpassword']);
 Route::get('/public-listingss', [ListingController::class, 'showPublicListings']);
 Route::get('/public-accommodations', [ListingController::class, 'showPublicAccommodations']);
 Route::get('/public-experiences', [ListingController::class, 'showPublicExperiences']);
+Route::get('/listing/{listingId}', [ListingController::class, 'show']);
+Route::get('/review/{listingId}', [ReviewController::class, 'getByListing']);
 
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('accommodation', AccommodationController::class)->except(['update', 'store']);
@@ -53,12 +55,12 @@ Route::middleware('auth:api')->group(function () {
     Route::put('experience/{listingId}', [ExperienceController::class, 'update'])
         ->middleware('check.owner:listing');
     Route::get('/experience/user/{userId}', [ListingController::class, 'showExperiencesByUser']);
-
+    
     Route::apiResource('/listing', ListingController::class)->except(['destroy']);
     Route::delete('listing/{listingId}', [ListingController::class, 'destroy'])
         ->middleware('check.owner:listing');
     Route::get('/listing/user/{userId}', [ListingController::class, 'showListingsByUser']);
-
+    
     Route::put('/calendar/{listingId}', [CalendarController::class, 'set'])->middleware('role:host');
     Route::get('/calendar/{listingId}', [CalendarController::class, 'show']);
 
@@ -69,8 +71,8 @@ Route::middleware('auth:api')->group(function () {
         ->middleware('check.owner:user');
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::post('/review/{listingId}', [ReviewController::class, 'store'])->middleware('role:guest');
-    Route::get('/review/{listingId}', [ReviewController::class, 'getByListing']);
+    Route::post('/review/accommodation/{listingId}', [ReviewController::class, 'storeAccommodation'])->middleware('role:guest');
+    Route::post('/review/experience/{listingId}', [ReviewController::class, 'storeExperience'])->middleware('role:guest');
 
     Route::apiResource('booking', BookingController::class)->except(['store', 'update', 'destroy']);
     Route::post('/booking', [BookingController::class, 'store'])->middleware('role:guest');

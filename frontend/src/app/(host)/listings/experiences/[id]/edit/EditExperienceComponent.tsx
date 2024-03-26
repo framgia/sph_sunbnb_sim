@@ -1,25 +1,24 @@
 "use client";
 import DeleteModal from "@/app/components/DeleteModal";
-import EditListingForm from "@/app/(host)/listings/accommodations/[id]/edit/EditListingForm";
-import type {
-  MediaUpdate,
-  Accommodation
-} from "@/app/interfaces/AccomodationData";
-import { type Listing } from "@/app/interfaces/types";
-import {
-  deleteAccommodation,
-  updateAccommodation
-} from "@/app/utils/helpers/accommodation/request";
+import type { MediaUpdate } from "@/app/interfaces/AccomodationData";
+
 import { useDisclosure } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { validateAccommodation } from "@/app/utils/helpers/accommodation/validation";
+import type { Experience } from "@/app/interfaces/ExperienceData";
+import type { ExperienceListing } from "@/app/interfaces/types";
+import { validateExperience } from "@/app/utils/helpers/experience/validation";
+import {
+  deleteExperience,
+  updateExperience
+} from "@/app/utils/helpers/experience/request";
+import EditExperienceForm from "./EditExperienceForm";
 
 interface EditListingComponentProps {
-  listing: Listing;
+  listing: ExperienceListing;
 }
 
-const EditListingComponent: React.FC<EditListingComponentProps> = ({
+const EditExperienceComponent: React.FC<EditListingComponentProps> = ({
   listing
 }) => {
   const router = useRouter();
@@ -29,7 +28,7 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
     message: ""
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<Accommodation>({
+  const [data, setData] = useState<Experience>({
     name: listing.name,
     description: listing.description,
     province: listing.province,
@@ -40,12 +39,10 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
     price: listing.price,
     maximum_guests: listing.maximum_guests,
     type: listing.listable.type,
-    bed_count: listing.listable.bed_count,
-    bedroom_count: listing.listable.bedroom_count,
-    bathroom_count: listing.listable.bathroom_count,
-    minimum_days: listing.listable.minimum_days,
-    maximum_days: listing.listable.maximum_days,
-    amenities: listing.listable.amenities
+    start_time: listing.listable.start_time,
+    end_time: listing.listable.end_time,
+    language: listing.listable.language,
+    inclusions: listing.listable.inclusions
   });
 
   const [media, setMedia] = useState<MediaUpdate>({
@@ -58,7 +55,7 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
   });
 
   async function handleClick(): Promise<void> {
-    const validateData = await validateAccommodation(data, media, true);
+    const validateData = await validateExperience(data, media, true);
     if (validateData.hasError as boolean) {
       setError({
         message: validateData.message,
@@ -66,10 +63,10 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
       });
     } else {
       setIsLoading(true);
-      const result = await updateAccommodation(listing.id, data, media);
+      const result = await updateExperience(listing.id, data, media);
       setIsLoading(false);
       if (result.hasError === false) {
-        router.push(`/listings/accommodations/${listing.id}`);
+        router.push(`/listings/experiences/${listing.id}`);
       }
       if (result.hasError === true) {
         setError({
@@ -79,10 +76,11 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
       }
     }
   }
+
   async function handleDelete(): Promise<boolean> {
     try {
       setIsLoading(true);
-      const result = await deleteAccommodation(Number(listing.id));
+      const result = await deleteExperience(Number(listing.id));
       setIsLoading(false);
       if (result.hasError === false) return true;
       else return false;
@@ -95,7 +93,7 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
 
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-between">
-      <EditListingForm
+      <EditExperienceForm
         listingid={listing.id.toString()}
         onDelete={onOpen}
         data={data}
@@ -116,4 +114,4 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
   );
 };
 
-export default EditListingComponent;
+export default EditExperienceComponent;

@@ -1,36 +1,22 @@
-"use client";
-import React, { useState } from "react";
-import EditExperienceForm from "./EditExperienceForm";
-import { useDisclosure } from "@nextui-org/react";
-import DeleteModal from "@/app/components/DeleteModal";
+"use server";
+import React from "react";
+import { getExperience } from "@/app/utils/helpers/experience/request";
+import EditExperienceComponent from "./EditExperienceComponent";
 
-const EditExperiencePage: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLoading, setIsLoading] = useState(false);
-  function handleClick(): void {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }
-  async function handleDelete(): Promise<void> {
-    console.log("Delete");
-  }
+interface EditListingPageProps {
+  params: {
+    id: string;
+  };
+}
+
+const EditListingPage: React.FC<EditListingPageProps> = async ({ params }) => {
+  const listing = await getExperience(Number(params.id));
+
   return (
     <main className="min-w-1/2 flex min-h-screen flex-col items-center justify-between">
-      <EditExperienceForm
-        onDelete={onOpen}
-        onClick={handleClick}
-        loading={isLoading}
-      />
-      <DeleteModal
-        isOpen={isOpen}
-        onClose={onClose}
-        size={"full"}
-        onDelete={handleDelete}
-      />
+      <EditExperienceComponent listing={listing} />
     </main>
   );
 };
 
-export default EditExperiencePage;
+export default EditListingPage;

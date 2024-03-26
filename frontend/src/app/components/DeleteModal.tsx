@@ -10,9 +10,10 @@ import {
 } from "@nextui-org/react";
 import type { ModalProps } from "../interfaces/ModalProps";
 import DeleteIcon from "./svgs/DeleteIcon";
+import ErrorMessage from "./ErrorMessage";
 
 interface DeleteModalProps extends ModalProps {
-  onDelete: () => void;
+  onDelete: () => Promise<boolean>;
 }
 
 const DeleteModal: React.FC<DeleteModalProps> = ({
@@ -21,11 +22,12 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   onDelete
 }) => {
   const [isDeleted, setIsDeleted] = useState(false);
-
-  const handleDelete = (): void => {
-    setIsDeleted(true);
-    onDelete();
-  };
+  const [error, setError] = useState(false);
+  async function handleDelete(): Promise<void> {
+    const deleted = await onDelete();
+    setIsDeleted(deleted);
+    setError(!deleted);
+  }
 
   return (
     <>
@@ -44,10 +46,10 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
                   {isDeleted
                     ? "The listing has been successfully deleted."
                     : "Are you sure you want to delete this listing?"}
-                  <br />
-                  <br />
                 </p>
+                {error && <ErrorMessage message="Failed to delete listing." />}
               </ModalBody>
+
               <ModalFooter>
                 <div className="flex w-full justify-center gap-5">
                   {isDeleted ? (

@@ -13,17 +13,20 @@ import { useRouter } from "next/navigation";
 
 interface ApprovalModalProps extends ModalProps {
   id: string;
+  type: "accommodation" | "experience";
 }
 
 const ApprovalModal: React.FC<ApprovalModalProps> = ({
   isOpen,
   onClose,
-  id
+  id,
+  type
 }) => {
   const router = useRouter();
 
   function handleClick(): void {
-    router.push(`/listings/accommodations/${id}`);
+    if (type === "experience") router.push(`/listings/experiences/${id}`);
+    else router.push(`/listings/accommodations/${id}`);
     onClose();
   }
   return (

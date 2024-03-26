@@ -10,14 +10,15 @@ import type {
 } from "../../../../../interfaces/AccomodationData";
 import SelectType from "../../SelectAccommodation";
 import AccommodationImageUpdate from "./ImageCollectionUpdate";
-import AddressForm from "../../../AddressForm";
 import DetailForm from "../../DetailForm";
 import PriceForm from "../../../PriceForm";
 import ListingUploader from "@/app/components/accommodation/ListingUploader";
 import Link from "next/link";
+import AccommodationAddressForm from "../../../../../components/accommodation/AccommodationAddressForm";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 interface EditListingProps {
-  onDelete: () => void; // Function to handle delete action
+  onDelete: () => void;
   listingid: string;
   data: Accommodation;
   setData: React.Dispatch<React.SetStateAction<Accommodation>>;
@@ -45,7 +46,7 @@ const EditListingForm: React.FC<EditListingProps> = ({
         List Accommodation
       </header>
       <SelectType data={data} setData={setData} error={error} />
-      <AddressForm data={data} setData={setData} error={error} />
+      <AccommodationAddressForm data={data} setData={setData} error={error} />
       <hr className="mt-12 min-h-[3px] w-full bg-zinc-200 max-md:mt-10 max-md:max-w-full" />
       <DetailForm data={data} setData={setData} error={error} />
 
@@ -86,11 +87,11 @@ const EditListingForm: React.FC<EditListingProps> = ({
       <PriceForm data={data} setData={setData} error={error} />
       <div>
         {error.hasError === true && (
-          <div className="mt-5 text-xs text-red-500">{error.message}</div>
+          <ErrorMessage message={error.message as string} />
         )}
       </div>
       <div className="rounded-lg">
-        <div className="mt-16  flex justify-between gap-5 self-end whitespace-nowrap text-sm leading-5">
+        <div className="mt-8  flex justify-between gap-5 self-end whitespace-nowrap text-sm leading-5">
           <Button
             className=" gap-y-1.5 rounded-lg bg-danger px-4 text-white max-md:px-5"
             size="md"

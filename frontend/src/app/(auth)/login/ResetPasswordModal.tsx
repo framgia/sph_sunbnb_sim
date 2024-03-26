@@ -1,3 +1,4 @@
+import ErrorMessage from "@/app/components/ErrorMessage";
 import type { ModalProps } from "@/app/interfaces/ModalProps";
 import { Button, Input, Modal, ModalContent } from "@nextui-org/react";
 import React from "react";
@@ -41,13 +42,15 @@ const ResetPasswordModal: React.FC<ResetModalProps> = ({
                     we&apos;ll send you a link to reset your password.
                   </p>
                 </div>
+                {error.hasError === true && (
+                  <ErrorMessage message={error.message as string} />
+                )}
                 <Input
                   type="email"
                   variant="bordered"
                   required
                   placeholder="Email"
                   isInvalid={error.hasError as boolean}
-                  errorMessage={error.message as string}
                   value={email}
                   onChange={handleEmailChange}
                 />

@@ -3,6 +3,7 @@ import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
 import ReviewSection from "@/app/components/review/ReviewSection";
 import type { Listing_Experience } from "@/app/interfaces/types";
+
 import { getExperience } from "@/app/utils/helpers/experience/request";
 import { Divider } from "@nextui-org/react";
 import React from "react";
@@ -42,6 +43,7 @@ const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
           .split(" ")
           .slice(1)
           .join(" ")}
+        hostId={expData.user.id}
       />
       <Divider className="my-10 w-full" />
       <span className="text-sm">
