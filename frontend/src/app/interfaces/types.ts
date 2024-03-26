@@ -5,7 +5,8 @@ import type {
   AccommodationType,
   ListingStatus,
   Inclusion,
-  Language
+  Language,
+  BookingStatus
 } from "../utils/enums";
 
 export interface MediaType {
@@ -127,6 +128,21 @@ export interface ExperienceListing {
   deleted_at?: Date | null;
   listable: Experience;
   media: MediaType[];
+}
+
+export interface BookingHistory {
+  id: number;
+  user_id: number;
+  listing_id: number;
+  start_date: string;
+  end_date: string;
+  number_of_guests: number;
+  total_price: string;
+  status: BookingStatus;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string | null;
+  listing: Listing;
 }
 
 /* Must be created since typing listable as Accommodation | Experience in Listing will only allow 

@@ -1,10 +1,19 @@
-import BookingHistory from "@/app/components/BookingHistory";
+"use server";
+import BookingHistoryComponent from "@/app/(guest)/history/BookingHistoryComponent";
+import { getBookingHistory } from "@/app/utils/helpers/bookinghistory/request";
 import React from "react";
 
-const HistoryPage: React.FC = () => {
+interface BookingHistoryPageProps {
+  params: {
+    id: string;
+  };
+}
+
+const HistoryPage: React.FC<BookingHistoryPageProps> = async ({ params }) => {
+  const bookings = await getBookingHistory();
   return (
     <div className="w-full">
-      <BookingHistory />
+      <BookingHistoryComponent bookings={bookings} />
     </div>
   );
 };

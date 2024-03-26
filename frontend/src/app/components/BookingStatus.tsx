@@ -1,7 +1,13 @@
 import React from "react";
 import { Button, Chip } from "@nextui-org/react";
 
-const BookingStatus: React.FC<{ status: string }> = ({ status }) => {
+interface BookingStatusProps {
+  status: string;
+  id: number;
+  type: "accommodation" | "experience";
+}
+
+const BookingStatus: React.FC<BookingStatusProps> = ({ status, id, type }) => {
   const getStatusColor = (status: string): string => {
     switch (status.toLowerCase()) {
       case "upcoming":

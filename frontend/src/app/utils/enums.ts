@@ -89,3 +89,10 @@ export enum Language {
   INDONESIAN = "Indonesian",
   GERMAN = "German"
 }
+
+export enum BookingStatus {
+  DONE = "Done",
+  CANCELLED = "Cancelled",
+  PENDING = "Pending",
+  UPCOMING = "Upcoming"
+}
