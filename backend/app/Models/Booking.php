@@ -145,6 +145,10 @@ class Booking extends Model {
 
         $statusToUpdate = ($action === 'approve') ? BookingStatus::UPCOMING : BookingStatus::REFUSED;
         $this->update(['status' => $statusToUpdate]);
+
+        if ($statusToUpdate === BookingStatus::REFUSED) {
+            $this->updateCalendarEntries(true);
+        }
     }
 
     public static function bookingsResponse($bookings) {
