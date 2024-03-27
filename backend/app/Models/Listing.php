@@ -92,10 +92,16 @@ class Listing extends Model {
 
     public static function paginateListingsByUser($userId, Request $request) {
         $perPage = $request->query('per_page', 3);
+        $status = $request->query('status');
 
-        return static::where('user_id', $userId)
-            ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
-            ->paginate($perPage);
+        $query = static::where('user_id', $userId)
+            ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at']);
+
+        if ($status !== null) {
+            $query->where('status', $status);
+        }
+
+        return $query->paginate($perPage);
     }
 
     public static function paginatePublicListings(Request $request) {
