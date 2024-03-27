@@ -159,6 +159,7 @@ class Listing extends Model {
         $perPage = $request->query('per_page', 3);
 
         $query = self::$filterMethod($filters, $userId);
+        $query->orderBy('updated_at', 'desc')->orderBy('created_at', 'desc');
 
         return $query->paginate($perPage);
     }
