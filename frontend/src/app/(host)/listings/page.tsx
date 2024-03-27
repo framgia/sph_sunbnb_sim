@@ -1,11 +1,13 @@
 import React from "react";
-import HostListings from "@/app/components/listings/HostListings";
 import {
   LISTINGS_DEFAULT_PAGE,
   LISTINGS_DEFAULT_SIZE
 } from "@/app/interfaces/ListingsProps";
 import { getAccommodationsByUser } from "@/app/utils/helpers/accommodation/request";
-import HostListingHeader from "@/app/components/listings/HostListingHeader";
+import ListingHeader from "@/app/components/listings/ListingHeader";
+import { ListingType, UserRole } from "@/app/utils/enums";
+import Listings from "@/app/components/listings/Listings";
+import { getExperiencesByUser } from "@/app/utils/helpers/experience/request";
 
 const ListingsPage: React.FC = async ({
   searchParams
@@ -15,29 +17,52 @@ const ListingsPage: React.FC = async ({
     asize?: number;
     epage?: number;
     esize?: number;
+    aquery?: string;
+    atype?: string;
+    aprice?: string;
+    astatus?: string;
+    equery?: string;
+    etype?: string;
+    eprice?: string;
+    estatus?: string;
   };
 }) => {
   const paginatedAccommodations = await getAccommodationsByUser(
     searchParams?.apage ?? LISTINGS_DEFAULT_PAGE,
-    searchParams?.asize ?? LISTINGS_DEFAULT_SIZE
+    searchParams?.asize ?? LISTINGS_DEFAULT_SIZE,
+    searchParams?.aquery,
+    searchParams?.atype,
+    searchParams?.aprice,
+    searchParams?.astatus
+  );
+  const paginatedExperiences = await getExperiencesByUser(
+    searchParams?.epage ?? LISTINGS_DEFAULT_PAGE,
+    searchParams?.esize ?? LISTINGS_DEFAULT_SIZE,
+    searchParams?.equery,
+    searchParams?.etype,
+    searchParams?.eprice,
+    searchParams?.estatus
   );
 
   return (
     <main className="flex flex-col">
-      {paginatedAccommodations !== undefined && (
-        <div className="min-h-[600px]">
-          <HostListingHeader type="accommodations" />
-          <HostListings
-            listings={paginatedAccommodations.listings}
-            pagination={paginatedAccommodations.pagination}
-            type="accommodations"
-          />
-        </div>
-      )}
-      {/* TODO: Fetch experiences */}
+      <div className="min-h-[600px]">
+        <ListingHeader user={UserRole.HOST} type={ListingType.ACCOMMODATION} />
+        <Listings
+          user={UserRole.HOST}
+          type={ListingType.ACCOMMODATION}
+          listings={paginatedAccommodations?.listings ?? []}
+          pagination={paginatedAccommodations?.pagination ?? null}
+        />
+      </div>
       <div className="mt-16 min-h-[600px]">
-        <HostListingHeader type="experiences" />
-        <HostListings listings={[]} pagination={null} type="experiences" />
+        <ListingHeader user={UserRole.HOST} type={ListingType.EXPERIENCE} />
+        <Listings
+          user={UserRole.HOST}
+          type={ListingType.EXPERIENCE}
+          listings={paginatedExperiences?.listings ?? []}
+          pagination={paginatedExperiences?.pagination ?? null}
+        />
       </div>
     </main>
   );

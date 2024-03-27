@@ -153,11 +153,16 @@ async function deleteExperience(
   }
 }
 
-async function getExperienceByUser(
+async function getExperiencesByUser(
   page: number,
-  limit: number
+  limit: number,
+  query?: string,
+  type?: string,
+  price?: string,
+  status?: string
 ): Promise<PaginatedListing | undefined> {
   try {
+    console.log("type", type);
     const jwt = cookies().get("jwt")?.value;
     if (jwt === undefined) throw new Error("No JWT found in cookies.");
 
@@ -165,7 +170,11 @@ async function getExperienceByUser(
     if (user === null) throw new Error("No user found in cookies.");
 
     const response = await fetch(
-      `${config.backendUrl}/experience/user/${user.id}?page=${page}&per_page=${limit}`,
+      `${config.backendUrl}/experience/user/${user.id}?page=${page}&per_page=${limit}
+        ${type !== undefined ? `&type=${type.replace("&", "%26")}` : ""}
+        ${query !== undefined ? `&search=${query}` : ""}
+        ${price !== undefined ? `&price_range=${price}` : ""}
+        ${status !== undefined ? `&status=${status}` : ""}`,
       {
         method: "GET",
         headers: {
@@ -194,5 +203,5 @@ export {
   getExperience,
   updateExperience,
   deleteExperience,
-  getExperienceByUser
+  getExperiencesByUser
 };
