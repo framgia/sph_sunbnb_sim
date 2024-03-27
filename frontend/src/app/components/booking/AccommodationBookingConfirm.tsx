@@ -1,6 +1,6 @@
 "use client";
 import { Button, Divider, useDisclosure } from "@nextui-org/react";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
 import type { Listing } from "@/app/interfaces/types";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -27,6 +27,7 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
   }, [searchQuery]);
   const endDate = addDays(startDate, nights);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setLoading] = useState(false);
 
   const isInvalid = useCallback(() => {
     return (
@@ -59,6 +60,7 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
 
   async function handleBooking(): Promise<void> {
     try {
+      setLoading(true);
       const startDateFormatted = format(startDate, "yyyy-MM-dd");
       const endDateFormatted = format(endDate, "yyyy-MM-dd");
 
@@ -72,7 +74,10 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
       const result = await createBooking(bookingData);
       if (result.hasError === true) {
         console.error(result.message);
+      } else {
+        onOpen();
       }
+      setLoading(false);
     } catch (error) {
       console.error("Error creating booking:", error);
     }
@@ -123,10 +128,9 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
                 size="lg"
                 className="w-3/4"
                 color="primary"
-                isDisabled={isInvalid()}
+                isDisabled={isInvalid() || isLoading}
                 onPress={() => {
                   handleBooking();
-                  onOpen();
                 }}
               >
                 Book

@@ -1,11 +1,13 @@
 "use client";
 import { Button, Divider, useDisclosure } from "@nextui-org/react";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Listing_Experience } from "@/app/interfaces/types";
 import Image from "next/image";
 import ThankYouModal from "./ThankYouModal";
+import format from "date-fns/format";
+import { createBooking } from "@/app/utils/helpers/booking/request";
 
 interface ExperienceBookingConfirmProps {
   listing: Listing_Experience;
@@ -22,6 +24,7 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
   }, [searchParam]);
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setLoading] = useState(false);
 
   function removeTime(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -53,6 +56,31 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
       router.replace("/");
     }
   }, [isInvalid, router]);
+
+  async function handleBooking(): Promise<void> {
+    try {
+      setLoading(true);
+      const startDateFormatted = format(date, "yyyy-MM-dd");
+      const endDateFormatted = format(date, "yyyy-MM-dd");
+
+      const bookingData = {
+        start_date: startDateFormatted,
+        end_date: endDateFormatted,
+        number_of_guests: guests,
+        listing_id: listing.id
+      };
+
+      const result = await createBooking(bookingData);
+      if (result.hasError === true) {
+        console.error(result.message);
+      } else {
+        onOpen();
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error creating booking:", error);
+    }
+  }
 
   return (
     <div className="p-2">
@@ -99,8 +127,8 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
                 size="lg"
                 className="w-3/4"
                 color="primary"
-                isDisabled={isInvalid()}
-                onPress={onOpen}
+                isDisabled={isInvalid() || isLoading}
+                onPress={handleBooking}
               >
                 Book
               </Button>

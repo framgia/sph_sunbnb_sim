@@ -32,7 +32,7 @@ const ThankYouModal: React.FC<ModalProps> = ({ onClose, isOpen }) => {
                 <ModalFooter className="w-full justify-center">
                   <Button
                     onPress={() => {
-                      router.replace("/");
+                      router.replace("/history");
                     }}
                     color="primary"
                   >
