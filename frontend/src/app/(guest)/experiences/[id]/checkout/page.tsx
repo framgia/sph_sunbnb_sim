@@ -16,6 +16,7 @@ const ExperienceCheckoutPage: React.FC<ExperienceCheckoutProps> = async ({
   params
 }) => {
   const expData = await getExperience(params.id);
+  
   if (
     expData === undefined ||
     expData == null ||

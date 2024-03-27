@@ -20,13 +20,15 @@ interface ExperienceBookingStickyProps {
   endTime: string;
   maxGuest: number;
   listingId: number;
+  exclude: Date[];
 }
 const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
   price,
   startTime,
   endTime,
   maxGuest,
-  listingId
+  listingId,
+  exclude
 }) => {
   const [guestCount, setGuestCount] = useState(1);
   const [startDateState, setStart] = useState(new Date());
@@ -54,6 +56,10 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
       date1.getMonth() === date2.getMonth() &&
       date1.getFullYear() === date2.getFullYear()
     );
+  }
+
+  function removeTime(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
   useEffect(() => {
@@ -112,6 +118,7 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
                 ranges={dates}
                 minDate={new Date()}
                 rangeColors={["#FF2200"]}
+                disabledDates={exclude}
               />
             </PopoverContent>
           </Popover>
@@ -150,7 +157,13 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
         <>
           {DateArr.length < 3 ? (
             DateArr.map((date, i) => {
-              return (
+              return !!exclude.find((e_date, _i) => {
+                let noTimeEDate = removeTime(e_date);
+                let noTimeDate = removeTime(date);
+                return noTimeDate.valueOf() == noTimeEDate.valueOf();
+              }) ? (
+                <div key={i}></div>
+              ) : (
                 <ExperienceBookOption
                   key={i}
                   date={date}

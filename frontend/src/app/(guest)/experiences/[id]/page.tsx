@@ -4,11 +4,12 @@ import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
 import { getExperience } from "@/app/utils/helpers/experience/request";
 import ReviewSection from "@/app/components/review/ReviewSection";
-import type { Experience, Listing_Experience } from "@/app/interfaces/types";
+import type { CalendarDate, Listing_Experience } from "@/app/interfaces/types";
 import { checkCookies } from "@/app/utils/helpers/userHelper";
 import { Divider } from "@nextui-org/react";
 import React from "react";
 import { redirect } from "next/navigation";
+import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 
 interface GuestExperienceDetailsProps {
   params: { id: number };
@@ -18,6 +19,15 @@ const GuestExperienceDetailsPage: React.FC<
 > = async ({ params }) => {
   const user = await checkCookies();
   const expData: Listing_Experience = await getExperience(params.id);
+  const expAvailability: CalendarDate[] =
+    (await getListingAvailability(params.id)) ?? [];
+
+  let blockedDates: Date[] = [];
+  if (expAvailability !== undefined && expAvailability !== null) {
+    blockedDates = expAvailability.map((calDate, _i) => {
+      return new Date(calDate.date);
+    });
+  }
 
   //  check if listable type of listing received is an accommodation or somehow undefined to avoid passing
   //  accommodation in experience details page
@@ -83,6 +93,7 @@ const GuestExperienceDetailsPage: React.FC<
                   startTime={expData.listable.start_time}
                   endTime={expData.listable.end_time}
                   listingId={Number(params.id)}
+                  exclude={blockedDates}
                 />
               ) : (
                 <DefaultSticky ForAccommodation={false} />
