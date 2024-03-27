@@ -14,6 +14,7 @@ import { DateRange, type Range } from "react-date-range";
 import { getDateString } from "@/app/utils/helpers/getDateString";
 import addDays from "date-fns/addDays";
 import { useRouter } from "next/navigation";
+import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
 
 interface AccommodationBookingStickyProps {
   price: number;
@@ -158,7 +159,12 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
           <Button
             className="w-full font-bold"
             color="primary"
-            isDisabled={nights < 1 || nights > maxNights}
+            isDisabled={
+              nights < 1 ||
+              nights > maxNights ||
+              isDateBlocked(startDateState, exclude) ||
+              isDateBlocked(endDateState, exclude)
+            }
             onPress={() => {
               router.push(
                 `${listingId}/checkout?guests=${guestCount}&nights=${nights}&start=${startDateState.toISOString()}`

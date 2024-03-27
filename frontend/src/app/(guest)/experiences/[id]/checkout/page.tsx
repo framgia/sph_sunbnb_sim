@@ -37,9 +37,6 @@ const ExperienceCheckoutPage: React.FC<ExperienceCheckoutProps> = async ({
   }
   return (
     <div>
-      {/* To_do: Add datesExcluded prop (type Date[]) for the dates not available for the experience so that we
-      can validate if the date in checkout page is a blocked date or not and users cannot book block dates by
-      entering date through url */}
       {expData !== undefined && expData !== null ? (
         <ExperienceBookingConfirm listing={expData} excluded={blockedDates} />
       ) : (

@@ -6,12 +6,15 @@ import type { Listing } from "@/app/interfaces/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { addDays } from "date-fns";
+import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
 
 interface BookingConfirmProps {
   listing: Listing;
+  exclude: Date[];
 }
 const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
-  listing
+  listing,
+  exclude
 }) => {
   const router = useRouter();
   const searchQuery = useSearchParams();
@@ -32,7 +35,9 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
       isNaN(guests) ||
       isNaN(nights) ||
       isNaN(startDate.valueOf()) ||
-      isNaN(endDate.valueOf())
+      isNaN(endDate.valueOf()) ||
+      isDateBlocked(startDate, exclude) ||
+      isDateBlocked(endDate, exclude)
     );
   }, [
     endDate,

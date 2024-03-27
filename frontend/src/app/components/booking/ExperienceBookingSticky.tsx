@@ -13,6 +13,7 @@ import FlagIcon from "../svgs/Report/FlagIcon";
 import ExperienceBookOption from "./ExperienceBookOption";
 import { eachDayOfInterval } from "date-fns";
 import { useRouter } from "next/navigation";
+import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
 
 interface ExperienceBookingStickyProps {
   price: number;
@@ -157,11 +158,7 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
         <>
           {DateArr.length < 3 ? (
             DateArr.map((date, i) => {
-              return !!exclude.find((e_date, _i) => {
-                let noTimeEDate = removeTime(e_date);
-                let noTimeDate = removeTime(date);
-                return noTimeDate.valueOf() == noTimeEDate.valueOf();
-              }) ? (
+              return isDateBlocked(date, exclude) ? (
                 <div key={i}></div>
               ) : (
                 <ExperienceBookOption
