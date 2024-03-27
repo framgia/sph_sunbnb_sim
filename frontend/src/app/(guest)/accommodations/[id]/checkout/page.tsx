@@ -12,7 +12,11 @@ const AccommodationBookingPage: React.FC<AccommodationBookingProps> = async ({
   params
 }) => {
   const accommodation = await getAccommodation(params.id);
-  if (accommodation === null || accommodation === undefined) {
+  if (
+    accommodation === null ||
+    accommodation === undefined ||
+    accommodation.listable_type.split("\\")[2] === "Experience"
+  ) {
     redirect("/not-found");
   }
   return (
