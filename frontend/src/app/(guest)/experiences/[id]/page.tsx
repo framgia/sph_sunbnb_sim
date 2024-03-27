@@ -33,8 +33,6 @@ const GuestExperienceDetailsPage: React.FC<
   //  accommodation in experience details page
   if (
     expData === undefined ||
-    expData === null ||
-    expData.listable_type.split("\\")[2] === undefined ||
     expData.listable_type.split("\\")[2] === "Accommodation"
   ) {
     redirect("/not-found");

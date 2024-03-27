@@ -8,6 +8,7 @@ import Image from "next/image";
 import ThankYouModal from "./ThankYouModal";
 import format from "date-fns/format";
 import { createBooking } from "@/app/utils/helpers/booking/request";
+import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
 
 interface ExperienceBookingConfirmProps {
   listing: Listing_Experience;
@@ -26,19 +27,6 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setLoading] = useState(false);
 
-  function removeTime(date: Date): Date {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  }
-
-  function isDateBlocked(date: Date): boolean {
-    return (
-      excluded.find((eDate, _i) => {
-        let noTimeEDate = removeTime(eDate);
-        let noTimeDate = removeTime(date);
-        return noTimeDate.valueOf() === noTimeEDate.valueOf();
-      }) !== undefined
-    );
-  }
   const isInvalid = useCallback(() => {
     return (
       guests < 1 ||
@@ -47,9 +35,9 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
       guests > listing.maximum_guests ||
       isNaN(guests) ||
       isNaN(date.valueOf()) ||
-      isDateBlocked(date)
+      isDateBlocked(date, excluded)
     );
-  }, [date, guests, listing.maximum_guests]);
+  }, [date, guests, listing.maximum_guests, excluded]);
 
   useEffect(() => {
     if (isInvalid()) {

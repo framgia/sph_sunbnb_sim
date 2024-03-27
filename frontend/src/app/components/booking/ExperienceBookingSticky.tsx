@@ -59,10 +59,6 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
     );
   }
 
-  function removeTime(date: Date): Date {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  }
-
   useEffect(() => {
     const newArr = getDatesInRange(startDateState, endDateState);
     setDateArr(newArr);

@@ -1,10 +1,5 @@
 import ExperienceBookingConfirm from "@/app/components/booking/ExperienceBookingConfirm";
-import type {
-  CalendarDate,
-  Listing_Experience,
-  UserDetailsType
-} from "@/app/interfaces/types";
-import type { Inclusion, ListingStatus } from "@/app/utils/enums";
+import type { CalendarDate } from "@/app/interfaces/types";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { getExperience } from "@/app/utils/helpers/experience/request";
 import { redirect } from "next/navigation";

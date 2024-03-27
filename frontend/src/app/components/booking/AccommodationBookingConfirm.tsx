@@ -49,7 +49,8 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
     listing.listable.maximum_days,
     listing.maximum_guests,
     nights,
-    startDate
+    startDate,
+    exclude
   ]);
 
   useEffect(() => {
@@ -129,8 +130,8 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
                 className="w-3/4"
                 color="primary"
                 isDisabled={isInvalid() || isLoading}
-                onPress={() => {
-                  handleBooking();
+                onPress={async () => {
+                  await handleBooking();
                 }}
               >
                 Book
