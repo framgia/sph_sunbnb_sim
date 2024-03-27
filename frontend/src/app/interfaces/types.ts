@@ -238,3 +238,10 @@ export interface ListingFilter {
     }
   ];
 }
+
+export interface BookingData {
+  start_date: string;
+  end_date: string;
+  number_of_guests: number;
+  listing_id: number;
+}

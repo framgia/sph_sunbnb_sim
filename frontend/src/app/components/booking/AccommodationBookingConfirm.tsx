@@ -1,12 +1,13 @@
 "use client";
 import { Button, Divider } from "@nextui-org/react";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
 import type { Listing } from "@/app/interfaces/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { addDays } from "date-fns";
+import { addDays, format } from "date-fns";
 import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
+import { createBooking } from "@/app/utils/helpers/booking/request";
 
 interface BookingConfirmProps {
   listing: Listing;
@@ -54,6 +55,27 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
     }
   }, [isInvalid, router]);
 
+  async function handleBooking(): Promise<void> {
+    try {
+      const startDateFormatted = format(startDate, "yyyy-MM-dd");
+      const endDateFormatted = format(endDate, "yyyy-MM-dd");
+
+      const bookingData = {
+        start_date: startDateFormatted,
+        end_date: endDateFormatted,
+        number_of_guests: guests,
+        listing_id: listing.id
+      };
+
+      const result = await createBooking(bookingData);
+      if (result.hasError === true) {
+        console.error(result.message);
+      }
+    } catch (error) {
+      console.error("Error creating booking:", error);
+    }
+  }
+
   return (
     <div className="p-2">
       {isInvalid() ? (
@@ -100,6 +122,7 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
                 className="w-3/4"
                 color="primary"
                 isDisabled={isInvalid()}
+                onPress={handleBooking}
               >
                 Book
               </Button>
@@ -129,19 +152,15 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
               </div>
               <div className="flex flex-row justify-between">
                 <span className="text-sm">
-                  ₱ {listing.price * guests} × {nights} nights
+                  ₱ {listing.price} × {nights} nights
                 </span>
-                <span className="text-sm">
-                  ₱ {listing.price * guests * nights}
-                </span>
+                <span className="text-sm">₱ {listing.price * nights}</span>
               </div>
             </div>
             <Divider className="mb-2" />
             <div className="flex w-full flex-row justify-between font-bold">
               <span className="text-sm">Total (PHP)</span>
-              <span className="text-sm">
-                ₱ {listing.price * guests * nights}
-              </span>
+              <span className="text-sm">₱ {listing.price * nights}</span>
             </div>
           </div>
         </div>
