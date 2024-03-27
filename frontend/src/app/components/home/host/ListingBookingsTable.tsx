@@ -15,37 +15,48 @@ import {
   TableHeader,
   TableRow
 } from "@nextui-org/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StatusChip from "../../StatusChip";
 import BookingActions from "./BookingActions";
-import type { BookingType } from "@/app/interfaces/types";
+import type { BookingType, Listing } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import SearchIcon from "../../svgs/SearchIcon";
 import ChevronDownIcon from "../../svgs/Calendar/ChevronDownIcon";
 import { BookingStatus } from "@/app/utils/enums";
+import { getListingBookings } from "@/app/utils/helpers/bookingmanagement/request";
 
-const ListingBookingsTable: React.FC<{ bookings: BookingType[] }> = ({
-  bookings
-}) => {
+const ListingBookingsTable: React.FC<{
+  listings: Listing[];
+}> = ({ listings }) => {
   const [statusFilter, setStatusF] = useState("status");
-  const [currentListing, setListing] = useState("1");
-
+  const [currentListing, setListing] = useState(listings[0]?.id ?? 0);
+  const [bookingData, setBookingData] = useState<BookingType[]>([]);
   //  since pagination in backend is in backend, replace pagination implementation with useSWR on integration
   const [page, setPage] = React.useState(1);
   const rowsPerPage = 5;
-  const pages = Math.ceil(bookings.length / rowsPerPage);
+  const pages = Math.ceil(bookingData.length / rowsPerPage);
   const slicedBookings = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    return bookings.slice(start, end);
-  }, [page, bookings]);
+    return bookingData.slice(start, end);
+  }, [page, bookingData]);
   const classNames = React.useMemo(
     () => ({
       th: ["bg-primary-600", "text-white"]
     }),
     []
   );
+
+  useEffect(() => {
+    async function fetchData(): Promise<void> {
+      const data = await getListingBookings(currentListing, statusFilter);
+      if (data !== undefined) setBookingData(data);
+    }
+    fetchData().catch((error) => {
+      console.error("Failed to get bookings from listing: ", error);
+    });
+  }, [currentListing, statusFilter]);
 
   return (
     <div>
@@ -72,6 +83,7 @@ const ListingBookingsTable: React.FC<{ bookings: BookingType[] }> = ({
               </Button>
             </DropdownTrigger>
             <DropdownMenu
+              aria-label="status"
               onAction={(key) => {
                 setStatusF(key as string);
               }}
@@ -96,19 +108,21 @@ const ListingBookingsTable: React.FC<{ bookings: BookingType[] }> = ({
                 color="primary"
                 endContent={<ChevronDownIcon />}
               >
-                Listing {currentListing}
+                {listings.length > 0
+                  ? listings.find((item) => item.id === Number(currentListing))
+                      ?.name
+                  : "No Active Listing"}
               </Button>
             </DropdownTrigger>
             <DropdownMenu
+              aria-label="listings"
               onAction={(key) => {
-                setListing(key as string);
+                setListing(key as number);
               }}
             >
-              <DropdownItem key={1}>Listing 1</DropdownItem>
-              <DropdownItem key={2}>Listing 2</DropdownItem>
-              <DropdownItem key={3}>Listing 3</DropdownItem>
-              <DropdownItem key={4}>Listing 4</DropdownItem>
-              <DropdownItem key={5}>Listing 5</DropdownItem>
+              {listings.map((listing) => (
+                <DropdownItem key={listing.id}>{listing.name}</DropdownItem>
+              ))}
             </DropdownMenu>
           </Dropdown>
         </div>
@@ -117,7 +131,9 @@ const ListingBookingsTable: React.FC<{ bookings: BookingType[] }> = ({
         <div>
           <span className="text-xs text-default-500">
             Total:{" "}
-            {bookings.length > 1 ? bookings.length + " " + "guests" : "1 guest"}
+            {bookingData.length > 1
+              ? bookingData.length + " " + "guests"
+              : "1 guest"}
           </span>
         </div>
         <div>
