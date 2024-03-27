@@ -124,7 +124,10 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
                 className="w-3/4"
                 color="primary"
                 isDisabled={isInvalid()}
-                onPress={handleBooking}
+                onPress={() => {
+                  handleBooking();
+                  onOpen();
+                }}
               >
                 Book
               </Button>
