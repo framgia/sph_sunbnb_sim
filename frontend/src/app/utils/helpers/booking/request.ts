@@ -1,6 +1,6 @@
 "use server";
 import config from "@/app/config/config";
-import { BookingData } from "@/app/interfaces/types";
+import type { BookingData } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 
 function setHeaders(): Record<string, string> {
