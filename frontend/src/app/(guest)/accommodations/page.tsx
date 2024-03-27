@@ -33,20 +33,13 @@ const AccommodationsPage: React.FC = async ({
 
   return (
     <main className="flex flex-col">
-      {paginatedAccommodations !== undefined && (
-        <>
-          <ListingHeader
-            user={UserRole.GUEST}
-            type={ListingType.ACCOMMODATION}
-          />
-          <Listings
-            user={UserRole.GUEST}
-            type={ListingType.ACCOMMODATION}
-            listings={paginatedAccommodations.listings}
-            pagination={paginatedAccommodations.pagination}
-          />
-        </>
-      )}
+      <ListingHeader user={UserRole.GUEST} type={ListingType.ACCOMMODATION} />
+      <Listings
+        user={UserRole.GUEST}
+        type={ListingType.ACCOMMODATION}
+        listings={paginatedAccommodations?.listings ?? []}
+        pagination={paginatedAccommodations?.pagination ?? null}
+      />
     </main>
   );
 };

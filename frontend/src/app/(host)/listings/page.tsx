@@ -7,6 +7,7 @@ import { getAccommodationsByUser } from "@/app/utils/helpers/accommodation/reque
 import ListingHeader from "@/app/components/listings/ListingHeader";
 import { ListingType, UserRole } from "@/app/utils/enums";
 import Listings from "@/app/components/listings/Listings";
+import { getExperiencesByUser } from "@/app/utils/helpers/experience/request";
 
 const ListingsPage: React.FC = async ({
   searchParams
@@ -34,31 +35,33 @@ const ListingsPage: React.FC = async ({
     searchParams?.aprice,
     searchParams?.astatus
   );
+  const paginatedExperiences = await getExperiencesByUser(
+    searchParams?.epage ?? LISTINGS_DEFAULT_PAGE,
+    searchParams?.esize ?? LISTINGS_DEFAULT_SIZE,
+    searchParams?.equery,
+    searchParams?.etype,
+    searchParams?.eprice,
+    searchParams?.estatus
+  );
 
   return (
     <main className="flex flex-col">
-      {paginatedAccommodations !== undefined && (
-        <div className="min-h-[600px]">
-          <ListingHeader
-            user={UserRole.HOST}
-            type={ListingType.ACCOMMODATION}
-          />
-          <Listings
-            user={UserRole.HOST}
-            type={ListingType.ACCOMMODATION}
-            listings={paginatedAccommodations.listings}
-            pagination={paginatedAccommodations.pagination}
-          />
-        </div>
-      )}
-      {/* TODO: Fetch experiences */}
+      <div className="min-h-[600px]">
+        <ListingHeader user={UserRole.HOST} type={ListingType.ACCOMMODATION} />
+        <Listings
+          user={UserRole.HOST}
+          type={ListingType.ACCOMMODATION}
+          listings={paginatedAccommodations?.listings ?? []}
+          pagination={paginatedAccommodations?.pagination ?? null}
+        />
+      </div>
       <div className="mt-16 min-h-[600px]">
         <ListingHeader user={UserRole.HOST} type={ListingType.EXPERIENCE} />
         <Listings
           user={UserRole.HOST}
           type={ListingType.EXPERIENCE}
-          listings={[]}
-          pagination={null}
+          listings={paginatedExperiences?.listings ?? []}
+          pagination={paginatedExperiences?.pagination ?? null}
         />
       </div>
     </main>

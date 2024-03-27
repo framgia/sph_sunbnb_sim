@@ -144,9 +144,7 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
         <PopoverContent className="h-20 w-96">
           <Slider
             label="Price Range"
-            step={10000}
             size="sm"
-            showSteps
             minValue={MIN_PRICE}
             maxValue={MAX_PRICE}
             value={[filters.price.min, filters.price.max]}

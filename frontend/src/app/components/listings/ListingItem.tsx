@@ -18,13 +18,13 @@ const ListingItem: React.FC<ListingItemProps> = ({ user, type, listing }) => {
 
   function handleCardPress(): void {
     if (user === UserRole.GUEST) {
-      router.push(`/${type}/${listing.id}`);
+      router.push(`/${type.toLowerCase()}s/${listing.id}`);
     } else if (user === UserRole.HOST) {
-      router.push(`/listings/${type}/${listing.id}`);
+      router.push(`/listings/${type.toLowerCase()}s/${listing.id}`);
     }
   }
 
-  if (type === ListingType.ACCOMMODATION)
+  if (user === UserRole.GUEST)
     return (
       <Card
         shadow="none"
@@ -53,7 +53,7 @@ const ListingItem: React.FC<ListingItemProps> = ({ user, type, listing }) => {
       </Card>
     );
 
-  if (type === ListingType.EXPERIENCE)
+  if (user === UserRole.HOST)
     return (
       <Card
         className="w-full px-4 py-3"
