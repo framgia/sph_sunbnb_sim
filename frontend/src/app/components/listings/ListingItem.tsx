@@ -39,8 +39,8 @@ const ListingItem: React.FC<ListingItemProps> = ({ user, type, listing }) => {
             src={listing.media[0].media}
           />
         </CardBody>
-        <CardFooter className="flex flex-col items-start">
-          <p className="truncate text-sm font-bold capitalize">
+        <CardFooter className="flex flex-col items-start overflow-hidden">
+          <p className="w-full truncate text-start text-sm font-bold capitalize">
             {`${listing.name} in ${listing.province}`}
           </p>
           <p className="text-sm">
@@ -61,8 +61,8 @@ const ListingItem: React.FC<ListingItemProps> = ({ user, type, listing }) => {
         isPressable
         onPress={handleCardPress}
       >
-        <CardHeader className="flex-col items-start gap-1 overflow-hidden">
-          <p className="truncate text-sm font-bold capitalize">
+        <CardHeader className="flex-col items-start gap-1">
+          <p className="w-full truncate text-start text-sm font-bold capitalize">
             {listing.name}
           </p>
           <Chip

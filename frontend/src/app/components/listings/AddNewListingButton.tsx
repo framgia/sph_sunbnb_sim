@@ -5,7 +5,7 @@ import React from "react";
 import AddIcon from "../svgs/Listings/AddIcon";
 import { type AddNewListingButtonProps } from "@/app/interfaces/ListingsProps";
 
-const ListingHeader: React.FC<AddNewListingButtonProps> = ({ type }) => {
+const AddNewListingButton: React.FC<AddNewListingButtonProps> = ({ type }) => {
   const router = useRouter();
   return (
     <Button
@@ -21,4 +21,4 @@ const ListingHeader: React.FC<AddNewListingButtonProps> = ({ type }) => {
   );
 };
 
-export default ListingHeader;
+export default AddNewListingButton;

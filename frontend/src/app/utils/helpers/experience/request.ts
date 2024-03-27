@@ -198,10 +198,51 @@ async function getExperiencesByUser(
   }
 }
 
+async function getPublicExperiences(
+  page: number,
+  limit: number,
+  type?: string,
+  query?: string,
+  rating?: string,
+  price?: string,
+  date?: string
+): Promise<PaginatedListing | undefined> {
+  try {
+    const response = await fetch(
+      `${config.backendUrl}/public-experiences?page=${page}&per_page=${limit}
+        ${type !== undefined ? `&type=${type.replace("&", "%26")}` : ""}
+        ${query !== undefined ? `&search=${query}` : ""}
+        ${rating !== undefined ? `&ratings=${rating}` : ""}
+        ${price !== undefined ? `&price_range=${price}` : ""}
+        ${date !== undefined ? `&date_range=${date}` : ""}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        cache: "no-store"
+      }
+    );
+
+    if (!response.ok) throw new Error("Failed to fetch experiences.");
+
+    const data = await response.json();
+
+    return {
+      listings: data.listings,
+      pagination: data.pagination
+    };
+  } catch (error) {
+    console.error("Failed to fetch experiences.", error);
+  }
+}
+
 export {
   createExperience,
   getExperience,
   updateExperience,
   deleteExperience,
-  getExperiencesByUser
+  getExperiencesByUser,
+  getPublicExperiences
 };
