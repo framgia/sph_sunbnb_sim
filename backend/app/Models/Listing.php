@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 class Listing extends Model {
@@ -222,7 +223,7 @@ class Listing extends Model {
 
             return self::paginateFilteredItems($request, 'filterAccommodation', $userId);
         } else {
-            abort(400, 'User not found.');
+            abort(Response::HTTP_BAD_REQUEST, 'User not found.');
         }
     }
 
@@ -233,7 +234,7 @@ class Listing extends Model {
 
             return self::paginateFilteredItems($request, 'filterExperience', $userId);
         } else {
-            abort(400, 'User not found.');
+            abort(Response::HTTP_BAD_REQUEST, 'User not found.');
         }
     }
 
