@@ -31,9 +31,6 @@ const AccommodationBookingPage: React.FC<AccommodationBookingProps> = async ({
   }
   return (
     <>
-      {/* To_do: Add datesExcluded prop (type Date[]) for the dates not available for the accommodation so that we
-      can validate if the date in checkout page is a blocked date or not and users cannot book block dates by
-      entering date through url */}
       <AccommodationBookingConfirm
         listing={accommodation}
         exclude={blockedDates}
