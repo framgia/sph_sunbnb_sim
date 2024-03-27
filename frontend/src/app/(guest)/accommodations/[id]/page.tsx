@@ -24,8 +24,18 @@ const GuestAccommodationsDetails: React.FC<
   const user = await checkCookies();
   try {
     accData = await getPublicAccommodation(Number(params.id));
-    accAvailability = await getListingAvailability(Number(params.id));
+    if (user !== undefined && user !== null) {
+      accAvailability = await getListingAvailability(Number(params.id));
+    }
   } catch (err) {
+    redirect("/not-found");
+  }
+
+  //  check if listable type of listing received is an experience or somewhat undefined to avoid passing experience in accommodation details page
+  if (
+    accData.listable_type.split("\\")[2] === "Experience" ||
+    accData.listable_type.split("\\")[2] === undefined
+  ) {
     redirect("/not-found");
   }
 

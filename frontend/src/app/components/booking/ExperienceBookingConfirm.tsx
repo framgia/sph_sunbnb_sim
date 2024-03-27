@@ -1,16 +1,22 @@
 "use client";
-import { Button, Divider } from "@nextui-org/react";
-import React, { useCallback, useEffect, useMemo } from "react";
+import { Button, Divider, useDisclosure } from "@nextui-org/react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Listing_Experience } from "@/app/interfaces/types";
 import Image from "next/image";
+import ThankYouModal from "./ThankYouModal";
+import format from "date-fns/format";
+import { createBooking } from "@/app/utils/helpers/booking/request";
+import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
 
 interface ExperienceBookingConfirmProps {
   listing: Listing_Experience;
+  excluded: Date[];
 }
 const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
-  listing
+  listing,
+  excluded
 }) => {
   const searchParam = useSearchParams();
   const guests = Number(searchParam.get("guests"));
@@ -18,6 +24,8 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
     return new Date(searchParam?.get("date") ?? "");
   }, [searchParam]);
   const router = useRouter();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setLoading] = useState(false);
 
   const isInvalid = useCallback(() => {
     return (
@@ -26,15 +34,41 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
         date.setHours(0, 0, 0, 0) !== new Date().setHours(0, 0, 0, 0)) ||
       guests > listing.maximum_guests ||
       isNaN(guests) ||
-      isNaN(date.valueOf())
+      isNaN(date.valueOf()) ||
+      isDateBlocked(date, excluded)
     );
-  }, [date, guests, listing.maximum_guests]);
+  }, [date, guests, listing.maximum_guests, excluded]);
 
   useEffect(() => {
     if (isInvalid()) {
       router.replace("/");
     }
   }, [isInvalid, router]);
+
+  async function handleBooking(): Promise<void> {
+    try {
+      setLoading(true);
+      const startDateFormatted = format(date, "yyyy-MM-dd");
+      const endDateFormatted = format(date, "yyyy-MM-dd");
+
+      const bookingData = {
+        start_date: startDateFormatted,
+        end_date: endDateFormatted,
+        number_of_guests: guests,
+        listing_id: listing.id
+      };
+
+      const result = await createBooking(bookingData);
+      if (result.hasError === true) {
+        console.error(result.message);
+      } else {
+        onOpen();
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error creating booking:", error);
+    }
+  }
 
   return (
     <div className="p-2">
@@ -81,7 +115,8 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
                 size="lg"
                 className="w-3/4"
                 color="primary"
-                isDisabled={isInvalid()}
+                isDisabled={isInvalid() || isLoading}
+                onPress={handleBooking}
               >
                 Book
               </Button>
@@ -122,6 +157,7 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
               <span className="text-sm">₱ {listing.price * guests}</span>
             </div>
           </div>
+          <ThankYouModal size="md" isOpen={isOpen} onClose={onClose} />
         </div>
       )}
     </div>

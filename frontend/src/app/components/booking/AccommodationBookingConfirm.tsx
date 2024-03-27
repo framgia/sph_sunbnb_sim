@@ -1,17 +1,22 @@
 "use client";
-import { Button, Divider } from "@nextui-org/react";
-import React, { useCallback, useEffect, useMemo } from "react";
+import { Button, Divider, useDisclosure } from "@nextui-org/react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
 import type { Listing } from "@/app/interfaces/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { addDays } from "date-fns";
+import { addDays, format } from "date-fns";
+import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
+import { createBooking } from "@/app/utils/helpers/booking/request";
+import ThankYouModal from "./ThankYouModal";
 
 interface BookingConfirmProps {
   listing: Listing;
+  exclude: Date[];
 }
 const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
-  listing
+  listing,
+  exclude
 }) => {
   const router = useRouter();
   const searchQuery = useSearchParams();
@@ -21,6 +26,8 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
     return new Date(searchQuery?.get("start") ?? "");
   }, [searchQuery]);
   const endDate = addDays(startDate, nights);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setLoading] = useState(false);
 
   const isInvalid = useCallback(() => {
     return (
@@ -32,7 +39,9 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
       isNaN(guests) ||
       isNaN(nights) ||
       isNaN(startDate.valueOf()) ||
-      isNaN(endDate.valueOf())
+      isNaN(endDate.valueOf()) ||
+      isDateBlocked(startDate, exclude) ||
+      isDateBlocked(endDate, exclude)
     );
   }, [
     endDate,
@@ -40,7 +49,8 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
     listing.listable.maximum_days,
     listing.maximum_guests,
     nights,
-    startDate
+    startDate,
+    exclude
   ]);
 
   useEffect(() => {
@@ -48,6 +58,31 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
       router.replace("/");
     }
   }, [isInvalid, router]);
+
+  async function handleBooking(): Promise<void> {
+    try {
+      setLoading(true);
+      const startDateFormatted = format(startDate, "yyyy-MM-dd");
+      const endDateFormatted = format(endDate, "yyyy-MM-dd");
+
+      const bookingData = {
+        start_date: startDateFormatted,
+        end_date: endDateFormatted,
+        number_of_guests: guests,
+        listing_id: listing.id
+      };
+
+      const result = await createBooking(bookingData);
+      if (result.hasError === true) {
+        console.error(result.message);
+      } else {
+        onOpen();
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error creating booking:", error);
+    }
+  }
 
   return (
     <div className="p-2">
@@ -94,7 +129,10 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
                 size="lg"
                 className="w-3/4"
                 color="primary"
-                isDisabled={isInvalid()}
+                isDisabled={isInvalid() || isLoading}
+                onPress={async () => {
+                  await handleBooking();
+                }}
               >
                 Book
               </Button>
@@ -124,21 +162,18 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
               </div>
               <div className="flex flex-row justify-between">
                 <span className="text-sm">
-                  ₱ {listing.price * guests} × {nights} nights
+                  ₱ {listing.price} × {nights} nights
                 </span>
-                <span className="text-sm">
-                  ₱ {listing.price * guests * nights}
-                </span>
+                <span className="text-sm">₱ {listing.price * nights}</span>
               </div>
             </div>
             <Divider className="mb-2" />
             <div className="flex w-full flex-row justify-between font-bold">
               <span className="text-sm">Total (PHP)</span>
-              <span className="text-sm">
-                ₱ {listing.price * guests * nights}
-              </span>
+              <span className="text-sm">₱ {listing.price * nights}</span>
             </div>
           </div>
+          <ThankYouModal size="md" isOpen={isOpen} onClose={onClose} />
         </div>
       )}
     </div>

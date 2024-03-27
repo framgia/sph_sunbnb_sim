@@ -14,6 +14,7 @@ import { DateRange, type Range } from "react-date-range";
 import { getDateString } from "@/app/utils/helpers/getDateString";
 import addDays from "date-fns/addDays";
 import { useRouter } from "next/navigation";
+import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
 
 interface AccommodationBookingStickyProps {
   price: number;
@@ -65,10 +66,7 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
     <div className="w-80">
       <div className="mb-1 w-full rounded-xl border border-1 border-black p-5 shadow-lg">
         <div className="mb-5">
-          <span className="text-xl font-semibold">
-            {" "}
-            ₱ {price * guestCount} / night{" "}
-          </span>
+          <span className="text-xl font-semibold"> ₱ {price} / night </span>
         </div>
 
         <div className="mb-10 flex flex-col">
@@ -158,7 +156,12 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
           <Button
             className="w-full font-bold"
             color="primary"
-            isDisabled={nights < 1 || nights > maxNights}
+            isDisabled={
+              nights < 1 ||
+              nights > maxNights ||
+              isDateBlocked(startDateState, exclude) ||
+              isDateBlocked(endDateState, exclude)
+            }
             onPress={() => {
               router.push(
                 `${listingId}/checkout?guests=${guestCount}&nights=${nights}&start=${startDateState.toISOString()}`
@@ -173,21 +176,19 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
           <>
             <div className="mb-5 flex justify-between">
               <div>
-                <span className="text-lg underline">
-                  ₱ {price * guestCount}
-                </span>
+                <span className="text-lg underline">₱ {price}</span>
                 <span className="text-md"> x {nights} nights </span>
               </div>
               <div>
-                <span className="text-lg">₱ {price * guestCount * nights}</span>
+                <span className="text-lg">₱ {price * nights}</span>
               </div>
             </div>
 
             <div className="flex w-full flex-col">
-              <span className="text-center text-lg font-semibold">
+              <span className="text-center text-sm font-semibold">
                 Sunbnb Service Fee
               </span>
-              <span className="text-center text-lg font-semibold">
+              <span className="text-center text-sm font-semibold">
                 Included
               </span>
             </div>

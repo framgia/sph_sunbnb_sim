@@ -100,9 +100,11 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
         </div>
         <div className="mb-1 text-base leading-6 text-zinc-500">
           {type} •{" "}
-          {languages.map((lang, i) => {
-            return i === languages.length - 1 ? lang : lang + ", ";
-          })}{" "}
+          {languages !== undefined
+            ? languages.map((lang, i) => {
+                return i === languages.length - 1 ? lang : lang + ", ";
+              })
+            : "Hey"}{" "}
           •{" "}
           {getDuration(startTime, endTime) > 1
             ? getDuration(startTime, endTime) + " hours"

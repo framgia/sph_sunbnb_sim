@@ -8,7 +8,11 @@ const Home: React.FC = async () => {
   return (
     <>
       {user !== null && user !== undefined ? (
-        <HostDashboard userName={user.first_name + " " + user.last_name} />
+        user.role === "host" ? (
+          <HostDashboard userName={user.first_name + " " + user.last_name} />
+        ) : (
+          <h1>Home Page</h1>
+        )
       ) : (
         <h1>Home Page</h1>
       )}

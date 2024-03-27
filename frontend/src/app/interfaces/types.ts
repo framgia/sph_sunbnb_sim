@@ -241,3 +241,10 @@ export interface ListingFilter {
   status: ListingStatus | "all";
   type: AccommodationType | ExperienceType | "all";
 }
+
+export interface BookingData {
+  start_date: string;
+  end_date: string;
+  number_of_guests: number;
+  listing_id: number;
+}

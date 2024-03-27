@@ -24,11 +24,9 @@ export default function RootLayout({
         <Providers>
           <div className="flex min-h-screen flex-col ">
             <Navbar />
-            <div className="flex-1 overflow-x-hidden">
-              <main className="m-auto mb-8 mt-5 w-full max-w-[1024px] px-6">
-                {children}
-              </main>
-            </div>
+            <main className="m-auto mb-8 mt-5 w-full max-w-[1024px] flex-1 px-6 ">
+              {children}
+            </main>
             <NavbarBottom />
           </div>
         </Providers>
