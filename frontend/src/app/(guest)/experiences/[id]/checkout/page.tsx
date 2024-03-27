@@ -1,9 +1,11 @@
 import ExperienceBookingConfirm from "@/app/components/booking/ExperienceBookingConfirm";
 import type {
+  CalendarDate,
   Listing_Experience,
   UserDetailsType
 } from "@/app/interfaces/types";
 import type { Inclusion, ListingStatus } from "@/app/utils/enums";
+import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { getExperience } from "@/app/utils/helpers/experience/request";
 import { redirect } from "next/navigation";
 
@@ -16,7 +18,16 @@ const ExperienceCheckoutPage: React.FC<ExperienceCheckoutProps> = async ({
   params
 }) => {
   const expData = await getExperience(params.id);
-  
+  const expAvailability: CalendarDate[] =
+    (await getListingAvailability(params.id)) ?? [];
+
+  let blockedDates: Date[] = [];
+  if (expAvailability !== undefined && expAvailability !== null) {
+    blockedDates = expAvailability.map((calDate, _i) => {
+      return new Date(calDate.date);
+    });
+  }
+
   if (
     expData === undefined ||
     expData == null ||
@@ -30,7 +41,7 @@ const ExperienceCheckoutPage: React.FC<ExperienceCheckoutProps> = async ({
       can validate if the date in checkout page is a blocked date or not and users cannot book block dates by
       entering date through url */}
       {expData !== undefined && expData !== null ? (
-        <ExperienceBookingConfirm listing={expData} />
+        <ExperienceBookingConfirm listing={expData} excluded={blockedDates} />
       ) : (
         <></>
       )}

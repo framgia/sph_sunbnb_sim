@@ -8,9 +8,11 @@ import Image from "next/image";
 
 interface ExperienceBookingConfirmProps {
   listing: Listing_Experience;
+  excluded: Date[];
 }
 const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
-  listing
+  listing,
+  excluded
 }) => {
   const searchParam = useSearchParams();
   const guests = Number(searchParam.get("guests"));
@@ -19,6 +21,19 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
   }, [searchParam]);
   const router = useRouter();
 
+  function removeTime(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  function isDateBlocked(date: Date): boolean {
+    return (
+      excluded.find((eDate, _i) => {
+        let noTimeEDate = removeTime(eDate);
+        let noTimeDate = removeTime(date);
+        return noTimeDate.valueOf() === noTimeEDate.valueOf();
+      }) !== undefined
+    );
+  }
   const isInvalid = useCallback(() => {
     return (
       guests < 1 ||
@@ -26,7 +41,8 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
         date.setHours(0, 0, 0, 0) !== new Date().setHours(0, 0, 0, 0)) ||
       guests > listing.maximum_guests ||
       isNaN(guests) ||
-      isNaN(date.valueOf())
+      isNaN(date.valueOf()) ||
+      isDateBlocked(date)
     );
   }, [date, guests, listing.maximum_guests]);
 
