@@ -29,4 +29,32 @@ async function getBookingHistory(): Promise<BookingHistory[]> {
   } else throw new Error(responseData.error as string);
 }
 
-export { getBookingHistory };
+async function updateBooking(listing_id: number): Promise<BookingHistory[]> {
+  const user = await checkCookies();
+  if (user === null) throw new Error("No user found in cookies.");
+  const response = await fetch(`${config.backendUrl}/booking/${listing_id}`, {
+    method: "PUT",
+    headers: setHeaders()
+  });
+
+  const responseData = await response.json();
+  if (response.ok) {
+    return responseData.bookings;
+  } else throw new Error(responseData.error as string);
+}
+
+async function deleteBooking(listing_id: number): Promise<BookingHistory[]> {
+  const user = await checkCookies();
+  if (user === null) throw new Error("No user found in cookies.");
+  const response = await fetch(`${config.backendUrl}/booking/${listing_id}`, {
+    method: "DELETE",
+    headers: setHeaders()
+  });
+
+  const responseData = await response.json();
+  if (response.ok) {
+    return responseData.bookings;
+  } else throw new Error(responseData.error as string);
+}
+
+export { getBookingHistory, updateBooking, deleteBooking };

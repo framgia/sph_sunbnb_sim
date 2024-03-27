@@ -1,5 +1,5 @@
-"use server";
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { Input, Pagination } from "@nextui-org/react";
 import SearchIcon from "../../components/svgs/SearchIcon";
 import { BookingHistory } from "../../interfaces/types";
@@ -12,6 +12,20 @@ interface BookingHistoryProps {
 const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
   bookings
 }) => {
+  const [bookingsState, setBookingsState] =
+    useState<BookingHistory[]>(bookings);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Function to handle search query change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // Function to filter bookings based on search query
+  const filteredBookings = bookingsState.filter((booking) =>
+    booking.listing.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
       <div className="mt-5 font-semibold">Your booking history</div>
@@ -22,11 +36,13 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
           startContent={
             <SearchIcon className="pointer-events-none flex-shrink-0 text-2xl text-default-400" />
           }
+          value={searchQuery}
+          onChange={handleSearchChange}
         />
       </div>
       <div className="mb-1 mt-10 flex justify-between">
-        <div>Total bookings: {bookings.length} </div>
-        <div>Rows per page: {bookings.length} </div>
+        <div>Total bookings: {filteredBookings.length} </div>
+        <div>Rows per page: {filteredBookings.length} </div>
       </div>
       <div className="grid h-[50px] grid-cols-[10%_20%_15%_15%_10%_15%_15%] rounded-lg bg-primary-600 text-sm">
         <div className="col-span-2 flex items-center justify-center px-5 text-white">
@@ -46,10 +62,11 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
           ACTIONS
         </div>
       </div>
-      {bookings.map((booking, i) => (
+      {filteredBookings.map((booking, i) => (
         <BookingHistoryData
           key={i}
           id={booking.id}
+          listingid={booking.listing.id}
           type={
             booking.listing.listable_type.includes("Accommodation")
               ? "accommodation"
@@ -60,7 +77,9 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
           checkoutDate={booking.end_date}
           price={booking.listing.price}
           status={booking.status as string}
-          image={""}
+          image={booking.listing.media[0].media}
+          bookings={bookingsState}
+          setbookings={setBookingsState}
         />
       ))}
 
@@ -68,7 +87,7 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
         className="flex justify-center"
         isCompact
         showControls
-        total={1}
+        total={2}
         initialPage={1}
       />
     </>

@@ -1,7 +1,10 @@
 "use client";
 import ListingUploader from "@/app/components/accommodation/ListingUploader";
 import ExperienceAddressForm from "@/app/components/experience/ExperienceAddressForm";
-import type { Experience, MediaUpdate } from "@/app/interfaces/ExperienceData";
+import type {
+  ExperienceData,
+  MediaUpdate
+} from "@/app/interfaces/ExperienceData";
 import { ExperienceType } from "@/app/utils/enums";
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import React from "react";
@@ -16,8 +19,8 @@ import LanguagesListbox from "@/app/components/experience/LanguagesListbox";
 interface EditListingProps {
   onDelete: () => void;
   listingid: string;
-  data: Experience;
-  setData: React.Dispatch<React.SetStateAction<Experience>>;
+  data: ExperienceData;
+  setData: React.Dispatch<React.SetStateAction<ExperienceData>>;
   media: MediaUpdate;
   setMedia: React.Dispatch<React.SetStateAction<MediaUpdate>>;
   error: Record<string, string | boolean>;

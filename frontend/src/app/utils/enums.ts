@@ -1,3 +1,5 @@
+import { REFUSED } from "dns";
+
 export enum UserRole {
   HOST = "host",
   GUEST = "guest",
@@ -62,14 +64,6 @@ export enum ListingStatus {
   ACTIVE = "Active"
 }
 
-export enum BookingStatus {
-  PENDING = "pending",
-  REFUSED = "refused",
-  UPCOMING = "upcoming",
-  DONE = "done",
-  CANCELLED = "cancelled"
-}
-
 export enum ExperienceType {
   FOOD_AND_DRINKS = "Food & Drinks",
   ART_AND_CULTURE = "Art & Culture",
@@ -102,5 +96,6 @@ export enum BookingStatus {
   DONE = "Done",
   CANCELLED = "Cancelled",
   PENDING = "Pending",
-  UPCOMING = "Upcoming"
+  UPCOMING = "Upcoming",
+  REFUSED = "Refused"
 }
