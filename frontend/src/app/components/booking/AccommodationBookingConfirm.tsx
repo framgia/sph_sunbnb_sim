@@ -1,5 +1,5 @@
 "use client";
-import { Button, Divider } from "@nextui-org/react";
+import { Button, Divider, useDisclosure } from "@nextui-org/react";
 import React, { useCallback, useEffect, useMemo } from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
 import type { Listing } from "@/app/interfaces/types";
@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { addDays } from "date-fns";
 import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
+import ThankYouModal from "./ThankYouModal";
 
 interface BookingConfirmProps {
   listing: Listing;
@@ -24,6 +25,7 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
     return new Date(searchQuery?.get("start") ?? "");
   }, [searchQuery]);
   const endDate = addDays(startDate, nights);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const isInvalid = useCallback(() => {
     return (
@@ -100,6 +102,7 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
                 className="w-3/4"
                 color="primary"
                 isDisabled={isInvalid()}
+                onPress={onOpen}
               >
                 Book
               </Button>
@@ -144,6 +147,7 @@ const AccommodationBookingConfirm: React.FC<BookingConfirmProps> = ({
               </span>
             </div>
           </div>
+          <ThankYouModal size="md" isOpen={isOpen} onClose={onClose} />
         </div>
       )}
     </div>

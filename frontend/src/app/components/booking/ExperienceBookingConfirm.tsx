@@ -1,10 +1,11 @@
 "use client";
-import { Button, Divider } from "@nextui-org/react";
+import { Button, Divider, useDisclosure } from "@nextui-org/react";
 import React, { useCallback, useEffect, useMemo } from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Listing_Experience } from "@/app/interfaces/types";
 import Image from "next/image";
+import ThankYouModal from "./ThankYouModal";
 
 interface ExperienceBookingConfirmProps {
   listing: Listing_Experience;
@@ -20,6 +21,7 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
     return new Date(searchParam?.get("date") ?? "");
   }, [searchParam]);
   const router = useRouter();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   function removeTime(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
@@ -98,6 +100,7 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
                 className="w-3/4"
                 color="primary"
                 isDisabled={isInvalid()}
+                onPress={onOpen}
               >
                 Book
               </Button>
@@ -138,6 +141,7 @@ const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({
               <span className="text-sm">₱ {listing.price * guests}</span>
             </div>
           </div>
+          <ThankYouModal size="md" isOpen={isOpen} onClose={onClose} />
         </div>
       )}
     </div>
