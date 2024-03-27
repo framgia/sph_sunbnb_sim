@@ -30,12 +30,10 @@ const AccommodationBookingPage: React.FC<AccommodationBookingProps> = async ({
     redirect("/not-found");
   }
   return (
-    <>
-      <AccommodationBookingConfirm
-        listing={accommodation}
-        exclude={blockedDates}
-      />
-    </>
+    <AccommodationBookingConfirm
+      listing={accommodation}
+      exclude={blockedDates}
+    />
   );
 };
 

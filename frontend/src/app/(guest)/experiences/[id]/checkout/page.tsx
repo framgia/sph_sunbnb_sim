@@ -36,13 +36,13 @@ const ExperienceCheckoutPage: React.FC<ExperienceCheckoutProps> = async ({
     redirect("/not-found");
   }
   return (
-    <div>
+    <>
       {expData !== undefined && expData !== null ? (
         <ExperienceBookingConfirm listing={expData} excluded={blockedDates} />
       ) : (
         <></>
       )}
-    </div>
+    </>
   );
 };
 
