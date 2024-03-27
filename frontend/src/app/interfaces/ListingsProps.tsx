@@ -1,3 +1,4 @@
+import { type ListingType, type UserRole } from "../utils/enums";
 import { type Pagination, type Listing, type ListingFilter } from "./types";
 
 export const LISTINGS_PAGE_SIZES = [3, 6];
@@ -24,48 +25,52 @@ export const INITIAL_FILTER: ListingFilter = {
       endDate: undefined,
       key: "selection"
     }
-  ]
+  ],
+  status: "all",
+  type: "all"
 };
+export interface ListingHeaderProps {
+  user: UserRole;
+  type: ListingType;
+}
 
-export interface HostListingsProps {
+export interface AddNewListingButtonProps {
+  type: ListingType;
+}
+
+export interface ListingSearchBarProps {
+  user: UserRole;
+  type: ListingType;
+}
+
+export interface ListingsProps {
+  user: UserRole;
+  type: ListingType;
   listings: Listing[];
   pagination: Pagination | null;
-  type: "accommodations" | "experiences";
 }
 
-export interface HostListingItemProps {
+export interface ListingItemProps {
+  user: UserRole;
+  type: ListingType;
   listing: Listing;
-  type: "accommodations" | "experiences";
 }
-
-export interface HostingListingsSkeletonProps {
-  number: number;
-}
-
-export interface HostListingHeaderProps {
-  type: "accommodations" | "experiences";
+export interface EmptyListingProps {
+  user: UserRole;
+  type: ListingType;
 }
 
 export interface ListingPaginationProps {
+  user: UserRole;
+  type: ListingType;
   total: number;
   currentPage: number;
   perPage: number;
-  type: "accommodations" | "experiences";
+}
+
+export interface PaginationProps {
+  total: number;
+  currentPage: number;
+  perPage: number;
   onPageChange: (page: number) => void;
-  onPageSizeChange: (size: number) => void;
-}
-
-export interface GuestListingHeaderProps {
-  type: "accommodations" | "experiences";
-}
-
-export interface GuestListingsProps {
-  listings: Listing[];
-  pagination: Pagination | null;
-  type: "accommodations" | "experiences";
-}
-
-export interface GuestListingItemProps {
-  listing: Listing;
-  type: "accommodations" | "experiences";
 }

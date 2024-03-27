@@ -168,7 +168,11 @@ async function deleteAccommodation(
 
 async function getAccommodationsByUser(
   page: number,
-  limit: number
+  limit: number,
+  query?: string,
+  type?: string,
+  price?: string,
+  status?: string
 ): Promise<PaginatedListing | undefined> {
   try {
     const jwt = cookies().get("jwt")?.value;
@@ -178,7 +182,11 @@ async function getAccommodationsByUser(
     if (user === null) throw new Error("No user found in cookies.");
 
     const response = await fetch(
-      `${config.backendUrl}/accommodation/user/${user.id}?page=${page}&per_page=${limit}`,
+      `${config.backendUrl}/accommodation/user/${user.id}?page=${page}&per_page=${limit}
+        ${type !== undefined ? `&type=${type}` : ""}
+        ${query !== undefined ? `&search=${query}` : ""}
+        ${price !== undefined ? `&price_range=${price}` : ""}
+        ${status !== undefined ? `&status=${status}` : ""}`,
       {
         method: "GET",
         headers: {

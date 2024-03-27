@@ -5,7 +5,8 @@ import type {
   AccommodationType,
   ListingStatus,
   Inclusion,
-  Language
+  Language,
+  ExperienceType
 } from "../utils/enums";
 
 export interface MediaType {
@@ -215,4 +216,6 @@ export interface ListingFilter {
       key: string;
     }
   ];
+  status: ListingStatus | "all";
+  type: AccommodationType | ExperienceType | "all";
 }
