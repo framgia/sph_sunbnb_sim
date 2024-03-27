@@ -16,6 +16,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 interface AccommodationTypeItemProp {
   accommodation: string;
 }
+
 const AccommodationTypeItem: React.FC<AccommodationTypeItemProp> = ({
   accommodation
 }) => {

@@ -79,13 +79,14 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
     if (filters.status !== "all") params.set(`${prefix}status`, filters.status);
     else params.delete(`${prefix}status`);
 
-    if (filters.type !== "all") params.set(`${prefix}type`, filters.type);
-    else params.delete(`${prefix}type`);
+    if (user === UserRole.HOST)
+      if (filters.type !== "all") params.set(`${prefix}type`, filters.type);
+      else params.delete(`${prefix}type`);
 
     params.delete(`${prefix}page`);
 
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [filters, pathname, router, searchParams, prefix]);
+  }, [filters, pathname, router, searchParams, prefix, user]);
 
   const handleFilterClear = useCallback(() => {
     const params = new URLSearchParams(searchParams);
@@ -96,9 +97,10 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
     params.delete(`${prefix}rating`);
     params.delete(`${prefix}date`);
     params.delete(`${prefix}status`);
-    params.delete(`${prefix}type`);
+
+    if (user === UserRole.HOST) params.delete(`${prefix}type`);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [pathname, router, searchParams, prefix]);
+  }, [pathname, router, searchParams, prefix, user]);
 
   return (
     <div className="mt-[-20px] flex items-center rounded-lg bg-white px-2 shadow-md">
