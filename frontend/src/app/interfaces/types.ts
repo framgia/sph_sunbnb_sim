@@ -238,3 +238,8 @@ export interface ListingFilter {
     }
   ];
 }
+
+export interface HostBookingFilters {
+  status: string;
+  search: string;
+}

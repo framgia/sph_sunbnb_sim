@@ -8,8 +8,6 @@ import {
 } from "@/app/utils/helpers/bookingmanagement/request";
 
 const HostDashboard: React.FC<{ userName: string }> = async ({ userName }) => {
-  //  dummy data, replace with fetch in integration
-
   const pendingListings = await getPendingListings();
   const activeListings = await getActiveListings();
 

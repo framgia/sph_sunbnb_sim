@@ -37,6 +37,7 @@ class Booking extends Model {
     public static function paginateBookingsByListing($listingId, Request $request) {
         $perPage = $request->query('per_page', 5);
         $status = $request->query('status');
+        $search = $request->query('search');
 
         $query = static::where([
             ['listing_id', $listingId],
@@ -46,6 +47,13 @@ class Booking extends Model {
 
         if ($status !== null) {
             $query->where('status', $status);
+        }
+
+        if ($search !== null) {
+            $query->whereHas('user', function ($userQuery) use ($search) {
+                $userQuery->where('first_name', 'like', "%$search%")
+                    ->orWhere('last_name', 'like', "%$search%");
+            });
         }
 
         return $query->paginate($perPage);

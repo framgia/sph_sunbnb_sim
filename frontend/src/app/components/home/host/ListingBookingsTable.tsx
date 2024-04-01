@@ -18,7 +18,11 @@ import {
 import React, { useEffect, useState } from "react";
 import StatusChip from "../../StatusChip";
 import BookingActions from "./BookingActions";
-import type { BookingType, Listing } from "@/app/interfaces/types";
+import type {
+  BookingType,
+  HostBookingFilters,
+  Listing
+} from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import SearchIcon from "../../svgs/SearchIcon";
 import ChevronDownIcon from "../../svgs/Calendar/ChevronDownIcon";
@@ -28,8 +32,12 @@ import { getListingBookings } from "@/app/utils/helpers/bookingmanagement/reques
 const ListingBookingsTable: React.FC<{
   listings: Listing[];
 }> = ({ listings }) => {
-  const [statusFilter, setStatusF] = useState("status");
+  const [filters, setFilters] = useState<HostBookingFilters>({
+    status: "status",
+    search: ""
+  });
   const [currentListing, setListing] = useState(listings[0]?.id ?? 0);
+  const [actionDone, setActionDone] = useState(false);
   const [bookingData, setBookingData] = useState<BookingType[]>([]);
   //  since pagination in backend is in backend, replace pagination implementation with useSWR on integration
   const [page, setPage] = React.useState(1);
@@ -50,13 +58,13 @@ const ListingBookingsTable: React.FC<{
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
-      const data = await getListingBookings(currentListing, statusFilter);
+      const data = await getListingBookings(currentListing, filters);
       if (data !== undefined) setBookingData(data);
     }
     fetchData().catch((error) => {
       console.error("Failed to get bookings from listing: ", error);
     });
-  }, [currentListing, statusFilter]);
+  }, [currentListing, filters, actionDone]);
 
   return (
     <div>
@@ -66,6 +74,10 @@ const ListingBookingsTable: React.FC<{
           className="mr-5 w-1/4 "
           placeholder="Search by name..."
           variant="bordered"
+          value={filters.search}
+          onChange={(e) => {
+            setFilters({ ...filters, search: e.target.value });
+          }}
           startContent={<SearchIcon height={15} width={15} />}
         />
         <div className="flex flex-row items-center">
@@ -78,14 +90,14 @@ const ListingBookingsTable: React.FC<{
                 color="primary"
                 endContent={<ChevronDownIcon />}
               >
-                {statusFilter[0].toUpperCase() +
-                  statusFilter.slice(1).toLowerCase()}
+                {filters.status[0].toUpperCase() +
+                  filters.status.slice(1).toLowerCase()}
               </Button>
             </DropdownTrigger>
             <DropdownMenu
               aria-label="status"
               onAction={(key) => {
-                setStatusF(key as string);
+                setFilters({ ...filters, status: key as string });
               }}
             >
               <DropdownItem key={BookingStatus.DONE}>Done</DropdownItem>
@@ -208,7 +220,11 @@ const ListingBookingsTable: React.FC<{
                   </div>
                 </TableCell>
                 <TableCell>
-                  <BookingActions status={book.status} />
+                  <BookingActions
+                    status={book.status}
+                    id={book.id}
+                    setActionDone={setActionDone}
+                  />
                 </TableCell>
               </TableRow>
             );

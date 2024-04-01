@@ -26,12 +26,10 @@ const PendingListingCard: React.FC<PendingListingProps> = ({
           <span className="line-clamp-1 text-sm">{listingName}</span>
         </div>
         <div
-          onClick={() => {
-            console.log("use id as link here: ", listingId);
-          }}
+          onClick={handleClick}
         >
           <span
-            onClick={handleClick}
+            
             className="cursor-pointer text-xs underline"
           >
             View

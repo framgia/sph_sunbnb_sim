@@ -1,5 +1,9 @@
 "use server";
-import { type BookingType, type Listing } from "@/app/interfaces/types";
+import {
+  type HostBookingFilters,
+  type BookingType,
+  type Listing
+} from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 import config from "@/app/config/config";
 import { checkCookies } from "../userHelper";
@@ -49,10 +53,17 @@ async function getActiveListings(): Promise<Listing[]> {
 
 async function getListingBookings(
   listingId: number,
-  status: string
+  filters: HostBookingFilters
 ): Promise<BookingType[]> {
+  const queryParams = new URLSearchParams();
+  if (filters.status !== "status") {
+    queryParams.append("status", filters.status);
+  }
+  if (filters.search !== "") {
+    queryParams.append("search", filters.search);
+  }
   const response = await fetch(
-    `${config.backendUrl}/booking/listing/${listingId}${status !== "status" ? `?status=${status}` : ""}`,
+    `${config.backendUrl}/booking/listing/${listingId}${queryParams.toString() !== "" ? `?${queryParams.toString()}` : ""}`,
     {
       method: "GET",
       headers: setHeaders()
@@ -61,7 +72,88 @@ async function getListingBookings(
   const responseData = await response.json();
   if (response.ok) {
     return responseData.bookings;
-  } else throw new Error(responseData.error as string);
+  } else {
+    throw new Error(responseData.error as string);
+  }
 }
 
-export { getPendingListings, getActiveListings, getListingBookings };
+async function bookingAction(
+  id: number,
+  action: string
+): Promise<Record<string, string | boolean>> {
+  try {
+    const response = await fetch(
+      `${config.backendUrl}/booking/approve-refuse/${id}`,
+      {
+        method: "PUT",
+        headers: setHeaders(),
+        body: JSON.stringify({ action })
+      }
+    );
+
+    const responseData = await response.json();
+    if (response.ok) {
+      return {
+        hasError: false,
+        message: "Booking updated successfully."
+      };
+    } else if (responseData.error !== undefined) {
+      throw new Error(responseData.error as string);
+    } else {
+      return {
+        hasError: true,
+        message: "Unknown error occurred. Please contact the administrator."
+      };
+    }
+  } catch (error) {
+    return {
+      hasError: true,
+      message:
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred. Please contact the administrator."
+    };
+  }
+}
+
+async function cancelBooking(
+  id: number
+): Promise<Record<string, string | boolean>> {
+  try {
+    const response = await fetch(`${config.backendUrl}/booking/delete/${id}`, {
+      method: "PUT",
+      headers: setHeaders()
+    });
+
+    const responseData = await response.json();
+    if (response.ok) {
+      return {
+        hasError: false,
+        message: "Booking deleted successfully."
+      };
+    } else if (responseData.error !== undefined) {
+      throw new Error(responseData.error as string);
+    } else {
+      return {
+        hasError: true,
+        message: "Unknown error occurred. Please contact the administrator."
+      };
+    }
+  } catch (error) {
+    return {
+      hasError: true,
+      message:
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred. Please contact the administrator."
+    };
+  }
+}
+
+export {
+  getPendingListings,
+  getActiveListings,
+  getListingBookings,
+  bookingAction,
+  cancelBooking
+};
