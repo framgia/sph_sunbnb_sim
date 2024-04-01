@@ -9,6 +9,7 @@ import ReviewSuccessModal from "./ReviewSuccessModal";
 interface ReviewModalProps extends ModalProps {
   listingId: number;
   listingType: "accommodation" | "experience";
+  bookingId: number;
 }
 
 const ReviewModal: React.FC<ReviewModalProps> = ({
@@ -16,7 +17,8 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   onClose,
   size,
   listingId,
-  listingType
+  listingType,
+  bookingId
 }) => {
   const {
     isOpen: successOpen,
@@ -59,12 +61,14 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
                   listingId={listingId}
                   onClose={onClose}
                   onOpen={successOnOpen}
+                  bookingId={bookingId}
                 />
               ) : (
                 <ExperienceReviewForm
                   listingId={listingId}
                   onClose={onClose}
                   onOpen={successOnOpen}
+                  bookingId={bookingId}
                 />
               )}
             </div>

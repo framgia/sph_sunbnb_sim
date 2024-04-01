@@ -7,19 +7,24 @@ import ValueSmallIcon from "../svgs/Review/ValueSmallIcon";
 import CleanlinessSmallIcon from "../svgs/Review/CleanlinessSmallIcon";
 import { type AccommodationReviewData } from "@/app/interfaces/types";
 import { validateReview } from "@/app/utils/helpers/review/validation";
-import { createAccommodationReview } from "@/app/utils/helpers/review/request";
+import {
+  createAccommodationReview,
+  updateBookingReview
+} from "@/app/utils/helpers/review/request";
 import ErrorMessage from "../ErrorMessage";
 
 interface AddReviewFormProps {
   listingId: number;
   onClose: () => void;
   onOpen: () => void;
+  bookingId: number;
 }
 
 const AccommodationReviewForm: React.FC<AddReviewFormProps> = ({
   listingId,
   onClose,
-  onOpen
+  onOpen,
+  bookingId
 }) => {
   const [error, setError] = useState<Record<string, string | boolean>>({
     hasError: false,
@@ -51,6 +56,7 @@ const AccommodationReviewForm: React.FC<AddReviewFormProps> = ({
           hasError: result.hasError
         });
       } else {
+        await updateBookingReview(bookingId);
         onClose();
         onOpen();
       }

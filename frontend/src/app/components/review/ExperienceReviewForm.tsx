@@ -3,7 +3,10 @@ import { Button, Textarea } from "@nextui-org/react";
 import React, { useState } from "react";
 import { type ExperienceReviewData } from "@/app/interfaces/types";
 import { validateReview } from "@/app/utils/helpers/review/validation";
-import { createExperienceReview } from "@/app/utils/helpers/review/request";
+import {
+  createExperienceReview,
+  updateBookingReview
+} from "@/app/utils/helpers/review/request";
 import ErrorMessage from "../ErrorMessage";
 import StarsExperienceReview from "./StarsExperienceReview";
 
@@ -11,12 +14,14 @@ interface AddReviewFormProps {
   listingId: number;
   onClose: () => void;
   onOpen: () => void;
+  bookingId: number;
 }
 
 const ExperienceReviewForm: React.FC<AddReviewFormProps> = ({
   listingId,
   onClose,
-  onOpen
+  onOpen,
+  bookingId
 }) => {
   const [error, setError] = useState<Record<string, string | boolean>>({
     hasError: false,
@@ -46,6 +51,7 @@ const ExperienceReviewForm: React.FC<AddReviewFormProps> = ({
           hasError: result.hasError
         });
       } else {
+        await updateBookingReview(bookingId);
         onClose();
         onOpen();
       }

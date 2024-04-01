@@ -62,14 +62,6 @@ export enum ListingStatus {
   ACTIVE = "Active"
 }
 
-export enum BookingStatus {
-  PENDING = "pending",
-  REFUSED = "refused",
-  UPCOMING = "upcoming",
-  DONE = "done",
-  CANCELLED = "cancelled"
-}
-
 export enum ExperienceType {
   FOOD_AND_DRINKS = "Food & Drinks",
   ART_AND_CULTURE = "Art & Culture",
@@ -98,6 +90,13 @@ export enum Language {
   GERMAN = "German"
 }
 
+export enum BookingStatus {
+  DONE = "Done",
+  CANCELLED = "Cancelled",
+  PENDING = "Pending",
+  UPCOMING = "Upcoming",
+  REFUSED = "Refused"
+}
 export enum ListingType {
   ACCOMMODATION = "Accommodation",
   EXPERIENCE = "Experience"
