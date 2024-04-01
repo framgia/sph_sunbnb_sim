@@ -129,6 +129,8 @@ class Booking extends Model {
 
         return static::where('user_id', $userId)
             ->with(['listing', 'user', 'listing.media'])
+            ->orderBy('updated_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate($perPage);
     }
 
