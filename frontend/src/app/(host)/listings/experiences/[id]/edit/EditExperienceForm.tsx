@@ -140,7 +140,7 @@ const EditExperienceForm: React.FC<EditListingProps> = ({
 
       <hr className="mt-12 min-h-[3px] w-full bg-zinc-200 max-md:mt-10 max-md:max-w-full" />
       <div className="mb-10 mt-10 w-full text-left text-lg font-semibold leading-5 text-black max-md:max-w-full">
-        Upload photos of your place
+        Upload photos of your listing
       </div>
       <div className="grid rounded-3xl outline outline-1 outline-neutral-300 md:grid-cols-2">
         <div className="p-8">

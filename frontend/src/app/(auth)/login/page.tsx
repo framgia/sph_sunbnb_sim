@@ -9,10 +9,10 @@ const LoginPage: React.FC = () => {
         <LogoLargeIcon />
       </div>
       <div />
-      <div className="mt-9 w-full text-center text-xl font-semibold leading-7 text-black">
+      <div className="mt-10 w-full text-center text-xl font-semibold leading-7 text-black">
         Welcome back!
       </div>
-      <div className="w-full text-center text-sm leading-5 text-zinc-500">
+      <div className="mb-10 w-full text-center text-sm leading-5 text-zinc-500">
         Login to continue booking or listing
       </div>
       <LoginComponent />

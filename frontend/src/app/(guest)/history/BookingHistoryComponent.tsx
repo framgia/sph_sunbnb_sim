@@ -16,12 +16,10 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
     useState<BookingHistory[]>(bookings);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Function to handle search query change
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-  // Function to filter bookings based on search query
   const filteredBookings = bookingsState.filter((booking) =>
     booking.listing.name.toLowerCase().includes(searchQuery.toLowerCase())
   );

@@ -1,11 +1,12 @@
 import React from "react";
-import GuestListingHeader from "@/app/components/listings/GuestListingHeader";
-import GuestListings from "@/app/components/listings/GuestListings";
 import {
   LISTINGS_DEFAULT_PAGE,
   LISTINGS_DEFAULT_SIZE
 } from "@/app/interfaces/ListingsProps";
 import { getPublicAccommodations } from "@/app/utils/helpers/accommodation/request";
+import { ListingType, UserRole } from "@/app/utils/enums";
+import ListingHeader from "@/app/components/listings/ListingHeader";
+import Listings from "@/app/components/listings/Listings";
 
 const AccommodationsPage: React.FC = async ({
   searchParams
@@ -32,16 +33,13 @@ const AccommodationsPage: React.FC = async ({
 
   return (
     <main className="flex flex-col">
-      {paginatedAccommodations !== undefined && (
-        <div>
-          <GuestListingHeader type="accommodations" />
-          <GuestListings
-            listings={paginatedAccommodations.listings}
-            pagination={paginatedAccommodations.pagination}
-            type="accommodations"
-          />
-        </div>
-      )}
+      <ListingHeader user={UserRole.GUEST} type={ListingType.ACCOMMODATION} />
+      <Listings
+        user={UserRole.GUEST}
+        type={ListingType.ACCOMMODATION}
+        listings={paginatedAccommodations?.listings ?? []}
+        pagination={paginatedAccommodations?.pagination ?? null}
+      />
     </main>
   );
 };

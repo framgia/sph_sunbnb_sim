@@ -37,7 +37,7 @@ Route::group(['prefix' => 'register'], function () {
 
 Route::post('/forget-password', [PasswordController::class, 'forgotpassword']);
 Route::post('/reset-password', [PasswordController::class, 'resetpassword']);
-Route::get('/public-listingss', [ListingController::class, 'showPublicListings']);
+Route::get('/public-listings', [ListingController::class, 'showPublicListings']);
 Route::get('/public-accommodations', [ListingController::class, 'showPublicAccommodations']);
 Route::get('/public-experiences', [ListingController::class, 'showPublicExperiences']);
 Route::get('/listing/{listingId}', [ListingController::class, 'show']);

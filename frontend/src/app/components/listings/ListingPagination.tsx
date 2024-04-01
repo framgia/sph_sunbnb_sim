@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -11,20 +11,56 @@ import {
 import ChevronDownIcon from "../svgs/Calendar/ChevronDownIcon";
 import { LISTINGS_PAGE_SIZES } from "@/app/interfaces/ListingsProps";
 import { type ListingPaginationProps } from "@/app/interfaces/ListingsProps";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ListingType, UserRole } from "@/app/utils/enums";
 
 const ListingPagination: React.FC<ListingPaginationProps> = ({
+  user,
+  type,
   total,
   currentPage,
-  perPage,
-  type,
-  onPageChange,
-  onPageSizeChange
+  perPage
 }) => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
   const [page, setPage] = useState(currentPage);
+  const prefix =
+    user === UserRole.GUEST
+      ? ""
+      : user === UserRole.HOST
+        ? type === ListingType.ACCOMMODATION
+          ? "a"
+          : "e"
+        : "";
+
+  const handlePageChange = useCallback(
+    (page: number): void => {
+      const params = new URLSearchParams(searchParams);
+      if (page === 1) params.delete(`${prefix}page`);
+      else params.set(`${prefix}page`, page.toString());
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, router, pathname, prefix]
+  );
+
+  const handlePageSizeChange = useCallback(
+    (size: number): void => {
+      const params = new URLSearchParams(searchParams);
+      params.set(`${prefix}size`, size.toString());
+      params.delete(`${prefix}page`);
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, prefix, router, pathname]
+  );
 
   useEffect(() => {
-    onPageChange(page);
-  }, [page, onPageChange]);
+    handlePageChange(Number(page));
+  }, [page, handlePageChange]);
+
+  useEffect(() => {
+    setPage(currentPage);
+  }, [currentPage]);
 
   return (
     <div className="flex flex-col items-center">
@@ -56,7 +92,7 @@ const ListingPagination: React.FC<ListingPaginationProps> = ({
                 textValue={size.toString()}
                 key={size}
                 onClick={() => {
-                  onPageSizeChange(size);
+                  handlePageSizeChange(size);
                 }}
               >
                 {size}

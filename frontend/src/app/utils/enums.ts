@@ -99,3 +99,7 @@ export enum BookingStatus {
   UPCOMING = "Upcoming",
   REFUSED = "Refused"
 }
+export enum ListingType {
+  ACCOMMODATION = "Accommodation",
+  EXPERIENCE = "Experience"
+}
