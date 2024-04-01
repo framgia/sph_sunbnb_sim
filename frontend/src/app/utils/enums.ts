@@ -1,5 +1,3 @@
-import { REFUSED } from "dns";
-
 export enum UserRole {
   HOST = "host",
   GUEST = "guest",

@@ -5,7 +5,7 @@ import {
   deleteBooking,
   updateBooking
 } from "../utils/helpers/bookinghistory/request";
-import { BookingHistory } from "../interfaces/types";
+import type { BookingHistory } from "../interfaces/types";
 import { BookingStatus } from "../utils/enums";
 import ReviewModal from "./review/AddReviewModal";
 
@@ -42,10 +42,10 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
     }
   };
 
-  const cancelButtonClick = async () => {
+  const cancelButtonClick = async (): Promise<void> => {
     try {
-      let resdata = await updateBooking(id);
-      let bookingIndex = bookings.findIndex((booking) => booking.id === id);
+      await updateBooking(id);
+      const bookingIndex = bookings.findIndex((booking) => booking.id === id);
       bookings[bookingIndex].status = BookingStatus.CANCELLED;
       setbookings([...bookings]);
     } catch (error) {
@@ -53,10 +53,10 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
     }
   };
 
-  const deleteButtonClick = async () => {
+  const deleteButtonClick = async (): Promise<void> => {
     try {
       await deleteBooking(id);
-      let bookingIndex = bookings.findIndex((booking) => booking.id === id);
+      const bookingIndex = bookings.findIndex((booking) => booking.id === id);
       bookings.splice(bookingIndex, 1);
       setbookings([...bookings]);
     } catch (error) {

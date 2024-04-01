@@ -1,7 +1,10 @@
 "use server";
 
 import config from "@/app/config/config";
-import { BookingHistory, BookingHistoryResponse } from "@/app/interfaces/types";
+import type {
+  BookingHistory,
+  BookingHistoryResponse
+} from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 import { checkCookies } from "../userHelper";
 
@@ -39,10 +42,10 @@ async function getBookingHistory(
   } else throw new Error(responseData.error as string);
 }
 
-async function updateBooking(listing_id: number): Promise<BookingHistory[]> {
+async function updateBooking(listingId: number): Promise<BookingHistory[]> {
   const user = await checkCookies();
   if (user === null) throw new Error("No user found in cookies.");
-  const response = await fetch(`${config.backendUrl}/booking/${listing_id}`, {
+  const response = await fetch(`${config.backendUrl}/booking/${listingId}`, {
     method: "PUT",
     headers: setHeaders()
   });
@@ -53,10 +56,10 @@ async function updateBooking(listing_id: number): Promise<BookingHistory[]> {
   } else throw new Error(responseData.error as string);
 }
 
-async function deleteBooking(listing_id: number): Promise<BookingHistory[]> {
+async function deleteBooking(listingId: number): Promise<BookingHistory[]> {
   const user = await checkCookies();
   if (user === null) throw new Error("No user found in cookies.");
-  const response = await fetch(`${config.backendUrl}/booking/${listing_id}`, {
+  const response = await fetch(`${config.backendUrl}/booking/${listingId}`, {
     method: "DELETE",
     headers: setHeaders()
   });

@@ -1,5 +1,5 @@
 import BookingStatusComponent from "@/app/components/BookingStatus";
-import { BookingHistory } from "@/app/interfaces/types";
+import type { BookingHistory } from "@/app/interfaces/types";
 import { Image } from "@nextui-org/react";
 import React from "react";
 

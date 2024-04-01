@@ -11,7 +11,7 @@ import {
   Spinner
 } from "@nextui-org/react";
 import SearchIcon from "../../components/svgs/SearchIcon";
-import { BookingHistory, PaginationType } from "../../interfaces/types";
+import type { BookingHistory, PaginationType } from "../../interfaces/types";
 import BookingHistoryData from "./BookingHistoryData";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ChevronDownIcon from "@/app/components/svgs/Calendar/ChevronDownIcon";
@@ -35,7 +35,7 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchQuery(e.target.value);
   };
 
@@ -46,10 +46,18 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
   useEffect(() => {
     setLoading(true);
     const params = new URLSearchParams(searchParams);
+    if (searchQuery === "") params.delete("query");
+    else params.set("query", searchQuery.toString());
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [searchQuery, pathname, searchParams, router]);
+
+  useEffect(() => {
+    setLoading(true);
+    const params = new URLSearchParams(searchParams);
     if (page === 1) params.delete("page");
     else params.set("page", page.toString());
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [page, pathname, searchParams]);
+  }, [page, pathname, searchParams, router]);
 
   useEffect(() => {
     setLoading(true);
@@ -57,12 +65,12 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
     if (perPage === 5) params.delete("size");
     else params.set("size", perPage.toString());
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [perPage, pathname, searchParams]);
+  }, [perPage, pathname, searchParams, router]);
 
   useEffect(() => {
     setLoading(false);
     setBookingsState(bookings);
-  }, [bookings]);
+  }, [bookings, router]);
 
   return (
     <>
@@ -125,26 +133,32 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
         </div>
       </div>
       {!isLoading ? (
-        filteredBookings.map((booking, i) => (
-          <BookingHistoryData
-            key={i}
-            id={booking.id}
-            listingid={booking.listing.id}
-            type={
-              booking.listing.listable_type.includes("Accommodation")
-                ? "accommodation"
-                : "experience"
-            }
-            name={booking.listing.name}
-            checkinDate={booking.start_date}
-            checkoutDate={booking.end_date}
-            price={booking.listing.price}
-            status={booking.status as string}
-            image={booking.listing.media[0].media}
-            bookings={bookingsState}
-            setbookings={setBookingsState}
-          />
-        ))
+        filteredBookings.length > 0 ? (
+          filteredBookings.map((booking, i) => (
+            <BookingHistoryData
+              key={i}
+              id={booking.id}
+              listingid={booking.listing.id}
+              type={
+                booking.listing.listable_type.includes("Accommodation")
+                  ? "accommodation"
+                  : "experience"
+              }
+              name={booking.listing.name}
+              checkinDate={booking.start_date}
+              checkoutDate={booking.end_date}
+              price={booking.listing.price}
+              status={booking.status as string}
+              image={booking.listing.media[0].media}
+              bookings={bookingsState}
+              setbookings={setBookingsState}
+            />
+          ))
+        ) : (
+          <div className="flex w-full justify-center">
+            <span className=" p-5 text-foreground-500">No bookings found</span>
+          </div>
+        )
       ) : (
         <div className="flex justify-center p-10">
           <Spinner />
