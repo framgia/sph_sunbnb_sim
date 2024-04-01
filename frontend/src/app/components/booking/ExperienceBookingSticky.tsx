@@ -13,6 +13,7 @@ import FlagIcon from "../svgs/Report/FlagIcon";
 import ExperienceBookOption from "./ExperienceBookOption";
 import { eachDayOfInterval } from "date-fns";
 import { useRouter } from "next/navigation";
+import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
 
 interface ExperienceBookingStickyProps {
   price: number;
@@ -20,13 +21,15 @@ interface ExperienceBookingStickyProps {
   endTime: string;
   maxGuest: number;
   listingId: number;
+  exclude: Date[];
 }
 const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
   price,
   startTime,
   endTime,
   maxGuest,
-  listingId
+  listingId,
+  exclude
 }) => {
   const [guestCount, setGuestCount] = useState(1);
   const [startDateState, setStart] = useState(new Date());
@@ -112,6 +115,7 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
                 ranges={dates}
                 minDate={new Date()}
                 rangeColors={["#FF2200"]}
+                disabledDates={exclude}
               />
             </PopoverContent>
           </Popover>
@@ -150,7 +154,9 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
         <>
           {DateArr.length < 3 ? (
             DateArr.map((date, i) => {
-              return (
+              return isDateBlocked(date, exclude) ? (
+                <div key={i}></div>
+              ) : (
                 <ExperienceBookOption
                   key={i}
                   date={date}

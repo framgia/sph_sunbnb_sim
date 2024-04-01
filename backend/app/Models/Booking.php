@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\BookingStatus;
+use App\Enums\ListingStatus;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -61,6 +62,7 @@ class Booking extends Model {
 
     public static function createBooking($request): self {
         $listing = Listing::findOrFail($request->listing_id);
+        abort_unless($listing->status === ListingStatus::ACTIVE, Response::HTTP_BAD_REQUEST, 'Listing is not available for booking.');
 
         $booking = new Booking($request->only(['start_date', 'end_date', 'number_of_guests']));
         $booking->user()->associate(auth()->user());
@@ -152,8 +154,10 @@ class Booking extends Model {
             abort(Response::HTTP_BAD_REQUEST, 'Invalid action provided');
         }
 
-        if (! in_array($this->status, [BookingStatus::PENDING, BookingStatus::UPCOMING]) ||
-        ($this->status === BookingStatus::UPCOMING && $action === 'approve')) {
+        if (
+            ! in_array($this->status, [BookingStatus::PENDING, BookingStatus::UPCOMING]) ||
+            ($this->status === BookingStatus::UPCOMING && $action === 'approve')
+        ) {
             abort(Response::HTTP_BAD_REQUEST, 'Booking cannot be '.$action.'d.');
         }
 

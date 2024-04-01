@@ -97,3 +97,8 @@ export enum Language {
   INDONESIAN = "Indonesian",
   GERMAN = "German"
 }
+
+export enum ListingType {
+  ACCOMMODATION = "Accommodation",
+  EXPERIENCE = "Experience"
+}
