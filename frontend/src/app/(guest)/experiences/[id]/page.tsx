@@ -2,11 +2,7 @@ import DefaultSticky from "@/app/components/booking/DefaultSticky";
 import ExperienceBookingSticky from "@/app/components/booking/ExperienceBookingSticky";
 import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
-import {
-  getExperience,
-  getPublicExperience,
-  getPublicExperiences
-} from "@/app/utils/helpers/experience/request";
+import { getPublicExperience } from "@/app/utils/helpers/experience/request";
 import ReviewSection from "@/app/components/review/ReviewSection";
 import type { CalendarDate, Listing_Experience } from "@/app/interfaces/types";
 import { checkCookies } from "@/app/utils/helpers/userHelper";

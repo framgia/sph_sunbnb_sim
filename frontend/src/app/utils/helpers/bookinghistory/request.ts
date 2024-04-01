@@ -57,7 +57,6 @@ async function updateBooking(listingId: number): Promise<BookingHistory[]> {
 }
 
 async function deleteBooking(listingId: number): Promise<BookingHistory[]> {
-  const user = await checkCookies();
   const response = await fetch(`${config.backendUrl}/booking/${listingId}`, {
     method: "DELETE",
     headers: setHeaders()
