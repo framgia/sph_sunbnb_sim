@@ -44,6 +44,7 @@ const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
           .slice(1)
           .join(" ")}
         hostId={expData.user.id}
+        status={expData.status}
       />
       <Divider className="my-10 w-full" />
       <span className="text-sm">

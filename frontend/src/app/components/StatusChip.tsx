@@ -5,7 +5,6 @@ const StatusChip: React.FC<{ status: string }> = ({ status }) => {
   const getColor = (
     status: string
   ): "default" | "primary" | "success" | "warning" | "secondary" | "danger" => {
-    console.log(status + " hi");
     switch (status.toLowerCase()) {
       case "cancelled":
         return "danger";
@@ -15,6 +14,10 @@ const StatusChip: React.FC<{ status: string }> = ({ status }) => {
         return "warning";
       case "refused":
         return "secondary";
+      case "active":
+        return "success";
+      case "rejected":
+        return "warning";
       default:
         return "default";
     }

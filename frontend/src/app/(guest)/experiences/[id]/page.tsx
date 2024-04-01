@@ -2,7 +2,11 @@ import DefaultSticky from "@/app/components/booking/DefaultSticky";
 import ExperienceBookingSticky from "@/app/components/booking/ExperienceBookingSticky";
 import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
-import { getExperience } from "@/app/utils/helpers/experience/request";
+import {
+  getExperience,
+  getPublicExperience,
+  getPublicExperiences
+} from "@/app/utils/helpers/experience/request";
 import ReviewSection from "@/app/components/review/ReviewSection";
 import type { CalendarDate, Listing_Experience } from "@/app/interfaces/types";
 import { checkCookies } from "@/app/utils/helpers/userHelper";
@@ -10,6 +14,7 @@ import { Divider } from "@nextui-org/react";
 import React from "react";
 import { redirect } from "next/navigation";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
+import { ListingStatus } from "@/app/utils/enums";
 
 interface GuestExperienceDetailsProps {
   params: { id: number };
@@ -18,7 +23,7 @@ const GuestExperienceDetailsPage: React.FC<
   GuestExperienceDetailsProps
 > = async ({ params }) => {
   const user = await checkCookies();
-  const expData: Listing_Experience = await getExperience(params.id);
+  const expData: Listing_Experience = await getPublicExperience(params.id);
   const expAvailability: CalendarDate[] =
     (await getListingAvailability(params.id)) ?? [];
 
@@ -33,7 +38,8 @@ const GuestExperienceDetailsPage: React.FC<
   //  accommodation in experience details page
   if (
     expData === undefined ||
-    expData.listable_type.split("\\")[2] === "Accommodation"
+    expData.listable_type.split("\\")[2] === "Accommodation" ||
+    expData.status !== ListingStatus.ACTIVE
   ) {
     redirect("/not-found");
   }
@@ -66,6 +72,7 @@ const GuestExperienceDetailsPage: React.FC<
               .join(" ")}
             id={params.id}
             hostId={user?.id}
+            status={expData.status}
           />
           <div className="flex h-fit flex-row items-start">
             <div className="w-full">
@@ -91,7 +98,7 @@ const GuestExperienceDetailsPage: React.FC<
                   startTime={expData.listable.start_time}
                   endTime={expData.listable.end_time}
                   listingId={Number(params.id)}
-                  exclude={blockedDates}
+                  exclude={[...blockedDates, new Date()]}
                 />
               ) : (
                 <DefaultSticky ForAccommodation={false} />

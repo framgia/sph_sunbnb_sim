@@ -6,6 +6,7 @@ import Image from "next/image";
 import React from "react";
 import ToEditButton from "../ToEditButton";
 import { checkCookies, userRole } from "@/app/utils/helpers/userHelper";
+import StatusChip from "../StatusChip";
 
 interface ExperienceHeaderProps {
   id: number;
@@ -23,6 +24,7 @@ interface ExperienceHeaderProps {
   createdAt: string;
   modifiedAt: string;
   hostId?: number;
+  status: string;
 }
 const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
   id,
@@ -39,7 +41,8 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
   hostName,
   createdAt,
   modifiedAt,
-  hostId
+  hostId,
+  status
 }) => {
   async function checkIsHost(): Promise<boolean> {
     const user = await checkCookies();
@@ -57,8 +60,13 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
-        <div>
+        <div className="flex">
           <span className="text-lg font-bold leading-7">{experienceName}</span>
+          {(await checkIsHost()) && (
+            <div>
+              <StatusChip status={status} />
+            </div>
+          )}
         </div>
         {(await checkIsHost()) && (
           <div>

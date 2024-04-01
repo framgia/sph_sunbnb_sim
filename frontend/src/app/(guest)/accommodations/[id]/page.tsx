@@ -3,6 +3,7 @@ import ListingHeader from "@/app/components/accommodation/ListingHeader";
 import AccommodationBookingSticky from "@/app/components/booking/AccommodationBookingSticky";
 import DefaultSticky from "@/app/components/booking/DefaultSticky";
 import ReviewSection from "@/app/components/review/ReviewSection";
+import { ListingStatus } from "@/app/utils/enums";
 import { getPublicAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { checkCookies } from "@/app/utils/helpers/userHelper";
@@ -34,7 +35,8 @@ const GuestAccommodationsDetails: React.FC<
   //  check if listable type of listing received is an experience or somewhat undefined to avoid passing experience in accommodation details page
   if (
     accData.listable_type.split("\\")[2] === "Experience" ||
-    accData.listable_type.split("\\")[2] === undefined
+    accData.listable_type.split("\\")[2] === undefined ||
+    accData.status !== ListingStatus.ACTIVE
   ) {
     redirect("/not-found");
   }
@@ -82,6 +84,7 @@ const GuestAccommodationsDetails: React.FC<
             }
             images={accData.media}
             id={Number(params.id)}
+            status={accData.status}
           />
           <div className="flex h-fit flex-row items-start">
             <div className="w-full">

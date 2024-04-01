@@ -58,6 +58,7 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
               accData.zip_code
             }
             images={accData.media}
+            status={accData.status}
           />
           <div>
             <Divider className="my-10 " />
