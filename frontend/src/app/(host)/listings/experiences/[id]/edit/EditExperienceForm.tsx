@@ -1,7 +1,10 @@
 "use client";
 import ListingUploader from "@/app/components/accommodation/ListingUploader";
 import ExperienceAddressForm from "@/app/components/experience/ExperienceAddressForm";
-import type { Experience, MediaUpdate } from "@/app/interfaces/ExperienceData";
+import type {
+  ExperienceData,
+  MediaUpdate
+} from "@/app/interfaces/ExperienceData";
 import { ExperienceType } from "@/app/utils/enums";
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import React from "react";
@@ -16,8 +19,8 @@ import LanguagesListbox from "@/app/components/experience/LanguagesListbox";
 interface EditListingProps {
   onDelete: () => void;
   listingid: string;
-  data: Experience;
-  setData: React.Dispatch<React.SetStateAction<Experience>>;
+  data: ExperienceData;
+  setData: React.Dispatch<React.SetStateAction<ExperienceData>>;
   media: MediaUpdate;
   setMedia: React.Dispatch<React.SetStateAction<MediaUpdate>>;
   error: Record<string, string | boolean>;
@@ -137,7 +140,7 @@ const EditExperienceForm: React.FC<EditListingProps> = ({
 
       <hr className="mt-12 min-h-[3px] w-full bg-zinc-200 max-md:mt-10 max-md:max-w-full" />
       <div className="mb-10 mt-10 w-full text-left text-lg font-semibold leading-5 text-black max-md:max-w-full">
-        Upload photos of your place
+        Upload photos of your listing
       </div>
       <div className="grid rounded-3xl outline outline-1 outline-neutral-300 md:grid-cols-2">
         <div className="p-8">

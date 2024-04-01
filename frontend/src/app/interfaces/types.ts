@@ -131,6 +131,26 @@ export interface ExperienceListing {
   media: MediaType[];
 }
 
+export interface BookingHistoryResponse {
+  pagination: PaginationType;
+  bookings: BookingHistory[];
+}
+export interface BookingHistory {
+  id: number;
+  user_id: number;
+  listing_id: number;
+  start_date: string;
+  end_date: string;
+  number_of_guests: number;
+  total_price: string;
+  status: BookingStatus;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string | null;
+  listing: Listing;
+  reviewed: boolean;
+}
+
 /* Must be created since typing listable as Accommodation | Experience in Listing will only allow 
   assignment of values overlapping Accommodation and Experience Type  */
 export interface Listing_Experience {
@@ -156,7 +176,7 @@ export interface Listing_Experience {
   media: MediaType[];
 }
 
-export interface Pagination {
+export interface PaginationType {
   current_page: number;
   per_page: number;
   total: number;
@@ -168,7 +188,7 @@ export interface Pagination {
 
 export interface PaginatedListing {
   listings: Listing[];
-  pagination: Pagination;
+  pagination: PaginationType;
 }
 
 export interface CalendarDate {

@@ -20,7 +20,7 @@ class Booking extends Model {
     use SoftDeletes;
 
     protected $fillable = [
-        'start_date', 'end_date', 'number_of_guests', 'total_price', 'status', 'host_deleted',
+        'start_date', 'end_date', 'number_of_guests', 'total_price', 'status', 'reviewed', 'host_deleted',
     ];
 
     public function user(): BelongsTo {
@@ -143,6 +143,7 @@ class Booking extends Model {
 
         return static::where('user_id', $userId)
             ->with(['listing', 'user', 'listing.media'])
+            ->orderBy('created_at', 'desc')
             ->paginate($perPage);
     }
 
@@ -193,5 +194,9 @@ class Booking extends Model {
         } else {
             abort(Response::HTTP_BAD_REQUEST, 'Booking cannot be deleted.');
         }
+    }
+
+    public function markAsReviewed() {
+        $this->update(['reviewed' => true]);
     }
 }
