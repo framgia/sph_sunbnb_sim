@@ -31,11 +31,6 @@ async function getBookingHistory(
   );
 
   const responseData = await response.json();
-  console.log(
-    "fetched results ",
-    responseData.pagination.current_page,
-    responseData.bookings.length
-  );
   if (response.ok) {
     return {
       pagination: responseData.pagination,

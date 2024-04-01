@@ -1,10 +1,20 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Input, Pagination, Spinner } from "@nextui-org/react";
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
+  Pagination,
+  Spinner
+} from "@nextui-org/react";
 import SearchIcon from "../../components/svgs/SearchIcon";
 import { BookingHistory, PaginationType } from "../../interfaces/types";
 import BookingHistoryData from "./BookingHistoryData";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import ChevronDownIcon from "@/app/components/svgs/Calendar/ChevronDownIcon";
 
 interface BookingHistoryProps {
   bookings: BookingHistory[];
@@ -19,6 +29,7 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
     useState<BookingHistory[]>(bookings);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [page, setPage] = useState(pagination.current_page);
+  const [perPage, setPerPage] = useState(pagination.per_page);
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,6 +52,14 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
   }, [page, pathname, searchParams]);
 
   useEffect(() => {
+    setLoading(true);
+    const params = new URLSearchParams(searchParams);
+    if (perPage === 5) params.delete("size");
+    else params.set("size", perPage.toString());
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [perPage, pathname, searchParams]);
+
+  useEffect(() => {
     setLoading(false);
     setBookingsState(bookings);
   }, [bookings]);
@@ -60,8 +79,32 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
         />
       </div>
       <div className="mb-1 mt-10 flex justify-between">
-        <div>Total bookings: {pagination.total} </div>
-        <div>Rows per page: {pagination.per_page} </div>
+        <div className="flex">
+          <span className="flex self-center">
+            Total bookings: {pagination.total}
+          </span>
+        </div>
+        <div className="flex flex-row">
+          <span className="flex self-center">
+            Rows per page: {pagination.per_page}
+          </span>
+          <Dropdown>
+            <DropdownTrigger>
+              <Button className="bg-white" isIconOnly>
+                <ChevronDownIcon />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              onAction={(key) => {
+                setPerPage(Number(key));
+              }}
+            >
+              <DropdownItem key={3}>3</DropdownItem>
+              <DropdownItem key={5}>5</DropdownItem>
+              <DropdownItem key={8}>8</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
       </div>
       <div className="grid h-[50px] grid-cols-[10%_20%_15%_15%_10%_15%_15%] rounded-lg bg-primary-600 text-sm">
         <div className="col-span-2 flex items-center justify-center px-5 text-white">
