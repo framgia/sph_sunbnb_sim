@@ -49,15 +49,15 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
-        <div>
+        <div className="flex flex-row">
           <span className="text-lg font-bold leading-7">
             {accomodationName}
-            {(await checkIsHost()) && (
-              <div>
-                <StatusChip status={status} />
-              </div>
-            )}
           </span>
+          {(await checkIsHost()) && (
+            <div className="mx-2">
+              <StatusChip status={status} />
+            </div>
+          )}
         </div>
         {(await checkIsHost()) && (
           <div>
