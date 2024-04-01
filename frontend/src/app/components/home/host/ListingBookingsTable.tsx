@@ -21,7 +21,8 @@ import BookingActions from "./BookingActions";
 import type {
   BookingType,
   HostBookingFilters,
-  Listing
+  Listing,
+  PaginationType
 } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import SearchIcon from "../../svgs/SearchIcon";
@@ -34,15 +35,23 @@ const ListingBookingsTable: React.FC<{
 }> = ({ listings }) => {
   const [filters, setFilters] = useState<HostBookingFilters>({
     status: "status",
-    search: ""
+    search: "",
+    per_page: "5"
   });
   const [currentListing, setListing] = useState(listings[0]?.id ?? 0);
   const [actionDone, setActionDone] = useState(false);
   const [bookingData, setBookingData] = useState<BookingType[]>([]);
-  //  since pagination in backend is in backend, replace pagination implementation with useSWR on integration
+  const [pagination, setPagination] = useState<PaginationType>({
+    current_page: 1,
+    per_page: 5,
+    total: 1,
+    next_page_url: "",
+    path: "",
+    prev_page_url: "",
+    to: 1
+  });
   const [page, setPage] = React.useState(1);
   const rowsPerPage = 5;
-  const pages = Math.ceil(bookingData.length / rowsPerPage);
   const slicedBookings = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
@@ -58,13 +67,16 @@ const ListingBookingsTable: React.FC<{
 
   useEffect(() => {
     async function fetchData(): Promise<void> {
-      const data = await getListingBookings(currentListing, filters);
-      if (data !== undefined) setBookingData(data);
+      const data = await getListingBookings(currentListing, filters, page);
+      if (data !== undefined) {
+        setPagination(data.pagination);
+        setBookingData(data.bookings);
+      }
     }
     fetchData().catch((error) => {
       console.error("Failed to get bookings from listing: ", error);
     });
-  }, [currentListing, filters, actionDone]);
+  }, [currentListing, filters, actionDone, page]);
 
   return (
     <div>
@@ -150,14 +162,23 @@ const ListingBookingsTable: React.FC<{
         </div>
         <div>
           <div className="flex flex-row items-center text-xs text-default-500">
-            Rows per page: 5
-            <Button
-              variant="light"
-              className="text-xs text-default-500"
-              isIconOnly
-            >
-              <ChevronDownIcon />
-            </Button>
+            Rows per page: {pagination.per_page}
+            <Dropdown>
+              <DropdownTrigger>
+                <Button className="bg-white" isIconOnly>
+                  <ChevronDownIcon />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                onAction={(key) => {
+                  setFilters({ ...filters, per_page: key as string });
+                }}
+              >
+                <DropdownItem key={3}>3</DropdownItem>
+                <DropdownItem key={5}>5</DropdownItem>
+                <DropdownItem key={8}>8</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </div>
         </div>
       </div>
@@ -171,8 +192,8 @@ const ListingBookingsTable: React.FC<{
               showControls
               showShadow
               color="primary"
-              page={page}
-              total={pages}
+              page={pagination.current_page}
+              total={Math.ceil(pagination.total / pagination.per_page)}
               onChange={(page) => {
                 setPage(page);
               }}

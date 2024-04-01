@@ -220,6 +220,10 @@ export interface AccommodationReviewData {
   comment: string;
 }
 
+export interface BookingResponse {
+  bookings: BookingType[];
+  pagination: PaginationType;
+}
 export interface BookingType {
   id: number;
   user_id: number;
@@ -234,6 +238,7 @@ export interface BookingType {
   updated_at: string;
   deleted_at: null;
   user: UserDetailsType;
+  pagination: PaginationType;
 }
 
 export interface ExperienceReviewData {
@@ -272,4 +277,5 @@ export interface BookingData {
 export interface HostBookingFilters {
   status: string;
   search: string;
+  per_page: string;
 }

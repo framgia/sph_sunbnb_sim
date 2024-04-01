@@ -1,8 +1,8 @@
 "use server";
 import {
   type HostBookingFilters,
-  type BookingType,
-  type Listing
+  type Listing,
+  type BookingResponse
 } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 import config from "@/app/config/config";
@@ -53,8 +53,9 @@ async function getActiveListings(): Promise<Listing[]> {
 
 async function getListingBookings(
   listingId: number,
-  filters: HostBookingFilters
-): Promise<BookingType[]> {
+  filters: HostBookingFilters,
+  page: number
+): Promise<BookingResponse> {
   const queryParams = new URLSearchParams();
   if (filters.status !== "status") {
     queryParams.append("status", filters.status);
@@ -62,6 +63,11 @@ async function getListingBookings(
   if (filters.search !== "") {
     queryParams.append("search", filters.search);
   }
+  if (filters.per_page !== "") {
+    queryParams.append("per_page", filters.per_page);
+  }
+  queryParams.append("page", page.toString());
+  console.log(page);
   const response = await fetch(
     `${config.backendUrl}/booking/listing/${listingId}${queryParams.toString() !== "" ? `?${queryParams.toString()}` : ""}`,
     {
@@ -70,8 +76,9 @@ async function getListingBookings(
     }
   );
   const responseData = await response.json();
+  console.log(responseData);
   if (response.ok) {
-    return responseData.bookings;
+    return responseData;
   } else {
     throw new Error(responseData.error as string);
   }
