@@ -72,6 +72,11 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
     setBookingsState(bookings);
   }, [bookings, router]);
 
+  useEffect(() => {
+    setLoading(true);
+    router.refresh();
+  }, [bookingsState.length, router]);
+
   return (
     <>
       <div className="mt-5 font-semibold">Your booking history</div>
