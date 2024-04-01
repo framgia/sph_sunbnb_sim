@@ -9,8 +9,8 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::table('reviews', function (Blueprint $table) {
-            $table->boolean('reviewed')->default(false)->after('comment');
+        Schema::table('bookings', function (Blueprint $table) {
+            $table->boolean('reviewed')->default(false)->after('status');
         });
     }
 
@@ -18,7 +18,7 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::table('reviews', function (Blueprint $table) {
+        Schema::table('bookings', function (Blueprint $table) {
             $table->dropColumn('reviewed');
         });
     }
