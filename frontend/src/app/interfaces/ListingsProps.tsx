@@ -1,5 +1,5 @@
 import { type ListingType, type UserRole } from "../utils/enums";
-import { type Pagination, type Listing, type ListingFilter } from "./types";
+import { type PaginationType, type Listing, type ListingFilter } from "./types";
 
 export const LISTINGS_PAGE_SIZES = [3, 6];
 export const LISTINGS_DEFAULT_PAGE = 1;
@@ -47,7 +47,7 @@ export interface ListingsProps {
   user: UserRole;
   type: ListingType;
   listings: Listing[];
-  pagination: Pagination | null;
+  pagination: PaginationType | null;
 }
 
 export interface ListingItemProps {

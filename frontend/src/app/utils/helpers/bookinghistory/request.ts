@@ -1,7 +1,7 @@
 "use server";
 
 import config from "@/app/config/config";
-import { BookingHistory } from "@/app/interfaces/types";
+import { BookingHistory, BookingHistoryResponse } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 import { checkCookies } from "../userHelper";
 
@@ -15,17 +15,32 @@ function setHeaders(): Record<string, string> {
   };
 }
 
-async function getBookingHistory(): Promise<BookingHistory[]> {
+async function getBookingHistory(
+  page: number,
+  size: number,
+  query?: string
+): Promise<BookingHistoryResponse> {
   const user = await checkCookies();
   if (user === null) throw new Error("No user found in cookies.");
-  const response = await fetch(`${config.backendUrl}/booking/user/${user.id}`, {
-    method: "GET",
-    headers: setHeaders()
-  });
+  const response = await fetch(
+    `${config.backendUrl}/booking/user/${user.id}?page=${page ?? 1}&per_page=${size ?? 5}${query !== undefined ? `&search=${query}` : ""}`,
+    {
+      method: "GET",
+      headers: setHeaders()
+    }
+  );
 
   const responseData = await response.json();
+  console.log(
+    "fetched results ",
+    responseData.pagination.current_page,
+    responseData.bookings.length
+  );
   if (response.ok) {
-    return responseData.bookings;
+    return {
+      pagination: responseData.pagination,
+      bookings: responseData.bookings
+    };
   } else throw new Error(responseData.error as string);
 }
 

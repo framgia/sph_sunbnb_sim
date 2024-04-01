@@ -131,6 +131,10 @@ export interface ExperienceListing {
   media: MediaType[];
 }
 
+export interface BookingHistoryResponse {
+  pagination: PaginationType;
+  bookings: BookingHistory[];
+}
 export interface BookingHistory {
   id: number;
   user_id: number;
@@ -171,7 +175,7 @@ export interface Listing_Experience {
   media: MediaType[];
 }
 
-export interface Pagination {
+export interface PaginationType {
   current_page: number;
   per_page: number;
   total: number;
@@ -183,7 +187,7 @@ export interface Pagination {
 
 export interface PaginatedListing {
   listings: Listing[];
-  pagination: Pagination;
+  pagination: PaginationType;
 }
 
 export interface CalendarDate {
