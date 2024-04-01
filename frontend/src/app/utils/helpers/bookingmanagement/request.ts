@@ -67,7 +67,6 @@ async function getListingBookings(
     queryParams.append("per_page", filters.per_page);
   }
   queryParams.append("page", page.toString());
-  console.log(page);
   const response = await fetch(
     `${config.backendUrl}/booking/listing/${listingId}${queryParams.toString() !== "" ? `?${queryParams.toString()}` : ""}`,
     {
@@ -76,7 +75,6 @@ async function getListingBookings(
     }
   );
   const responseData = await response.json();
-  console.log(responseData);
   if (response.ok) {
     return responseData;
   } else {

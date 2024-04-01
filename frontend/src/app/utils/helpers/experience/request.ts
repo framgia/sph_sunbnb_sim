@@ -162,7 +162,6 @@ async function getExperiencesByUser(
   status?: string
 ): Promise<PaginatedListing | undefined> {
   try {
-    console.log("type", type);
     const jwt = cookies().get("jwt")?.value;
     if (jwt === undefined) throw new Error("No JWT found in cookies.");
 

@@ -34,7 +34,6 @@ const ExperienceReviewForm: React.FC<AddReviewFormProps> = ({
   });
 
   async function handleClick(): Promise<void> {
-    console.log(rating);
     const validateData = await validateReview(rating);
     if (validateData.hasError as boolean) {
       setError({

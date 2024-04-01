@@ -51,13 +51,7 @@ const ListingBookingsTable: React.FC<{
     to: 1
   });
   const [page, setPage] = React.useState(1);
-  const rowsPerPage = 5;
-  const slicedBookings = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
 
-    return bookingData.slice(start, end);
-  }, [page, bookingData]);
   const classNames = React.useMemo(
     () => ({
       th: ["bg-primary-600", "text-white"]
@@ -211,7 +205,7 @@ const ListingBookingsTable: React.FC<{
           <TableColumn>ACTION</TableColumn>
         </TableHeader>
         <TableBody>
-          {slicedBookings.map((book, i) => {
+          {bookingData.map((book, i) => {
             return (
               <TableRow key={i}>
                 <TableCell>
