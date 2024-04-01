@@ -30,5 +30,11 @@ class MinMaxDaysRule implements DataAwareRule, ValidationRule {
                 );
             }
         }
+
+        if ($listing && $listing->listable_type === 'App\Models\Experience') {
+            if ($numberOfDays !== 0) {
+                $fail('The number of days should be 0 for experiences.');
+            }
+        }
     }
 }
