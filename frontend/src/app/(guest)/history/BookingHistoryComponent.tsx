@@ -150,6 +150,7 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
               price={booking.listing.price}
               status={booking.status as string}
               image={booking.listing.media[0].media}
+              reviewed={booking.reviewed}
               bookings={bookingsState}
               setbookings={setBookingsState}
             />

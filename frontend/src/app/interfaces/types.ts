@@ -148,6 +148,7 @@ export interface BookingHistory {
   updated_at: string;
   deleted_at?: string | null;
   listing: Listing;
+  reviewed: boolean;
 }
 
 /* Must be created since typing listable as Accommodation | Experience in Listing will only allow 

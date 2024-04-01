@@ -108,4 +108,32 @@ async function createExperienceReview(
   }
 }
 
-export { getReviews, createAccommodationReview, createExperienceReview };
+async function updateBookingReview(id: number): Promise<void> {
+  try {
+    const response = await fetch(
+      `${config.backendUrl}/booking/mark-reviewed/${id}`,
+      {
+        method: "PUT",
+        headers: setHeaders()
+      }
+    );
+
+    const responseData = await response.json();
+    if (!response.ok) {
+      throw new Error(responseData.error as string);
+    }
+  } catch (error) {
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "An unexpected error occurred. Please contact the administrator."
+    );
+  }
+}
+
+export {
+  getReviews,
+  createAccommodationReview,
+  createExperienceReview,
+  updateBookingReview
+};

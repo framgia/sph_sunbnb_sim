@@ -15,6 +15,7 @@ interface BookingStatusProps {
   type: "accommodation" | "experience";
   bookings: BookingHistory[];
   listingid: number;
+  reviewed: boolean;
   setbookings: (bookings: BookingHistory[]) => void;
 }
 
@@ -24,6 +25,7 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
   type,
   bookings,
   listingid,
+  reviewed,
   setbookings
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -92,21 +94,26 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
       case "done":
         return (
           <>
-            <Button
-              size="sm"
-              color="primary"
-              className="text-md rounded-full px-5 font-bold"
-              onClick={onOpen}
-            >
-              Review
-            </Button>
-            <ReviewModal
-              listingId={listingid}
-              listingType={type}
-              size="lg"
-              onClose={onClose}
-              isOpen={isOpen}
-            />
+            {reviewed ? null : (
+              <>
+                <Button
+                  size="sm"
+                  color="primary"
+                  className="text-md rounded-full px-5 font-bold"
+                  onClick={onOpen}
+                >
+                  Review
+                </Button>
+                <ReviewModal
+                  listingId={listingid}
+                  listingType={type}
+                  size="lg"
+                  onClose={onClose}
+                  isOpen={isOpen}
+                  bookingId={id}
+                />
+              </>
+            )}
           </>
         );
       case "pending":

@@ -14,6 +14,7 @@ interface BookingHistoryDataProps {
   image: string;
   bookings: BookingHistory[];
   listingid: number;
+  reviewed: boolean;
   setbookings: (bookings: BookingHistory[]) => void;
 }
 
@@ -28,6 +29,7 @@ const BookingHistoryData: React.FC<BookingHistoryDataProps> = ({
   image,
   listingid,
   bookings,
+  reviewed,
   setbookings
 }) => {
   return (
@@ -51,6 +53,7 @@ const BookingHistoryData: React.FC<BookingHistoryDataProps> = ({
           bookings={bookings}
           setbookings={setbookings}
           listingid={listingid}
+          reviewed={reviewed}
         />
       </div>
     </>
