@@ -84,4 +84,6 @@ Route::middleware('auth:api')->group(function () {
         ->middleware('check.owner:booking');
     Route::put('booking/approve-refuse/{bookingId}', [BookingController::class, 'updateBookingStatus'])->middleware('role:host');
     Route::put('booking/delete/{bookingId}', [BookingController::class, 'updateGuestBooking'])->middleware('role:host');
+    Route::put('booking/mark-reviewed/{bookingId}', [BookingController::class, 'updateReviewed'])
+        ->middleware('check.owner:booking');
 });

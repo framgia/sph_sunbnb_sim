@@ -124,4 +124,11 @@ class BookingController extends Controller {
             ], Response::HTTP_NOT_FOUND);
         }
     }
+
+    public function updateReviewed($id) {
+        $booking = Booking::find($id);
+        $booking->markAsReviewed();
+
+        return response()->json(['message' => 'Review status updated successfully'], Response::HTTP_OK);
+    }
 }
