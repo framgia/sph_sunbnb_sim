@@ -28,6 +28,9 @@ export function middleware(request: NextRequest): NextResponse | undefined {
     if (request.nextUrl.pathname.startsWith("/listings")) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
+    if (request.nextUrl.pathname.startsWith("/history")) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   } else {
     if (request.nextUrl.pathname.startsWith("/login")) {
       return NextResponse.redirect(new URL("/", request.url));

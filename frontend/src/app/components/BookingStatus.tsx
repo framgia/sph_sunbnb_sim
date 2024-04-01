@@ -1,7 +1,32 @@
+"use client";
 import React from "react";
-import { Button, Chip } from "@nextui-org/react";
+import { Button, Chip, useDisclosure } from "@nextui-org/react";
+import {
+  deleteBooking,
+  updateBooking
+} from "../utils/helpers/bookinghistory/request";
+import { BookingHistory } from "../interfaces/types";
+import { BookingStatus } from "../utils/enums";
+import ReviewModal from "./review/AddReviewModal";
 
-const BookingStatus: React.FC<{ status: string }> = ({ status }) => {
+interface BookingStatusProps {
+  status: string;
+  id: number;
+  type: "accommodation" | "experience";
+  bookings: BookingHistory[];
+  listingid: number;
+  setbookings: (bookings: BookingHistory[]) => void;
+}
+
+const BookingStatusComponent: React.FC<BookingStatusProps> = ({
+  status,
+  id,
+  type,
+  bookings,
+  listingid,
+  setbookings
+}) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const getStatusColor = (status: string): string => {
     switch (status.toLowerCase()) {
       case "upcoming":
@@ -17,6 +42,28 @@ const BookingStatus: React.FC<{ status: string }> = ({ status }) => {
     }
   };
 
+  const cancelButtonClick = async () => {
+    try {
+      let resdata = await updateBooking(id);
+      let bookingIndex = bookings.findIndex((booking) => booking.id === id);
+      bookings[bookingIndex].status = BookingStatus.CANCELLED;
+      setbookings([...bookings]);
+    } catch (error) {
+      console.error("Error updating booking:", error);
+    }
+  };
+
+  const deleteButtonClick = async () => {
+    try {
+      await deleteBooking(id);
+      let bookingIndex = bookings.findIndex((booking) => booking.id === id);
+      bookings.splice(bookingIndex, 1);
+      setbookings([...bookings]);
+    } catch (error) {
+      console.error("Error updating booking:", error);
+    }
+  };
+
   const getAction = (status: string): React.JSX.Element => {
     switch (status.toLowerCase()) {
       case "upcoming":
@@ -25,6 +72,7 @@ const BookingStatus: React.FC<{ status: string }> = ({ status }) => {
             size="sm"
             color="primary"
             className="text-md rounded-full px-5 font-bold"
+            onClick={cancelButtonClick}
           >
             Cancel
           </Button>
@@ -36,19 +84,30 @@ const BookingStatus: React.FC<{ status: string }> = ({ status }) => {
             color="primary"
             variant="bordered"
             className="text-md rounded-full px-5 font-bold"
+            onClick={deleteButtonClick}
           >
             Delete
           </Button>
         );
       case "done":
         return (
-          <Button
-            size="sm"
-            color="primary"
-            className="text-md rounded-full px-5 font-bold"
-          >
-            Review
-          </Button>
+          <>
+            <Button
+              size="sm"
+              color="primary"
+              className="text-md rounded-full px-5 font-bold"
+              onClick={onOpen}
+            >
+              Review
+            </Button>
+            <ReviewModal
+              listingId={listingid}
+              listingType={type}
+              size="lg"
+              onClose={onClose}
+              isOpen={isOpen}
+            />
+          </>
         );
       case "pending":
         return (
@@ -57,6 +116,7 @@ const BookingStatus: React.FC<{ status: string }> = ({ status }) => {
             color="primary"
             variant="bordered"
             className="text-md rounded-full px-5 font-bold"
+            onClick={cancelButtonClick}
           >
             Cancel
           </Button>
@@ -85,4 +145,4 @@ const BookingStatus: React.FC<{ status: string }> = ({ status }) => {
   );
 };
 
-export default BookingStatus;
+export default BookingStatusComponent;
