@@ -21,7 +21,9 @@ const StatusChip: React.FC<{ status: string }> = ({ status }) => {
   return (
     <Chip
       color={status !== "upcoming" ? getColor(status) : "default"}
-      className={status === "upcoming" ? "bg-blue-300 text-blue-600" : ""}
+      className={
+        status.toLowerCase() === "upcoming" ? "bg-blue-300 text-blue-600" : ""
+      }
       size="sm"
       radius="lg"
       variant="flat"
