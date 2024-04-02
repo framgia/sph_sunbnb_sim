@@ -37,7 +37,6 @@ const GuestAccommodationsDetails: React.FC<
   if (
     getListingType(accData.listable_type) === "experience" ||
     getListingType(accData.listable_type) === undefined ||
-    user?.id !== accData.user_id ||
     accData.status !== ListingStatus.ACTIVE
   ) {
     redirect("/not-found");
