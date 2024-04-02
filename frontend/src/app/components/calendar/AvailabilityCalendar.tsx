@@ -15,7 +15,7 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
 }) => {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [calendarDates, setCalendarDates] = useState<CalendarDate[]>([]);
-  const [blockedDates, setBlockedDates] = useState<Date[]>([]);
+  const [blockedDates, setBlockedDates] = useState<CalendarDate[]>([]);
   const [onTabChanged, setTabChanged] = useState(false);
   const [selectedListing, setSelectedListing] = useState<AvailabilityListing>(
     listings[0]
@@ -23,11 +23,7 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
 
   useEffect(() => {
     if (calendarDates !== undefined) {
-      setBlockedDates(
-        calendarDates
-          .filter(({ available }) => !available)
-          .map(({ date }) => new Date(date))
-      );
+      setBlockedDates(calendarDates.filter(({ available }) => !available));
     }
   }, [calendarDates]);
 

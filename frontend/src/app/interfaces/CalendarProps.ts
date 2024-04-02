@@ -1,3 +1,5 @@
+import { type CalendarDate } from "./types";
+
 export interface AvailabilityCalendarProps {
   listings: AvailabilityListing[];
 }
@@ -10,7 +12,7 @@ export interface AvailabilityListing {
 
 export interface AvailabilitySidebarProps {
   selectedDates: Date[];
-  blockedDates: Date[];
+  blockedDates: CalendarDate[];
   selectedListing: AvailabilityListing;
   onTabChange: (changed: boolean) => void;
 }
@@ -23,7 +25,7 @@ export interface ListingDropdownProps {
 
 export interface CalendarProps {
   selectedDates: Date[];
-  blockedDates: Date[];
+  blockedDates: CalendarDate[];
   onSelect: (dates: Date[]) => void;
 }
 

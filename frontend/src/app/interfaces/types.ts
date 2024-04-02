@@ -194,6 +194,12 @@ export interface PaginatedListing {
 export interface CalendarDate {
   date: Date | string;
   available: boolean;
+  booking: {
+    user: {
+      first_name: string;
+      last_name: string;
+    };
+  };
 }
 
 export interface JwtPayloadwithUser extends JwtPayload {
