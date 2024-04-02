@@ -4,7 +4,7 @@ import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
 import { getPublicExperience } from "@/app/utils/helpers/experience/request";
 import ReviewSection from "@/app/components/review/ReviewSection";
-import type { CalendarDate, Listing_Experience } from "@/app/interfaces/types";
+import type { CalendarDate, ExperienceListing } from "@/app/interfaces/types";
 import { checkCookies } from "@/app/utils/helpers/userHelper";
 import { Divider } from "@nextui-org/react";
 import React from "react";
@@ -20,12 +20,9 @@ const GuestExperienceDetailsPage: React.FC<
   GuestExperienceDetailsProps
 > = async ({ params }) => {
   const user = await checkCookies();
-  const expData: Listing_Experience = await getPublicExperience(params.id);
-  let expAvailability: CalendarDate[] = [];
-  if (user !== undefined && user !== null) {
-    expAvailability = await getListingAvailability(Number(params.id)) ?? [];
-  }
-  
+  const expData: ExperienceListing = await getPublicExperience(params.id);
+  const expAvailability: CalendarDate[] =
+    (await getListingAvailability(params.id)) ?? [];
 
   let blockedDates: Date[] = [];
   if (expAvailability !== undefined && expAvailability !== null) {

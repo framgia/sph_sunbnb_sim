@@ -185,39 +185,38 @@ const ListingBookingsTable: React.FC<{
           </div>
         </div>
       </div>
-      <Table
-        aria-label="Table of bookings for a listing"
-        classNames={classNames}
-        bottomContent={
-          <div className="flex w-full justify-center">
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color="primary"
-              page={pagination.current_page}
-              total={Math.ceil(pagination.total / pagination.per_page)}
-              onChange={(page) => {
-                setPage(page);
-              }}
-            />
-          </div>
-        }
-      >
-        <TableHeader>
-          <TableColumn>NAME</TableColumn>
-          <TableColumn>CHECK-IN DATE</TableColumn>
-          <TableColumn>CHECK-OUT DATE</TableColumn>
-          <TableColumn>GUESTS</TableColumn>
-          <TableColumn>BILL</TableColumn>
-          <TableColumn>STATUS</TableColumn>
-          <TableColumn>ACTION</TableColumn>
-        </TableHeader>
-        <TableBody>
+      <div className="grid h-[50px] grid-cols-[25%_18%_18%_9%_10%_10%_10%] rounded-lg bg-primary-600 px-2 text-sm">
+        <div className="flex items-center justify-center px-5 text-white">
+          NAME
+        </div>
+        <div className="flex items-center justify-center px-5 text-white">
+          CHECK-IN DATE
+        </div>
+        <div className="flex items-center justify-center px-5 text-white">
+          CHECK-OUT DATE
+        </div>
+        <div className="flex items-center justify-center px-5 text-white">
+          GUESTS
+        </div>
+        <div className="flex items-center justify-center px-5 text-white">
+          BILL
+        </div>
+        <div className="flex items-center justify-center px-5 text-white">
+          STATUS
+        </div>
+        <div className="flex items-center justify-center px-5 text-white">
+          ACTION
+        </div>
+      </div>
+      {bookingData.length > 0 ? (
+        <>
           {bookingData.map((book, i) => {
             return (
-              <TableRow key={i}>
-                <TableCell>
+              <div
+                className="my-5 grid h-[50px] grid-cols-[25%_18%_18%_9%_10%_10%_10%] px-2 text-sm"
+                key={i}
+              >
+                <div className="flex items-center justify-center">
                   <div className="m-2 flex flex-row">
                     <Avatar
                       name={getInitials(
@@ -231,30 +230,53 @@ const ListingBookingsTable: React.FC<{
                       <span className="text-xs">{book.user.email}</span>
                     </div>
                   </div>
-                </TableCell>
-                <TableCell>
+                </div>
+                <div className="flex items-center justify-center">
                   {new Date(book.start_date).toDateString()}
-                </TableCell>
-                <TableCell>{new Date(book.end_date).toDateString()}</TableCell>
-                <TableCell>{book.number_of_guests}</TableCell>
-                <TableCell>₱ {book.total_price}</TableCell>
-                <TableCell>
+                </div>
+                <div className="flex items-center justify-center">
+                  {new Date(book.end_date).toDateString()}
+                </div>
+                <div className="flex items-center justify-center">
+                  {book.number_of_guests}
+                </div>
+                <div className="flex items-center justify-center">
+                  ₱ {book.total_price}
+                </div>
+                <div className="flex items-center justify-center">
                   <div className="flex justify-center">
                     <StatusChip status={book.status} />
                   </div>
-                </TableCell>
-                <TableCell>
+                </div>
+                <div className="flex items-center justify-center">
                   <BookingActions
                     status={book.status}
                     id={book.id}
                     setActionDone={setActionDone}
                   />
-                </TableCell>
-              </TableRow>
+                </div>
+              </div>
             );
           })}
-        </TableBody>
-      </Table>
+
+          <Pagination
+            isCompact
+            className="m-3 flex justify-center"
+            showControls
+            showShadow
+            color="primary"
+            page={pagination.current_page}
+            total={Math.ceil(pagination.total / pagination.per_page)}
+            onChange={(page) => {
+              setPage(page);
+            }}
+          />
+        </>
+      ) : (
+        <p className="m-10 flex justify-center text-neutral-400">
+          No bookings to display.
+        </p>
+      )}
     </div>
   );
 };

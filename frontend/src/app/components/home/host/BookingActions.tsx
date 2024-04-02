@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TrashIcon from "../../svgs/TrashIcon";
 import RejectIcon from "../../svgs/Booking/RejectIcon";
 import AcceptIcon from "../../svgs/Booking/AcceptIcon";
-import { Button } from "@nextui-org/react";
+import { Button, Tooltip } from "@nextui-org/react";
 import {
   bookingAction,
   cancelBooking
@@ -53,24 +53,41 @@ const BookingActions: React.FC<BookingActionsProps> = ({
   return (
     <>
       {status === "Done" || status === "Cancelled" || status === "Refused" ? (
-        <Button
-          className="bg-white text-danger-500"
-          isIconOnly
-          onClick={handleCancel}
-          isDisabled={isLoading}
-        >
-          <TrashIcon />
-        </Button>
-      ) : status === "Pending" ? (
-        <div className="flex flex-row justify-between">
+        <Tooltip content="Remove" placement="right-end">
           <Button
-            className="bg-white text-success-500"
+            className="bg-white text-danger-500"
             isIconOnly
-            onClick={handleAccept}
+            onClick={handleCancel}
             isDisabled={isLoading}
           >
-            <AcceptIcon />
+            <TrashIcon />
           </Button>
+        </Tooltip>
+      ) : status === "Pending" ? (
+        <div className="flex flex-row justify-between">
+          <Tooltip content="Accept" placement="right-end">
+            <Button
+              className="bg-white text-success-500"
+              isIconOnly
+              onClick={handleAccept}
+              isDisabled={isLoading}
+            >
+              <AcceptIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip content="Reject" placement="right-end">
+            <Button
+              className="bg-white text-danger-500"
+              isIconOnly
+              isDisabled={isLoading}
+              onClick={handleReject}
+            >
+              <RejectIcon />
+            </Button>
+          </Tooltip>
+        </div>
+      ) : (
+        <Tooltip content="Reject" placement="right-end">
           <Button
             className="bg-white text-danger-500"
             isIconOnly
@@ -79,16 +96,7 @@ const BookingActions: React.FC<BookingActionsProps> = ({
           >
             <RejectIcon />
           </Button>
-        </div>
-      ) : (
-        <Button
-          className="bg-white text-danger-500"
-          isIconOnly
-          isDisabled={isLoading}
-          onClick={handleReject}
-        >
-          <RejectIcon />
-        </Button>
+        </Tooltip>
       )}
     </>
   );
