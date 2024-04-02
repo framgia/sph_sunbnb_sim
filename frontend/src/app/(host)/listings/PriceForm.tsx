@@ -21,15 +21,15 @@ const PriceForm: React.FC<PriceFormProps> = ({ data, setData, error }) => {
           className="mt-4"
           startContent="₱"
           variant="bordered"
-          placeholder="0"
+          placeholder="0.00"
           isInvalid={error.hasError === true && data.price < 1}
           value={data.price.toString() === "0" ? "" : data.price.toString()}
           onChange={(e) => {
-            const inputValue = e.target.value;
-            if (inputValue === "0" || inputValue === "") {
+            const inputValue = parseFloat(e.target.value);
+            if (!isNaN(inputValue)) {
+              setData({ ...data, price: inputValue });
+            } else {
               setData({ ...data, price: 0 });
-            } else if (!isNaN(parseInt(inputValue))) {
-              setData({ ...data, price: parseInt(inputValue) });
             }
           }}
         />

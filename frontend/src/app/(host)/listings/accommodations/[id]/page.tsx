@@ -42,6 +42,7 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
             accomodationName={accData.name}
             type={accData.listable.type}
             city={accData.city}
+            price={accData.price}
             guests={accData.maximum_guests}
             bedrooms={accData.listable.bedroom_count}
             beds={accData.listable.bed_count}

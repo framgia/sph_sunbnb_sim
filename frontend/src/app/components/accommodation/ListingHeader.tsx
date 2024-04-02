@@ -18,6 +18,7 @@ interface ListingHeaderProps {
   maximumNights: number;
   type: string;
   city: string;
+  price: number;
   hostName: string;
   createdAt: string;
   modifiedAt: string;
@@ -36,6 +37,7 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
   maximumNights,
   type,
   city,
+  price,
   address,
   hostName,
   createdAt,
@@ -48,13 +50,13 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
   }
   return (
     <div>
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between">
         <div className="flex flex-row">
-          <span className="text-lg font-bold leading-7">
+          <span className="text-2xl font-bold leading-7">
             {accomodationName}
           </span>
           {(await checkIsHost()) && (
-            <div className="mx-2">
+            <div className="mx-4">
               <StatusChip status={status} />
             </div>
           )}
@@ -92,9 +94,13 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
         </div>
       </div>
       <div className="mb-10">
-        <div className="mb-1 text-xl font-semibold leading-7">
-          {type} in {city}
+        <div className="mb-1 flex justify-between text-xl font-semibold leading-7">
+          <span>
+            {type} in {city}
+          </span>
+          <span>₱{price}</span>
         </div>
+
         <div className="mb-1 text-base leading-6 text-zinc-500">
           {guests > 1 ? guests + " Guests" : "1 Guest"} •{" "}
           {bedrooms > 1 ? bedrooms + " Bedrooms" : "1 Bedroom"} •{" "}
