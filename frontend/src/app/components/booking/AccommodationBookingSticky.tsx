@@ -175,20 +175,20 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
         {nights > 0 ? (
           <>
             <div className="mb-5 flex justify-between">
-              <div>
-                <span className="text-lg underline">₱ {price}</span>
-                <span className="text-md"> x {nights} nights </span>
+              <div className="underline">
+                <span className="text-md">₱ {price}</span>
+                <span className="text-sm"> x {nights} nights </span>
               </div>
               <div>
-                <span className="text-lg">₱ {price * nights}</span>
+                <span className="text-md font-bold">₱ {price * nights}</span>
               </div>
             </div>
 
             <div className="flex w-full flex-col">
-              <span className="text-center text-sm font-semibold">
+              <span className="text-center text-xs font-semibold">
                 Sunbnb Service Fee
               </span>
-              <span className="text-center text-sm font-semibold">
+              <span className="text-center text-xs font-semibold">
                 Included
               </span>
             </div>
@@ -197,7 +197,7 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
           <></>
         )}
       </div>
-      <div className="flex w-full cursor-pointer flex-row items-center justify-center hover:underline">
+      <div className="mt-3 flex w-full cursor-pointer flex-row items-center justify-center hover:underline">
         <FlagIcon />{" "}
         <span className="mx-2 text-center text-sm font-semibold">
           Report this listing
