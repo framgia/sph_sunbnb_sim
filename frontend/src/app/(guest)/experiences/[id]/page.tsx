@@ -11,6 +11,7 @@ import React from "react";
 import { redirect } from "next/navigation";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { ListingStatus } from "@/app/utils/enums";
+import { getListingType } from "@/app/utils/helpers/getListingType";
 
 interface GuestExperienceDetailsProps {
   params: { id: number };
@@ -34,7 +35,7 @@ const GuestExperienceDetailsPage: React.FC<
   //  accommodation in experience details page
   if (
     expData === undefined ||
-    expData.listable_type.split("\\")[2] === "Accommodation" ||
+    getListingType(expData.listable_type) === "accommodation" ||
     expData.status !== ListingStatus.ACTIVE
   ) {
     redirect("/not-found");
