@@ -33,7 +33,6 @@ const GuestAccommodationsDetails: React.FC<
     redirect("/not-found");
   }
 
-  //  check if listable type of listing received is an experience or somewhat undefined to avoid passing experience in accommodation details page
   if (
     getListingType(accData.listable_type) === "experience" ||
     getListingType(accData.listable_type) === undefined ||
@@ -86,6 +85,7 @@ const GuestAccommodationsDetails: React.FC<
             images={accData.media}
             id={Number(params.id)}
             status={accData.status}
+            price={accData.price}
           />
           <div className="flex h-fit flex-row items-start">
             <div className="w-full">

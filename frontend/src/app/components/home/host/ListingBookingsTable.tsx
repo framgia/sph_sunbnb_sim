@@ -7,13 +7,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Input,
-  Pagination,
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow
+  Pagination
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import StatusChip from "../../StatusChip";
@@ -51,13 +45,6 @@ const ListingBookingsTable: React.FC<{
     to: 1
   });
   const [page, setPage] = React.useState(1);
-
-  const classNames = React.useMemo(
-    () => ({
-      th: ["bg-primary-600", "text-white"]
-    }),
-    []
-  );
 
   useEffect(() => {
     async function fetchData(): Promise<void> {

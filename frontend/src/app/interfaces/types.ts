@@ -56,8 +56,6 @@ export interface JwtPayloadwithUser extends JwtPayload {
   user: UserSessionType;
 }
 
-// Listing
-
 export interface Accommodation {
   id: number;
   type: AccommodationType;
@@ -148,6 +146,11 @@ export interface AccommodationReviewData {
 export interface ExperienceReviewData {
   overall_rating: number;
   comment: string;
+}
+
+export interface ReviewResponse {
+  listings: ReviewType[];
+  pagination: PaginationType;
 }
 
 // Booking
