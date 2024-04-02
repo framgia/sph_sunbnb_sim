@@ -2,7 +2,7 @@
 import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
 import ReviewSection from "@/app/components/review/ReviewSection";
-import type { Listing_Experience } from "@/app/interfaces/types";
+import type { ExperienceListing } from "@/app/interfaces/types";
 
 import { getExperience } from "@/app/utils/helpers/experience/request";
 import { getListingType } from "@/app/utils/helpers/getListingType";
@@ -19,7 +19,7 @@ interface ExperienceDetailsProps {
 const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
   params
 }) => {
-  const expData: Listing_Experience = await getExperience(params.id);
+  const expData: ExperienceListing = await getExperience(params.id);
 
   if (
     expData === undefined ||

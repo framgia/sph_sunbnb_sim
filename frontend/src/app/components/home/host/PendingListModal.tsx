@@ -6,7 +6,6 @@ import type { Listing } from "@/app/interfaces/types";
 import { getListingType } from "@/app/utils/helpers/getListingType";
 
 interface PendingListModalProps extends ModalProps {
-  //  Replace with type Listing on integration
   cards: Listing[];
 }
 
