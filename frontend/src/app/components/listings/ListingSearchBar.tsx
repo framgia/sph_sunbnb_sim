@@ -34,6 +34,7 @@ import {
   ListingType,
   UserRole
 } from "@/app/utils/enums";
+import { formatDate } from "@/app/utils/date";
 
 const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
   const [filters, setFilters] = useState<ListingFilter>(INITIAL_FILTER);
@@ -67,14 +68,16 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
     else params.delete(`${prefix}rating`);
 
     if (
+      filters.date[0].startDate !== undefined &&
       filters.date[0].startDate !== MIN_DATE &&
       filters.date[0].endDate !== undefined
-    )
+    ) {
+      console.log(filters.date[0].startDate);
       params.set(
         `${prefix}date`,
-        `${filters.date[0].startDate.toISOString().slice(0, 10)}:${filters.date[0].endDate.toISOString().slice(0, 10)}`
+        `${formatDate(filters.date[0].startDate)}:${formatDate(filters.date[0].endDate)}`
       );
-    else params.delete(`${prefix}date`);
+    } else params.delete(`${prefix}date`);
 
     if (filters.status !== "all") params.set(`${prefix}status`, filters.status);
     else params.delete(`${prefix}status`);
@@ -230,18 +233,11 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
             <PopoverContent>
               <DateRange
                 onChange={(date) => {
-                  if (date.selection.startDate !== undefined) {
-                    setFilters({
-                      ...filters,
-                      date: [
-                        {
-                          startDate: date.selection.startDate,
-                          endDate: date.selection.endDate,
-                          key: "selection"
-                        }
-                      ]
-                    });
-                  }
+                  console.log(date);
+                  setFilters({
+                    ...filters,
+                    date: [date.selection]
+                  });
                 }}
                 moveRangeOnFirstSelection={false}
                 ranges={filters.date}

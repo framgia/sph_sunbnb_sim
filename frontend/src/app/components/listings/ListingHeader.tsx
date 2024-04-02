@@ -9,7 +9,7 @@ import ExperienceTypes from "../experience/ExperienceTypes";
 const ListingHeader: React.FC<ListingHeaderProps> = ({ user, type }) => {
   return (
     <div className="my-5 mt-[-20px] flex flex-col">
-      <div className="bg-primary py-10 text-center text-4xl font-bold uppercase text-white">
+      <div className="mx-[-9999px] bg-primary py-10 text-center text-4xl font-bold uppercase text-white">
         {`${type}S`}
       </div>
       <ListingSearchBar user={user} type={type} />
