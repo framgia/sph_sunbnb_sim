@@ -150,6 +150,11 @@ export interface ExperienceReviewData {
   comment: string;
 }
 
+export interface ReviewResponse {
+  listings: ReviewType[];
+  pagination: PaginationType;
+}
+
 // Booking
 
 export interface Booking {

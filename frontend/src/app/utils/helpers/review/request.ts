@@ -3,7 +3,7 @@ import config from "@/app/config/config";
 import type {
   AccommodationReviewData,
   ExperienceReviewData,
-  ReviewType
+  ReviewResponse
 } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 
@@ -17,15 +17,21 @@ function setHeaders(): Record<string, string> {
   };
 }
 
-async function getReviews(id: number): Promise<ReviewType[]> {
-  const response = await fetch(`${config.backendUrl}/review/${id}`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json", Accept: "application/json" }
-  });
+async function getReviews(id: number, page?: number): Promise<ReviewResponse> {
+  const response = await fetch(
+    `${config.backendUrl}/review/${id}?page=${page ?? 1}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    }
+  );
 
   const responseData = await response.json();
   if (response.ok) {
-    return responseData.listings;
+    return responseData;
   } else throw new Error(responseData.error as string);
 }
 
