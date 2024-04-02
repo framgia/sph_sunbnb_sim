@@ -21,8 +21,11 @@ const GuestExperienceDetailsPage: React.FC<
 > = async ({ params }) => {
   const user = await checkCookies();
   const expData: Listing_Experience = await getPublicExperience(params.id);
-  const expAvailability: CalendarDate[] =
-    (await getListingAvailability(params.id)) ?? [];
+  let expAvailability: CalendarDate[] = [];
+  if (user !== undefined && user !== null) {
+    expAvailability = await getListingAvailability(Number(params.id)) ?? [];
+  }
+  
 
   let blockedDates: Date[] = [];
   if (expAvailability !== undefined && expAvailability !== null) {
