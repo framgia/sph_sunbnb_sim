@@ -3,6 +3,7 @@ import ListingHeader from "@/app/components/accommodation/ListingHeader";
 import ReviewSection from "@/app/components/review/ReviewSection";
 import { getAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { getListingType } from "@/app/utils/helpers/getListingType";
+import { checkCookies } from "@/app/utils/helpers/userHelper";
 import { Divider } from "@nextui-org/react";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -16,6 +17,7 @@ interface ListingDetailsPageProps {
 const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
   params
 }) => {
+  const user = await checkCookies();
   let accData;
   try {
     accData = await getAccommodation(Number(params.id));
@@ -25,7 +27,8 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
 
   if (
     getListingType(accData.listable_type) === "experience" ||
-    getListingType(accData.listable_type) === undefined
+    getListingType(accData.listable_type) === undefined ||
+    user?.id !== accData.user.id
   ) {
     redirect("/not-found");
   }

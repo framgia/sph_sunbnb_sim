@@ -6,6 +6,7 @@ import type { Listing_Experience } from "@/app/interfaces/types";
 
 import { getExperience } from "@/app/utils/helpers/experience/request";
 import { getListingType } from "@/app/utils/helpers/getListingType";
+import { checkCookies } from "@/app/utils/helpers/userHelper";
 import { Divider } from "@nextui-org/react";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -19,12 +20,14 @@ interface ExperienceDetailsProps {
 const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
   params
 }) => {
+  const user = await checkCookies();
   const expData: Listing_Experience = await getExperience(params.id);
 
   if (
     expData === undefined ||
     getListingType(expData.listable_type) === "accommodation" ||
-    getListingType(expData.listable_type) === undefined
+    getListingType(expData.listable_type) === undefined ||
+    user?.id !== expData.user.id
   ) {
     redirect("/not-found");
   }
