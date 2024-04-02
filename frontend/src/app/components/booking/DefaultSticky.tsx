@@ -13,7 +13,7 @@ const DefaultSticky: React.FC<DefaultStickyProps> = ({ ForAccommodation }) => {
       <div className="w-80">
         <div className="mb-1 w-full rounded-xl border border-1 border-black p-5 shadow-lg">
           <div className="flex w-full justify-center p-2">
-            <span className="w-full text-center text-2xl font-bold">
+            <span className="w-full text-center text-lg font-bold">
               You must login to book{" "}
               {ForAccommodation ? "accommodations" : "experiences"}.
             </span>
