@@ -98,7 +98,7 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
           <span>
             {type} in {city}
           </span>
-          <span>₱{price}</span>
+          {(await checkIsHost()) && <span>₱{price}</span>}
         </div>
 
         <div className="mb-1 text-base leading-6 text-zinc-500">
