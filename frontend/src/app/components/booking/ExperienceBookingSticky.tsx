@@ -205,7 +205,7 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
           )}
         </>
       </div>
-      <div className="flex w-full cursor-pointer flex-row items-center justify-center hover:underline">
+      <div className=" mt-3 flex w-full cursor-pointer flex-row items-center justify-center hover:underline">
         <FlagIcon />{" "}
         <span className="mx-2 text-center text-sm font-semibold">
           Report this listing

@@ -11,6 +11,7 @@ import PriceForm from "../../PriceForm";
 import ListingUploader from "@/app/components/accommodation/ListingUploader";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import AccommodationAddressForm from "@/app/components/accommodation/AccommodationAddressForm";
+import { useRouter } from "next/navigation";
 
 interface NewListingProps {
   onPress: () => void;
@@ -31,6 +32,7 @@ const NewListingForm: React.FC<NewListingProps> = ({
   loading,
   error
 }) => {
+  const router = useRouter();
   return (
     <section className="flex w-full flex-col px-5">
       <header className="w-full text-left text-lg font-semibold leading-7 text-black max-md:max-w-full">
@@ -83,6 +85,9 @@ const NewListingForm: React.FC<NewListingProps> = ({
         <Button
           isDisabled={loading}
           className="grow justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5"
+          onPress={() => {
+            router.back();
+          }}
         >
           Cancel
         </Button>

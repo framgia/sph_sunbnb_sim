@@ -21,22 +21,15 @@ const PendingListingCard: React.FC<PendingListingProps> = ({
   }
   return (
     <div className="flex h-20 w-40 flex-row justify-between rounded-xl border-1 border-foreground-300 p-2">
-      <div className="flex flex-col justify-center px-2">
-        <div>
-          <span className="line-clamp-1 text-sm">{listingName}</span>
+      <div className="flex w-3/4 flex-col justify-center px-2">
+        <div className="truncate text-sm">
+          <span>{listingName}</span>
         </div>
-        <div
-          onClick={handleClick}
-        >
-          <span
-            
-            className="cursor-pointer text-xs underline"
-          >
-            View
-          </span>
+        <div onClick={handleClick}>
+          <span className="cursor-pointer text-xs underline">View</span>
         </div>
       </div>
-      <div className="self-center px-2 text-primary-500">
+      <div className="w-1/4 self-center text-primary-500">
         <WatchIconSm />
       </div>
     </div>
