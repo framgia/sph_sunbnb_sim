@@ -44,7 +44,6 @@ async function createAccommodationReview(
     );
 
     const responseData = await response.json();
-
     if (response.ok) {
       return {
         hasError: false,

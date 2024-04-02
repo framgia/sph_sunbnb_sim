@@ -120,16 +120,23 @@ const ListingBookingsTable: React.FC<{
           <Dropdown>
             <DropdownTrigger>
               <Button
-                className="mx-2 w-40"
+                className="mx-2 line-clamp-1 w-40"
                 radius="sm"
                 variant="solid"
                 color="primary"
                 endContent={<ChevronDownIcon />}
               >
-                {listings.length > 0
-                  ? listings.find((item) => item.id === Number(currentListing))
-                      ?.name
-                  : "No Active Listing"}
+                {listings.length > 0 ? (
+                  <p className="truncate">
+                    {
+                      listings.find(
+                        (item) => item.id === Number(currentListing)
+                      )?.name
+                    }
+                  </p>
+                ) : (
+                  "No Active Listing"
+                )}
               </Button>
             </DropdownTrigger>
             <DropdownMenu
@@ -139,7 +146,9 @@ const ListingBookingsTable: React.FC<{
               }}
             >
               {listings.map((listing) => (
-                <DropdownItem key={listing.id}>{listing.name}</DropdownItem>
+                <DropdownItem key={listing.id}>
+                  <span className="line-clamp-1 w-full">{listing.name}</span>
+                </DropdownItem>
               ))}
             </DropdownMenu>
           </Dropdown>

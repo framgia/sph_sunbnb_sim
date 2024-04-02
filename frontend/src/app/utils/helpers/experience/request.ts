@@ -3,7 +3,8 @@ import config from "@/app/config/config";
 import type { MediaUpdate } from "@/app/interfaces/AccomodationData";
 import type {
   PaginatedListing,
-  ExperienceListing
+  ExperienceListing,
+  Listing_Experience
 } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 import { checkCookies } from "../userHelper";
@@ -55,6 +56,20 @@ async function createExperience(
           : "An unexpected error occurred. Please contact the administrator."
     };
   }
+}
+
+async function getPublicExperience(id: number): Promise<Listing_Experience> {
+  const response = await fetch(`${config.backendUrl}/listing/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    }
+  });
+  const responseData = await response.json();
+  if (response.ok) {
+    return responseData.listing;
+  } else throw new Error(responseData.error as string);
 }
 
 async function getExperience(id: number): Promise<ExperienceListing> {
@@ -243,5 +258,6 @@ export {
   updateExperience,
   deleteExperience,
   getExperiencesByUser,
-  getPublicExperiences
+  getPublicExperiences,
+  getPublicExperience
 };

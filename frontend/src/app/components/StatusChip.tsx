@@ -14,6 +14,10 @@ const StatusChip: React.FC<{ status: string }> = ({ status }) => {
         return "warning";
       case "refused":
         return "secondary";
+      case "active":
+        return "success";
+      case "rejected":
+        return "warning";
       default:
         return "default";
     }

@@ -5,6 +5,7 @@ import type { MediaType } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import ToEditButton from "@/app/components/ToEditButton";
 import { userRole } from "@/app/utils/helpers/userHelper";
+import StatusChip from "../StatusChip";
 
 interface ListingHeaderProps {
   id: number;
@@ -22,6 +23,7 @@ interface ListingHeaderProps {
   modifiedAt: string;
   address: string;
   images: MediaType[];
+  status: string;
 }
 const ListingHeader: React.FC<ListingHeaderProps> = async ({
   id,
@@ -38,7 +40,8 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
   hostName,
   createdAt,
   modifiedAt,
-  images
+  images,
+  status
 }) => {
   async function checkIsHost(): Promise<boolean> {
     return (await userRole()) === "host";
@@ -46,10 +49,15 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
-        <div>
+        <div className="flex flex-row">
           <span className="text-lg font-bold leading-7">
             {accomodationName}
           </span>
+          {(await checkIsHost()) && (
+            <div className="mx-2">
+              <StatusChip status={status} />
+            </div>
+          )}
         </div>
         {(await checkIsHost()) && (
           <div>
