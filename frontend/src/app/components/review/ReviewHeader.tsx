@@ -30,11 +30,11 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
     <div className="border-b-1 border-foreground-300">
       <div className="flex w-full flex-row divide-x-2">
         <div
-          className={`flex flex-col px-5 pb-5 ${listingType === "accommodation" ? "w-1/4" : "w-full"}`}
+          className={`flex flex-col px-5 pb-5 ${listingType === "accommodation" ? "h-20 w-1/4" : "w-full"}`}
         >
-          <span className="mb-2 py-2 text-xl">Overall Rating</span>
+          <span className="text-md mb-2 py-2">Overall Rating</span>
           <div className="flex w-full flex-row items-center ">
-            <div className="mr-2">5</div>
+            <div className="mr-2 text-sm">5</div>
             <div className="flex w-full justify-center ">
               <Progress
                 className="w-3/4 self-center"
@@ -47,7 +47,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
             </div>
           </div>
           <div className="flex w-full flex-row items-center">
-            <div className="mr-2">4</div>
+            <div className="mr-2 text-sm">4</div>
             <div className="flex w-full justify-center ">
               <Progress
                 className="w-3/4 self-center"
@@ -60,7 +60,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
             </div>
           </div>
           <div className="flex w-full flex-row items-center">
-            <div className="mr-2">3</div>
+            <div className="mr-2 text-sm">3</div>
             <div className="flex w-full justify-center ">
               <Progress
                 size="sm"
@@ -73,7 +73,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
             </div>
           </div>
           <div className="flex w-full flex-row items-center">
-            <div className="mr-2">2</div>
+            <div className="mr-2 text-sm">2</div>
             <div className="flex w-full justify-center ">
               <Progress
                 size="sm"
@@ -86,7 +86,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
             </div>
           </div>
           <div className="flex w-full flex-row items-center">
-            <div className="mr-2">1</div>
+            <div className="mr-2 text-sm">1</div>
             <div className="flex w-full justify-center ">
               <Progress
                 size="sm"
@@ -101,26 +101,26 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
         </div>
         {listingType === "accommodation" && (
           <>
-            <div className="flex w-1/4 flex-col justify-between px-5 py-2">
-              <div className="flex flex-col">
-                <span className="mb-2 text-xl">Cleanliness</span>
-                <div className="text-xl font-bold">
+            <div className="flex w-1/4 flex-col px-5 py-2">
+              <div className="mb-10 flex flex-col">
+                <span className="text-md mb-2">Cleanliness</span>
+                <div className="text-md font-bold">
                   {cleanliness.toFixed(0)}
                 </div>
               </div>
               <CleanlinessIcon />
             </div>
-            <div className="flex w-1/4 flex-col justify-between px-5 py-2">
-              <div className="flex flex-col">
-                <span className="mb-2 text-xl">Value</span>
-                <div className="text-xl font-bold"> {value.toFixed(0)} </div>
+            <div className="flex w-1/4 flex-col px-5 py-2">
+              <div className="mb-10 flex flex-col ">
+                <span className="text-md mb-2">Value</span>
+                <div className="text-md font-bold"> {value.toFixed(0)} </div>
               </div>
               <ValueIcon />
             </div>
-            <div className="flex w-1/4 flex-col justify-between px-5 py-2">
-              <div className="flex flex-col">
-                <span className="mb-2 text-xl">Location</span>
-                <div className="text-xl font-bold"> {location.toFixed(0)} </div>
+            <div className="flex w-1/4 flex-col px-5 py-2">
+              <div className="mb-10 flex flex-col">
+                <span className="text-md mb-2">Location</span>
+                <div className="text-md font-bold"> {location.toFixed(0)} </div>
               </div>
               <LocationIcon />
             </div>
