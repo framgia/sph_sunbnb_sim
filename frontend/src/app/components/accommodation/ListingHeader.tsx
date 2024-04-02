@@ -108,7 +108,7 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
           {bathrooms > 1 ? bathrooms + " Bathrooms" : "1 Bath"} •{" "}
           {minimumNights}-{maximumNights} days only
         </div>
-        <div className="mb-1 text-xs font-semibold leading-4">{address}</div>
+        <div className="mb-1 text-sm font-semibold leading-4">{address}</div>
       </div>
       <div className="flex flex-row">
         <Avatar

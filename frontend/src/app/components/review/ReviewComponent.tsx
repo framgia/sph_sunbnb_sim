@@ -23,8 +23,8 @@ const ReviewComponent: React.FC<ReviewComponentProps> = ({
           <Avatar name={getInitials(name)} />
         </div>
         <div className="flex flex-col p-1 pl-2">
-          <span className="text-xl">{name}</span>
-          <span className="text-sm font-light leading-5 text-foreground-500">
+          <span className="text-sm font-bold">{name}</span>
+          <span className="text-xs font-light leading-5 text-foreground-500">
             {formatTimestamp(date)}
           </span>
         </div>
@@ -32,7 +32,7 @@ const ReviewComponent: React.FC<ReviewComponentProps> = ({
       <div className="my-2">
         <StarComponent score={Math.round(rating)} />
       </div>
-      <div className="line-clamp-3">{comment}</div>
+      <div className="line-clamp-3 text-sm">{comment}</div>
     </div>
   );
 };

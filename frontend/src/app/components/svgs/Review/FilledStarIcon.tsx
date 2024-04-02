@@ -6,7 +6,7 @@ const FilledStarIcon: React.FC = () => {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="h-6 w-6"
+      className="h-5 w-5"
     >
       <path
         fillRule="evenodd"
