@@ -2,7 +2,7 @@
 import {
   type AvailabilityListing,
   type AvailabilityCalendarProps
-} from "@/app/interfaces/AvailabilityCalendarProps";
+} from "@/app/interfaces/CalendarProps";
 import React, { useEffect, useState } from "react";
 import ListingsDropdown from "./ListingsDropdown";
 import Calendar from "./Calendar";

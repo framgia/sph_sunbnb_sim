@@ -1,4 +1,4 @@
-import { type CalendarDateButtonProps } from "@/app/interfaces/CalendarDateButtonProps";
+import { type CalendarDateButtonProps } from "@/app/interfaces/CalendarProps";
 import { Button } from "@nextui-org/react";
 import React, { useMemo } from "react";
 
@@ -18,7 +18,9 @@ const CalendarDateButton: React.FC<CalendarDateButtonProps> = ({
   const base = "text-lg font-medium w-full";
   const notCurrentMonth = !isCurrentMonth ? "text-gray-400" : "text-black";
   const pastDate = isCurrentMonth && date < today ? "disabled:bg-gray-200" : "";
-  const selectedDate = isSelectedDate ? "text-white" : "bg-white hover:bg-primary-50 hover:text-primary";
+  const selectedDate = isSelectedDate
+    ? "text-white"
+    : "bg-white hover:bg-primary-50 hover:text-primary";
   const blockedDate = isBlockedDate ? "line-through" : "";
 
   return (

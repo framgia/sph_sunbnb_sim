@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Tab, Tabs } from "@nextui-org/react";
 import { formatCurrency } from "@/app/utils/currency";
-import { type AvailabilitySidebarProps } from "@/app/interfaces/AvailabilitySidebarProps";
+import { type AvailabilitySidebarProps } from "@/app/interfaces/CalendarProps";
 import { isSameDay } from "@/app/utils/helpers/availability/calendar";
 import { updateListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { type CalendarDate } from "@/app/interfaces/types";
