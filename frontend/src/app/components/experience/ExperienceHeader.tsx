@@ -16,6 +16,7 @@ interface ExperienceHeaderProps {
   barangay: string;
   city: string;
   type: string;
+  price: number;
   zipCode: number;
   languages: string[];
   startTime: string;
@@ -34,6 +35,7 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
   barangay,
   city,
   type,
+  price,
   zipCode,
   languages,
   startTime,
@@ -59,11 +61,11 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
 
   return (
     <div>
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between">
         <div className="flex">
-          <span className="text-lg font-bold leading-7">{experienceName}</span>
+          <span className="text-2xl font-bold leading-7">{experienceName}</span>
           {(await checkIsHost()) && (
-            <div>
+            <div className="mx-4">
               <StatusChip status={status} />
             </div>
           )}
@@ -103,8 +105,11 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
         </div>
       </div>
       <div className="mb-10">
-        <div className="mb-1 text-xl font-semibold leading-7">
-          {street}, {barangay}, {city}, {zipCode}
+        <div className="mb-1 flex justify-between text-xl font-semibold leading-7">
+          <span>
+            {street}, {barangay}, {city}, {zipCode}
+          </span>
+          {(await checkIsHost()) && <span>₱{price}</span>}
         </div>
         <div className="mb-1 text-base leading-6 text-zinc-500">
           {type} •{" "}
