@@ -11,15 +11,7 @@ import type {
 } from "../utils/enums";
 import { type Range } from "react-date-range";
 
-export interface MediaType {
-  id: number;
-  listing_id: number;
-  media: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at?: string | null;
-}
-
+// User
 export interface UserRegisterType {
   first_name: string;
   last_name: string;
@@ -39,12 +31,6 @@ export interface UserSessionType {
   status: "active" | "banned";
 }
 
-export interface PasswordUpdateType {
-  current_password: string;
-  new_password: string;
-  new_password_confirmation: string;
-}
-
 export interface UserDetailsType {
   id: number;
   first_name: string;
@@ -59,6 +45,18 @@ export interface UserDetailsType {
   updated_at: string;
   deleted_at?: string;
 }
+
+export interface PasswordUpdateType {
+  current_password: string;
+  new_password: string;
+  new_password_confirmation: string;
+}
+
+export interface JwtPayloadwithUser extends JwtPayload {
+  user: UserSessionType;
+}
+
+// Listing
 
 export interface Accommodation {
   id: number;
@@ -100,112 +98,32 @@ export interface Listing {
   zip_code: number;
   price: number;
   maximum_guests: number;
-  listable_type: string;
-  listable_id: number;
   created_at: Date;
   updated_at: Date;
   deleted_at?: Date | null;
-  listable: Accommodation;
   media: MediaType[];
+  listable_type: string;
+  listable_id: number;
 }
 
-export interface ExperienceListing {
-  id: number;
-  user_id: number;
-  user: UserDetailsType;
-  status: ListingStatus;
-  name: string;
-  description: string;
-  province: string;
-  city: string;
-  barangay: string;
-  street: string;
-  zip_code: number;
-  price: number;
-  maximum_guests: number;
-  listable_type: string;
-  listable_id: number;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at?: Date | null;
+export interface ExperienceListing extends Listing {
   listable: Experience;
-  media: MediaType[];
 }
 
-export interface BookingHistoryResponse {
-  pagination: PaginationType;
-  bookings: BookingHistory[];
+export interface AccommodationListing extends Listing {
+  listable: Accommodation;
 }
-export interface BookingHistory {
+
+export interface MediaType {
   id: number;
-  user_id: number;
   listing_id: number;
-  start_date: string;
-  end_date: string;
-  number_of_guests: number;
-  total_price: string;
-  status: BookingStatus;
+  media: string;
   created_at: string;
   updated_at: string;
   deleted_at?: string | null;
-  listing: Listing;
-  reviewed: boolean;
 }
 
-/* Must be created since typing listable as Accommodation | Experience in Listing will only allow 
-  assignment of values overlapping Accommodation and Experience Type  */
-export interface Listing_Experience {
-  id: number;
-  user_id: number;
-  user: UserDetailsType;
-  status: ListingStatus;
-  name: string;
-  description: string;
-  province: string;
-  city: string;
-  barangay: string;
-  street: string;
-  zip_code: number;
-  price: number;
-  maximum_guests: number;
-  listable_type: string;
-  listable_id: number;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at?: Date | null;
-  listable: Experience;
-  media: MediaType[];
-}
-
-export interface PaginationType {
-  current_page: number;
-  per_page: number;
-  total: number;
-  next_page_url: string | null;
-  path: string;
-  prev_page_url: string | null;
-  to: number;
-}
-
-export interface PaginatedListing {
-  listings: Listing[];
-  pagination: PaginationType;
-}
-
-export interface CalendarDate {
-  date: Date | string;
-  available: boolean;
-  booking: {
-    user: {
-      first_name: string;
-      last_name: string;
-    };
-  };
-}
-
-export interface JwtPayloadwithUser extends JwtPayload {
-  user: UserSessionType;
-}
+// Review
 
 export interface ReviewType {
   created_at: string;
@@ -227,11 +145,14 @@ export interface AccommodationReviewData {
   comment: string;
 }
 
-export interface BookingResponse {
-  bookings: BookingType[];
-  pagination: PaginationType;
+export interface ExperienceReviewData {
+  overall_rating: number;
+  comment: string;
 }
-export interface BookingType {
+
+// Booking
+
+export interface Booking {
   id: number;
   user_id: number;
   listing_id: number;
@@ -240,18 +161,58 @@ export interface BookingType {
   number_of_guests: number;
   total_price: number;
   status: BookingStatus;
-  host_deleted: number;
   created_at: string;
   updated_at: string;
-  deleted_at: null;
+  deleted_at?: string | null;
+  host_deleted: number;
+  reviewed: boolean;
+}
+
+export interface BookingType extends Booking {
   user: UserDetailsType;
   pagination: PaginationType;
 }
 
-export interface ExperienceReviewData {
-  overall_rating: number;
-  comment: string;
+export interface BookingHistory extends Booking {
+  listing: Listing;
+  reviewed: boolean;
 }
+
+export interface BookingHistoryResponse {
+  pagination: PaginationType;
+  bookings: BookingHistory[];
+}
+
+export interface BookingResponse {
+  bookings: BookingType[];
+  pagination: PaginationType;
+}
+
+export interface BookingData {
+  start_date: string;
+  end_date: string;
+  number_of_guests: number;
+  listing_id: number;
+}
+
+// Pagination
+
+export interface PaginationType {
+  current_page: number;
+  per_page: number;
+  total: number;
+  next_page_url: string | null;
+  path: string;
+  prev_page_url: string | null;
+  to: number;
+}
+
+export interface PaginatedListing {
+  listings: Listing[];
+  pagination: PaginationType;
+}
+
+// Filter
 
 export interface ListingFilter {
   query: string;
@@ -268,15 +229,21 @@ export interface ListingFilter {
   type: AccommodationType | ExperienceType | "all";
 }
 
-export interface BookingData {
-  start_date: string;
-  end_date: string;
-  number_of_guests: number;
-  listing_id: number;
-}
-
 export interface HostBookingFilters {
   status: string;
   search: string;
   per_page: string;
+}
+
+// Calendar
+
+export interface CalendarDate {
+  date: Date | string;
+  available: boolean;
+  booking: {
+    user: {
+      first_name: string;
+      last_name: string;
+    };
+  };
 }

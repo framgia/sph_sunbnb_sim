@@ -3,8 +3,7 @@ import config from "@/app/config/config";
 import type { MediaUpdate } from "@/app/interfaces/AccomodationData";
 import type {
   PaginatedListing,
-  ExperienceListing,
-  Listing_Experience
+  ExperienceListing
 } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 import { checkCookies } from "../userHelper";
@@ -58,7 +57,7 @@ async function createExperience(
   }
 }
 
-async function getPublicExperience(id: number): Promise<Listing_Experience> {
+async function getPublicExperience(id: number): Promise<ExperienceListing> {
   const response = await fetch(`${config.backendUrl}/listing/${id}`, {
     method: "GET",
     headers: {

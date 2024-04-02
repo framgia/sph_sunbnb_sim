@@ -139,27 +139,40 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
       </div>
       {!isLoading ? (
         filteredBookings.length > 0 ? (
-          filteredBookings.map((booking, i) => (
-            <BookingHistoryData
-              key={i}
-              id={booking.id}
-              listingid={booking.listing.id}
-              type={
-                booking.listing.listable_type.includes("Accommodation")
-                  ? "accommodation"
-                  : "experience"
-              }
-              name={booking.listing.name}
-              checkinDate={booking.start_date}
-              checkoutDate={booking.end_date}
-              price={booking.listing.price}
-              status={booking.status as string}
-              image={booking.listing.media[0].media}
-              reviewed={booking.reviewed}
-              bookings={bookingsState}
-              setbookings={setBookingsState}
+          <>
+            {filteredBookings.map((booking, i) => (
+              <BookingHistoryData
+                key={i}
+                id={booking.id}
+                listingid={booking.listing.id}
+                type={
+                  booking.listing.listable_type.includes("Accommodation")
+                    ? "accommodation"
+                    : "experience"
+                }
+                name={booking.listing.name}
+                checkinDate={booking.start_date}
+                checkoutDate={booking.end_date}
+                price={booking.listing.price}
+                status={booking.status as string}
+                image={booking.listing.media[0].media}
+                reviewed={booking.reviewed}
+                bookings={bookingsState}
+                setbookings={setBookingsState}
+              />
+            ))}
+            <Pagination
+              className="m-3 flex justify-center"
+              isCompact
+              showControls
+              total={Math.ceil(pagination.total / pagination.per_page)}
+              initialPage={1}
+              page={page}
+              onChange={(page) => {
+                setPage(page);
+              }}
             />
-          ))
+          </>
         ) : (
           <div className="flex w-full justify-center">
             <span className=" p-5 text-foreground-500">No bookings found</span>
@@ -170,18 +183,6 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
           <Spinner />
         </div>
       )}
-
-      <Pagination
-        className="flex justify-center"
-        isCompact
-        showControls
-        total={Math.ceil(pagination.total / pagination.per_page)}
-        initialPage={1}
-        page={page}
-        onChange={(page) => {
-          setPage(page);
-        }}
-      />
     </>
   );
 };

@@ -3,7 +3,7 @@ import { Button, Divider, useDisclosure } from "@nextui-org/react";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ChevronLeftIcon from "../svgs/Calendar/ChevronLeftIcon";
 import { useRouter, useSearchParams } from "next/navigation";
-import type { Listing_Experience } from "@/app/interfaces/types";
+import type { ExperienceListing } from "@/app/interfaces/types";
 import Image from "next/image";
 import ThankYouModal from "./ThankYouModal";
 import format from "date-fns/format";
@@ -11,7 +11,7 @@ import { createBooking } from "@/app/utils/helpers/booking/request";
 import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
 
 interface ExperienceBookingConfirmProps {
-  listing: Listing_Experience;
+  listing: ExperienceListing;
   excluded: Date[];
 }
 const ExperienceBookingConfirm: React.FC<ExperienceBookingConfirmProps> = ({

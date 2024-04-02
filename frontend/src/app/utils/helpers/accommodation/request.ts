@@ -4,7 +4,10 @@ import type {
   Accommodation,
   MediaUpdate
 } from "@/app/interfaces/AccomodationData";
-import { type PaginatedListing, type Listing } from "@/app/interfaces/types";
+import {
+  type PaginatedListing,
+  type AccommodationListing
+} from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 import { checkCookies } from "../userHelper";
 
@@ -56,7 +59,7 @@ async function createAccommodation(
   }
 }
 
-async function getAccommodation(id: number): Promise<Listing> {
+async function getAccommodation(id: number): Promise<AccommodationListing> {
   const response = await fetch(`${config.backendUrl}/listing/${id}`, {
     method: "GET",
     headers: setHeaders()
@@ -68,7 +71,9 @@ async function getAccommodation(id: number): Promise<Listing> {
   } else throw new Error(responseData.error as string);
 }
 
-async function getPublicAccommodation(id: number): Promise<Listing> {
+async function getPublicAccommodation(
+  id: number
+): Promise<AccommodationListing> {
   const response = await fetch(`${config.backendUrl}/listing/${id}`, {
     method: "GET",
     headers: {
