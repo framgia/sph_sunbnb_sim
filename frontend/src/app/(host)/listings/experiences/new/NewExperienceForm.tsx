@@ -13,6 +13,7 @@ import LanguagesListbox from "@/app/components/experience/LanguagesListbox";
 import type { ExperienceData } from "@/app/interfaces/ExperienceData";
 import ExperienceAddressForm from "@/app/components/experience/ExperienceAddressForm";
 import ExperiencePriceForm from "@/app/components/experience/ExperiencePriceForm";
+import { useRouter } from "next/navigation";
 
 interface NewExperienceFormProps {
   onPress: () => void;
@@ -33,6 +34,7 @@ const NewExperienceForm: React.FC<NewExperienceFormProps> = ({
   setMedia,
   error
 }) => {
+  const router = useRouter();
   return (
     <section className="flex w-full flex-col px-5">
       <header className="w-full text-left text-lg font-semibold leading-7 text-black max-md:max-w-full">
@@ -139,6 +141,15 @@ const NewExperienceForm: React.FC<NewExperienceFormProps> = ({
         )}
       </div>
       <div className="mt-16 flex gap-5 self-end whitespace-nowrap text-sm leading-5">
+        <Button
+          isDisabled={loading}
+          className="grow justify-center rounded-lg bg-zinc-200 px-7 py-2.5 text-black max-md:px-5"
+          onPress={() => {
+            router.back();
+          }}
+        >
+          Cancel
+        </Button>
         <Button
           className="grow justify-center rounded-lg bg-primary-600 px-7 py-2.5 font-bold text-white drop-shadow-sm max-md:px-5"
           onPress={onPress}
