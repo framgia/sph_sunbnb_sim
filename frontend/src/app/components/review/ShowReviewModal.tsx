@@ -1,11 +1,5 @@
 import type { ModalProps } from "@/app/interfaces/ModalProps";
-import {
-  Avatar,
-  Button,
-  Modal,
-  ModalContent,
-  useDisclosure
-} from "@nextui-org/react";
+import { Avatar, Modal, ModalContent } from "@nextui-org/react";
 import React from "react";
 import StarComponent from "./StarsComponent";
 import { getInitials } from "@/app/utils/helpers/getInitials";
@@ -27,8 +21,6 @@ const ShowReviewModal: React.FC<ReviewModalProps> = ({
   rating,
   comment
 }) => {
-  const {} = useDisclosure();
-
   return (
     <div>
       <Modal size={size} isOpen={isOpen} onClose={onClose}>

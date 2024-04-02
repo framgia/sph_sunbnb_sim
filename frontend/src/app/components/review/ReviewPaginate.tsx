@@ -1,12 +1,10 @@
 "use client";
-import { PaginationType, ReviewType } from "@/app/interfaces/types";
+import type { PaginationType, ReviewType } from "@/app/interfaces/types";
 import { Pagination } from "@nextui-org/react";
 import React, { useEffect } from "react";
 import ReviewHeader from "./ReviewHeader";
 import ReviewComponent from "./ReviewComponent";
-import { useSearchParams } from "next/navigation";
 import { getReviews } from "@/app/utils/helpers/review/request";
-import { error } from "console";
 
 interface ReviewPaginateProps {
   pagination: PaginationType;
@@ -25,7 +23,7 @@ const ReviewPaginate: React.FC<ReviewPaginateProps> = ({
   const [reviewArr, setReviewArr] = React.useState(reviews);
   const [paginationState, setPaginationState] = React.useState(pagination);
   useEffect(() => {
-    async function getData() {
+    async function getData(): Promise<void> {
       const newReviews = await getReviews(id, page);
       setReviewArr(newReviews.listings);
       setPaginationState(newReviews.pagination);
@@ -33,7 +31,7 @@ const ReviewPaginate: React.FC<ReviewPaginateProps> = ({
     getData().catch((error) => {
       console.error("Failed to get reviews: ", error);
     });
-  }, [page]);
+  }, [page, id]);
   return (
     <>
       {reviewArr.length <= 0 ? (
