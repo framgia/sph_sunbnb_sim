@@ -36,7 +36,9 @@ const Calendar: React.FC<CalendarProps> = ({
 
   const isDateBlocked = useCallback(
     (date: Date): boolean => {
-      return blockedDates.some((blockedDate) => isSameDay(date, blockedDate));
+      return blockedDates.some((blockedDate) =>
+        isSameDay(date, new Date(blockedDate.date))
+      );
     },
     [blockedDates]
   );
@@ -121,7 +123,7 @@ const Calendar: React.FC<CalendarProps> = ({
               isCurrentMonth={isCurrentMonth}
               isSelectedDate={isSelectedDate}
               isBlockedDate={blockedDates.some((blockedDate) =>
-                isSameDay(blockedDate, date)
+                isSameDay(new Date(blockedDate.date), date)
               )}
               onDateClick={handleDateClick}
             />

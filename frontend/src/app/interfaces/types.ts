@@ -9,6 +9,7 @@ import type {
   BookingStatus,
   ExperienceType
 } from "../utils/enums";
+import { type Range } from "react-date-range";
 
 // User
 export interface UserRegisterType {
@@ -223,13 +224,7 @@ export interface ListingFilter {
     min: number;
     max: number;
   };
-  date: [
-    {
-      startDate: Date;
-      endDate: Date | undefined;
-      key: string;
-    }
-  ];
+  date: Range[];
   status: ListingStatus | "all";
   type: AccommodationType | ExperienceType | "all";
 }
@@ -245,4 +240,10 @@ export interface HostBookingFilters {
 export interface CalendarDate {
   date: Date | string;
   available: boolean;
+  booking: {
+    user: {
+      first_name: string;
+      last_name: string;
+    };
+  };
 }

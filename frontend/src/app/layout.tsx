@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div className="flex min-h-screen flex-col ">
+          <div className="flex min-h-screen flex-col overflow-x-clip">
             <Navbar />
             <main className="m-auto mb-8 mt-5 w-full max-w-[1024px] flex-1 px-6 ">
               {children}

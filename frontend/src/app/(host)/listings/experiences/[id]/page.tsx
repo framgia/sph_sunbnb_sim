@@ -38,6 +38,7 @@ const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
         barangay={expData.barangay}
         city={expData.city}
         type={expData.listable.type}
+        price={expData.price}
         zipCode={expData.zip_code}
         languages={expData.listable.language}
         startTime={expData.listable.start_time}
