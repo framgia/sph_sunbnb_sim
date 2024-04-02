@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Tab, Tabs } from "@nextui-org/react";
 import { formatCurrency } from "@/app/utils/currency";
-import { type AvailabilitySidebarProps } from "@/app/interfaces/AvailabilitySidebarProps";
+import { type AvailabilitySidebarProps } from "@/app/interfaces/CalendarProps";
 import { isSameDay } from "@/app/utils/helpers/availability/calendar";
 import { updateListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { type CalendarDate } from "@/app/interfaces/types";
@@ -14,15 +14,29 @@ const AvailabilitySidebar: React.FC<AvailabilitySidebarProps> = ({
   onTabChange
 }) => {
   const [selectedKey, setSelectedKey] = useState("open");
+  const [reservedBy, setReservedBy] = useState<string | null>(null);
 
   useEffect(() => {
-    setSelectedKey(
-      selectedDates.every((date) =>
-        blockedDates.some((blockedDate) => isSameDay(date, blockedDate))
-      )
-        ? "block"
-        : "open"
-    );
+    if (selectedDates.length > 0) {
+      const booking = blockedDates.find((blockedDate) =>
+        isSameDay(selectedDates[0], new Date(blockedDate.date))
+      )?.booking;
+
+      if (booking !== null && booking !== undefined) {
+        setReservedBy(`${booking.user.first_name} ${booking.user.last_name}`);
+      } else {
+        setReservedBy(null);
+        setSelectedKey(
+          selectedDates.every((date) =>
+            blockedDates.some((blockedDate) =>
+              isSameDay(date, new Date(blockedDate.date))
+            )
+          )
+            ? "block"
+            : "open"
+        );
+      }
+    }
   }, [selectedDates, blockedDates]);
 
   async function handleTabChange(key: React.Key): Promise<void> {
@@ -54,20 +68,28 @@ const AvailabilitySidebar: React.FC<AvailabilitySidebarProps> = ({
         </div>
       )}
       <div className="flex gap-2 sm:flex-col sm:gap-4">
-        <Tabs
-          fullWidth
-          aria-label="Availability Switch"
-          radius="full"
-          className="flex-1"
-          variant="bordered"
-          color="primary"
-          onSelectionChange={handleTabChange}
-          selectedKey={selectedKey}
-        >
-          <Tab key="open" title="Open" />
-          <Tab key="block" title="Block" />
-        </Tabs>
-        <div className="flex w-1/2 flex-col justify-center rounded rounded-full border-2 border-black px-6 sm:w-full sm:gap-1 sm:rounded-lg sm:px-5 sm:py-3">
+        {reservedBy === null ? (
+          <Tabs
+            fullWidth
+            aria-label="Availability Switch"
+            radius="full"
+            className="flex-1"
+            variant="bordered"
+            color="primary"
+            onSelectionChange={handleTabChange}
+            selectedKey={selectedKey}
+          >
+            <Tab key="open" title="Open" />
+            <Tab key="block" title="Block" />
+          </Tabs>
+        ) : (
+          <div className="rounded-full border-2 border-primary px-5 py-3 text-xs text-primary sm:rounded-lg sm:text-sm">
+            Reserved by:
+            <span className="capitalized font-bold">{` ${reservedBy}`}</span>
+          </div>
+        )}
+
+        <div className="flex w-1/2 flex-col justify-center rounded-full border-2 border-black px-6 sm:w-full sm:gap-1 sm:rounded-lg sm:px-5 sm:py-3">
           <div className="text-xs font-semibold sm:text-sm">Per Night</div>
           <div className="truncate text-xs font-semibold text-gray-600 sm:text-lg">
             {formatCurrency("PHP", 2, selectedListing.price)}

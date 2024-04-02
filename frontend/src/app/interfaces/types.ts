@@ -9,6 +9,7 @@ import type {
   BookingStatus,
   ExperienceType
 } from "../utils/enums";
+import { type Range } from "react-date-range";
 
 export interface MediaType {
   id: number;
@@ -194,6 +195,12 @@ export interface PaginatedListing {
 export interface CalendarDate {
   date: Date | string;
   available: boolean;
+  booking: {
+    user: {
+      first_name: string;
+      last_name: string;
+    };
+  };
 }
 
 export interface JwtPayloadwithUser extends JwtPayload {
@@ -256,13 +263,7 @@ export interface ListingFilter {
     min: number;
     max: number;
   };
-  date: [
-    {
-      startDate: Date;
-      endDate: Date | undefined;
-      key: string;
-    }
-  ];
+  date: Range[];
   status: ListingStatus | "all";
   type: AccommodationType | ExperienceType | "all";
 }
