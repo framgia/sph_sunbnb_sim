@@ -195,7 +195,7 @@ const ListingBookingsTable: React.FC<{
           </div>
         }
       >
-        <TableHeader>
+        <TableHeader className="grid-cols-[25% 15% 15% 5% 10% 10% 20%] grid">
           <TableColumn>NAME</TableColumn>
           <TableColumn>CHECK-IN DATE</TableColumn>
           <TableColumn>CHECK-OUT DATE</TableColumn>
