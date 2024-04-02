@@ -39,6 +39,8 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
         return "bg-success-200 text-green-500";
       case "pending":
         return "bg-warning-200 text-yellow-500";
+      case "refused":
+        return "bg-secondary-200 text-secondary-500";
       default:
         return "bg-gray-500 text-white";
     }
@@ -91,10 +93,32 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
             Delete
           </Button>
         );
+      case "refused":
+        return (
+          <Button
+            size="sm"
+            color="primary"
+            variant="bordered"
+            className="text-md rounded-full px-5 font-bold"
+            onClick={deleteButtonClick}
+          >
+            Delete
+          </Button>
+        );
       case "done":
         return (
           <>
-            {reviewed ? null : (
+            {reviewed ? (
+              <Button
+                size="sm"
+                color="primary"
+                variant="bordered"
+                className="text-md rounded-full px-5 font-bold"
+                onClick={deleteButtonClick}
+              >
+                Delete
+              </Button>
+            ) : (
               <>
                 <Button
                   size="sm"
