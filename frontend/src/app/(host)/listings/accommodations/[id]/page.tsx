@@ -2,6 +2,7 @@ import AmenitySection from "@/app/components/accommodation/AmenitySection";
 import ListingHeader from "@/app/components/accommodation/ListingHeader";
 import ReviewSection from "@/app/components/review/ReviewSection";
 import { getAccommodation } from "@/app/utils/helpers/accommodation/request";
+import { getListingType } from "@/app/utils/helpers/getListingType";
 import { Divider } from "@nextui-org/react";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -19,6 +20,13 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
   try {
     accData = await getAccommodation(Number(params.id));
   } catch (err) {
+    redirect("/not-found");
+  }
+
+  if (
+    getListingType(accData.listable_type) === "experience" ||
+    getListingType(accData.listable_type) === undefined
+  ) {
     redirect("/not-found");
   }
 
@@ -58,6 +66,7 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
               accData.zip_code
             }
             images={accData.media}
+            status={accData.status}
           />
           <div>
             <Divider className="my-10 " />

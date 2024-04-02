@@ -5,13 +5,13 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Chip,
   Image
 } from "@nextui-org/react";
 import { formatCurrency } from "@/app/utils/currency";
 import { type ListingItemProps } from "@/app/interfaces/ListingsProps";
 import { useRouter } from "next/navigation";
-import { ListingStatus, ListingType, UserRole } from "@/app/utils/enums";
+import { ListingType, UserRole } from "@/app/utils/enums";
+import StatusChip from "../StatusChip";
 
 const ListingItem: React.FC<ListingItemProps> = ({ user, type, listing }) => {
   const router = useRouter();
@@ -65,19 +65,7 @@ const ListingItem: React.FC<ListingItemProps> = ({ user, type, listing }) => {
           <p className="w-full truncate text-start text-sm font-bold capitalize">
             {listing.name}
           </p>
-          <Chip
-            color={
-              listing.status === ListingStatus.ACTIVE
-                ? "success"
-                : listing.status === ListingStatus.PENDING
-                  ? "warning"
-                  : "danger"
-            }
-            size="sm"
-            className="capitalize"
-          >
-            {listing.status}
-          </Chip>
+          <StatusChip status={listing.status} />
         </CardHeader>
         <CardBody className="flex items-center justify-center rounded-xl bg-zinc-50 p-0">
           {listing.media.length > 0 ? (
