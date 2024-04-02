@@ -8,7 +8,7 @@ import {
 import React from "react";
 import ChevronDownIcon from "../svgs/Calendar/ChevronDownIcon";
 import { truncate } from "@/app/utils/string";
-import { type ListingDropdownProps } from "@/app/interfaces/ListingDropdownProps";
+import { type ListingDropdownProps } from "@/app/interfaces/CalendarProps";
 
 const ListingsDropdown: React.FC<ListingDropdownProps> = ({
   listings,
