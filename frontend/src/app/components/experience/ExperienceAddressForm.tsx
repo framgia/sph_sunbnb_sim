@@ -1,10 +1,10 @@
-import type { Experience } from "@/app/interfaces/ExperienceData";
+import { type ExperienceData } from "@/app/interfaces/ExperienceData";
 import { Input } from "@nextui-org/react";
 import React from "react";
 
 interface ExperienceFormProps {
-  data: Experience;
-  setData: React.Dispatch<React.SetStateAction<Experience>>;
+  data: ExperienceData;
+  setData: React.Dispatch<React.SetStateAction<ExperienceData>>;
   error: Record<string, string | boolean>;
 }
 

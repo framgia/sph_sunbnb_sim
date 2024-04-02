@@ -5,7 +5,7 @@ import type {
   MediaUpdate,
   Accommodation
 } from "@/app/interfaces/AccomodationData";
-import { type Listing } from "@/app/interfaces/types";
+import { type AccommodationListing } from "@/app/interfaces/types";
 import {
   deleteAccommodation,
   updateAccommodation
@@ -16,7 +16,7 @@ import React, { useState } from "react";
 import { validateAccommodation } from "@/app/utils/helpers/accommodation/validation";
 
 interface EditListingComponentProps {
-  listing: Listing;
+  listing: AccommodationListing;
 }
 
 const EditListingComponent: React.FC<EditListingComponentProps> = ({

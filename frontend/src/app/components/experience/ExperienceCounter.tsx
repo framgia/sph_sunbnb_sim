@@ -2,13 +2,13 @@ import React from "react";
 import PlusIcon from "../svgs/PlusIcon";
 import MinusIcon from "../svgs/MinusIcon";
 import { Button } from "@nextui-org/react";
-import type { Experience } from "@/app/interfaces/ExperienceData";
+import type { ExperienceData } from "@/app/interfaces/ExperienceData";
 
 interface CounterProps {
   name: string;
-  data: Experience;
-  setData: React.Dispatch<React.SetStateAction<Experience>>;
-  id: keyof Experience;
+  data: ExperienceData;
+  setData: React.Dispatch<React.SetStateAction<ExperienceData>>;
+  id: keyof ExperienceData;
 }
 
 const ExperienceCounter: React.FC<CounterProps> = ({

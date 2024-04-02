@@ -56,8 +56,6 @@ export interface JwtPayloadwithUser extends JwtPayload {
   user: UserSessionType;
 }
 
-// Listing
-
 export interface Accommodation {
   id: number;
   type: AccommodationType;

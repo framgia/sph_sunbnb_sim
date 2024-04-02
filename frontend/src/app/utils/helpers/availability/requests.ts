@@ -2,7 +2,7 @@
 import { type CalendarDate, type Listing } from "@/app/interfaces/types";
 import config from "@/app/config/config";
 import { checkCookies } from "../userHelper";
-import { type AvailabilityListing } from "@/app/interfaces/AvailabilityCalendarProps";
+import { type AvailabilityListing } from "@/app/interfaces/CalendarProps";
 import { cookies } from "next/headers";
 
 class ApiError extends Error {
