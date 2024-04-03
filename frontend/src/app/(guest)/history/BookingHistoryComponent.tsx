@@ -39,8 +39,10 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
     setSearchQuery(e.target.value);
   };
 
-  const filteredBookings = bookingsState.filter((booking) =>
-    booking.listing.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredBookings = bookingsState.filter(
+    (booking) =>
+      booking.listing !== null &&
+      booking.listing.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   useEffect(() => {
@@ -141,27 +143,31 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
       {!isLoading ? (
         filteredBookings.length > 0 ? (
           <>
-            {filteredBookings.map((booking, i) => (
-              <BookingHistoryData
-                key={i}
-                id={booking.id}
-                listingid={booking.listing.id}
-                type={
-                  booking.listing.listable_type.includes("Accommodation")
-                    ? "accommodation"
-                    : "experience"
-                }
-                name={booking.listing.name}
-                checkinDate={booking.start_date}
-                checkoutDate={booking.end_date}
-                price={booking.listing.price}
-                status={booking.status as string}
-                image={booking.listing.media[0].media}
-                reviewed={booking.reviewed}
-                bookings={bookingsState}
-                setbookings={setBookingsState}
-              />
-            ))}
+            {filteredBookings.map((booking, i) =>
+              booking.listing !== null ? (
+                <BookingHistoryData
+                  key={i}
+                  id={booking.id}
+                  listingid={booking.listing.id}
+                  type={
+                    booking.listing.listable_type.includes("Accommodation")
+                      ? "accommodation"
+                      : "experience"
+                  }
+                  name={booking.listing.name}
+                  checkinDate={booking.start_date}
+                  checkoutDate={booking.end_date}
+                  price={booking.listing.price}
+                  status={booking.status as string}
+                  image={booking.listing.media[0].media}
+                  reviewed={booking.reviewed}
+                  bookings={bookingsState}
+                  setbookings={setBookingsState}
+                />
+              ) : (
+                <></>
+              )
+            )}
             <Pagination
               className="m-3 flex justify-center"
               isCompact

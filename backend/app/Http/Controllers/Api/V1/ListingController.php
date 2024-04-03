@@ -10,12 +10,9 @@ use Illuminate\Http\Response;
 
 class ListingController extends Controller {
     public function index(Request $request) {
-        $listings = Listing::paginateListings($request);
+        $response = Listing::paginateListings($request);
 
-        return response()->json(
-            Listing::listingsResponse($listings),
-            Response::HTTP_OK
-        );
+        return response()->json($response, Response::HTTP_OK);
     }
 
     public function show($listingId) {
@@ -41,57 +38,39 @@ class ListingController extends Controller {
             return User::userNotFoundResponse();
         }
 
-        $listings = Listing::paginateListingsByUser($userId, $request);
+        $response = Listing::paginateListingsByUser($userId, $request);
 
-        return response()->json(
-            Listing::listingsResponse($listings),
-            Response::HTTP_OK
-        );
+        return response()->json($response, Response::HTTP_OK);
     }
 
     public function showPublicListings(Request $request) {
-        $listings = Listing::paginatePublicListings($request);
+        $response = Listing::paginatePublicListings($request);
 
-        return response()->json(
-            Listing::listingsResponse($listings),
-            Response::HTTP_OK
-        );
+        return response()->json($response, Response::HTTP_OK);
     }
 
     public function showPublicAccommodations(Request $request) {
-        $accommodations = Listing::paginateFilteredAccommodations($request);
+        $response = Listing::paginateFilteredAccommodations($request);
 
-        return response()->json(
-            Listing::listingsResponse($accommodations),
-            Response::HTTP_OK
-        );
+        return response()->json($response, Response::HTTP_OK);
     }
 
     public function showPublicExperiences(Request $request) {
-        $listings = Listing::paginateFilteredExperiences($request);
+        $response = Listing::paginateFilteredExperiences($request);
 
-        return response()->json(
-            Listing::listingsResponse($listings),
-            Response::HTTP_OK
-        );
+        return response()->json($response, Response::HTTP_OK);
     }
 
     public function showFilteredAccommodationsByUser(Request $request) {
-        $accommodations = Listing::paginateFilteredAccommodationsHost($request);
+        $response = Listing::paginateFilteredAccommodationsHost($request);
 
-        return response()->json(
-            Listing::listingsResponse($accommodations),
-            Response::HTTP_OK
-        );
+        return response()->json($response, Response::HTTP_OK);
     }
 
     public function showFilteredExperiencesByUser(Request $request) {
-        $experiences = Listing::paginateFilteredExperiencesHost($request);
+        $response = Listing::paginateFilteredExperiencesHost($request);
 
-        return response()->json(
-            Listing::listingsResponse($experiences),
-            Response::HTTP_OK
-        );
+        return response()->json($response, Response::HTTP_OK);
     }
 
     public function destroy($listingId) {
