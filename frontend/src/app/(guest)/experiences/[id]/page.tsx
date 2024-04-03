@@ -26,7 +26,12 @@ const GuestExperienceDetailsPage: React.FC<
 
   let blockedDates: Date[] = [];
   if (expAvailability !== undefined && expAvailability !== null) {
-    blockedDates = expAvailability.map((calDate, _i) => {
+    const unavailableArr: CalendarDate[] = expAvailability.filter(
+      (calDate, _i) => {
+        return !calDate.available;
+      }
+    );
+    blockedDates = unavailableArr.map((calDate, _i) => {
       return new Date(calDate.date);
     });
   }

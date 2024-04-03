@@ -1,4 +1,5 @@
 import AccommodationBookingConfirm from "@/app/components/booking/AccommodationBookingConfirm";
+import { CalendarDate } from "@/app/interfaces/types";
 import { getAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { redirect } from "next/navigation";
@@ -17,7 +18,12 @@ const AccommodationBookingPage: React.FC<AccommodationBookingProps> = async ({
 
   let blockedDates: Date[] = [];
   if (accAvailability !== undefined && accAvailability !== null) {
-    blockedDates = accAvailability.map((calDate, _i) => {
+    const unavailableArr: CalendarDate[] = accAvailability.filter(
+      (calDate, _i) => {
+        return !calDate.available;
+      }
+    );
+    blockedDates = unavailableArr.map((calDate, _i) => {
       return new Date(calDate.date);
     });
   }
