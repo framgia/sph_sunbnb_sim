@@ -76,6 +76,9 @@ class Listing extends Model {
             $this->listable->delete();
         }
 
+        $this->bookings()->delete();
+        $this->calendars()->delete();
+
         foreach ($this->media as $media) {
             $media->delete();
         }
