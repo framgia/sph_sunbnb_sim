@@ -1,5 +1,5 @@
 import AccommodationBookingConfirm from "@/app/components/booking/AccommodationBookingConfirm";
-import { CalendarDate } from "@/app/interfaces/types";
+import type { CalendarDate } from "@/app/interfaces/types";
 import { getAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { redirect } from "next/navigation";

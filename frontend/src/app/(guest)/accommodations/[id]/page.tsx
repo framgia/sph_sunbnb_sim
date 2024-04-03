@@ -3,7 +3,7 @@ import ListingHeader from "@/app/components/accommodation/ListingHeader";
 import AccommodationBookingSticky from "@/app/components/booking/AccommodationBookingSticky";
 import DefaultSticky from "@/app/components/booking/DefaultSticky";
 import ReviewSection from "@/app/components/review/ReviewSection";
-import { CalendarDate } from "@/app/interfaces/types";
+import type { CalendarDate } from "@/app/interfaces/types";
 import { ListingStatus } from "@/app/utils/enums";
 import { getPublicAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
