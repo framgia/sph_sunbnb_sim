@@ -25,7 +25,7 @@ const ReviewPaginate: React.FC<ReviewPaginateProps> = ({
   useEffect(() => {
     async function getData(): Promise<void> {
       const newReviews = await getReviews(id, page);
-      setReviewArr(newReviews.listings);
+      setReviewArr(newReviews.reviews);
       setPaginationState(newReviews.pagination);
     }
     getData().catch((error) => {

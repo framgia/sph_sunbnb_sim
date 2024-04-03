@@ -149,7 +149,8 @@ export interface ExperienceReviewData {
 }
 
 export interface ReviewResponse {
-  listings: ReviewType[];
+  reviews: ReviewType[];
+  metadata: any;
   pagination: PaginationType;
 }
 

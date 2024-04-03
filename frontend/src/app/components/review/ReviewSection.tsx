@@ -12,8 +12,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = async ({
   listingId,
   listingType
 }) => {
-  const { listings: reviews, pagination: paginate } =
-    await getReviews(listingId);
+  const { reviews, pagination } = await getReviews(listingId);
   return (
     <>
       <div className="mb-5">
@@ -23,7 +22,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = async ({
       </div>
       <ReviewPaginate
         reviews={reviews}
-        pagination={paginate}
+        pagination={pagination}
         listingType={listingType}
         id={listingId}
       />
