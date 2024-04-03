@@ -38,7 +38,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
     e.preventDefault();
 
     setLoading(true);
-    // Check if email or password is blank
     if (email === "" || password === "") {
       setError("Please enter both email and password.");
       return;
@@ -46,10 +45,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
     const loginResult = await loginUser(email, password);
     if (loginResult.message === "success") {
-      // Redirect to "/" after successful login
       router.push("/");
     } else {
-      // Handle failed login, such as displaying an error message
       setError("Incorrect Credentials, please input them again.");
       console.error("Login failed");
     }
