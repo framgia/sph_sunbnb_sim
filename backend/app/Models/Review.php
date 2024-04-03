@@ -71,16 +71,11 @@ class Review extends Model {
 
         $totalReviews = $reviewData->count();
 
-        $ratingsCount = $reviewData->select('overall_rating', DB::raw('COUNT(*) as count'))
-        ->groupBy('overall_rating')
-        ->orderBy('overall_rating', 'desc') // Order by descending overall_rating
-        ->pluck('count', 'overall_rating')
-        ->toArray();
-    // Fill in any missing ratings with count 0
-   
-    foreach ($ratingsCount as $rating => $count) {
-        $ratingsCount[$rating] = ceil($count);
-    }
+        $ratingsCount = $reviewData->select(DB::raw('ROUND(overall_rating)'), DB::raw('COUNT(*) as count'))
+            ->groupBy(DB::raw('ROUND(overall_rating)'))
+            ->orderBy(DB::raw('ROUND(overall_rating)'), 'desc')
+            ->pluck('count', DB::raw('ROUND(overall_rating)'))
+            ->toArray();
 
         $avgCleanliness = $reviewData->whereNotNull('cleanliness_rating')->avg('cleanliness_rating');
 
