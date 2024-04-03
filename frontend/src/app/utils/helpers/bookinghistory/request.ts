@@ -19,14 +19,13 @@ function setHeaders(): Record<string, string> {
 }
 
 async function getBookingHistory(
+  userId: number,
   page: number,
   size: number,
   query?: string
 ): Promise<BookingHistoryResponse> {
-  const user = await checkCookies();
-  if (user === null) throw new Error("No user found in cookies.");
   const response = await fetch(
-    `${config.backendUrl}/booking/user/${user.id}?page=${page ?? 1}&per_page=${size ?? 5}${query !== undefined ? `&search=${query}` : ""}`,
+    `${config.backendUrl}/booking/user/${userId}?page=${page ?? 1}&per_page=${size ?? 5}${query !== undefined ? `&search=${query}` : ""}`,
     {
       method: "GET",
       headers: setHeaders()
