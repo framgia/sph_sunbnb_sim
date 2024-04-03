@@ -24,7 +24,9 @@ const InclusionItem: React.FC<InclusionItemProp> = ({ inclusion }) => {
       {inclusionObj !== undefined ? (
         <div className="flex flex-row items-center">
           <div className="p-2">{inclusionObj.icon as ReactNode}</div>
-          <span className="text-sm leading-5">{inclusionObj.name}</span>
+          <span className="truncate text-sm leading-5">
+            {inclusionObj.name}
+          </span>
         </div>
       ) : (
         <></>
