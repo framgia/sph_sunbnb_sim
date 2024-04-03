@@ -86,8 +86,10 @@ class Listing extends Model {
     public static function paginateListings(Request $request) {
         $perPage = $request->query('per_page', 3);
 
-        return static::with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
+        $listings = static::with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
             ->paginate($perPage);
+
+        return self::listingsResponse($listings);
     }
 
     public static function paginateListingsByUser($userId, Request $request) {
@@ -101,17 +103,21 @@ class Listing extends Model {
             $query->where('status', $status);
         }
 
-        return $query->paginate($perPage);
+        $listings = $query->paginate($perPage);
+
+        return self::listingsResponse($listings);
     }
 
     public static function paginatePublicListings(Request $request) {
         $perPage = $request->query('per_page', 3);
 
-        return static::whereHas('listable', function ($query) {
+        $listings = static::whereHas('listable', function ($query) {
             $query->where('status', 'active');
         })
             ->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
             ->paginate($perPage);
+
+        return self::listingsResponse($listings);
     }
 
     public static function listingsResponse($listings) {
@@ -171,11 +177,15 @@ class Listing extends Model {
     }
 
     public static function paginateFilteredAccommodations(Request $request) {
-        return self::paginateFilteredItems($request, 'filterAccommodation');
+        $listings = self::paginateFilteredItems($request, 'filterAccommodation');
+
+        return self::listingsResponse($listings);
     }
 
     public static function paginateFilteredExperiences(Request $request) {
-        return self::paginateFilteredItems($request, 'filterExperience');
+        $listings = self::paginateFilteredItems($request, 'filterExperience');
+
+        return self::listingsResponse($listings);
     }
 
     public static function filterAccommodation($filters, $userId = null) {
@@ -228,7 +238,9 @@ class Listing extends Model {
         if ($user) {
             $userId = $user->id;
 
-            return self::paginateFilteredItems($request, 'filterAccommodation', $userId);
+            $listings = self::paginateFilteredItems($request, 'filterAccommodation', $userId);
+
+            return self::listingsResponse($listings);
         } else {
             abort(Response::HTTP_BAD_REQUEST, 'User not found.');
         }
@@ -239,7 +251,9 @@ class Listing extends Model {
         if ($user) {
             $userId = $user->id;
 
-            return self::paginateFilteredItems($request, 'filterExperience', $userId);
+            $listings = self::paginateFilteredItems($request, 'filterExperience', $userId);
+
+            return self::listingsResponse($listings);
         } else {
             abort(Response::HTTP_BAD_REQUEST, 'User not found.');
         }
