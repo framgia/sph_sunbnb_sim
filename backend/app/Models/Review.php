@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class Review extends Model {
     use HasFactory;
@@ -65,9 +66,42 @@ class Review extends Model {
             ->paginate($perPage);
     }
 
-    public static function reviewResponse($review) {
+    public static function getMetadata($listingId) {
+        $reviewData = static::where('listing_id', $listingId);
+
+        $totalReviews = $reviewData->count();
+
+        $ratingsCount = $reviewData->select('overall_rating', DB::raw('COUNT(*) as count'))
+        ->groupBy('overall_rating')
+        ->orderBy('overall_rating', 'desc') // Order by descending overall_rating
+        ->pluck('count', 'overall_rating')
+        ->toArray();
+    // Fill in any missing ratings with count 0
+   
+    foreach ($ratingsCount as $rating => $count) {
+        $ratingsCount[$rating] = ceil($count);
+    }
+
+        $avgCleanliness = $reviewData->whereNotNull('cleanliness_rating')->avg('cleanliness_rating');
+
+        $avgLocation = $reviewData->whereNotNull('location_rating')->avg('location_rating');
+
+        $avgValue = $reviewData->whereNotNull('value_rating')->avg('value_rating');
+
         return [
-            'listings' => $review->items(),
+            'total_reviews' => $totalReviews,
+            'ratings_count' => $ratingsCount,
+            'average_cleanliness' => $avgCleanliness,
+            'average_location' => $avgLocation,
+            'average_value' => $avgValue,
+        ];
+
+    }
+
+    public static function reviewResponse($review, $data) {
+        return [
+            'metadata' => $data,
+            'reviews' => $review->items(),
             'pagination' => [
                 'current_page' => $review->currentPage(),
                 'per_page' => $review->perPage(),

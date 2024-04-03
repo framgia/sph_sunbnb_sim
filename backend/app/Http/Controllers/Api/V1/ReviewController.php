@@ -21,8 +21,9 @@ class ReviewController extends Controller {
         }
 
         $reviews = Review::paginateReviewsbyListing($request, $listingId);
+        $data = Review::getMetadata($listingId);
 
-        return response()->json(Review::reviewResponse($reviews), Response::HTTP_OK);
+        return response()->json(Review::reviewResponse($reviews, $data), Response::HTTP_OK);
     }
 
     public function storeAccommodation(AccommodationReviewRequest $request, $listingId) {
