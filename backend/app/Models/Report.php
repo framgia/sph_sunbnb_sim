@@ -9,7 +9,7 @@ class Report extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'guest_id', 'listing_id', 'admin_id', 'title', 'content', 'status',
+        'title', 'content', 'status',
     ];
 
     public function user() {
