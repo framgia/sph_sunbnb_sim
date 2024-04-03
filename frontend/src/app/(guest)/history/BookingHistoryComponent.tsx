@@ -82,6 +82,7 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
       <div className="mt-5 font-semibold">Your booking history</div>
       <div className="mb-6 mt-5 flex w-[340px] flex-wrap gap-4 md:mb-0 md:flex-nowrap">
         <Input
+          size="sm"
           variant="bordered"
           placeholder="Search by name..."
           startContent={
@@ -91,7 +92,7 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
           onChange={handleSearchChange}
         />
       </div>
-      <div className="mb-1 mt-10 flex justify-between">
+      <div className="mb-1 mt-4 flex justify-between text-xs text-default-500">
         <div className="flex">
           <span className="flex self-center">
             Total bookings: {pagination.total}
