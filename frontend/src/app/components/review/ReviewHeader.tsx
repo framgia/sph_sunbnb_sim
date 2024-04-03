@@ -27,7 +27,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
                 className="w-3/4 self-center"
                 color="default"
                 size="sm"
-                value={metadata.ratings_count["5.00"] ?? 0}
+                value={metadata.ratings_count["5"] ?? 0}
                 maxValue={metadata.total_reviews}
                 aria-label="5 overall ratings"
               />
@@ -39,7 +39,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
               <Progress
                 className="w-3/4 self-center"
                 color="default"
-                value={metadata.ratings_count["4.00"] ?? 0}
+                value={metadata.ratings_count["4"] ?? 0}
                 maxValue={metadata.total_reviews}
                 size="sm"
                 aria-label="4 overall ratings"
@@ -53,7 +53,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
                 size="sm"
                 className="w-3/4 self-center"
                 color="default"
-                value={metadata.ratings_count["3.00"] ?? 0}
+                value={metadata.ratings_count["3"] ?? 0}
                 maxValue={metadata.total_reviews}
                 aria-label="3 overall ratings"
               />
@@ -66,7 +66,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
                 size="sm"
                 className="w-3/4 self-center"
                 color="default"
-                value={metadata.ratings_count["2.00"] ?? 0}
+                value={metadata.ratings_count["2"] ?? 0}
                 maxValue={metadata.total_reviews}
                 aria-label="2 overall ratings"
               />
@@ -79,7 +79,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
                 size="sm"
                 className="w-3/4 self-center"
                 color="default"
-                value={metadata.ratings_count["1.00"] ?? 0}
+                value={metadata.ratings_count["1"] ?? 0}
                 maxValue={metadata.total_reviews}
                 aria-label="1 overall ratings"
               />

@@ -38,7 +38,6 @@ async function getActiveListings(): Promise<Listing[]> {
   const user = await checkCookies();
   if (user === null) throw new Error("No user found in cookies.");
   const response = await fetch(
-    // to be changed to active status on the next sprint
     `${config.backendUrl}/listing/user/${user.id}?per_page=1000&status=active`,
     {
       method: "GET",

@@ -14,7 +14,6 @@ export function middleware(request: NextRequest): NextResponse | undefined {
     }
   }
 
-  //    if there is no user signed in
   if (user === null || user === undefined) {
     if (request.nextUrl.pathname.startsWith("/login")) {
       return NextResponse.next();

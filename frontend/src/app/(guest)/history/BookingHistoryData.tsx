@@ -34,7 +34,7 @@ const BookingHistoryData: React.FC<BookingHistoryDataProps> = ({
 }) => {
   return (
     <>
-      <div className="my-8 flex grid h-[50px] grid-cols-[10%_20%_15%_15%_10%_15%_15%] items-center  rounded-lg py-3">
+      <div className="my-5  flex grid h-[50px] grid-cols-[10%_20%_15%_15%_10%_15%_15%] items-center rounded-lg py-3 text-sm">
         <div className="flex items-center justify-end">
           <div className="h-14 w-14 overflow-hidden rounded-xl ">
             <div className="flex h-14 justify-center ">
@@ -43,8 +43,12 @@ const BookingHistoryData: React.FC<BookingHistoryDataProps> = ({
           </div>
         </div>
         <div className="flex items-center px-5">{name}</div>
-        <div className="flex items-center justify-center">{checkinDate}</div>
-        <div className="flex items-center justify-center">{checkoutDate}</div>
+        <div className="flex items-center justify-center">
+          {new Date(checkinDate).toDateString()}
+        </div>
+        <div className="flex items-center justify-center">
+          {new Date(checkoutDate).toDateString()}
+        </div>
         <div className="flex items-center justify-center px-12">₱{price}</div>
         <BookingStatusComponent
           status={status}
