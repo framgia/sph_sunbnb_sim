@@ -17,7 +17,7 @@ import { logoutUser } from "@/app/utils/helpers/userHelper";
 import { useRouter } from "next/navigation";
 
 interface NavbarDropdownProps extends NavbarProps {
-  full_name?: string;
+  full_name: string;
 }
 
 const NavbarDropdown: React.FC<NavbarDropdownProps> = (props) => {
@@ -53,7 +53,7 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = (props) => {
           startContent={<MenuIcon />}
           endContent={
             <Avatar
-              name={getInitials(props.full_name ?? "")}
+              name={props.full_name !== " " ? getInitials(props.full_name) : ""}
               className="h-7 w-7 text-tiny uppercase"
             />
           }

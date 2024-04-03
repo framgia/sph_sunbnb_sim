@@ -51,8 +51,7 @@ const NavbarLinks: React.FC<NavbarProps> = (props) => {
         path: "/experiences",
         label: "Experiences",
         icon: <ExperiencesIcon />
-      },
-      { path: "/history", label: "History", icon: <HistoryIcon /> }
+      }
     ]
   };
 
