@@ -72,7 +72,6 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
       filters.date[0].startDate !== MIN_DATE &&
       filters.date[0].endDate !== undefined
     ) {
-      console.log(filters.date[0].startDate);
       params.set(
         `${prefix}date`,
         `${formatDate(filters.date[0].startDate)}:${formatDate(filters.date[0].endDate)}`
@@ -233,7 +232,6 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
             <PopoverContent>
               <DateRange
                 onChange={(date) => {
-                  console.log(date);
                   setFilters({
                     ...filters,
                     date: [date.selection]

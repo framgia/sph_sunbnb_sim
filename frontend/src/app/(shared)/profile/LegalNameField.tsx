@@ -160,7 +160,6 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
             <span
               className={
                 "mb-5 text-base font-normal leading-6 " +
-                /* eslint-disable multiline-ternary */
                 (enabled ? " text-zinc-500" : " text-foreground-300")
               }
             >
