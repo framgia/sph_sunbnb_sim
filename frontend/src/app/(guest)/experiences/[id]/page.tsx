@@ -30,8 +30,6 @@ const GuestExperienceDetailsPage: React.FC<
       return new Date(calDate.date);
     });
   }
-  //  check if listable type of listing received is an accommodation or somehow undefined to avoid passing
-  //  accommodation in experience details page
   if (
     expData === undefined ||
     getListingType(expData.listable_type) === "accommodation" ||
