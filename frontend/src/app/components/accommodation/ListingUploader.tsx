@@ -64,7 +64,7 @@ const ListingUploader: React.FC<UploadthingDropzoneProps> = ({
     <>
       <UploadDropzone
         appearance={{
-          container: `bg-primary-50 ${
+          container: `bg-primary-50 outline-none border-none ${
             mediaCount >= 5 || error !== ""
               ? "opacity-50 pointer-events-none"
               : ""
