@@ -150,8 +150,16 @@ export interface ExperienceReviewData {
 
 export interface ReviewResponse {
   reviews: ReviewType[];
-  metadata: any;
+  metadata: ReviewMetadata;
   pagination: PaginationType;
+}
+
+export interface ReviewMetadata {
+  total_reviews: number;
+  ratings_count: Record<string, number>;
+  average_cleanliness: number | null;
+  average_location: number | null;
+  average_value: number | null;
 }
 
 // Booking

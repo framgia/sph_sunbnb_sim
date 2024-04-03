@@ -1,5 +1,9 @@
 "use client";
-import type { PaginationType, ReviewType } from "@/app/interfaces/types";
+import type {
+  PaginationType,
+  ReviewMetadata,
+  ReviewType
+} from "@/app/interfaces/types";
 import { Pagination } from "@nextui-org/react";
 import React, { useEffect } from "react";
 import ReviewHeader from "./ReviewHeader";
@@ -11,22 +15,26 @@ interface ReviewPaginateProps {
   reviews: ReviewType[];
   listingType: "accommodation" | "experience";
   id: number;
+  metadata: ReviewMetadata;
 }
 
 const ReviewPaginate: React.FC<ReviewPaginateProps> = ({
   pagination,
   reviews,
   listingType,
-  id
+  id,
+  metadata
 }) => {
   const [page, setPage] = React.useState(1);
   const [reviewArr, setReviewArr] = React.useState(reviews);
   const [paginationState, setPaginationState] = React.useState(pagination);
+  const [metadataState, setMetadataState] = React.useState(metadata);
   useEffect(() => {
     async function getData(): Promise<void> {
       const newReviews = await getReviews(id, page);
       setReviewArr(newReviews.reviews);
       setPaginationState(newReviews.pagination);
+      setMetadataState(newReviews.metadata);
     }
     getData().catch((error) => {
       console.error("Failed to get reviews: ", error);
@@ -34,13 +42,18 @@ const ReviewPaginate: React.FC<ReviewPaginateProps> = ({
   }, [page, id]);
   return (
     <>
+      <div className="mb-5">
+        <span className="text-xl font-semibold">
+          Ratings and Reviews ({metadataState.total_reviews})
+        </span>
+      </div>
       {reviewArr.length <= 0 ? (
         <div className="flex h-40 w-full items-center justify-center">
           <span className="text-zinc-500">No reviews yet.</span>
         </div>
       ) : (
         <>
-          <ReviewHeader reviews={reviews} listingType={listingType} />
+          <ReviewHeader metadata={metadataState} listingType={listingType} />
           <div className="h-96">
             <div className="mt-5 grid grid-cols-2">
               {reviewArr.map((review, i) => {
