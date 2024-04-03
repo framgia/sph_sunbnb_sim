@@ -30,6 +30,7 @@ async function getReviews(id: number, page?: number): Promise<ReviewResponse> {
   );
 
   const responseData = await response.json();
+
   if (response.ok) {
     return responseData;
   } else throw new Error(responseData.error as string);

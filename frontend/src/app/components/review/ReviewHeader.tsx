@@ -1,31 +1,18 @@
-import type { ReviewType } from "@/app/interfaces/types";
+import type { ReviewMetadata } from "@/app/interfaces/types";
 import { Progress } from "@nextui-org/react";
 import React from "react";
 import CleanlinessIcon from "../svgs/Review/CleanlinessIcon";
 import ValueIcon from "../svgs/Review/ValueIcon";
 import LocationIcon from "../svgs/Review/LocationIcon";
-import {
-  calculateRatingCount,
-  calculateAverageRating
-} from "@/app/utils/helpers/review/calculate";
 
 interface ReviewHeaderProps {
-  reviews: ReviewType[];
+  metadata: ReviewMetadata;
   listingType: "accommodation" | "experience";
 }
 const ReviewHeader: React.FC<ReviewHeaderProps> = ({
-  reviews,
+  metadata,
   listingType
 }) => {
-  const fiveCount = calculateRatingCount(reviews, 5);
-  const fourCount = calculateRatingCount(reviews, 4);
-  const threeCount = calculateRatingCount(reviews, 3);
-  const twoCount = calculateRatingCount(reviews, 2);
-  const oneCount = calculateRatingCount(reviews, 1);
-  const cleanliness = calculateAverageRating(reviews, "cleanliness_rating");
-  const value = calculateAverageRating(reviews, "value_rating");
-  const location = calculateAverageRating(reviews, "location_rating");
-
   return (
     <div className="border-b-1 border-foreground-300">
       <div className="flex w-full flex-row divide-x-2">
@@ -40,8 +27,8 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
                 className="w-3/4 self-center"
                 color="default"
                 size="sm"
-                value={fiveCount}
-                maxValue={reviews.length}
+                value={metadata.ratings_count["5"] ?? 0}
+                maxValue={metadata.total_reviews}
                 aria-label="5 overall ratings"
               />
             </div>
@@ -52,8 +39,8 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
               <Progress
                 className="w-3/4 self-center"
                 color="default"
-                value={fourCount}
-                maxValue={reviews.length}
+                value={metadata.ratings_count["4"] ?? 0}
+                maxValue={metadata.total_reviews}
                 size="sm"
                 aria-label="4 overall ratings"
               />
@@ -66,8 +53,8 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
                 size="sm"
                 className="w-3/4 self-center"
                 color="default"
-                value={threeCount}
-                maxValue={reviews.length}
+                value={metadata.ratings_count["3"] ?? 0}
+                maxValue={metadata.total_reviews}
                 aria-label="3 overall ratings"
               />
             </div>
@@ -79,8 +66,8 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
                 size="sm"
                 className="w-3/4 self-center"
                 color="default"
-                value={twoCount}
-                maxValue={reviews.length}
+                value={metadata.ratings_count["2"] ?? 0}
+                maxValue={metadata.total_reviews}
                 aria-label="2 overall ratings"
               />
             </div>
@@ -92,8 +79,8 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
                 size="sm"
                 className="w-3/4 self-center"
                 color="default"
-                value={oneCount}
-                maxValue={reviews.length}
+                value={metadata.ratings_count["1"] ?? 0}
+                maxValue={metadata.total_reviews}
                 aria-label="1 overall ratings"
               />
             </div>
@@ -105,7 +92,7 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
               <div className="mb-10 flex flex-col">
                 <span className="text-md mb-2">Cleanliness</span>
                 <div className="text-md font-bold">
-                  {cleanliness.toFixed(0)}
+                  {Number(metadata.average_cleanliness).toFixed(0) ?? 0}
                 </div>
               </div>
               <CleanlinessIcon />
@@ -113,14 +100,20 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
             <div className="flex w-1/4 flex-col px-5 py-2">
               <div className="mb-10 flex flex-col ">
                 <span className="text-md mb-2">Value</span>
-                <div className="text-md font-bold"> {value.toFixed(0)} </div>
+                <div className="text-md font-bold">
+                  {" "}
+                  {Number(metadata.average_value).toFixed(0) ?? 0}{" "}
+                </div>
               </div>
               <ValueIcon />
             </div>
             <div className="flex w-1/4 flex-col px-5 py-2">
               <div className="mb-10 flex flex-col">
                 <span className="text-md mb-2">Location</span>
-                <div className="text-md font-bold"> {location.toFixed(0)} </div>
+                <div className="text-md font-bold">
+                  {" "}
+                  {Number(metadata.average_location).toFixed(0) ?? 0}{" "}
+                </div>
               </div>
               <LocationIcon />
             </div>
