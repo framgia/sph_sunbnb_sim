@@ -20,28 +20,17 @@ const Navbar: React.FC = async () => {
           <LogoNavbarIcon />
         </Link>
       </NavbarBrand>
-      {user !== null ? (
-        <>
-          <NavbarContent justify="center" className="hidden sm:flex">
-            <NavbarLinks role={user.role} />
-          </NavbarContent>
-          <NavbarContent justify="end">
-            <NavbarDropdown
-              role={user.role}
-              full_name={user.first_name + " " + user.last_name}
-            />
-          </NavbarContent>
-        </>
-      ) : (
-        <>
-          <NavbarContent justify="center" className="hidden sm:flex">
-            <NavbarLinks role={UserRole.GUEST} />
-          </NavbarContent>
-          <NavbarContent justify="end">
-            <NavbarDropdown role={UserRole.DEFAULT} />
-          </NavbarContent>
-        </>
-      )}
+      <>
+        <NavbarContent justify="center" className="hidden sm:flex">
+          <NavbarLinks role={user?.role ?? UserRole.DEFAULT} />
+        </NavbarContent>
+        <NavbarContent justify="end">
+          <NavbarDropdown
+            role={user?.role ?? UserRole.DEFAULT}
+            full_name={`${user?.first_name ?? ""}  ${user?.last_name ?? ""}`}
+          />
+        </NavbarContent>
+      </>
     </NextUINavbar>
   );
 };

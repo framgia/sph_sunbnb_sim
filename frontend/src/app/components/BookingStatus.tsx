@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Button, Chip, useDisclosure } from "@nextui-org/react";
+import { Button, useDisclosure } from "@nextui-org/react";
 import {
   deleteBooking,
   updateBooking
@@ -8,6 +8,7 @@ import {
 import type { BookingHistory } from "../interfaces/types";
 import { BookingStatus } from "../utils/enums";
 import ReviewModal from "./review/AddReviewModal";
+import StatusChip from "./StatusChip";
 
 interface BookingStatusProps {
   status: string;
@@ -29,22 +30,6 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
   setbookings
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const getStatusColor = (status: string): string => {
-    switch (status.toLowerCase()) {
-      case "upcoming":
-        return "bg-blue-300 text-indigo-500";
-      case "cancelled":
-        return "bg-danger-200 text-red-500";
-      case "done":
-        return "bg-success-200 text-green-500";
-      case "pending":
-        return "bg-warning-200 text-yellow-500";
-      case "refused":
-        return "bg-secondary-200 text-secondary-500";
-      default:
-        return "bg-gray-500 text-white";
-    }
-  };
 
   const cancelButtonClick = async (): Promise<void> => {
     try {
@@ -75,7 +60,7 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
           <Button
             size="sm"
             color="primary"
-            className="text-md rounded-full px-5 font-bold"
+            radius="full"
             onClick={cancelButtonClick}
           >
             Cancel
@@ -87,7 +72,7 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
             size="sm"
             color="primary"
             variant="bordered"
-            className="text-md rounded-full px-5 font-bold"
+            radius="full"
             onClick={deleteButtonClick}
           >
             Delete
@@ -99,7 +84,7 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
             size="sm"
             color="primary"
             variant="bordered"
-            className="text-md rounded-full px-5 font-bold"
+            radius="full"
             onClick={deleteButtonClick}
           >
             Delete
@@ -113,7 +98,7 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
                 size="sm"
                 color="primary"
                 variant="bordered"
-                className="text-md rounded-full px-5 font-bold"
+                radius="full"
                 onClick={deleteButtonClick}
               >
                 Delete
@@ -123,7 +108,7 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
                 <Button
                   size="sm"
                   color="primary"
-                  className="text-md rounded-full px-5 font-bold"
+                  radius="full"
                   onClick={onOpen}
                 >
                   Review
@@ -146,7 +131,7 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
             size="sm"
             color="primary"
             variant="bordered"
-            className="text-md rounded-full px-5 font-bold"
+            radius="full"
             onClick={cancelButtonClick}
           >
             Cancel
@@ -160,14 +145,7 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
   return (
     <>
       <div className="flex w-full items-center justify-center">
-        <Chip
-          className={`w-full rounded-full border p-2 text-center font-semibold ${getStatusColor(
-            status
-          )}`}
-          size="lg"
-        >
-          {status}
-        </Chip>
+        <StatusChip status={status} />
       </div>
       <div className="flex w-full items-center justify-center">
         {getAction(status)}
