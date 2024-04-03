@@ -11,7 +11,6 @@ import type {
 } from "../utils/enums";
 import { type Range } from "react-date-range";
 
-// User
 export interface UserRegisterType {
   first_name: string;
   last_name: string;
@@ -121,8 +120,6 @@ export interface MediaType {
   deleted_at?: string | null;
 }
 
-// Review
-
 export interface ReviewType {
   created_at: string;
   overall_rating: number;
@@ -161,8 +158,6 @@ export interface ReviewMetadata {
   average_location: number | null;
   average_value: number | null;
 }
-
-// Booking
 
 export interface Booking {
   id: number;
@@ -207,8 +202,6 @@ export interface BookingData {
   listing_id: number;
 }
 
-// Pagination
-
 export interface PaginationType {
   current_page: number;
   per_page: number;
@@ -223,8 +216,6 @@ export interface PaginatedListing {
   listings: Listing[];
   pagination: PaginationType;
 }
-
-// Filter
 
 export interface ListingFilter {
   query: string;
@@ -246,8 +237,6 @@ export interface HostBookingFilters {
   search: string;
   per_page: string;
 }
-
-// Calendar
 
 export interface CalendarDate {
   date: Date | string;
