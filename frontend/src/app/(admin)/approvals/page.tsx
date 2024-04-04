@@ -1,11 +1,11 @@
 import React from "react";
 
 const ListingsPage: React.FC = () => {
-    return (
-        <>
-            <h1>Listings Page</h1>
-        </>
-    );
+  return (
+    <>
+      <span className="text-2xl font-bold">Listings</span>
+    </>
+  );
 };
 
 export default ListingsPage;
