@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\ExperienceController;
 use App\Http\Controllers\Api\V1\GoogleAuthController;
 use App\Http\Controllers\Api\V1\ListingController;
 use App\Http\Controllers\Api\V1\PasswordController;
+use App\Http\Controllers\Api\V1\ReportController;
 use App\Http\Controllers\Api\V1\ReviewController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
@@ -86,4 +87,8 @@ Route::middleware('auth:api')->group(function () {
     Route::put('booking/delete/{bookingId}', [BookingController::class, 'updateGuestBooking'])->middleware('role:host');
     Route::put('booking/mark-reviewed/{bookingId}', [BookingController::class, 'updateReviewed'])
         ->middleware('check.owner:booking');
+
+    Route::post('report/{listingId}', [ReportController::class, 'store'])->middleware('role:guest');
 });
+Route::put('report/close/{id}', [ReportController::class, 'close']);
+Route::get('report', [ReportController::class, 'index']);
