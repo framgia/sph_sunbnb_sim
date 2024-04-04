@@ -35,10 +35,11 @@ class Admin extends Authenticatable {
         return $this->hasMany(Report::class);
     }
 
-    public static function authenticateAdmin($request): self {
+    public static function authenticateAdmin($request) {
         $admin = self::where('email', $request['email'])->first();
         abort_unless($admin && Hash::check($request['password'], $admin->password), Response::HTTP_UNAUTHORIZED, 'Unauthorized');
+        $adminToken = $admin->createToken('Personal Access Token', ['admin']);
 
-        return $admin;
+        return $adminToken;
     }
 }
