@@ -1,6 +1,6 @@
 "use server";
 import config from "@/app/config/config";
-import { JwtPayloadwithUser } from "@/app/interfaces/types";
+import type { JwtPayloadwithUser } from "@/app/interfaces/types";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
