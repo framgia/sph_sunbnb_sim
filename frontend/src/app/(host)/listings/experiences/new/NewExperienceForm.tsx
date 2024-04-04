@@ -125,12 +125,12 @@ const NewExperienceForm: React.FC<NewExperienceFormProps> = ({
       <div className="mt-10 w-full text-left text-lg font-semibold leading-5 text-black max-md:max-w-full">
         Upload photos of your place
       </div>
-      <div className="grid rounded-3xl outline outline-1 outline-neutral-300 md:grid-cols-2">
-        <div className="p-8">
+      <div className="mt-2 grid rounded-3xl outline outline-1 outline-neutral-300 md:grid-cols-2">
+        <div className="m-8 rounded-3xl bg-primary-50  outline outline-1 outline-neutral-300">
           <ListingUploader media={media} setMedia={setMedia} />
-          <div className="mt-3 text-center text-xs">Maximum of 5 photos</div>
+          <div className="mb-3 text-center text-xs">Maximum of 5 photos</div>
         </div>
-        <div className="rounded-3xl bg-primary-50 outline outline-1 outline-neutral-300">
+        <div className="m-8 rounded-3xl bg-primary-50 outline outline-1 outline-neutral-300">
           <AccommodationImage media={media} setMedia={setMedia} />
         </div>
       </div>

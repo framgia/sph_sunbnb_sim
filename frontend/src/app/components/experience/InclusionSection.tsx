@@ -10,7 +10,7 @@ const InclusionSection: React.FC<InclusionSectionProps> = ({ inclusions }) => {
     <div>
       <span className="text-xl font-semibold">What this place offers</span>
       <div className="my-10 w-full">
-        <div className="grid grid-cols-4">
+        <div className="grid grid-cols-4 gap-x-10">
           {inclusions.map((inclusion, i) => {
             return <InclusionItem key={i} inclusion={inclusion} />;
           })}

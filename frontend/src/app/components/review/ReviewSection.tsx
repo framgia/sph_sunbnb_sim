@@ -15,7 +15,6 @@ const ReviewSection: React.FC<ReviewSectionProps> = async ({
   const { reviews, pagination, metadata } = await getReviews(listingId);
   return (
     <>
-      <pre>{JSON.stringify(metadata, null, 2)}</pre>
       <ReviewPaginate
         reviews={reviews}
         pagination={pagination}

@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Response;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 
@@ -87,24 +86,27 @@ class User extends Authenticatable {
     }
 
     public static function authenticateUser($credentials) {
-        abort_unless(Auth::attempt($credentials), Response::HTTP_UNAUTHORIZED, 'Invalid credentials.');
+        $user = self::where('email', $credentials['email'])->first();
+        abort_unless($user && Hash::check($credentials['password'], $user->password), Response::HTTP_UNAUTHORIZED, 'Invalid credentials.');
+        $userToken = $user->createToken('Personal Access Token', [$user->role]);
 
-        return self::find(Auth::user()->id);
+        return $userToken;
     }
 
-    public static function authenticateGoogleUser($payload): self {
+    public static function authenticateGoogleUser($payload) {
         abort_unless($payload && isset($payload['sub']), Response::HTTP_BAD_REQUEST, 'Invalid Google payload.');
         $user = self::where('provider_id', $payload['sub'])->first();
         abort_unless($user, Response::HTTP_UNAUTHORIZED, 'User not found.');
+        $userToken = $user->createToken('Personal Access Token', [$user->role]);
 
-        return $user;
+        return $userToken;
     }
 
-    public static function createGoogleUser($payload, $role): self {
+    public static function createGoogleUser($payload, $role) {
         abort_unless($payload && isset($payload['sub']) && isset($payload['email']), Response::HTTP_BAD_REQUEST, 'Invalid Google payload.');
         abort_unless(self::where('email', $payload['email'])->doesntExist(), Response::HTTP_BAD_REQUEST, 'User already exists.');
 
-        $data = [
+        self::create([
             'email' => $payload['email'],
             'provider_id' => $payload['sub'],
             'provider' => 'google',
@@ -112,23 +114,24 @@ class User extends Authenticatable {
             'last_name' => $payload['family_name'] ?? null,
             'role' => $role,
             'status' => UserStatus::ACTIVE,
-        ];
+        ]);
 
-        return self::create($data);
+        return self::authenticateGoogleUser($payload);
     }
 
-    public static function createUser($request): self {
+    public static function createUser($request) {
         abort_unless(is_array($request), Response::HTTP_BAD_REQUEST, 'Invalid user data.');
-        $data = [
+
+        self::create([
             'email' => $request['email'],
             'password' => $request['password'],
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
             'role' => $request['role'],
             'status' => UserStatus::ACTIVE,
-        ];
+        ]);
 
-        return self::create($data);
+        return self::authenticateUser($request);
     }
 
     public function updateUser($request): void {

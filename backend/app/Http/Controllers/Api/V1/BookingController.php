@@ -26,21 +26,15 @@ class BookingController extends Controller {
             return User::userNotFoundResponse();
         }
 
-        $bookings = Booking::paginateBookingsByUser($userId, $request);
+        $response = Booking::paginateBookingsByUser($userId, $request);
 
-        return response()->json(
-            Booking::bookingsResponse($bookings),
-            Response::HTTP_OK
-        );
+        return response()->json($response, Response::HTTP_OK);
     }
 
     public function showBookingsByListing($listingId, Request $request) {
-        $bookings = Booking::paginateBookingsByListing($listingId, $request);
+        $response = Booking::paginateBookingsByListing($listingId, $request);
 
-        return response()->json(
-            Booking::bookingsResponse($bookings),
-            Response::HTTP_OK
-        );
+        return response()->json($response, Response::HTTP_OK);
     }
 
     public function store(BookingRequest $request) {

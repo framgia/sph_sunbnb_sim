@@ -57,7 +57,9 @@ class Booking extends Model {
             });
         }
 
-        return $query->paginate($perPage);
+        $bookings = $query->paginate($perPage);
+
+        return self::bookingsResponse($bookings);
     }
 
     public static function createBooking($request): self {
@@ -141,10 +143,12 @@ class Booking extends Model {
     public static function paginateBookingsByUser($userId, Request $request) {
         $perPage = $request->query('per_page', 5);
 
-        return static::where('user_id', $userId)
+        $bookings = static::where('user_id', $userId)
             ->with(['listing', 'user', 'listing.media'])
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
+
+        return self::bookingsResponse($bookings);
     }
 
     public function approveRefuseBooking($request) {
