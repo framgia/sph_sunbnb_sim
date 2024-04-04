@@ -61,9 +61,7 @@ Route::middleware('auth:api')->group(function () {
     Route::middleware('role:host')->group(function () {
         Route::post('/accommodation', [AccommodationController::class, 'store']);
         Route::post('/experience', [ExperienceController::class, 'store']);
-
         Route::put('/calendar/{listingId}', [CalendarController::class, 'set']);
-
         Route::put('/booking/approve-refuse/{bookingId}', [BookingController::class, 'updateBookingStatus']);
         Route::put('/booking/delete/{bookingId}', [BookingController::class, 'updateGuestBooking']);
     });
