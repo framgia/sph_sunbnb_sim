@@ -2,7 +2,7 @@ export async function loginAdmin(
   email: string,
   password: string
 ): Promise<{ message: string }> {
-  // to be modified on integration, commented to avoid lint errors
+  //  to be modified on integration, commented to avoid lint errors
   //   const response = await fetch(`${config.backendUrl}/login/admin`, {
   //     method: "POST",
   //     headers: {
@@ -11,9 +11,9 @@ export async function loginAdmin(
   //     },
   //     body: JSON.stringify({ email, password })
   //   });
-  //const resData = await response.json();
+  //  const resData = await response.json();
 
-  // if (resData.token !== undefined && resData.token !== "") {
+  //  if (resData.token !== undefined && resData.token !== "") {
   //   const decodedJwt: JwtPayloadwithUser = jwtDecode(resData.token as string);
   //   if (resData.success as boolean) {
   //     if (decodedJwt.user.role === null) {
@@ -26,6 +26,6 @@ export async function loginAdmin(
   //       return { message: "success" };
   //     }
   //   }
-  // }
+  //  }
   return { message: "login failed" + " " + email + password };
 }

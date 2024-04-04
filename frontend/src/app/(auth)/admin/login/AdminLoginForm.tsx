@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
 import ErrorMessage from "@/app/components/ErrorMessage";
 
-const AdminLoginForm = () => {
+const AdminLoginForm: React.FC = () => {
   // to be modified on integration, commented to avoid lint errors
   // const router = useRouter();
   const [email, setEmail] = useState("");
