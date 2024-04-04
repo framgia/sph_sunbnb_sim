@@ -1,12 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
-import { loginUser } from "@/app/utils/helpers/userHelper";
 import ErrorMessage from "@/app/components/ErrorMessage";
 
 const AdminLoginForm = () => {
-  const router = useRouter();
+  // to be modified on integration, commented to avoid lint errors
+  // const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -33,13 +32,15 @@ const AdminLoginForm = () => {
       return;
     }
 
-    const loginResult = await loginUser(email, password);
-    if (loginResult.message === "success") {
-      router.push("/");
-    } else {
-      setError("Incorrect Credentials, please input them again.");
-      console.error("Login failed");
-    }
+    // to be modified on integration, commented to avoid lint errors
+
+    // const loginResult = await loginUser(email, password);
+    // if (loginResult.message === "success") {
+    //   router.push("/");
+    // } else {
+    //   setError("Incorrect Credentials, please input them again.");
+    //   console.error("Login failed");
+    // }
     setLoading(false);
   };
 
