@@ -8,12 +8,15 @@ use CorBosman\Passport\AccessToken;
 
 class UserClaim {
     public function handle(AccessToken $token, $next) {
-        $user = User::find($token->getUserIdentifier());
-        if (! $user) {
+        $scopes = $token->getScopes();
+
+        if ($scopes[0]->getIdentifier() == 'admin') {
             $user = Admin::find($token->getUserIdentifier());
             $user->role = 'admin';
             $user->status = 'active';
             $user->provider = null;
+        } elseif ($scopes[0]->getIdentifier() == 'host' || $scopes[0]->getIdentifier() == 'guest') {
+            $user = User::find($token->getUserIdentifier());
         }
 
         $token->addClaim('user', [
