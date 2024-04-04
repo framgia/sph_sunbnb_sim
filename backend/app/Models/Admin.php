@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Response;
@@ -31,8 +32,12 @@ class Admin extends Authenticatable {
         'password' => 'hashed',
     ];
 
-    public function report() {
+    public function report(): HasMany {
         return $this->hasMany(Report::class);
+    }
+
+    public function reason(): HasMany {
+        return $this->hasMany(BanReason::class);
     }
 
     public static function authenticateAdmin($request): self {

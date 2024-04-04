@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -66,6 +67,10 @@ class User extends Authenticatable {
 
     public function listings() {
         return $this->hasMany(Listing::class);
+    }
+
+    public function reason() {
+        return $this->hasMany(BanReason::class);
     }
 
     public function setPasswordAttribute($password) {
@@ -164,5 +169,18 @@ class User extends Authenticatable {
             'success' => false,
             'error' => 'User not found',
         ], Response::HTTP_NOT_FOUND);
+    }
+
+    public static function getUserDetails($userId) {
+        $user = static::with('reason')->findOrFail($userId);
+
+        $userRole = $user->role;
+        if ($userRole === UserRole::GUEST) {
+            $user->load('bookings.listing.media');
+        } elseif ($userRole === UserRole::HOST) {
+            $user->load('listings.media');
+        }
+
+        return $user;
     }
 }
