@@ -3,34 +3,29 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\BanRequest;
+use App\Http\Requests\V1\UnbanRequest;
 use App\Models\BanReason;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class BanReasonController extends Controller {
-    public function banUser(Request $request) {
-        BanReason::validateBanRequest($request);
+    public function createBanReason(BanRequest $request) {
+        try {
+            BanReason::banUser($request);
 
-        $user = User::findOrFail($request->user_id);
-        if ($user->status === 'banned') {
-            return response()->json(['message' => 'User is already banned'], Response::HTTP_BAD_REQUEST);
+            return response()->json(['message' => 'User banned successfully'], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        BanReason::ban($request->user_id, $request->reason);
-
-        return response()->json(['message' => 'User banned successfully'], Response::HTTP_OK);
     }
 
-    public function unbanUser(Request $request) {
-        $banReason = BanReason::where('user_id', $request->user_id)->first();
+    public function updateBan(UnbanRequest $request) {
+        try {
+            BanReason::unbanUser($request);
 
-        if (! $banReason) {
-            return response()->json(['message' => 'User is not banned'], Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => 'User unbanned successfully'], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        $banReason->unban();
-
-        return response()->json(['message' => 'User unbanned successfully'], Response::HTTP_OK);
     }
 }

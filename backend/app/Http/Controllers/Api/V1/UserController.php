@@ -39,7 +39,6 @@ class UserController extends Controller {
         $userDetails = User::getUserDetails($userId);
 
         return response()->json($userDetails);
-
     }
 
     public function update(UserUpdateRequest $request) {
