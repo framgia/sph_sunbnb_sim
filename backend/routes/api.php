@@ -93,7 +93,7 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::middleware(['auth:api-admin', 'role:admin'])->group(function () {
-    // TODO: Add admin routes here
+    Route::get('report', [ReportController::class, 'index']);
+    Route::put('report/{id}', [ReportController::class, 'update']);
+    Route::delete('report/{id}', [ReportController::class, 'destroy']);
 });
-Route::put('report/close/{id}', [ReportController::class, 'close']);
-Route::get('report', [ReportController::class, 'index']);

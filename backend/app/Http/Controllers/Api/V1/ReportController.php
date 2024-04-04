@@ -21,10 +21,17 @@ class ReportController extends Controller {
         return response()->json(['success' => true, 'message' => 'Report created successfully'], Response::HTTP_CREATED);
     }
 
-    public function close($id) {
+    public function update($id) {
         $report = Report::findOrFail($id);
         $report->closeReport();
 
         return response()->json(['success' => true, 'message' => 'Report closed successfully'], Response::HTTP_OK);
+    }
+
+    public function destroy($id) {
+        $report = Report::findOrFail($id);
+        $report->delete();
+
+        return response()->json(['success' => true, 'message' => 'Report deleted successfully'], Response::HTTP_OK);
     }
 }

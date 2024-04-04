@@ -7,10 +7,13 @@ use App\Enums\ReportStatus;
 use App\Http\Requests\V1\ReportRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class Report extends Model {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'title', 'content', 'status', 'reason',
@@ -50,15 +53,22 @@ class Report extends Model {
                 },
             ]);
 
-        if ($reason !== null && in_array($reason, Reason::getConstants())) {
-            $reasonKey = array_search($reason, Reason::getConstants());
-            $query->where('reason', $reasonKey);
+        if ($reason !== null) {
+            $reasonConstants = Reason::getConstants();
+            $reasonValue = $reasonConstants[Str::upper($reason)];
+            $query->where('reason', $reasonValue);
         }
 
-        if ($type !== null && ($type == Accommodation::class || $type == Experience::class)) {
-            $query->whereHas('listing', function ($query) use ($type) {
-                $query->where('listable_type', $type);
-            });
+        if ($type !== null) {
+            if ($type == 'accommodation') {
+                $query->whereHas('listing', function ($query) {
+                    $query->where('listable_type', Accommodation::class);
+                });
+            } elseif ($type == 'experience') {
+                $query->whereHas('listing', function ($query) {
+                    $query->where('listable_type', Experience::class);
+                });
+            }
         }
 
         return $query->paginate($perPage);
@@ -93,11 +103,9 @@ class Report extends Model {
 
     public function closeReport() {
 
-        $this->admin()->associate(auth()->user()->admin);
+        $this->admin()->associate(auth()->user());
         $this->update([
             'status' => 'closed',
-            'admin_id' => $this->input('admin_id'),
         ]);
-
     }
 }
