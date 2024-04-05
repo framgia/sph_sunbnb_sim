@@ -30,7 +30,7 @@ class BanReason extends Model {
         $user = User::findOrFail($request->user_id);
 
         if ($user->status === UserStatus::BANNED) {
-            throw new \Exception('User is already banned');
+            throw new \Exception('User is already banned.');
         }
 
         $banReason = new static(['reason' => $request->reason]);
@@ -42,12 +42,13 @@ class BanReason extends Model {
     }
 
     public static function unbanUser(UnbanRequest $request) {
-        $banReason = static::where('user_id', $request->user_id)->first();
+        $user = User::findOrFail($request->user_id);
 
-        if (! $banReason) {
-            return response()->json(['message' => 'User is not banned'], Response::HTTP_NOT_FOUND);
+        if ($user->status === UserStatus::ACTIVE) {
+            throw new \Exception('User is not banned.');
         }
 
+        $banReason = static::where('user_id', $request->user_id)->first();
         $banReason->user()->update(['status' => UserStatus::ACTIVE]);
         $banReason->delete();
     }
