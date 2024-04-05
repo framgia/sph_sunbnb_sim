@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\CalendarController;
 use App\Http\Controllers\Api\V1\ExperienceController;
 use App\Http\Controllers\Api\V1\ListingController;
 use App\Http\Controllers\Api\V1\PasswordController;
+use App\Http\Controllers\Api\V1\ReportController;
 use App\Http\Controllers\Api\V1\ReviewController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
@@ -70,6 +71,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/booking', [BookingController::class, 'store']);
         Route::post('/review/accommodation/{listingId}', [ReviewController::class, 'storeAccommodation']);
         Route::post('/review/experience/{listingId}', [ReviewController::class, 'storeExperience']);
+        Route::post('report/{listingId}', [ReportController::class, 'store'])->middleware('role:guest');
     });
 
     Route::middleware('check.owner:booking')->group(function () {
@@ -91,5 +93,7 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::middleware(['auth:api-admin', 'role:admin'])->group(function () {
-    // TODO: Add admin routes here
+    Route::get('report', [ReportController::class, 'index']);
+    Route::put('report/{id}', [ReportController::class, 'update']);
+    Route::delete('report/{id}', [ReportController::class, 'destroy']);
 });
