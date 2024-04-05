@@ -93,6 +93,59 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
           value={searchQuery}
           onChange={handleSearchChange}
         />
+        <div className="flex flex-row items-center">
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                className="mx-2 w-40"
+                radius="sm"
+                variant="solid"
+                color="primary"
+                endContent={<ChevronDownIcon />}
+              >
+                {filters.status[0].toUpperCase() +
+                  filters.status.slice(1).toLowerCase()}
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="status"
+              onAction={(key) => {
+                setFilters({ ...filters, status: key as string });
+              }}
+            >
+              <DropdownItem key={BookingStatus.DONE}>Done</DropdownItem>
+              <DropdownItem key={BookingStatus.PENDING}>Pending</DropdownItem>
+              <DropdownItem key={BookingStatus.REFUSED}>Refused</DropdownItem>
+              <DropdownItem key={BookingStatus.UPCOMING}>Upcoming</DropdownItem>
+              <DropdownItem key={BookingStatus.CANCELLED}>
+                Cancelled
+              </DropdownItem>
+              <DropdownItem key={"status"}>All</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                className="mx-2 w-40"
+                radius="sm"
+                variant="solid"
+                color="primary"
+                endContent={<ChevronDownIcon />}
+              >
+                {filters.sort === "desc" ? "Newest" : "Oldest"}
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="status"
+              onAction={(key) => {
+                setFilters({ ...filters, sort: key as string });
+              }}
+            >
+              <DropdownItem key="desc">Newest</DropdownItem>
+              <DropdownItem key="asc">Oldest</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
       </div>
       <div className="mb-1 mt-4 flex justify-between text-xs text-default-500">
         <div className="flex">
