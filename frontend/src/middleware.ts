@@ -30,6 +30,18 @@ export function middleware(request: NextRequest): NextResponse | undefined {
     if (request.nextUrl.pathname.startsWith("/history")) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
+    if (request.nextUrl.pathname.startsWith("/approvals")) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+    if (request.nextUrl.pathname.startsWith("/dashboard")) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+    if (request.nextUrl.pathname.startsWith("/reports")) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+    if (request.nextUrl.pathname.startsWith("/users")) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   } else {
     if (request.nextUrl.pathname.startsWith("/login")) {
       return NextResponse.redirect(new URL("/", request.url));
@@ -41,15 +53,26 @@ export function middleware(request: NextRequest): NextResponse | undefined {
       return NextResponse.redirect(new URL("/", request.url));
     }
     if (
-      user.role === "guest" &&
-      request.nextUrl.pathname.startsWith("/listings")
+      (user.role === "guest" || user.role === "admin") &&
+      (request.nextUrl.pathname.startsWith("/listings") ||
+        request.nextUrl.pathname.startsWith("/calendar"))
     ) {
       return NextResponse.redirect(new URL("/not-found", request.url));
     }
     if (
-      user.role === "host" &&
+      (user.role === "host" || user.role === "admin") &&
       (request.nextUrl.pathname.startsWith("/accommodations") ||
-        request.nextUrl.pathname.startsWith("/experiences"))
+        request.nextUrl.pathname.startsWith("/experiences") ||
+        request.nextUrl.pathname.startsWith("/history"))
+    ) {
+      return NextResponse.redirect(new URL("/not-found", request.url));
+    }
+    if (
+      (user.role === "host" || user.role === "guest") &&
+      (request.nextUrl.pathname.startsWith("/approvals") ||
+        request.nextUrl.pathname.startsWith("/dashboard") ||
+        request.nextUrl.pathname.startsWith("/reports") ||
+        request.nextUrl.pathname.startsWith("/users"))
     ) {
       return NextResponse.redirect(new URL("/not-found", request.url));
     }
