@@ -63,7 +63,7 @@ const UserComponent: React.FC = () => {
   ];
   return (
     <>
-      <div className="mt-10 flex w-full flex-wrap gap-4 md:flex-nowrap">
+      <div className=" flex w-full flex-wrap gap-4 md:flex-nowrap">
         <Input type="Search" label="Search" radius="full" />
       </div>
       <div className="mb-5 mt-5 text-3xl font-bold">Users</div>
