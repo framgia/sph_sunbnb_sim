@@ -20,7 +20,6 @@ class ReportRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'title' => 'required|string',
             'content' => 'required|string',
             'reason' => ['required', 'string', 'in:'.implode(',', Reason::getConstants())],
         ];
