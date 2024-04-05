@@ -13,15 +13,11 @@ import { Divider } from "@nextui-org/react";
 import { redirect } from "next/navigation";
 import React from "react";
 
-interface GuestAccommodationDetailseProps {
+const ApprovalAccommodationDetails: React.FC<{
   params: {
-    id: string;
+    id: number;
   };
-}
-
-const GuestAccommodationsDetails: React.FC<
-  GuestAccommodationDetailseProps
-> = async ({ params }) => {
+}> = async ({ params }) => {
   let accData;
   let accAvailability;
   const user = await checkCookies();
@@ -53,7 +49,6 @@ const GuestAccommodationsDetails: React.FC<
       return new Date(calDate.date);
     });
   }
-
   return (
     <>
       {accData !== undefined ? (
@@ -89,7 +84,7 @@ const GuestAccommodationsDetails: React.FC<
               accData.zip_code
             }
             images={accData.media}
-            id={Number(params.id)}
+            id={params.id}
             status={accData.status}
             price={accData.price}
           />
@@ -101,7 +96,7 @@ const GuestAccommodationsDetails: React.FC<
               <AmenitySection amenities={accData.listable.amenities} />
               <Divider className="my-10 " />
               <ReviewSection
-                listingId={Number(params.id)}
+                listingId={params.id}
                 listingType="accommodation"
               />
             </div>
@@ -114,7 +109,7 @@ const GuestAccommodationsDetails: React.FC<
                   minNights={accData.listable.minimum_days}
                   maxNights={accData.listable.maximum_days}
                   listingId={Number(params.id)}
-                  enabled={true}
+                  enabled={false}
                 />
               ) : (
                 <DefaultSticky ForAccommodation={true} />
@@ -129,4 +124,4 @@ const GuestAccommodationsDetails: React.FC<
   );
 };
 
-export default GuestAccommodationsDetails;
+export default ApprovalAccommodationDetails;
