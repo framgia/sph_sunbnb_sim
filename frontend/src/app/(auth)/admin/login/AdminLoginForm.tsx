@@ -2,10 +2,11 @@
 import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
 import ErrorMessage from "@/app/components/ErrorMessage";
+import { loginAdmin } from "@/app/utils/helpers/adminHelper";
+import { useRouter } from "next/navigation";
 
 const AdminLoginForm: React.FC = () => {
-  // to be modified on integration, commented to avoid lint errors
-  // const router = useRouter();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -32,15 +33,13 @@ const AdminLoginForm: React.FC = () => {
       return;
     }
 
-    // to be modified on integration, commented to avoid lint errors
-
-    // const loginResult = await loginUser(email, password);
-    // if (loginResult.message === "success") {
-    //   router.push("/");
-    // } else {
-    //   setError("Incorrect Credentials, please input them again.");
-    //   console.error("Login failed");
-    // }
+    const loginResult = await loginAdmin(email, password);
+    if (loginResult.message === "success") {
+      router.push("/");
+    } else {
+      setError("Incorrect Credentials, please input them again.");
+      console.error("Login failed");
+    }
     setLoading(false);
   };
 
