@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AccommodationController;
+use App\Http\Controllers\Api\V1\AdminController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\BanReasonController;
 use App\Http\Controllers\Api\V1\BookingController;
 use App\Http\Controllers\Api\V1\CalendarController;
 use App\Http\Controllers\Api\V1\ExperienceController;
@@ -93,6 +95,12 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::middleware(['auth:api-admin', 'role:admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index']);
+    Route::get('/admin/{adminId}', [AdminController::class, 'show']);
+    Route::get('/all-users', [AdminController::class, 'showUserAndAdmin']);
+    Route::post('/ban', [BanReasonController::class, 'createBanReason']);
+    Route::put('/unban', [BanReasonController::class, 'updateBan']);
+    Route::get('/admin/user/{userId}', [UserController::class, 'showAdminSide']);
     Route::get('report', [ReportController::class, 'index']);
     Route::put('report/{id}', [ReportController::class, 'update']);
     Route::delete('report/{id}', [ReportController::class, 'destroy']);
