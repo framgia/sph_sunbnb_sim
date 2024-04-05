@@ -107,7 +107,7 @@ const ListingBookingsTable: React.FC<{
           <Dropdown>
             <DropdownTrigger>
               <Button
-                className="mx-2 line-clamp-1 w-40"
+                className="mx-2"
                 radius="sm"
                 variant="solid"
                 color="primary"

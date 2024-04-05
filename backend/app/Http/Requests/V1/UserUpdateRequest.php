@@ -18,7 +18,6 @@ class UserUpdateRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-        $userId = auth()->id();
         $currentEmail = auth()->user()->email;
 
         $emailRule = $this->input('email') !== $currentEmail
