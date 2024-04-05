@@ -10,6 +10,7 @@ interface ExperienceBookOptionProps {
   endTime: string;
   guests: number;
   listingId: number;
+  enabled: boolean;
 }
 const ExperienceBookOption: React.FC<ExperienceBookOptionProps> = ({
   date,
@@ -17,7 +18,8 @@ const ExperienceBookOption: React.FC<ExperienceBookOptionProps> = ({
   startTime,
   endTime,
   listingId,
-  guests
+  guests,
+  enabled
 }) => {
   const DateArr = date.toDateString().split(" ");
   const router = useRouter();
@@ -60,6 +62,7 @@ const ExperienceBookOption: React.FC<ExperienceBookOptionProps> = ({
           <Button
             color="primary"
             size="sm"
+            isDisabled={!enabled}
             onPress={() => {
               router.push(
                 `${listingId}/checkout?guests=${guests}&date=${date.toISOString()}`

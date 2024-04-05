@@ -32,8 +32,7 @@ const ApprovalAccommodationDetails: React.FC<{
 
   if (
     getListingType(accData.listable_type) === "experience" ||
-    getListingType(accData.listable_type) === undefined ||
-    accData.status !== ListingStatus.ACTIVE
+    getListingType(accData.listable_type) === undefined
   ) {
     redirect("/not-found");
   }

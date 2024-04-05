@@ -25,11 +25,11 @@ const ListingsGrid: React.FC<{
 }> = ({ listings, paginate }) => {
   const [type, setType] = useState(ListingType.ACCOMMODATION);
 
-  //  filter is sitll improper must be changed to props instead of state on integration
+  //  filter is still improper must be changed to props instead of state on integration
   const [listingsState, setListings] = useState(listings);
   const [filteredListings, setFListings] = useState<Listing[]>([]);
   const [page, setPage] = useState(1);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -115,7 +115,7 @@ const ListingsGrid: React.FC<{
                 <div className="rounded-xl shadow-lg" key={i}>
                   <ListingItem
                     key={i}
-                    user={UserRole.HOST}
+                    user={UserRole.ADMIN}
                     listing={listing}
                     type={listing.listable_type.split("\\")[2] as ListingType}
                   />
