@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AccommodationController;
+use App\Http\Controllers\Api\V1\AdminController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BanReasonController;
 use App\Http\Controllers\Api\V1\BookingController;
@@ -93,7 +94,9 @@ Route::middleware('auth:api')->group(function () {
 
 Route::middleware(['auth:api-admin', 'role:admin'])->group(function () {
     // TODO: Add admin routes here
+    Route::apiResource('/admin', AdminController::class);
+    Route::get('/all-users', [AdminController::class, 'showUserAndAdmin']);
     Route::post('/ban', [BanReasonController::class, 'createBanReason']);
     Route::put('/unban', [BanReasonController::class, 'updateBan']);
-    Route::get('/admin/user/{userId}', [UserController::class, 'showAdmin']);
+    Route::get('/admin/user/{userId}', [UserController::class, 'showAdminSide']);
 });

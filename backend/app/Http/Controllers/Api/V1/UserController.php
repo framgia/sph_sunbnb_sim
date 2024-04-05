@@ -35,7 +35,7 @@ class UserController extends Controller {
         ], Response::HTTP_OK);
     }
 
-    public function showAdmin($userId) {
+    public function showAdminSide($userId) {
         $userDetails = User::getUserDetails($userId);
 
         return response()->json($userDetails);
