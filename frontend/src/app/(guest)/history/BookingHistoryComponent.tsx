@@ -60,7 +60,9 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
   return (
     <>
       <div className="mt-5 font-semibold">Your booking history</div>
-      <BookingtFilterSection filters={filters} setFilters={setFilters} />
+      <div className="flex">
+        <BookingtFilterSection filters={filters} setFilters={setFilters} />
+      </div>
       <div className="mb-1 mt-4 flex justify-between text-xs text-default-500">
         <div className="flex">
           <span className="flex self-center">
