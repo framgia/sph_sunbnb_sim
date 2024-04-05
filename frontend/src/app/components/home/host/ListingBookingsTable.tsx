@@ -109,8 +109,29 @@ const ListingBookingsTable: React.FC<{
               : "1 guest"}
           </span>
         </div>
-        <div>
-          <div className="flex flex-row items-center text-xs text-default-500">
+        <div className="flex gap-2">
+          <div className="flex items-center text-xs text-default-500">
+            <span>
+              Sort by: {filters.sort === "desc" ? " Newest" : " Oldest"}
+            </span>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button className="bg-white" isIconOnly>
+                  <ChevronDownIcon />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="status"
+                onAction={(key) => {
+                  setFilters({ ...filters, sort: key as string });
+                }}
+              >
+                <DropdownItem key="desc">Newest</DropdownItem>
+                <DropdownItem key="asc">Oldest</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+          <div className="flex items-center text-xs text-default-500">
             Rows per page: {pagination.per_page}
             <Dropdown>
               <DropdownTrigger>

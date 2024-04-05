@@ -69,26 +69,49 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
             Total bookings: {pagination.total}
           </span>
         </div>
-        <div className="flex flex-row">
-          <span className="flex self-center">
-            Rows per page: {pagination.per_page}
-          </span>
-          <Dropdown>
-            <DropdownTrigger>
-              <Button className="bg-white" isIconOnly>
-                <ChevronDownIcon />
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              onAction={(key) => {
-                setFilters({ ...filters, per_page: key as string });
-              }}
-            >
-              <DropdownItem key={3}>3</DropdownItem>
-              <DropdownItem key={5}>5</DropdownItem>
-              <DropdownItem key={8}>8</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+        <div className="flex gap-2">
+          <div className="flex items-center text-xs text-default-500">
+            <span>
+              Sort by: {filters.sort === "desc" ? " Newest" : " Oldest"}
+            </span>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button className="bg-white" isIconOnly>
+                  <ChevronDownIcon />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="status"
+                onAction={(key) => {
+                  setFilters({ ...filters, sort: key as string });
+                }}
+              >
+                <DropdownItem key="desc">Newest</DropdownItem>
+                <DropdownItem key="asc">Oldest</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+          <div className="flex flex-row">
+            <span className="flex items-center text-xs text-default-500">
+              Rows per page: {pagination.per_page}
+            </span>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button className="bg-white" isIconOnly>
+                  <ChevronDownIcon />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                onAction={(key) => {
+                  setFilters({ ...filters, per_page: key as string });
+                }}
+              >
+                <DropdownItem key={3}>3</DropdownItem>
+                <DropdownItem key={5}>5</DropdownItem>
+                <DropdownItem key={8}>8</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         </div>
       </div>
       <div className="grid h-[50px] grid-cols-[10%_20%_15%_15%_10%_15%_15%] rounded-lg bg-primary-600 text-sm">

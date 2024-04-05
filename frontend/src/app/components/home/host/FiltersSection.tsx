@@ -63,28 +63,6 @@ const BookingtFilterSection: React.FC<BookingtFilterSectionProps> = ({
             <DropdownItem key={"status"}>All</DropdownItem>
           </DropdownMenu>
         </Dropdown>
-        <Dropdown>
-          <DropdownTrigger>
-            <Button
-              className="mx-2 w-40"
-              radius="sm"
-              variant="solid"
-              color="primary"
-              endContent={<ChevronDownIcon />}
-            >
-              {filters.sort === "desc" ? "Newest" : "Oldest"}
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            aria-label="status"
-            onAction={(key) => {
-              setFilters({ ...filters, sort: key as string });
-            }}
-          >
-            <DropdownItem key="desc">Newest</DropdownItem>
-            <DropdownItem key="asc">Oldest</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
       </div>
     </>
   );
