@@ -114,6 +114,7 @@ const GuestAccommodationsDetails: React.FC<
                   minNights={accData.listable.minimum_days}
                   maxNights={accData.listable.maximum_days}
                   listingId={Number(params.id)}
+                  userRole={user.role}
                 />
               ) : (
                 <DefaultSticky ForAccommodation={true} />

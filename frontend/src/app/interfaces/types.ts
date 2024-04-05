@@ -7,7 +7,8 @@ import type {
   Inclusion,
   Language,
   BookingStatus,
-  ExperienceType
+  ExperienceType,
+  Reason
 } from "../utils/enums";
 import { type Range } from "react-date-range";
 
@@ -200,6 +201,11 @@ export interface BookingData {
   end_date: string;
   number_of_guests: number;
   listing_id: number;
+}
+
+export interface ReportData {
+  content: string;
+  reason: Reason;
 }
 
 export interface PaginationType {
