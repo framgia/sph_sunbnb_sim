@@ -95,7 +95,6 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::middleware(['auth:api-admin', 'role:admin'])->group(function () {
-    // TODO: Add admin routes here
     Route::get('/admin', [AdminController::class, 'index']);
     Route::get('/admin/{adminId}', [AdminController::class, 'show']);
     Route::get('/all-users', [AdminController::class, 'showUserAndAdmin']);
