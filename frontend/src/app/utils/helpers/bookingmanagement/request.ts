@@ -1,6 +1,6 @@
 "use server";
 import {
-  type HostBookingFilters,
+  type BookingFilters,
   type Listing,
   type BookingResponse
 } from "@/app/interfaces/types";
@@ -52,7 +52,7 @@ async function getActiveListings(): Promise<Listing[]> {
 
 async function getListingBookings(
   listingId: number,
-  filters: HostBookingFilters,
+  filters: BookingFilters,
   page: number
 ): Promise<BookingResponse> {
   const queryParams = new URLSearchParams();
@@ -64,6 +64,9 @@ async function getListingBookings(
   }
   if (filters.per_page !== "") {
     queryParams.append("per_page", filters.per_page);
+  }
+  if (filters.sort !== "") {
+    queryParams.append("sort", filters.sort);
   }
   queryParams.append("page", page.toString());
   const response = await fetch(

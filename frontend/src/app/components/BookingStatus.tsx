@@ -5,8 +5,6 @@ import {
   deleteBooking,
   updateBooking
 } from "../utils/helpers/bookinghistory/request";
-import type { BookingHistory } from "../interfaces/types";
-import { BookingStatus } from "../utils/enums";
 import ReviewModal from "./review/AddReviewModal";
 import StatusChip from "./StatusChip";
 
@@ -14,29 +12,25 @@ interface BookingStatusProps {
   status: string;
   id: number;
   type: "accommodation" | "experience";
-  bookings: BookingHistory[];
   listingid: number;
   reviewed: boolean;
-  setbookings: (bookings: BookingHistory[]) => void;
+  setActionDone: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const BookingStatusComponent: React.FC<BookingStatusProps> = ({
   status,
   id,
   type,
-  bookings,
   listingid,
   reviewed,
-  setbookings
+  setActionDone
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const cancelButtonClick = async (): Promise<void> => {
     try {
       await updateBooking(id);
-      const bookingIndex = bookings.findIndex((booking) => booking.id === id);
-      bookings[bookingIndex].status = BookingStatus.CANCELLED;
-      setbookings([...bookings]);
+      setActionDone((prev) => !prev);
     } catch (error) {
       console.error("Error updating booking:", error);
     }
@@ -45,9 +39,7 @@ const BookingStatusComponent: React.FC<BookingStatusProps> = ({
   const deleteButtonClick = async (): Promise<void> => {
     try {
       await deleteBooking(id);
-      const bookingIndex = bookings.findIndex((booking) => booking.id === id);
-      bookings.splice(bookingIndex, 1);
-      setbookings([...bookings]);
+      setActionDone((prev) => !prev);
     } catch (error) {
       console.error("Error updating booking:", error);
     }
