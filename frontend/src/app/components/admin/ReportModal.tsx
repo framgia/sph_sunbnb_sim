@@ -1,5 +1,5 @@
 "use client";
-import { ModalProps } from "@/app/interfaces/ModalProps";
+import type { ModalProps } from "@/app/interfaces/ModalProps";
 import {
   Avatar,
   Button,
@@ -30,7 +30,9 @@ const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, size }) => {
     email: "testing@testing.com"
   };
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheckboxChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setIsCheckboxChecked(event.target.checked);
   };
 

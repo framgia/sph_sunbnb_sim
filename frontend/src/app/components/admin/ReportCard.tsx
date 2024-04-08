@@ -31,7 +31,7 @@ const ReportCard: React.FC = () => {
               <Chip className="bg-success-300 text-success-600" size="sm">
                 Open
               </Chip>
-              <div className="text-sm font-bold">It's offensive</div>
+              <div className="text-sm font-bold">It is offensive</div>
             </div>
 
             <div className="my-1 line-clamp-2 text-sm  font-light">

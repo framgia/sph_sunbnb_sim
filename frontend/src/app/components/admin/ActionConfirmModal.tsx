@@ -1,4 +1,4 @@
-import { ModalProps } from "@/app/interfaces/ModalProps";
+import type { ModalProps } from "@/app/interfaces/ModalProps";
 import {
   Button,
   Modal,

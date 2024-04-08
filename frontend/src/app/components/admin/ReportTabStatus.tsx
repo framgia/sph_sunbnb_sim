@@ -13,7 +13,9 @@ const ReportTabStatus: React.FC = () => {
               ? "border-r-5 border-primary text-primary"
               : "text-gray-500"
           }`}
-          onClick={() => setSelectedTab(ReportStatus.OPEN)}
+          onClick={() => {
+            setSelectedTab(ReportStatus.OPEN);
+          }}
         >
           Open
         </div>
@@ -23,7 +25,9 @@ const ReportTabStatus: React.FC = () => {
               ? "border-r-5 border-primary text-primary"
               : "text-gray-500"
           }`}
-          onClick={() => setSelectedTab(ReportStatus.CLOSED)}
+          onClick={() => {
+            setSelectedTab(ReportStatus.CLOSED);
+          }}
         >
           Closed
         </div>
