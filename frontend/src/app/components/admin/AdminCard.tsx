@@ -29,6 +29,7 @@ const AdminCard: React.FC = () => {
                       src={dummydata.image}
                       width={238}
                       height={238}
+                      alt="user"
                     ></Image>
                   </div>
                   <div className="px-5">

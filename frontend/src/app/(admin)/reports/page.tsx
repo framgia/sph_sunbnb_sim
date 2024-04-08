@@ -1,11 +1,12 @@
 import React from "react";
+import AdminReportComponent from "./AdminReportComponent";
 
 const ReportsPage: React.FC = () => {
-    return (
-        <>
-            <h1>Reports Page</h1>
-        </>
-    );
+  return (
+    <>
+      <AdminReportComponent />
+    </>
+  );
 };
 
 export default ReportsPage;
