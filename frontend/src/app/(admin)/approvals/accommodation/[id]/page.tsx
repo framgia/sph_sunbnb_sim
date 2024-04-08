@@ -1,10 +1,10 @@
 import AmenitySection from "@/app/components/accommodation/AmenitySection";
 import ListingHeader from "@/app/components/accommodation/ListingHeader";
+import AdminApprover from "@/app/components/admin/AdminApprover";
 import AccommodationBookingSticky from "@/app/components/booking/AccommodationBookingSticky";
 import DefaultSticky from "@/app/components/booking/DefaultSticky";
 import ReviewSection from "@/app/components/review/ReviewSection";
 import type { CalendarDate } from "@/app/interfaces/types";
-import { ListingStatus } from "@/app/utils/enums";
 import { getPublicAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { getListingType } from "@/app/utils/helpers/getListingType";
@@ -115,6 +115,7 @@ const ApprovalAccommodationDetails: React.FC<{
               )}
             </div>
           </div>
+          <AdminApprover status={accData.status} />
         </>
       ) : (
         <></>

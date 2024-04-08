@@ -1,7 +1,7 @@
 import React from "react";
 import ListingsGrid from "./ListingsGrid";
 import { getAllListings } from "@/app/utils/helpers/approval/request";
-import { Listing, PaginationType } from "@/app/interfaces/types";
+import type { Listing, PaginationType } from "@/app/interfaces/types";
 
 const ListingsPage: React.FC = async ({
   searchParams

@@ -1,5 +1,5 @@
 import config from "@/app/config/config";
-import { Listing, PaginationType } from "@/app/interfaces/types";
+import type { Listing, PaginationType } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 
 function setHeaders(): Record<string, string> {

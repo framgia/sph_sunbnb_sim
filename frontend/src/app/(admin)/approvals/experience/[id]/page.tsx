@@ -1,15 +1,17 @@
+import AdminApprover from "@/app/components/admin/AdminApprover";
 import DefaultSticky from "@/app/components/booking/DefaultSticky";
 import ExperienceBookingSticky from "@/app/components/booking/ExperienceBookingSticky";
 import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
 import ReviewSection from "@/app/components/review/ReviewSection";
-import { CalendarDate, ExperienceListing } from "@/app/interfaces/types";
+import type { CalendarDate, ExperienceListing } from "@/app/interfaces/types";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { getPublicExperience } from "@/app/utils/helpers/experience/request";
 import { getListingType } from "@/app/utils/helpers/getListingType";
 import { checkCookies } from "@/app/utils/helpers/userHelper";
 import { Divider } from "@nextui-org/react";
 import { redirect } from "next/navigation";
+import React from "react";
 
 interface GuestExperienceDetailsProps {
   params: { id: number };
@@ -102,6 +104,7 @@ const GuestExperienceDetailsPage: React.FC<
               )}
             </div>
           </div>
+          <AdminApprover status={expData.status} />
         </>
       ) : (
         <></>

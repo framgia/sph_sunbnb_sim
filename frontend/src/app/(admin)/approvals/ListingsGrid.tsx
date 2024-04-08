@@ -2,8 +2,8 @@
 import ListingItem from "@/app/components/listings/ListingItem";
 import FilterIcon from "@/app/components/svgs/Admin/FilterIcon";
 import SearchIcon from "@/app/components/svgs/SearchIcon";
-import { Listing, PaginationType } from "@/app/interfaces/types";
-import { ListingStatus, ListingType, UserRole } from "@/app/utils/enums";
+import type { Listing, PaginationType } from "@/app/interfaces/types";
+import { ListingType, UserRole } from "@/app/utils/enums";
 import {
   Button,
   Dropdown,
@@ -49,7 +49,7 @@ const ListingsGrid: React.FC<{
       return listing.listable_type.split("\\")[2] === type;
     });
     setFListings(newListings);
-  }, [type, listingsState]);
+  }, [type, listingsState, listings]);
 
   useEffect(() => {
     setLoading(false);

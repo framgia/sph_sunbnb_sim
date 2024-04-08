@@ -5,7 +5,7 @@ import { Avatar } from "@nextui-org/react";
 import Image from "next/image";
 import React from "react";
 import ToEditButton from "../ToEditButton";
-import { checkCookies, userRole } from "@/app/utils/helpers/userHelper";
+import { userRole } from "@/app/utils/helpers/userHelper";
 import StatusChip from "../StatusChip";
 
 interface ExperienceHeaderProps {
