@@ -101,3 +101,8 @@ export enum ListingType {
   ACCOMMODATION = "Accommodation",
   EXPERIENCE = "Experience"
 }
+
+export enum ReportStatus {
+  OPEN = "open",
+  CLOSED = "closed"
+}
