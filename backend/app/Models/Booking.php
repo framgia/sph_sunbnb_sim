@@ -39,12 +39,14 @@ class Booking extends Model {
         $perPage = $request->query('per_page', 5);
         $status = $request->query('status');
         $search = $request->query('search');
+        $sort = $request->query('sort', 'desc');
 
         $query = static::where([
             ['listing_id', $listingId],
             ['host_deleted', false],
         ])
-            ->with(['user:id,first_name,last_name,email']);
+            ->with(['user:id,first_name,last_name,email'])
+            ->orderBy('created_at', $sort);
 
         if ($status !== null) {
             $query->where('status', $status);
@@ -142,13 +144,25 @@ class Booking extends Model {
 
     public static function paginateBookingsByUser($userId, Request $request) {
         $perPage = $request->query('per_page', 5);
+        $status = $request->query('status');
+        $search = $request->query('search');
+        $sort = $request->query('sort', 'desc');
 
-        $bookings = static::where('user_id', $userId)
+        $query = static::where('user_id', $userId)
             ->with(['listing', 'user', 'listing.media'])
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage);
+            ->orderBy('created_at', $sort);
 
-        return self::bookingsResponse($bookings);
+        if ($status !== null) {
+            $query->where('status', $status);
+        }
+
+        if ($search !== null) {
+            $query->whereHas('listing', function ($listingQuery) use ($search) {
+                $listingQuery->where('name', 'like', "%$search%");
+            });
+        }
+
+        return self::bookingsResponse($query->paginate($perPage));
     }
 
     public function approveRefuseBooking($request) {

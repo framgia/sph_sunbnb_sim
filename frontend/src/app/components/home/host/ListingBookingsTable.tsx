@@ -6,7 +6,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Input,
   Pagination
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
@@ -14,23 +13,23 @@ import StatusChip from "../../StatusChip";
 import BookingActions from "./BookingActions";
 import type {
   BookingType,
-  HostBookingFilters,
+  BookingFilters,
   Listing,
   PaginationType
 } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
-import SearchIcon from "../../svgs/SearchIcon";
 import ChevronDownIcon from "../../svgs/Calendar/ChevronDownIcon";
-import { BookingStatus } from "@/app/utils/enums";
 import { getListingBookings } from "@/app/utils/helpers/bookingmanagement/request";
+import BookingtFilterSection from "./FiltersSection";
 
 const ListingBookingsTable: React.FC<{
   listings: Listing[];
 }> = ({ listings }) => {
-  const [filters, setFilters] = useState<HostBookingFilters>({
+  const [filters, setFilters] = useState<BookingFilters>({
     status: "status",
     search: "",
-    per_page: "5"
+    per_page: "5",
+    sort: "desc"
   });
   const [currentListing, setListing] = useState(listings[0]?.id ?? 0);
   const [actionDone, setActionDone] = useState(false);
@@ -62,48 +61,8 @@ const ListingBookingsTable: React.FC<{
   return (
     <div>
       <div className="mb-2 flex h-auto w-full flex-row">
-        <Input
-          size="sm"
-          className="mr-5 w-1/4 "
-          placeholder="Search by name..."
-          variant="bordered"
-          value={filters.search}
-          onChange={(e) => {
-            setFilters({ ...filters, search: e.target.value });
-          }}
-          startContent={<SearchIcon height={15} width={15} />}
-        />
-        <div className="flex flex-row items-center">
-          <Dropdown>
-            <DropdownTrigger>
-              <Button
-                className="mx-2 w-40"
-                radius="sm"
-                variant="solid"
-                color="primary"
-                endContent={<ChevronDownIcon />}
-              >
-                {filters.status[0].toUpperCase() +
-                  filters.status.slice(1).toLowerCase()}
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              aria-label="status"
-              onAction={(key) => {
-                setFilters({ ...filters, status: key as string });
-              }}
-            >
-              <DropdownItem key={BookingStatus.DONE}>Done</DropdownItem>
-              <DropdownItem key={BookingStatus.PENDING}>Pending</DropdownItem>
-              <DropdownItem key={BookingStatus.REFUSED}>Refused</DropdownItem>
-              <DropdownItem key={BookingStatus.UPCOMING}>Upcoming</DropdownItem>
-              <DropdownItem key={BookingStatus.CANCELLED}>
-                Cancelled
-              </DropdownItem>
-              <DropdownItem key={"status"}>All</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-
+        <BookingtFilterSection filters={filters} setFilters={setFilters} />
+        <div>
           <Dropdown>
             <DropdownTrigger>
               <Button
@@ -150,8 +109,29 @@ const ListingBookingsTable: React.FC<{
               : "1 guest"}
           </span>
         </div>
-        <div>
-          <div className="flex flex-row items-center text-xs text-default-500">
+        <div className="flex gap-2">
+          <div className="flex items-center text-xs text-default-500">
+            <span>
+              Sort by: {filters.sort === "desc" ? " Newest" : " Oldest"}
+            </span>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button className="bg-white" isIconOnly>
+                  <ChevronDownIcon />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="status"
+                onAction={(key) => {
+                  setFilters({ ...filters, sort: key as string });
+                }}
+              >
+                <DropdownItem key="desc">Newest</DropdownItem>
+                <DropdownItem key="asc">Oldest</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+          <div className="flex items-center text-xs text-default-500">
             Rows per page: {pagination.per_page}
             <Dropdown>
               <DropdownTrigger>

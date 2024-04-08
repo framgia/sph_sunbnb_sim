@@ -6,93 +6,62 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Input,
-  Pagination,
-  Spinner
+  Pagination
 } from "@nextui-org/react";
-import SearchIcon from "../../components/svgs/SearchIcon";
-import type { BookingHistory, PaginationType } from "../../interfaces/types";
+import type {
+  BookingFilters,
+  BookingHistory,
+  PaginationType
+} from "../../interfaces/types";
 import BookingHistoryData from "./BookingHistoryData";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ChevronDownIcon from "@/app/components/svgs/Calendar/ChevronDownIcon";
+import BookingtFilterSection from "@/app/components/home/host/FiltersSection";
+import { getBookingHistory } from "@/app/utils/helpers/bookinghistory/request";
 
 interface BookingHistoryProps {
-  bookings: BookingHistory[];
-  pagination: PaginationType;
+  id: number;
 }
 
 const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
-  bookings,
-  pagination
+  id: userId
 }) => {
-  const [bookingsState, setBookingsState] =
-    useState<BookingHistory[]>(bookings);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [page, setPage] = useState(pagination.current_page);
-  const [perPage, setPerPage] = useState(pagination.per_page);
-  const [isLoading, setLoading] = useState(false);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setSearchQuery(e.target.value);
-  };
-
-  const filteredBookings = bookingsState.filter(
-    (booking) =>
-      booking.listing !== null &&
-      booking.listing.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  useEffect(() => {
-    setLoading(true);
-    const params = new URLSearchParams(searchParams);
-    if (searchQuery === "") params.delete("query");
-    else params.set("query", searchQuery.toString());
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [searchQuery, pathname, searchParams, router]);
+  const [filters, setFilters] = useState<BookingFilters>({
+    status: "status",
+    search: "",
+    per_page: "5",
+    sort: "desc"
+  });
+  const [actionDone, setActionDone] = useState(false);
+  const [bookingData, setBookingData] = useState<BookingHistory[]>([]);
+  const [pagination, setPagination] = useState<PaginationType>({
+    current_page: 1,
+    per_page: 5,
+    total: 1,
+    next_page_url: "",
+    path: "",
+    prev_page_url: "",
+    to: 1
+  });
+  const [page, setPage] = React.useState(1);
 
   useEffect(() => {
-    setLoading(true);
-    const params = new URLSearchParams(searchParams);
-    if (page === 1) params.delete("page");
-    else params.set("page", page.toString());
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [page, pathname, searchParams, router]);
-
-  useEffect(() => {
-    setLoading(true);
-    const params = new URLSearchParams(searchParams);
-    if (perPage === 5) params.delete("size");
-    else params.set("size", perPage.toString());
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [perPage, pathname, searchParams, router]);
-
-  useEffect(() => {
-    setLoading(false);
-    setBookingsState(bookings);
-  }, [bookings, router]);
-
-  useEffect(() => {
-    setLoading(true);
-    router.refresh();
-  }, [bookingsState.length, router]);
+    async function fetchData(): Promise<void> {
+      const data = await getBookingHistory(userId, filters, page);
+      if (data !== undefined) {
+        setPagination(data.pagination);
+        setBookingData(data.bookings);
+      }
+    }
+    fetchData().catch((error) => {
+      console.error("Failed to get bookings from listing: ", error);
+    });
+  }, [userId, filters, actionDone, page]);
 
   return (
     <>
       <div className="mt-5 font-semibold">Your booking history</div>
-      <div className="mb-6 mt-5 flex w-[340px] flex-wrap gap-4 md:mb-0 md:flex-nowrap">
-        <Input
-          size="sm"
-          variant="bordered"
-          placeholder="Search by name..."
-          startContent={
-            <SearchIcon className="pointer-events-none flex-shrink-0 text-2xl text-default-400" />
-          }
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
+      <div className="flex">
+        <BookingtFilterSection filters={filters} setFilters={setFilters} />
       </div>
       <div className="mb-1 mt-4 flex justify-between text-xs text-default-500">
         <div className="flex">
@@ -100,26 +69,49 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
             Total bookings: {pagination.total}
           </span>
         </div>
-        <div className="flex flex-row">
-          <span className="flex self-center">
-            Rows per page: {pagination.per_page}
-          </span>
-          <Dropdown>
-            <DropdownTrigger>
-              <Button className="bg-white" isIconOnly>
-                <ChevronDownIcon />
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              onAction={(key) => {
-                setPerPage(Number(key));
-              }}
-            >
-              <DropdownItem key={3}>3</DropdownItem>
-              <DropdownItem key={5}>5</DropdownItem>
-              <DropdownItem key={8}>8</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+        <div className="flex gap-2">
+          <div className="flex items-center text-xs text-default-500">
+            <span>
+              Sort by: {filters.sort === "desc" ? " Newest" : " Oldest"}
+            </span>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button className="bg-white" isIconOnly>
+                  <ChevronDownIcon />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                aria-label="status"
+                onAction={(key) => {
+                  setFilters({ ...filters, sort: key as string });
+                }}
+              >
+                <DropdownItem key="desc">Newest</DropdownItem>
+                <DropdownItem key="asc">Oldest</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+          <div className="flex flex-row">
+            <span className="flex items-center text-xs text-default-500">
+              Rows per page: {pagination.per_page}
+            </span>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button className="bg-white" isIconOnly>
+                  <ChevronDownIcon />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                onAction={(key) => {
+                  setFilters({ ...filters, per_page: key as string });
+                }}
+              >
+                <DropdownItem key={3}>3</DropdownItem>
+                <DropdownItem key={5}>5</DropdownItem>
+                <DropdownItem key={8}>8</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         </div>
       </div>
       <div className="grid h-[50px] grid-cols-[10%_20%_15%_15%_10%_15%_15%] rounded-lg bg-primary-600 text-sm">
@@ -140,54 +132,47 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
           ACTIONS
         </div>
       </div>
-      {!isLoading ? (
-        filteredBookings.length > 0 ? (
-          <>
-            {filteredBookings.map((booking, i) =>
-              booking.listing !== null ? (
-                <BookingHistoryData
-                  key={i}
-                  id={booking.id}
-                  listingid={booking.listing.id}
-                  type={
-                    booking.listing.listable_type.includes("Accommodation")
-                      ? "accommodation"
-                      : "experience"
-                  }
-                  name={booking.listing.name}
-                  checkinDate={booking.start_date}
-                  checkoutDate={booking.end_date}
-                  price={booking.listing.price}
-                  status={booking.status as string}
-                  image={booking.listing.media[0].media}
-                  reviewed={booking.reviewed}
-                  bookings={bookingsState}
-                  setbookings={setBookingsState}
-                />
-              ) : (
-                <></>
-              )
-            )}
-            <Pagination
-              className="m-3 flex justify-center"
-              isCompact
-              showControls
-              total={Math.ceil(pagination.total / pagination.per_page)}
-              initialPage={1}
-              page={page}
-              onChange={(page) => {
-                setPage(page);
-              }}
-            />
-          </>
-        ) : (
-          <div className="flex w-full justify-center">
-            <span className=" p-5 text-foreground-500">No bookings found</span>
-          </div>
-        )
+      {bookingData.length > 0 ? (
+        <>
+          {bookingData.map((booking, i) =>
+            booking.listing !== null ? (
+              <BookingHistoryData
+                key={i}
+                id={booking.id}
+                listingid={booking.listing.id}
+                type={
+                  booking.listing.listable_type.includes("Accommodation")
+                    ? "accommodation"
+                    : "experience"
+                }
+                name={booking.listing.name}
+                checkinDate={booking.start_date}
+                checkoutDate={booking.end_date}
+                price={booking.listing.price}
+                status={booking.status as string}
+                image={booking.listing.media[0].media}
+                reviewed={booking.reviewed}
+                setActionDone={setActionDone}
+              />
+            ) : (
+              <></>
+            )
+          )}
+          <Pagination
+            className="m-3 flex justify-center"
+            isCompact
+            showControls
+            total={Math.ceil(pagination.total / pagination.per_page)}
+            initialPage={1}
+            page={page}
+            onChange={(page) => {
+              setPage(page);
+            }}
+          />
+        </>
       ) : (
-        <div className="flex justify-center p-10">
-          <Spinner />
+        <div className="flex w-full justify-center">
+          <span className=" p-5 text-foreground-500">No bookings found</span>
         </div>
       )}
     </>

@@ -238,10 +238,11 @@ export interface ListingFilter {
   type: AccommodationType | ExperienceType | "all";
 }
 
-export interface HostBookingFilters {
+export interface BookingFilters {
   status: string;
   search: string;
   per_page: string;
+  sort: string;
 }
 
 export interface CalendarDate {
