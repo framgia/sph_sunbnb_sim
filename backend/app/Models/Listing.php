@@ -168,7 +168,7 @@ class Listing extends Model {
         ];
     }
 
-    public static function successfulTransactionResponse() {
+    private static function successfulTransactionResponse() {
         return [
             'success' => true,
             'message' => 'Successful transaction.',
