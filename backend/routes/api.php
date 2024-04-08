@@ -105,4 +105,5 @@ Route::middleware(['auth:api-admin', 'role:admin'])->group(function () {
     Route::get('report', [ReportController::class, 'index']);
     Route::put('report/{id}', [ReportController::class, 'update']);
     Route::delete('report/{id}', [ReportController::class, 'destroy']);
+    Route::get('analytics', [AdminController::class, 'analytics']);
 });

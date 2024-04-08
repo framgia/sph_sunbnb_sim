@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Booking;
+use App\Models\Listing;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -44,5 +47,16 @@ class AdminController extends Controller {
         }
 
         return response()->json($allUsers, Response::HTTP_OK);
+    }
+
+    public function analytics() {
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'users' => User::getUserAnalytics(),
+                'bookings' => Booking::getBookingAnalytics(),
+                'listings' => Listing::getListingAnalytics(),
+            ],
+        ]);
     }
 }
