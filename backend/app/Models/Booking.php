@@ -217,4 +217,15 @@ class Booking extends Model {
     public function markAsReviewed() {
         $this->update(['reviewed' => true]);
     }
+
+    public static function getBookingAnalytics() {
+        return [
+            'pending' => self::where('status', BookingStatus::PENDING)->count(),
+            'upcoming' => self::where('status', 'Upcoming')->count(),
+            'done' => self::where('status', 'Done')->count(),
+            'cancelled' => self::where('status', 'Cancelled')->count(),
+            'refused' => self::where('status', 'Refused')->count(),
+            'value' => self::where('status', 'Done')->sum('total_price'),
+        ];
+    }
 }
