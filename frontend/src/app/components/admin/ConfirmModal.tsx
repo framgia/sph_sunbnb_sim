@@ -9,7 +9,16 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 
-const ConfirmModal: React.FC<ModalProps> = ({ onClose, isOpen, size }) => {
+interface ConfirmModalProps extends ModalProps {
+  handleDelete: () => Promise<void>;
+}
+
+const ConfirmModal: React.FC<ConfirmModalProps> = ({
+  onClose,
+  isOpen,
+  size,
+  handleDelete
+}) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} placement="top-center" size={size}>
       <ModalContent>
@@ -39,6 +48,7 @@ const ConfirmModal: React.FC<ModalProps> = ({ onClose, isOpen, size }) => {
                   className="rounded-full"
                   color="primary"
                   variant="solid"
+                  onPress={handleDelete}
                 >
                   Confirm
                 </Button>
