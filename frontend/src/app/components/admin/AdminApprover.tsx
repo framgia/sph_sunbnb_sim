@@ -1,10 +1,13 @@
+"use client";
 import { ListingStatus } from "@/app/utils/enums";
-import { Button } from "@nextui-org/react";
+import { Button, useDisclosure } from "@nextui-org/react";
 import React from "react";
+import ConfirmModal from "./ConfirmModal";
 
 const AdminApprover: React.FC<{
   status: ListingStatus;
 }> = ({ status }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <div className="fixed bottom-0 z-50 mx-[-1999px] flex h-28 w-[9999px] items-center justify-center self-center bg-white drop-shadow-2xl" />
@@ -48,6 +51,7 @@ const AdminApprover: React.FC<{
                   variant="bordered"
                   color="primary"
                   className="mx-2 rounded-full"
+                  onPress={onOpen}
                 >
                   Delete
                 </Button>
@@ -59,7 +63,9 @@ const AdminApprover: React.FC<{
           ) : status === ListingStatus.ACTIVE ? (
             <>
               <span>
-                The listing is currently active. You can set it to
+                The listing is currently
+                <span className="font-bold"> active. </span>
+                You can set it to
                 <span className="font-bold"> pending </span>
                 for review.
               </span>
@@ -76,6 +82,7 @@ const AdminApprover: React.FC<{
           )}
         </div>
       </div>
+      <ConfirmModal isOpen={isOpen} onClose={onClose} size="lg" />
     </>
   );
 };
