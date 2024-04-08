@@ -21,6 +21,8 @@ const ListingItem: React.FC<ListingItemProps> = ({ user, type, listing }) => {
       router.push(`/${type.toLowerCase()}s/${listing.id}`);
     } else if (user === UserRole.HOST) {
       router.push(`/listings/${type.toLowerCase()}s/${listing.id}`);
+    } else if (user === UserRole.ADMIN) {
+      router.push(`/approvals/${type.toLowerCase()}/${listing.id}`);
     }
   }
 
@@ -53,7 +55,7 @@ const ListingItem: React.FC<ListingItemProps> = ({ user, type, listing }) => {
       </Card>
     );
 
-  if (user === UserRole.HOST)
+  if (user === UserRole.HOST || user === UserRole.ADMIN)
     return (
       <Card
         className="w-full px-4 py-3"

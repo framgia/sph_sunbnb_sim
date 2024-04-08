@@ -1,10 +1,10 @@
 import AmenitySection from "@/app/components/accommodation/AmenitySection";
 import ListingHeader from "@/app/components/accommodation/ListingHeader";
+import AdminApprover from "@/app/components/admin/AdminApprover";
 import AccommodationBookingSticky from "@/app/components/booking/AccommodationBookingSticky";
 import DefaultSticky from "@/app/components/booking/DefaultSticky";
 import ReviewSection from "@/app/components/review/ReviewSection";
 import type { CalendarDate } from "@/app/interfaces/types";
-import { ListingStatus } from "@/app/utils/enums";
 import { getPublicAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { getListingType } from "@/app/utils/helpers/getListingType";
@@ -13,15 +13,11 @@ import { Divider } from "@nextui-org/react";
 import { redirect } from "next/navigation";
 import React from "react";
 
-interface GuestAccommodationDetailseProps {
+const ApprovalAccommodationDetails: React.FC<{
   params: {
-    id: string;
+    id: number;
   };
-}
-
-const GuestAccommodationsDetails: React.FC<
-  GuestAccommodationDetailseProps
-> = async ({ params }) => {
+}> = async ({ params }) => {
   let accData;
   let accAvailability;
   const user = await checkCookies();
@@ -36,8 +32,7 @@ const GuestAccommodationsDetails: React.FC<
 
   if (
     getListingType(accData.listable_type) === "experience" ||
-    getListingType(accData.listable_type) === undefined ||
-    accData.status !== ListingStatus.ACTIVE
+    getListingType(accData.listable_type) === undefined
   ) {
     redirect("/not-found");
   }
@@ -53,7 +48,6 @@ const GuestAccommodationsDetails: React.FC<
       return new Date(calDate.date);
     });
   }
-
   return (
     <>
       {accData !== undefined ? (
@@ -89,7 +83,7 @@ const GuestAccommodationsDetails: React.FC<
               accData.zip_code
             }
             images={accData.media}
-            id={Number(params.id)}
+            id={params.id}
             status={accData.status}
             price={accData.price}
           />
@@ -101,7 +95,7 @@ const GuestAccommodationsDetails: React.FC<
               <AmenitySection amenities={accData.listable.amenities} />
               <Divider className="my-10 " />
               <ReviewSection
-                listingId={Number(params.id)}
+                listingId={params.id}
                 listingType="accommodation"
               />
             </div>
@@ -114,13 +108,14 @@ const GuestAccommodationsDetails: React.FC<
                   minNights={accData.listable.minimum_days}
                   maxNights={accData.listable.maximum_days}
                   listingId={Number(params.id)}
-                  enabled={true}
+                  enabled={false}
                 />
               ) : (
                 <DefaultSticky ForAccommodation={true} />
               )}
             </div>
           </div>
+          <AdminApprover status={accData.status} />
         </>
       ) : (
         <></>
@@ -129,4 +124,4 @@ const GuestAccommodationsDetails: React.FC<
   );
 };
 
-export default GuestAccommodationsDetails;
+export default ApprovalAccommodationDetails;
