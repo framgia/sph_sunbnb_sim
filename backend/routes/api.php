@@ -100,6 +100,7 @@ Route::middleware(['auth:api-admin', 'role:admin'])->group(function () {
     Route::get('/all-users', [AdminController::class, 'showUserAndAdmin']);
     Route::post('/ban', [BanReasonController::class, 'createBanReason']);
     Route::put('/unban', [BanReasonController::class, 'updateBan']);
+    Route::put('/review-listing/{listingId}', [ListingController::class, 'updateListingAction']);
     Route::get('/admin/user/{userId}', [UserController::class, 'showAdminSide']);
     Route::get('report', [ReportController::class, 'index']);
     Route::put('report/{id}', [ReportController::class, 'update']);
