@@ -14,6 +14,9 @@ use Illuminate\Http\Response;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Analytics\Facades\Analytics;
+use Spatie\Analytics\OrderBy;
+use Spatie\Analytics\Period;
 
 class User extends Authenticatable {
     use HasApiTokens;
@@ -185,5 +188,22 @@ class User extends Authenticatable {
         }
 
         return $user;
+    }
+
+    public static function getUserAnalytics() {
+        $userTraffic = Analytics::get(
+            period: Period::years(1),
+            metrics: ['activeUsers', 'newUsers'],
+            dimensions: ['yearMonth'],
+            maxResults: 12,
+            orderBy: [OrderBy::dimension('yearMonth', 'DESC')]
+        );
+
+        return [
+            'host' => self::where('role', 'host')->count(),
+            'guest' => self::where('role', 'guest')->count(),
+            'admin' => Admin::count(),
+            'traffic' => $userTraffic,
+        ];
     }
 }

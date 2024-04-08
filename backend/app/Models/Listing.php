@@ -5,6 +5,10 @@ namespace App\Models;
 use App\Enums\AccommodationType;
 use App\Enums\ExperienceType;
 use App\Enums\ListingStatus;
+use Google\Analytics\Data\V1beta\Filter;
+use Google\Analytics\Data\V1beta\Filter\StringFilter;
+use Google\Analytics\Data\V1beta\Filter\StringFilter\MatchType;
+use Google\Analytics\Data\V1beta\FilterExpression;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Analytics\Facades\Analytics;
+use Spatie\Analytics\Period;
 
 class Listing extends Model {
     use HasFactory;
@@ -389,5 +395,42 @@ class Listing extends Model {
         } else {
             $listing->deleteListing();
         }
+    }
+
+    public static function getListingAnalytics() {
+        return [
+            'pending' => self::where('status', 'Pending')->count(),
+            'active' => self::where('status', 'Active')->count(),
+            'refused' => self::where('status', 'Refused')->count(),
+            'popular' => self::getMostViewedListings(),
+        ];
+    }
+
+    private static function getMostViewedListings() {
+        $dimensionFilter = new FilterExpression([
+            'filter' => new Filter([
+                'field_name' => 'pagePath',
+                'string_filter' => new StringFilter([
+                    'match_type' => MatchType::FULL_REGEXP,
+                    'value' => '^/(accommodations|experiences)/.+$',
+                ]),
+            ]),
+        ]);
+
+        $ids = Analytics::get(
+            period: Period::years(1),
+            metrics: ['screenPageViews'],
+            dimensions: ['pagePath'],
+            maxResults: 3,
+            dimensionFilter: $dimensionFilter
+        )->map(function ($item) {
+            $parts = explode('/', $item['pagePath']);
+
+            return (int) end($parts);
+        });
+
+        return Listing::with(
+            ['media', 'user:id,first_name,last_name']
+        )->whereIn('id', $ids)->get();
     }
 }
