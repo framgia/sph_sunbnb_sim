@@ -3,7 +3,8 @@ import {
   Button,
   Popover,
   PopoverContent,
-  PopoverTrigger
+  PopoverTrigger,
+  useDisclosure
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { DateRange, type Range } from "react-date-range";
@@ -14,6 +15,8 @@ import ExperienceBookOption from "./ExperienceBookOption";
 import { eachDayOfInterval } from "date-fns";
 import { useRouter } from "next/navigation";
 import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
+import type { UserRole } from "@/app/utils/enums";
+import ReportModal from "../ReportModal";
 
 interface ExperienceBookingStickyProps {
   price: number;
@@ -22,6 +25,8 @@ interface ExperienceBookingStickyProps {
   maxGuest: number;
   listingId: number;
   exclude: Date[];
+  userRole: UserRole;
+  enabled: boolean;
 }
 const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
   price,
@@ -29,8 +34,11 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
   endTime,
   maxGuest,
   listingId,
-  exclude
+  exclude,
+  userRole,
+  enabled
 }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [guestCount, setGuestCount] = useState(1);
   const [startDateState, setStart] = useState(new Date());
   const [endDateState, setEnd] = useState(new Date());
@@ -65,7 +73,7 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
   }, [dates, endDateState, startDateState]);
   return (
     <div className="w-96">
-      <div className="mb-1 w-full rounded-xl border border-1 border-black p-5 shadow-lg">
+      <div className="mb-1 w-full rounded-xl border-1 border-black p-5 shadow-lg">
         <div className="mb-5">
           <span className="text-xl font-semibold">From ₱ {price} / Person</span>
         </div>
@@ -165,6 +173,7 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
                   endTime={endTime}
                   guests={guestCount}
                   listingId={listingId}
+                  enabled={enabled}
                 />
               );
             })
@@ -180,6 +189,7 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
                     endTime={endTime}
                     guests={guestCount}
                     listingId={listingId}
+                    enabled={enabled}
                   />
                 );
               })}
@@ -205,12 +215,20 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
           )}
         </>
       </div>
-      <div className=" mt-3 flex w-full cursor-pointer flex-row items-center justify-center hover:underline">
-        <FlagIcon />{" "}
-        <span className="mx-2 text-center text-sm font-semibold">
-          Report this listing
-        </span>
-      </div>
+      {userRole === "guest" && (
+        <>
+          <div
+            className=" mt-3 flex w-full cursor-pointer flex-row items-center justify-center hover:underline"
+            onClick={onOpen}
+          >
+            <FlagIcon />{" "}
+            <span className="mx-2 text-center text-sm font-semibold">
+              Report this listing
+            </span>
+          </div>
+          <ReportModal isOpen={isOpen} onClose={onClose} size="2xl" />
+        </>
+      )}
     </div>
   );
 };
