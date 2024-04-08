@@ -24,10 +24,7 @@ class ListingController extends Controller {
                 'listing' => $listing,
             ], Response::HTTP_OK);
         } else {
-            return response()->json([
-                'success' => false,
-                'error' => 'Listing not found',
-            ], Response::HTTP_NOT_FOUND);
+            return Listing::listingNotFoundResponse();
         }
     }
 
@@ -84,10 +81,13 @@ class ListingController extends Controller {
                 'message' => 'Listing is deleted successfully',
             ], Response::HTTP_OK);
         } else {
-            return response()->json([
-                'success' => false,
-                'error' => 'Listing not found',
-            ], Response::HTTP_NOT_FOUND);
+            return Listing::listingNotFoundResponse();
         }
+    }
+
+    public function updateListingAction(Request $request, $listingId) {
+        $response = Listing::processListingAction($request, $listingId);
+
+        return response()->json($response, Response::HTTP_OK);
     }
 }

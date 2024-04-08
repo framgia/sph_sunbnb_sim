@@ -1,5 +1,5 @@
 "use client";
-import { ModalProps } from "@/app/interfaces/ModalProps";
+import type { ModalProps } from "@/app/interfaces/ModalProps";
 import {
   Modal,
   ModalContent,
@@ -43,6 +43,7 @@ const UserCard: React.FC<ModalProps> = ({ isOpen, onClose, size }) => {
                       src={dummydata.image}
                       width={238}
                       height={238}
+                      alt="user"
                     ></Image>
                   </div>
                   <div className="px-5">

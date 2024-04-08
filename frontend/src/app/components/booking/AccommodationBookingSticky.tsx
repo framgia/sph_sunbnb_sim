@@ -4,7 +4,8 @@ import {
   Input,
   Popover,
   PopoverContent,
-  PopoverTrigger
+  PopoverTrigger,
+  useDisclosure
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import FlagIcon from "../svgs/Report/FlagIcon";
@@ -15,6 +16,8 @@ import { getDateString } from "@/app/utils/helpers/getDateString";
 import addDays from "date-fns/addDays";
 import { useRouter } from "next/navigation";
 import { isDateBlocked } from "@/app/utils/helpers/booking/DateHelper";
+import type { UserRole } from "@/app/utils/enums";
+import ReportModal from "../ReportModal";
 
 interface AccommodationBookingStickyProps {
   price: number;
@@ -23,6 +26,7 @@ interface AccommodationBookingStickyProps {
   maxNights: number;
   exclude: Date[];
   listingId: number;
+  userRole: UserRole;
   enabled: boolean;
 }
 const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
@@ -32,8 +36,10 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
   maxNights,
   exclude,
   listingId,
+  userRole,
   enabled
 }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [guestCount, setGuests] = useState(1);
   const [startDateState, setStart] = useState(new Date());
   const [endDateState, setEnd] = useState(addDays(new Date(), minNights));
@@ -66,7 +72,7 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
 
   return (
     <div className="w-80">
-      <div className="mb-1 w-full rounded-xl border border-1 border-black p-5 shadow-lg">
+      <div className="mb-1 w-full rounded-xl border-1 border-black p-5 shadow-lg">
         <div className="mb-5">
           <span className="text-xl font-semibold"> ₱ {price} / night </span>
         </div>
@@ -200,12 +206,20 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
           <></>
         )}
       </div>
-      <div className="mt-3 flex w-full cursor-pointer flex-row items-center justify-center hover:underline">
-        <FlagIcon />{" "}
-        <span className="mx-2 text-center text-sm font-semibold">
-          Report this listing
-        </span>
-      </div>
+      {userRole === "guest" && (
+        <>
+          <div
+            className=" mt-3 flex w-full cursor-pointer flex-row items-center justify-center hover:underline"
+            onClick={onOpen}
+          >
+            <FlagIcon />{" "}
+            <span className="mx-2 text-center text-sm font-semibold">
+              Report this listing
+            </span>
+          </div>
+          <ReportModal isOpen={isOpen} onClose={onClose} size="2xl" />
+        </>
+      )}
     </div>
   );
 };

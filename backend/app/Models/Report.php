@@ -16,7 +16,7 @@ class Report extends Model {
     use SoftDeletes;
 
     protected $fillable = [
-        'title', 'content', 'status', 'reason',
+        'content', 'status', 'reason',
     ];
 
     public function user() {

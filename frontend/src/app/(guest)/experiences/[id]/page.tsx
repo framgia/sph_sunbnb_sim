@@ -98,6 +98,7 @@ const GuestExperienceDetailsPage: React.FC<
                   endTime={expData.listable.end_time}
                   listingId={Number(params.id)}
                   exclude={[...blockedDates, new Date()]}
+                  userRole={user.role}
                   enabled={true}
                 />
               ) : (

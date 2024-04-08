@@ -4,6 +4,11 @@ namespace App\Models;
 
 use App\Enums\AccommodationType;
 use App\Enums\ExperienceType;
+use App\Enums\ListingStatus;
+use Google\Analytics\Data\V1beta\Filter;
+use Google\Analytics\Data\V1beta\Filter\StringFilter;
+use Google\Analytics\Data\V1beta\Filter\StringFilter\MatchType;
+use Google\Analytics\Data\V1beta\FilterExpression;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,12 +17,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Analytics\Facades\Analytics;
+use Spatie\Analytics\Period;
 
 class Listing extends Model {
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code', 'price', 'maximum_guests'];
+    protected $fillable = ['name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code', 'price', 'maximum_guests', 'status'];
 
     public function media(): HasMany {
         return $this->hasMany(Media::class);
@@ -87,9 +94,30 @@ class Listing extends Model {
     }
 
     public static function paginateListings(Request $request) {
-        $perPage = $request->query('per_page', 3);
+        $perPage = $request->query('per_page', 9);
+        $status = $request->query('status');
+        $listableType = $request->query('listable_type');
 
-        $listings = static::with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
+        $query = static::query();
+
+        if ($status !== null && in_array($status, ListingStatus::getConstants())) {
+            $query->where('status', $status);
+        }
+
+        if ($listableType !== null) {
+            if (! in_array($listableType, ['Accommodation', 'Experience'])) {
+                return response()->json([
+                    'error' => 'Invalid listable type provided.',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            $listableType = 'App\Models\\'.$listableType;
+
+            $query->whereHasMorph('listable', [$listableType], function ($query) use ($listableType) {
+                $query->where('listable_type', $listableType);
+            });
+        }
+
+        $listings = $query->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
             ->paginate($perPage);
 
         return self::listingsResponse($listings);
@@ -136,6 +164,20 @@ class Listing extends Model {
                 'prev_page_url' => $listings->previousPageUrl(),
                 'to' => $listings->lastItem(),
             ],
+        ];
+    }
+
+    public static function listingNotFoundResponse() {
+        return [
+            'success' => false,
+            'error' => 'Listing not found',
+        ];
+    }
+
+    private static function successfulTransactionResponse() {
+        return [
+            'success' => true,
+            'message' => 'Successful transaction.',
         ];
     }
 
@@ -310,5 +352,85 @@ class Listing extends Model {
         $query->whereHas('listable', function ($query) use ($type) {
             $query->where('type', $type);
         });
+    }
+
+    public static function processListingAction(Request $request, $listingId) {
+        $listing = static::find($listingId);
+        $validActions = ['approve', 'reject', 'update', 'delete'];
+        $action = $request->input('action');
+
+        if ($listing) {
+            if (! in_array($action, $validActions)) {
+                abort(Response::HTTP_BAD_REQUEST, 'Invalid action provided.');
+            }
+
+            switch ($action) {
+                case 'approve':
+                    self::handleAction($listing, ListingStatus::PENDING, ListingStatus::ACTIVE, 'approve');
+                    break;
+                case 'reject':
+                    self::handleAction($listing, ListingStatus::PENDING, ListingStatus::REFUSED, 'reject');
+                    break;
+                case 'update':
+                    self::handleAction($listing, ListingStatus::REFUSED, ListingStatus::PENDING, 'update');
+                    break;
+                case 'delete':
+                    self::handleAction($listing, ListingStatus::REFUSED, null, 'delete');
+                    break;
+            }
+
+            return self::successfulTransactionResponse();
+        } else {
+            return self::listingNotFoundResponse();
+        }
+    }
+
+    private static function handleAction($listing, $expectedStatus, $newStatus, $action) {
+        if (! in_array($listing->status, [$expectedStatus])) {
+            abort(Response::HTTP_BAD_REQUEST, 'Invalid action: '.$action.'. Current status is not '.strtolower($expectedStatus).'.');
+        }
+
+        if ($newStatus !== null) {
+            $listing->update(['status' => $newStatus]);
+        } else {
+            $listing->deleteListing();
+        }
+    }
+
+    public static function getListingAnalytics() {
+        return [
+            'pending' => self::where('status', 'Pending')->count(),
+            'active' => self::where('status', 'Active')->count(),
+            'refused' => self::where('status', 'Refused')->count(),
+            'popular' => self::getMostViewedListings(),
+        ];
+    }
+
+    private static function getMostViewedListings() {
+        $dimensionFilter = new FilterExpression([
+            'filter' => new Filter([
+                'field_name' => 'pagePath',
+                'string_filter' => new StringFilter([
+                    'match_type' => MatchType::FULL_REGEXP,
+                    'value' => '^/(accommodations|experiences)/.+$',
+                ]),
+            ]),
+        ]);
+
+        $ids = Analytics::get(
+            period: Period::years(1),
+            metrics: ['screenPageViews'],
+            dimensions: ['pagePath'],
+            maxResults: 3,
+            dimensionFilter: $dimensionFilter
+        )->map(function ($item) {
+            $parts = explode('/', $item['pagePath']);
+
+            return (int) end($parts);
+        });
+
+        return Listing::with(
+            ['media', 'user:id,first_name,last_name']
+        )->whereIn('id', $ids)->get();
     }
 }

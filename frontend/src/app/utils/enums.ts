@@ -101,3 +101,15 @@ export enum ListingType {
   ACCOMMODATION = "Accommodation",
   EXPERIENCE = "Experience"
 }
+
+export enum ReportStatus {
+  OPEN = "open",
+  CLOSED = "closed"
+}
+export enum Reason {
+  INACCURATE = "It is inaccurate or incorrect.",
+  NOT_REAL = "It is not a real place or stay.",
+  SCAM = "It is a scam.",
+  OFFENSIVE = "It is offensive.",
+  OTHERS = "It is something else."
+}
