@@ -57,7 +57,6 @@ const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
           .split(" ")
           .slice(1)
           .join(" ")}
-        hostId={expData.user.id}
         status={expData.status}
       />
       <Divider className="my-10 w-full" />

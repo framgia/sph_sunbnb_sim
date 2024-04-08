@@ -27,6 +27,7 @@ interface AccommodationBookingStickyProps {
   exclude: Date[];
   listingId: number;
   userRole: UserRole;
+  enabled: boolean;
 }
 const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
   price,
@@ -35,7 +36,8 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
   maxNights,
   exclude,
   listingId,
-  userRole
+  userRole,
+  enabled
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [guestCount, setGuests] = useState(1);
@@ -166,7 +168,8 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
               nights < 1 ||
               nights > maxNights ||
               isDateBlocked(startDateState, exclude) ||
-              isDateBlocked(endDateState, exclude)
+              isDateBlocked(endDateState, exclude) ||
+              !enabled
             }
             onPress={() => {
               router.push(

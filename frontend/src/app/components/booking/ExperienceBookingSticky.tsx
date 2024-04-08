@@ -26,6 +26,7 @@ interface ExperienceBookingStickyProps {
   listingId: number;
   exclude: Date[];
   userRole: UserRole;
+  enabled: boolean;
 }
 const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
   price,
@@ -34,7 +35,8 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
   maxGuest,
   listingId,
   exclude,
-  userRole
+  userRole,
+  enabled
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [guestCount, setGuestCount] = useState(1);
@@ -171,6 +173,7 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
                   endTime={endTime}
                   guests={guestCount}
                   listingId={listingId}
+                  enabled={enabled}
                 />
               );
             })
@@ -186,6 +189,7 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
                     endTime={endTime}
                     guests={guestCount}
                     listingId={listingId}
+                    enabled={enabled}
                   />
                 );
               })}

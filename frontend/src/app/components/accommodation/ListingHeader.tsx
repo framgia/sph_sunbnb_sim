@@ -45,9 +45,6 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
   images,
   status
 }) => {
-  async function checkIsHost(): Promise<boolean> {
-    return (await userRole()) === "host";
-  }
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
@@ -55,13 +52,14 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
           <span className="text-2xl font-bold leading-7">
             {accomodationName}
           </span>
-          {(await checkIsHost()) && (
+          {((await userRole()) === "host" ||
+            (await userRole()) === "admin") && (
             <div className="mx-4">
               <StatusChip status={status} />
             </div>
           )}
         </div>
-        {(await checkIsHost()) && (
+        {(await userRole()) === "host" && (
           <div>
             <ToEditButton path={`/listings/accommodations/${id}/edit`} />
           </div>
@@ -98,7 +96,8 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
           <span>
             {type} in {city}
           </span>
-          {(await checkIsHost()) && <span>₱{price}</span>}
+          {((await userRole()) === "host" ||
+            (await userRole()) === "admin") && <span>₱{price}</span>}
         </div>
 
         <div className="mb-1 text-base leading-6 text-zinc-500">
