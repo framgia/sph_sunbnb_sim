@@ -5,7 +5,7 @@ import { Avatar } from "@nextui-org/react";
 import Image from "next/image";
 import React from "react";
 import ToEditButton from "../ToEditButton";
-import { checkCookies, userRole } from "@/app/utils/helpers/userHelper";
+import { userRole } from "@/app/utils/helpers/userHelper";
 import StatusChip from "../StatusChip";
 
 interface ExperienceHeaderProps {
@@ -24,7 +24,6 @@ interface ExperienceHeaderProps {
   hostName: string;
   createdAt: string;
   modifiedAt: string;
-  hostId?: number;
   status: string;
 }
 const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
@@ -43,13 +42,8 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
   hostName,
   createdAt,
   modifiedAt,
-  hostId,
   status
 }) => {
-  async function checkIsHost(): Promise<boolean> {
-    const user = await checkCookies();
-    return (await userRole()) === "host" && user?.id === hostId;
-  }
   function getDuration(start: string, end: string): number {
     const startArr = start.split(":");
     const endArr = end.split(":");
@@ -64,13 +58,14 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
       <div className="mb-4 flex items-center justify-between">
         <div className="flex">
           <span className="text-2xl font-bold leading-7">{experienceName}</span>
-          {(await checkIsHost()) && (
+          {((await userRole()) === "host" ||
+            (await userRole()) === "admin") && (
             <div className="mx-4">
               <StatusChip status={status} />
             </div>
           )}
         </div>
-        {(await checkIsHost()) && (
+        {(await userRole()) === "host" && (
           <div>
             <ToEditButton path={`/listings/experiences/${id}/edit`} />
           </div>
@@ -109,7 +104,8 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
           <span>
             {street}, {barangay}, {city}, {zipCode}
           </span>
-          {(await checkIsHost()) && <span>₱{price}</span>}
+          {((await userRole()) === "host" ||
+            (await userRole()) === "admin") && <span>₱{price}</span>}
         </div>
         <div className="mb-1 text-base leading-6 text-zinc-500">
           {type} •{" "}

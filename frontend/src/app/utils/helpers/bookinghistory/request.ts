@@ -2,6 +2,7 @@
 
 import config from "@/app/config/config";
 import type {
+  BookingFilters,
   BookingHistory,
   BookingHistoryResponse
 } from "@/app/interfaces/types";
@@ -20,12 +21,26 @@ function setHeaders(): Record<string, string> {
 
 async function getBookingHistory(
   userId: number,
-  page: number,
-  size: number,
-  query?: string
+  filters: BookingFilters,
+  page: number
 ): Promise<BookingHistoryResponse> {
+  const queryParams = new URLSearchParams();
+  if (filters.status !== "status") {
+    queryParams.append("status", filters.status);
+  }
+  if (filters.search !== "") {
+    queryParams.append("search", filters.search);
+  }
+  if (filters.per_page !== "") {
+    queryParams.append("per_page", filters.per_page);
+  }
+  if (filters.sort !== "") {
+    queryParams.append("sort", filters.sort);
+  }
+  queryParams.append("page", page.toString());
+
   const response = await fetch(
-    `${config.backendUrl}/booking/user/${userId}?page=${page ?? 1}&per_page=${size ?? 5}${query !== undefined ? `&search=${query}` : ""}`,
+    `${config.backendUrl}/booking/user/${userId}${queryParams.toString() !== "" ? `?${queryParams.toString()}` : ""}`,
     {
       method: "GET",
       headers: setHeaders()

@@ -1,17 +1,17 @@
+import AdminApprover from "@/app/components/admin/AdminApprover";
 import DefaultSticky from "@/app/components/booking/DefaultSticky";
 import ExperienceBookingSticky from "@/app/components/booking/ExperienceBookingSticky";
 import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
-import { getPublicExperience } from "@/app/utils/helpers/experience/request";
 import ReviewSection from "@/app/components/review/ReviewSection";
 import type { CalendarDate, ExperienceListing } from "@/app/interfaces/types";
+import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
+import { getPublicExperience } from "@/app/utils/helpers/experience/request";
+import { getListingType } from "@/app/utils/helpers/getListingType";
 import { checkCookies } from "@/app/utils/helpers/userHelper";
 import { Divider } from "@nextui-org/react";
-import React from "react";
 import { redirect } from "next/navigation";
-import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
-import { ListingStatus } from "@/app/utils/enums";
-import { getListingType } from "@/app/utils/helpers/getListingType";
+import React from "react";
 
 interface GuestExperienceDetailsProps {
   params: { id: number };
@@ -37,8 +37,7 @@ const GuestExperienceDetailsPage: React.FC<
   }
   if (
     expData === undefined ||
-    getListingType(expData.listable_type) === "accommodation" ||
-    expData.status !== ListingStatus.ACTIVE
+    getListingType(expData.listable_type) === "accommodation"
   ) {
     redirect("/not-found");
   }
@@ -98,14 +97,14 @@ const GuestExperienceDetailsPage: React.FC<
                   endTime={expData.listable.end_time}
                   listingId={Number(params.id)}
                   exclude={[...blockedDates, new Date()]}
-                  userRole={user.role}
-                  enabled={true}
+                  enabled={false}
                 />
               ) : (
                 <DefaultSticky ForAccommodation={false} />
               )}
             </div>
           </div>
+          <AdminApprover status={expData.status} />
         </>
       ) : (
         <></>
