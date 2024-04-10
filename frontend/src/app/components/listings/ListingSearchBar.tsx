@@ -53,9 +53,6 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
   const handleFilterChange = useCallback(() => {
     const params = new URLSearchParams(searchParams);
 
-    if (filters.query !== "") params.set(`${prefix}query`, filters.query);
-    else params.delete(`${prefix}query`);
-
     if (filters.price.min !== MIN_PRICE || filters.price.max !== MAX_PRICE)
       params.set(`${prefix}price`, `${filters.price.min}-${filters.price.max}`);
     else params.delete(`${prefix}price`);
@@ -92,9 +89,9 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
 
   const handleFilterClear = useCallback(() => {
     const params = new URLSearchParams(searchParams);
+
     setFilters(INITIAL_FILTER);
     params.delete(`${prefix}page`);
-    params.delete(`${prefix}query`);
     params.delete(`${prefix}price`);
     params.delete(`${prefix}rating`);
     params.delete(`${prefix}date`);
@@ -103,6 +100,23 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
     if (user === UserRole.HOST) params.delete(`${prefix}type`);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }, [pathname, router, searchParams, prefix, user]);
+
+  const handleSearchChange = useCallback(
+    (query: string) => {
+      const params = new URLSearchParams(searchParams);
+
+      if (query !== "") params.set(`${prefix}query`, query);
+      else params.delete(`${prefix}query`);
+      params.delete(`${prefix}page`);
+      params.delete(`${prefix}price`);
+      params.delete(`${prefix}rating`);
+      params.delete(`${prefix}date`);
+      params.delete(`${prefix}status`);
+
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, prefix, router, pathname]
+  );
 
   return (
     <div className="mt-[-20px] flex items-center rounded-lg bg-white px-2 shadow-md">
@@ -120,9 +134,8 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
           innerWrapper: ["bg-white"]
         }}
         startContent={<SearchIcon width={14} height={14} />}
-        value={filters.query}
         onChange={(e) => {
-          setFilters({ ...filters, query: e.target.value });
+          handleSearchChange(e.target.value);
         }}
       />
       <Popover placement="bottom" showArrow offset={10}>

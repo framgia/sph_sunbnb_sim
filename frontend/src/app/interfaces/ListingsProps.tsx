@@ -10,7 +10,6 @@ export const MIN_RATING = 0;
 export const MAX_RATING = 5;
 export const MIN_DATE = new Date(new Date().setHours(0, 0, 0, 0));
 export const INITIAL_FILTER: ListingFilter = {
-  query: "",
   price: {
     min: 0,
     max: 100000
