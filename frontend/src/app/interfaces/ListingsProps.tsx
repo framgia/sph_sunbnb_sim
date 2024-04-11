@@ -1,3 +1,4 @@
+import { type ButtonProps } from "@nextui-org/react";
 import { type ListingType, type UserRole } from "../utils/enums";
 import { type PaginationType, type Listing, type ListingFilter } from "./types";
 
@@ -10,7 +11,6 @@ export const MIN_RATING = 0;
 export const MAX_RATING = 5;
 export const MIN_DATE = new Date(new Date().setHours(0, 0, 0, 0));
 export const INITIAL_FILTER: ListingFilter = {
-  query: "",
   price: {
     min: 0,
     max: 100000
@@ -73,4 +73,21 @@ export interface PaginationProps {
   currentPage: number;
   perPage: number;
   onPageChange: (page: number) => void;
+}
+
+export interface ListingFilterModalProps {
+  user: UserRole;
+  type: ListingType;
+  isOpen: boolean;
+  onOpen: () => void;
+  onOpenChange: (open: boolean) => void;
+  filters: ListingFilter;
+  onSetFilters: (filters: ListingFilter) => void;
+  onFilterChange: () => void;
+  onFilterClear: () => void;
+}
+
+export interface FilterButtonProps extends ButtonProps {
+  isClear?: boolean;
+  isModal?: boolean;
 }
