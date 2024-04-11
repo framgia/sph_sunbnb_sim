@@ -117,6 +117,7 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
       params.delete(`${prefix}rating`);
       params.delete(`${prefix}date`);
       params.delete(`${prefix}status`);
+      params.delete(`${prefix}type`);
 
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     },
