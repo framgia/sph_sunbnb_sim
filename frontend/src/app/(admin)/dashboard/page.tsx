@@ -4,6 +4,7 @@ import { Accommodation, Listing } from "@/app/interfaces/types";
 import { ListingStatus, UserRole } from "@/app/utils/enums";
 import PopularListingCard from "@/app/components/admin/PopularListingCard";
 import PopularListings from "@/app/components/admin/PopularListingsSection";
+import UserTrafficSection from "@/app/components/admin/UserTrafficSection";
 
 const DashboardPage: React.FC = () => {
   const dummyListing: Listing = {
@@ -86,7 +87,9 @@ const DashboardPage: React.FC = () => {
       </div>
       <div>
         <span className="text-xl font-bold">User Traffic</span>
-        <div className="my-5 h-96 bg-primary text-white">Graph here</div>
+        <div className="my-5 h-96">
+          <UserTrafficSection />
+        </div>
       </div>
     </>
   );

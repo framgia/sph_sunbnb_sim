@@ -1,3 +1,4 @@
+import ListingDoughnut from "@/app/components/admin/ListingDoughnut";
 import BookingsIcon from "@/app/components/svgs/Admin/BookingsIcon";
 import ListingsIcon from "@/app/components/svgs/Admin/ListingsIcon";
 import UsersIcon from "@/app/components/svgs/Admin/UsersIcon";
@@ -95,12 +96,15 @@ const AdminAnalytics: React.FC<AnalyticsProps> = ({
                   </span>
                 </div>
               </div>
-              {/* replace with percentage graph */}
-              <div className="mt-10 h-full w-2/5 items-center px-2 text-5xl font-bold">
-                <span>
-                  {Math.ceil((approvedListings / listingsCount) * 100)}%
-                </span>
+              <div className="w-2/5 p-5">
+                <ListingDoughnut
+                  approved={approvedListings}
+                  unapproved={listingsCount - approvedListings}
+                />
               </div>
+            </div>
+            <div className="z-20 mt-[-100px] w-full pr-16 text-end text-2xl font-bold">
+              {Math.ceil((approvedListings / listingsCount) * 100)}%
             </div>
           </div>
         </div>
