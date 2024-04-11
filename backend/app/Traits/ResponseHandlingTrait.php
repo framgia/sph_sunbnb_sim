@@ -13,6 +13,20 @@ trait ResponseHandlingTrait {
         ], Response::HTTP_CREATED);
     }
 
+    protected static function notFoundResponse($error) {
+        return response([
+            'success' => false,
+            'error' => $error,
+        ], Response::HTTP_NOT_FOUND);
+    }
+
+    protected static function successfulTransactionResponse($message) {
+        return response([
+            'success' => true,
+            'message' => $message,
+        ], Response::HTTP_OK);
+    }
+
     protected static function listingsResponse($listings) {
         return [
             'success' => true,
@@ -26,20 +40,6 @@ trait ResponseHandlingTrait {
                 'prev_page_url' => $listings->previousPageUrl(),
                 'to' => $listings->lastItem(),
             ],
-        ];
-    }
-
-    protected static function notFoundResponse($error) {
-        return [
-            'success' => false,
-            'error' => $error,
-        ];
-    }
-
-    protected static function successfulTransactionResponse($message) {
-        return [
-            'success' => true,
-            'message' => $message,
         ];
     }
 
