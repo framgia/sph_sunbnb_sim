@@ -1,3 +1,4 @@
+import { type ButtonProps } from "@nextui-org/react";
 import { type ListingType, type UserRole } from "../utils/enums";
 import { type PaginationType, type Listing, type ListingFilter } from "./types";
 
@@ -72,4 +73,21 @@ export interface PaginationProps {
   currentPage: number;
   perPage: number;
   onPageChange: (page: number) => void;
+}
+
+export interface ListingFilterModalProps {
+  user: UserRole;
+  type: ListingType;
+  isOpen: boolean;
+  onOpen: () => void;
+  onOpenChange: (open: boolean) => void;
+  filters: ListingFilter;
+  onSetFilters: (filters: ListingFilter) => void;
+  onFilterChange: () => void;
+  onFilterClear: () => void;
+}
+
+export interface FilterButtonProps extends ButtonProps {
+  isClear?: boolean;
+  isModal?: boolean;
 }

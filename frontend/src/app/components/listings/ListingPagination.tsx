@@ -64,8 +64,8 @@ const ListingPagination: React.FC<ListingPaginationProps> = ({
 
   return (
     <div className="flex flex-col items-center">
-      <div className="mt-5 flex w-full items-center justify-between">
-        <p className="text-sm capitalize text-zinc-500">{`Total ${total} ${type}`}</p>
+      <div className="mb-2 mt-5 flex w-full items-center justify-between">
+        <p className="text-sm capitalize text-zinc-500">{`Total ${total} ${type}s`}</p>
         <Dropdown
           classNames={{
             content: "min-w-[25px]"
