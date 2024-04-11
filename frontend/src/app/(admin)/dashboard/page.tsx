@@ -1,8 +1,7 @@
 import React from "react";
 import AdminAnalytics from "./AdminAnalytics";
-import { Accommodation, Listing } from "@/app/interfaces/types";
+import type { Listing } from "@/app/interfaces/types";
 import { ListingStatus, UserRole } from "@/app/utils/enums";
-import PopularListingCard from "@/app/components/admin/PopularListingCard";
 import PopularListings from "@/app/components/admin/PopularListingsSection";
 import UserTrafficSection from "@/app/components/admin/UserTrafficSection";
 
@@ -30,7 +29,7 @@ const DashboardPage: React.FC = () => {
         id: 31,
         listing_id: 13,
         media:
-          '["https://utfs.io/f/708298d7-aad9-491e-85c3-82f9cd0a79e3-g47goy.jpg"]',
+          "https://utfs.io/f/708298d7-aad9-491e-85c3-82f9cd0a79e3-g47goy.jpg",
         created_at: "2024-03-08T08:48:24.000000Z",
         updated_at: "2024-03-08T08:48:24.000000Z",
         deleted_at: null
@@ -39,7 +38,7 @@ const DashboardPage: React.FC = () => {
         id: 32,
         listing_id: 13,
         media:
-          '["https://utfs.io/f/ca88b394-c700-4cae-8176-6fe8d8b838b1-5nw4vb.png"]',
+          "https://utfs.io/f/ca88b394-c700-4cae-8176-6fe8d8b838b1-5nw4vb.png",
         created_at: "2024-03-08T08:48:24.000000Z",
         updated_at: "2024-03-08T08:48:24.000000Z",
         deleted_at: null
@@ -48,7 +47,7 @@ const DashboardPage: React.FC = () => {
         id: 33,
         listing_id: 13,
         media:
-          '["https://utfs.io/f/f5532a6f-e721-4458-9ffe-2ced484b7188-2487m.jpg"]',
+          "https://utfs.io/f/f5532a6f-e721-4458-9ffe-2ced484b7188-2487m.jpg",
         created_at: "2024-03-08T08:48:24.000000Z",
         updated_at: "2024-03-08T08:48:24.000000Z",
         deleted_at: null

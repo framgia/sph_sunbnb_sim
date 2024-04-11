@@ -1,4 +1,4 @@
-import { Listing } from "@/app/interfaces/types";
+import type { Listing } from "@/app/interfaces/types";
 import Image from "next/image";
 import React from "react";
 
@@ -6,11 +6,13 @@ const PopularListingCard: React.FC<{
   listing: Listing;
 }> = ({ listing }) => {
   return (
+    //  add redirect to approval details page on integration
     <div className="flex cursor-pointer flex-col rounded-2xl">
       <div className="overflow-hidden rounded-2xl bg-gradient-to-t from-primary from-20% to-white">
-        <div className="relative h-56 w-80 overflow-hidden rounded-2xl duration-300 hover:h-60 hover:w-[325px] hover:opacity-80">
+        <div className="relative h-56 w-80 overflow-hidden rounded-2xl duration-300 hover:h-[230px] hover:w-[325px] hover:opacity-80">
           <Image
-            src={listing.media[0].media.replace(/["\[\]"]/g, "")}
+            // add replace regex (follow regex of listingHeader.tsx) on integration
+            src={listing.media[0].media}
             fill
             alt="listing image"
           />

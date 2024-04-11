@@ -1,6 +1,6 @@
 import React from "react";
 import PopularListingCard from "./PopularListingCard";
-import { Listing } from "@/app/interfaces/types";
+import type { Listing } from "@/app/interfaces/types";
 
 const PopularListings: React.FC<{
   listings: Listing[];
