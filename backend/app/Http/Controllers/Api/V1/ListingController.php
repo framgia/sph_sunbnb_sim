@@ -24,7 +24,7 @@ class ListingController extends Controller {
                 'listing' => $listing,
             ], Response::HTTP_OK);
         } else {
-            return Listing::listingNotFoundResponse();
+            return Listing::notFoundResponse('Listing not found.');
         }
     }
 
@@ -32,7 +32,7 @@ class ListingController extends Controller {
         $user = User::find($userId);
 
         if (! $user) {
-            return User::userNotFoundResponse();
+            return User::notFoundResponse('User not found.');
         }
 
         $response = Listing::paginateListingsByUser($userId, $request);
@@ -76,12 +76,9 @@ class ListingController extends Controller {
         if ($listing) {
             $listing->deleteListing();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Listing is deleted successfully',
-            ], Response::HTTP_OK);
+            return Listing::successfulTransactionResponse('Listing deleted successfully.');
         } else {
-            return Listing::listingNotFoundResponse();
+            return Listing::notFoundResponse('Listing not found.');
         }
     }
 

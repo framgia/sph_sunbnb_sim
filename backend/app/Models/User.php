@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use App\Notifications\ResetPasswordNotification;
+use App\Traits\ResponseHandlingTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,6 +23,7 @@ class User extends Authenticatable {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use ResponseHandlingTrait;
     use SoftDeletes;
 
     /**
@@ -168,13 +170,6 @@ class User extends Authenticatable {
             abort(Response::HTTP_FORBIDDEN, 'Cannot update password if using provider.');
         }
         $this->update($data);
-    }
-
-    public static function userNotFoundResponse() {
-        return response()->json([
-            'success' => false,
-            'error' => 'User not found',
-        ], Response::HTTP_NOT_FOUND);
     }
 
     public static function getUserDetails($userId) {

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\AccommodationType;
 use App\Enums\ExperienceType;
 use App\Enums\ListingStatus;
+use App\Traits\ResponseHandlingTrait;
 use Google\Analytics\Data\V1beta\Filter;
 use Google\Analytics\Data\V1beta\Filter\StringFilter;
 use Google\Analytics\Data\V1beta\Filter\StringFilter\MatchType;
@@ -22,6 +23,7 @@ use Spatie\Analytics\Period;
 
 class Listing extends Model {
     use HasFactory;
+    use ResponseHandlingTrait;
     use SoftDeletes;
 
     protected $fillable = ['name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code', 'price', 'maximum_guests', 'status'];
@@ -151,36 +153,6 @@ class Listing extends Model {
         return self::listingsResponse($listings);
     }
 
-    public static function listingsResponse($listings) {
-        return [
-            'success' => true,
-            'listings' => $listings->items(),
-            'pagination' => [
-                'current_page' => $listings->currentPage(),
-                'per_page' => $listings->perPage(),
-                'total' => $listings->total(),
-                'next_page_url' => $listings->nextPageUrl(),
-                'path' => $listings->path(),
-                'prev_page_url' => $listings->previousPageUrl(),
-                'to' => $listings->lastItem(),
-            ],
-        ];
-    }
-
-    public static function listingNotFoundResponse() {
-        return [
-            'success' => false,
-            'error' => 'Listing not found',
-        ];
-    }
-
-    private static function successfulTransactionResponse() {
-        return [
-            'success' => true,
-            'message' => 'Successful transaction.',
-        ];
-    }
-
     public function handleCalendarEntries($dates) {
         foreach ($dates as $date) {
             $calendarEntry = $this->calendars()->where('date', $date['date'])->first();
@@ -287,7 +259,7 @@ class Listing extends Model {
 
             return self::listingsResponse($listings);
         } else {
-            abort(Response::HTTP_BAD_REQUEST, 'User not found.');
+            return self::notFoundResponse('User not found.');
         }
     }
 
@@ -300,7 +272,7 @@ class Listing extends Model {
 
             return self::listingsResponse($listings);
         } else {
-            abort(Response::HTTP_BAD_REQUEST, 'User not found.');
+            return self::notFoundResponse('User not found.');
         }
     }
 
@@ -356,14 +328,9 @@ class Listing extends Model {
 
     public static function processListingAction(Request $request, $listingId) {
         $listing = static::find($listingId);
-        $validActions = ['approve', 'reject', 'update', 'delete'];
         $action = $request->input('action');
 
         if ($listing) {
-            if (! in_array($action, $validActions)) {
-                abort(Response::HTTP_BAD_REQUEST, 'Invalid action provided.');
-            }
-
             switch ($action) {
                 case 'approve':
                     self::handleAction($listing, ListingStatus::PENDING, ListingStatus::ACTIVE, 'approve');
@@ -379,9 +346,9 @@ class Listing extends Model {
                     break;
             }
 
-            return self::successfulTransactionResponse();
+            return self::handleActionResponse($action);
         } else {
-            return self::listingNotFoundResponse();
+            return self::notFoundResponse('Listing not found.');
         }
     }
 
