@@ -86,7 +86,7 @@ const AvailabilitySidebar: React.FC<AvailabilitySidebarProps> = ({
                 <Tab key="block" title="Block" />
               </Tabs>
             ) : (
-              <div className="flex-1 rounded-full border-2 border-primary px-5 py-1 text-xs text-primary md:rounded-lg md:py-2.5 md:text-sm">
+              <div className="flex-1 content-center rounded-full border-2 border-primary px-5 py-1 text-xs text-primary md:rounded-lg md:py-2.5 md:text-sm">
                 Reserved by:
                 <span className="capitalized font-bold">{` ${reservedBy}`}</span>
               </div>
