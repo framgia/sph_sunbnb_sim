@@ -8,7 +8,8 @@ import type {
   Language,
   BookingStatus,
   ExperienceType,
-  Reason
+  Reason,
+  ReportStatus
 } from "../utils/enums";
 import { type Range } from "react-date-range";
 
@@ -203,9 +204,30 @@ export interface BookingData {
   listing_id: number;
 }
 
+export interface Report {
+  id: number;
+  user_id: number;
+  listing_id: number;
+  admin_id: number | null;
+  content: string;
+  status: ReportStatus;
+  reason: Reason;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  user: UserDetailsType;
+  listing: Listing;
+  admin?: Admin | null;
+}
+
 export interface ReportData {
   content: string;
   reason: Reason;
+}
+
+export interface ReportResponse {
+  reports: Report[];
+  pagination: PaginationType;
 }
 
 export interface PaginationType {
@@ -245,6 +267,13 @@ export interface BookingFilters {
   sort: string;
 }
 
+export interface ReportFilters {
+  status: ReportStatus;
+  reason: string;
+  type: string;
+  sort: string;
+}
+
 export interface CalendarDate {
   date: Date | string;
   available: boolean;
@@ -254,4 +283,14 @@ export interface CalendarDate {
       last_name: string;
     };
   };
+}
+
+export interface Admin {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string | null;
 }

@@ -44,10 +44,12 @@ class Report extends Model {
         $status = $request->query('status', 'open');
         $reason = $request->query('reason');
         $type = $request->query('type');
+        $sort = $request->query('sort', 'desc');
 
         $query = static::where('status', $status)
             ->with([
                 'user',
+                'admin',
                 'listing' => function ($query) {
                     $query->with('user');
                 },
@@ -70,6 +72,7 @@ class Report extends Model {
                 });
             }
         }
+        $query->orderBy('created_at', $sort);
 
         return $query->paginate($perPage);
     }

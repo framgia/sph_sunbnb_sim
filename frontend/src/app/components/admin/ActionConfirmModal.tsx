@@ -1,4 +1,5 @@
 import type { ModalProps } from "@/app/interfaces/ModalProps";
+import { deleteReport } from "@/app/utils/helpers/report/request";
 import {
   Button,
   Modal,
@@ -7,13 +8,32 @@ import {
   ModalFooter,
   ModalHeader
 } from "@nextui-org/react";
-import React from "react";
+import React, { useState } from "react";
 
-const ActionConfirmModal: React.FC<ModalProps> = ({
+interface ActionConfirmModalProps extends ModalProps {
+  id: number;
+  setActionDone: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ActionConfirmModal: React.FC<ActionConfirmModalProps> = ({
   isOpen,
   onClose,
-  size
+  size,
+  id,
+  setActionDone
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleDelete(): Promise<void> {
+    setIsLoading(true);
+    const { hasError } = await deleteReport(id);
+    setActionDone((prev) => !prev);
+    if (hasError !== true) {
+      onClose();
+    }
+    setIsLoading(false);
+  }
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} size={size}>
@@ -33,11 +53,17 @@ const ActionConfirmModal: React.FC<ModalProps> = ({
                 <ModalFooter>
                   <Button
                     className="bg-primary-800 text-white"
+                    isDisabled={isLoading}
                     onPress={onClose}
                   >
                     Cancel
                   </Button>
-                  <Button className="bg-primary text-white" onPress={onClose}>
+                  <Button
+                    className="bg-primary text-white"
+                    isLoading={isLoading}
+                    isDisabled={isLoading}
+                    onPress={handleDelete}
+                  >
                     Confirm
                   </Button>
                 </ModalFooter>
