@@ -5,6 +5,7 @@ import ExperienceHeader from "@/app/components/experience/ExperienceHeader";
 import InclusionSection from "@/app/components/experience/InclusionSection";
 import ReviewSection from "@/app/components/review/ReviewSection";
 import type { CalendarDate, ExperienceListing } from "@/app/interfaces/types";
+import { UserRole } from "@/app/utils/enums";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { getPublicExperience } from "@/app/utils/helpers/experience/request";
 import { getListingType } from "@/app/utils/helpers/getListingType";
@@ -97,6 +98,7 @@ const GuestExperienceDetailsPage: React.FC<
                   endTime={expData.listable.end_time}
                   listingId={Number(params.id)}
                   exclude={[...blockedDates, new Date()]}
+                  userRole={UserRole.ADMIN}
                   enabled={false}
                 />
               ) : (
@@ -104,7 +106,7 @@ const GuestExperienceDetailsPage: React.FC<
               )}
             </div>
           </div>
-          <AdminApprover status={expData.status} />
+          <AdminApprover id={expData.id} status={expData.status} />
         </>
       ) : (
         <></>
