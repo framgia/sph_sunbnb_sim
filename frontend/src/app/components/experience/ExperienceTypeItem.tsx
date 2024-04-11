@@ -25,12 +25,12 @@ const ExperienceTypeItem: React.FC<ExperienceTypeItemProp> = ({ type }) => {
       size="sm"
       variant="bordered"
       onClick={handleSelectType}
-      className={
+      className={`min-w-fit ${
         searchParams.get("type") === type ||
         (searchParams.get("type") === null && type === "All")
           ? "border-foreground-500"
           : ""
-      }
+      }`}
     >
       {type}
     </Button>

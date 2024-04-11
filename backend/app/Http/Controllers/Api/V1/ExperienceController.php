@@ -7,11 +7,14 @@ use App\Http\Requests\V1\ExperienceRequest;
 use App\Http\Requests\V1\ExperienceUpdateRequest;
 use App\Models\Experience;
 use App\Models\Listing;
+use App\Traits\ResponseHandlingTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class ExperienceController extends Controller {
+    use ResponseHandlingTrait;
+
     public function index(Request $request) {
         $response = Experience::paginateExperienceListings($request);
 
@@ -24,11 +27,7 @@ class ExperienceController extends Controller {
         return DB::transaction(function () use ($request) {
             $experience = Experience::createExperience($request);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Experience listing created successfully',
-                'data' => $experience,
-            ], Response::HTTP_CREATED);
+            return self::createdResponse('Experience listing created successfully', $experience);
         });
     }
 

@@ -7,11 +7,14 @@ use App\Http\Requests\V1\AccommodationRequest;
 use App\Http\Requests\V1\AccommodationUpdateRequest;
 use App\Models\Accommodation;
 use App\Models\Listing;
+use App\Traits\ResponseHandlingTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class AccommodationController extends Controller {
+    use ResponseHandlingTrait;
+
     public function index(Request $request) {
         $response = Accommodation::paginateAccommodationListings($request);
 
@@ -24,11 +27,7 @@ class AccommodationController extends Controller {
         return DB::transaction(function () use ($request) {
             $accommodation = Accommodation::createAccommodation($request);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Listing created successfully',
-                'data' => $accommodation,
-            ], Response::HTTP_CREATED);
+            return self::createdResponse('Accommodation listing created successfully', $accommodation);
         });
     }
 

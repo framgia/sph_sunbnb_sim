@@ -1,3 +1,4 @@
+"use server";
 import config from "@/app/config/config";
 import type { Listing, PaginationType } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
@@ -33,4 +34,40 @@ async function getAllListings(
   } else throw new Error(responseData.error as string);
 }
 
-export { getAllListings };
+async function reviewAction(
+  id: number,
+  action: string
+): Promise<Record<string, string | boolean>> {
+  try {
+    const response = await fetch(`${config.backendUrl}/review-listing/${id}`, {
+      method: "PUT",
+      headers: setHeaders(),
+      body: JSON.stringify({ action })
+    });
+
+    const responseData = await response.json();
+    if (response.ok) {
+      return {
+        hasError: false,
+        message: "Successful transaction."
+      };
+    } else if (responseData.error !== undefined) {
+      throw new Error(responseData.error as string);
+    } else {
+      return {
+        hasError: true,
+        message: "Unknown error occurred. Please contact the administrator."
+      };
+    }
+  } catch (error) {
+    return {
+      hasError: true,
+      message:
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred. Please contact the administrator."
+    };
+  }
+}
+
+export { getAllListings, reviewAction };
