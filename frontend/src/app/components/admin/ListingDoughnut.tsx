@@ -26,13 +26,25 @@ const ListingDoughnut: React.FC<{ approved: number; unapproved: number }> = ({
     labels: ["Approved", "Unapproved"],
     datasets: [
       {
-        label: "site visits",
+        label: "# of listings",
         data: [approved, unapproved],
-        backgroundColor: ["rgba(255, 255, 255, 1)", "rgba(255, 34, 10, 1)"]
+        backgroundColor: ["rgba(255, 255, 255, 1)", "rgba(255, 34, 10, 1)"],
+        borderWidth: 0,
+        rotation: 180
       }
     ]
   };
-  return <Doughnut data={dummyDoughData} height={125} width={125} />;
+  const doughOptions = {
+    cutout: "70%"
+  };
+  return (
+    <Doughnut
+      data={dummyDoughData}
+      height={50}
+      width={50}
+      options={doughOptions}
+    />
+  );
 };
 
 export default ListingDoughnut;

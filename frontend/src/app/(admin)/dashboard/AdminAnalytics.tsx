@@ -76,7 +76,7 @@ const AdminAnalytics: React.FC<AnalyticsProps> = ({
         </div>
         <div className="my-5 flex h-1/2 w-full flex-row">
           <div className="mr-2 w-1/2 bg-primary-800 p-5 text-white">
-            <div className="flex flex-col">
+            <div className="mt-5 flex flex-col">
               <span className="text-xl font-bold">Accumulated value</span>
               <div className="mt-5 flex w-full items-center justify-center self-center text-2xl">
                 <span className="text-4xl">
@@ -85,25 +85,25 @@ const AdminAnalytics: React.FC<AnalyticsProps> = ({
               </div>
             </div>
           </div>
-          <div className="ml-2 w-1/2 bg-primary p-5 text-white">
-            <div className="flex flex-row">
-              <div className="flex w-3/5 flex-col">
+          <div className="ml-2 flex w-1/2 items-center bg-primary p-5 text-white">
+            <div className="flex flex-row justify-between">
+              <div className="flex w-1/2 flex-col">
                 <span className="text-xl font-bold">Approved Listings</span>
-                <div className="mt-5 flex w-full items-center justify-center self-center px-2">
+                <div className="mt-5 flex w-full items-center justify-center self-center">
                   <span className="text-2xl">
                     <span className="font-bold">{approvedListings} </span>
                     Approved Listings
                   </span>
                 </div>
               </div>
-              <div className="w-2/5 p-5">
+              <div className="z-20 flex w-40 justify-center px-5">
                 <ListingDoughnut
                   approved={approvedListings}
                   unapproved={listingsCount - approvedListings}
                 />
               </div>
             </div>
-            <div className="z-20 mt-[-100px] w-full pr-16 text-end text-2xl font-bold">
+            <div className="mx-[-105px] text-end text-2xl font-bold">
               {Math.ceil((approvedListings / listingsCount) * 100)}%
             </div>
           </div>

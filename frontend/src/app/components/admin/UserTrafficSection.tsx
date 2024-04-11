@@ -13,24 +13,15 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 const UserTrafficSection: React.FC = () => {
   const dummyBarData = {
-    labels: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
-    ],
+    /* turn this into dynamic month on integration */
+    labels: Array.from({ length: 31 }, (_, i) => "April " + (i + 1)),
     datasets: [
       {
         label: "site visits",
-        data: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
+        data: [
+          12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3, 12, 19, 3,
+          5, 2, 3, 12, 19, 3, 5, 2, 3, 12
+        ],
         backgroundColor: [
           "rgba(255, 34, 0, 1)",
           "rgba(255, 34, 0, 1)",
@@ -44,16 +35,22 @@ const UserTrafficSection: React.FC = () => {
     ]
   };
   return (
-    <div>
-      <Bar
-        data={dummyBarData}
-        width={400}
-        height={400}
-        options={{
-          maintainAspectRatio: false
-        }}
-      />
-    </div>
+    <>
+      <div className="mb-2">
+        {/* turn this into dynamic month and year on integration */}
+        <span className="text-lg font-semibold">April 2024</span>
+      </div>
+      <div className="my-5">
+        <Bar
+          data={dummyBarData}
+          width={400}
+          height={400}
+          options={{
+            maintainAspectRatio: false
+          }}
+        />
+      </div>
+    </>
   );
 };
 

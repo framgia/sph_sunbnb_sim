@@ -66,6 +66,7 @@ const DashboardPage: React.FC = () => {
     }
   };
   const popularListings = [dummyListing, dummyListing, dummyListing];
+
   return (
     <>
       <div>
