@@ -4,6 +4,7 @@ import { Button, useDisclosure } from "@nextui-org/react";
 import React, { useState } from "react";
 import ConfirmModal from "./ConfirmModal";
 import { reviewAction } from "@/app/utils/helpers/approval/request";
+import { useRouter } from "next/navigation";
 
 interface ReviewActionsProps {
   status: string;
@@ -13,47 +14,51 @@ interface ReviewActionsProps {
 const AdminApprover: React.FC<ReviewActionsProps> = ({ status, id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   async function handleApprove(): Promise<void> {
     setIsLoading(true);
-    console.log(id);
     const result = await reviewAction(id, "approve");
-    console.log(result);
     setIsLoading(false);
     if (result.hasError === true) {
       console.error(result.message);
+    } else {
+      router.refresh();
     }
   }
 
   async function handleReject(): Promise<void> {
     setIsLoading(true);
-    console.log(id);
     const result = await reviewAction(id, "reject");
     setIsLoading(false);
     if (result.hasError === true) {
       console.error(result.message);
+    } else {
+      router.refresh();
     }
   }
 
   async function handlePending(): Promise<void> {
     setIsLoading(true);
-    console.log(id);
     const result = await reviewAction(id, "update");
     setIsLoading(false);
     if (result.hasError === true) {
       console.error(result.message);
+    } else {
+      router.refresh();
     }
   }
 
   async function handleDelete(): Promise<void> {
     setIsLoading(true);
-    console.log(id);
     const result = await reviewAction(id, "delete");
     setIsLoading(false);
     if (result.hasError === true) {
       console.error(result.message);
+    } else {
+      onClose();
+      router.push("/approvals");
     }
-    onClose();
   }
 
   return (
@@ -75,7 +80,7 @@ const AdminApprover: React.FC<ReviewActionsProps> = ({ status, id }) => {
                   variant="bordered"
                   color="primary"
                   className="mx-2 rounded-full"
-                  onClick={handleReject}
+                  onPress={handleReject}
                   isDisabled={isLoading}
                 >
                   Reject
@@ -83,7 +88,7 @@ const AdminApprover: React.FC<ReviewActionsProps> = ({ status, id }) => {
                 <Button
                   color="primary"
                   className="rounded-full"
-                  onClick={handleApprove}
+                  onPress={handleApprove}
                   isDisabled={isLoading}
                 >
                   Approve
@@ -113,7 +118,7 @@ const AdminApprover: React.FC<ReviewActionsProps> = ({ status, id }) => {
                 <Button
                   color="primary"
                   className="rounded-full"
-                  onClick={handlePending}
+                  onPress={handlePending}
                   isDisabled={isLoading}
                 >
                   Set to Pending
@@ -130,7 +135,11 @@ const AdminApprover: React.FC<ReviewActionsProps> = ({ status, id }) => {
                 for review.
               </span>
               <div className="ml-80 flex flex-row">
-                <Button className="rounded-full" color="primary">
+                <Button
+                  className="rounded-full"
+                  color="primary"
+                  onPress={handlePending}
+                >
                   Set to Pending
                 </Button>
               </div>

@@ -372,7 +372,7 @@ class Listing extends Model {
                     self::handleAction($listing, ListingStatus::PENDING, ListingStatus::REFUSED, 'reject');
                     break;
                 case 'update':
-                    self::handleAction($listing, ListingStatus::REFUSED, ListingStatus::PENDING, 'update');
+                    self::handleAction($listing, [ListingStatus::REFUSED, ListingStatus::ACTIVE], ListingStatus::PENDING, 'update');
                     break;
                 case 'delete':
                     self::handleAction($listing, ListingStatus::REFUSED, null, 'delete');
@@ -385,9 +385,13 @@ class Listing extends Model {
         }
     }
 
-    private static function handleAction($listing, $expectedStatus, $newStatus, $action) {
-        if (! in_array($listing->status, [$expectedStatus])) {
-            abort(Response::HTTP_BAD_REQUEST, 'Invalid action: '.$action.'. Current status is not '.strtolower($expectedStatus).'.');
+    private static function handleAction($listing, $expectedStatuses, $newStatus, $action) {
+        if (! is_array($expectedStatuses)) {
+            $expectedStatuses = [$expectedStatuses];
+        }
+
+        if (! in_array($listing->status, $expectedStatuses)) {
+            abort(Response::HTTP_BAD_REQUEST, 'Invalid action: '.$action.'. Current status is not '.implode(' or ', array_map('strtolower', $expectedStatuses)).'.');
         }
 
         if ($newStatus !== null) {
