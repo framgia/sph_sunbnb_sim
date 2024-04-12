@@ -63,6 +63,11 @@ async function getReports(filters: ReportFilters): Promise<ReportResponse> {
   if (filters.type !== "") {
     queryParams.append("type", filters.type);
   }
+  if (filters.search !== "") {
+    queryParams.append("search", filters.search);
+  }
+  queryParams.append("page", filters.page.toString());
+
   const response = await fetch(
     `${config.backendUrl}/report${queryParams.toString() !== "" ? `?${queryParams.toString()}` : ""}`,
     {

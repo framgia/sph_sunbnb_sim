@@ -13,20 +13,25 @@ const ReportsPage: React.FC = async ({
     reason?: string;
     type?: string;
     sort?: string;
+    search?: string;
+    page?: number;
   };
 }) => {
   const filter: ReportFilters = {
     status: (searchParams?.status as ReportStatus) ?? "open",
     reason: searchParams?.reason ?? "",
     type: searchParams?.type ?? "",
-    sort: searchParams?.sort ?? ""
+    sort: searchParams?.sort ?? "asc",
+    search: searchParams?.search ?? "",
+    page: searchParams?.page ?? 1
   };
   const data = await getReports(filter);
   return (
     <>
       <AdminReportComponent
-        reportsData={data.reports}
-        paginationData={data.pagination}
+        reports={data.reports}
+        pagination={data.pagination}
+        filtersData={filter}
       />
     </>
   );

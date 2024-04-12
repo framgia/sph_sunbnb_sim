@@ -272,6 +272,8 @@ export interface ReportFilters {
   reason: string;
   type: string;
   sort: string;
+  page: number;
+  search: string;
 }
 
 export interface CalendarDate {

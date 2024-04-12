@@ -6,8 +6,7 @@ import type {
   Report,
   ReportFilters
 } from "@/app/interfaces/types";
-import { Reason, ReportStatus } from "@/app/utils/enums";
-import { getReports } from "@/app/utils/helpers/report/request";
+import { Reason } from "@/app/utils/enums";
 import {
   Button,
   Dropdown,
@@ -26,56 +25,48 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface AdminReportProps {
-  reportsData: Report[];
-  paginationData: PaginationType;
+  reports: Report[];
+  pagination: PaginationType;
+  filtersData: ReportFilters;
 }
 
 const AdminReportComponent: React.FC<AdminReportProps> = ({
-  reportsData,
-  paginationData
+  reports,
+  pagination,
+  filtersData
 }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const [reports, setReports] = useState(reportsData);
-  const [pagination, setPagination] = useState(paginationData);
-  const [page, setPage] = useState(1);
   const [actionDone, setActionDone] = useState(false);
-  const [filters, setFilters] = useState<ReportFilters>({
-    status: ReportStatus.OPEN,
-    reason: "",
-    type: "",
-    sort: "asc"
-  });
-
-  useEffect(() => {
-    async function fetchData(): Promise<void> {
-      const data = await getReports(filters);
-      if (data !== undefined) {
-        setPagination(data.pagination);
-        setReports(data.reports);
-      }
-    }
-    fetchData().catch((error) => {
-      console.error("Failed to get bookings from listing: ", error);
-    });
-  }, [actionDone, filters]);
+  const [filters, setFilters] = useState<ReportFilters>(filtersData);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
     params.set("status", filters.status);
     params.set("sort", filters.sort);
+    params.set("page", filters.page.toString());
     if (filters.reason === "") params.delete("reason");
     else params.set("reason", filters.reason);
     if (filters.type === "") params.delete("type");
     else params.set("type", filters.type);
+    if (filters.search !== "") params.set("search", filters.search);
+    else params.delete("search");
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [filters, pathname, searchParams, router]);
+  }, [filters, pathname, searchParams, router, actionDone]);
 
   return (
     <>
       <div className="flex w-full flex-wrap gap-4 md:flex-nowrap">
-        <Input type="Search" label="Search" radius="full" />
+        <Input
+          type="Search"
+          label="Search"
+          radius="full"
+          value={filters.search}
+          onChange={(e) => {
+            setFilters({ ...filters, search: e.target.value });
+          }}
+        />
       </div>
       <div className="flex justify-between">
         <div className="mt-5 text-3xl font-bold">Reports</div>
@@ -151,26 +142,32 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
       <div className="flex w-full">
         <ReportTabStatus filters={filters} setFilters={setFilters} />
         <div className="mt-5 flex w-full flex-col gap-5">
-          {reports.map((report, index) => (
-            <ReportCard
-              key={index}
-              report={report}
-              setActionDone={setActionDone}
-            />
-          ))}
+          {reports.length > 0 ? (
+            <>
+              {reports.map((report, index) => (
+                <ReportCard
+                  key={index}
+                  report={report}
+                  setActionDone={setActionDone}
+                />
+              ))}
+              <Pagination
+                className="m-3 flex justify-center"
+                isCompact
+                showControls
+                total={Math.ceil(pagination.total / pagination.per_page)}
+                initialPage={1}
+                page={filters.page}
+                onChange={(page) => {
+                  setFilters({ ...filters, page });
+                }}
+              />
+            </>
+          ) : (
+            <div className="flex justify-center">No reports to display.</div>
+          )}
         </div>
       </div>
-      <Pagination
-        className="m-3 flex justify-center"
-        isCompact
-        showControls
-        total={Math.ceil(pagination.total / pagination.per_page)}
-        initialPage={1}
-        page={page}
-        onChange={(page) => {
-          setPage(page);
-        }}
-      />
     </>
   );
 };
