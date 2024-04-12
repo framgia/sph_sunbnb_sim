@@ -1,6 +1,9 @@
 "use server";
 import config from "@/app/config/config";
-import type { JwtPayloadwithUser } from "@/app/interfaces/types";
+import type {
+  JwtPayloadwithUser,
+  UserDetailsType
+} from "@/app/interfaces/types";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 
@@ -33,4 +36,23 @@ export async function loginAdmin(
     }
   }
   return { message: "login failed" };
+}
+
+export async function getAdmin(
+  id: number,
+  jwt: string
+): Promise<UserDetailsType | null> {
+  const fetchApi = await fetch(`${config.backendUrl}/admin/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    }
+  });
+  const resData = await fetchApi.json();
+  if (resData.success as boolean) {
+    return resData.user as UserDetailsType;
+  }
+  return null;
 }
