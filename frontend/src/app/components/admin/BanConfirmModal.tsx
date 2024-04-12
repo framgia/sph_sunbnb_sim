@@ -1,5 +1,6 @@
 "use client";
 import type { ModalProps } from "@/app/interfaces/ModalProps";
+import { UserDetailsType } from "@/app/interfaces/types";
 import {
   Button,
   Modal,
@@ -9,11 +10,16 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 
-const BanConfirmModal: React.FC<ModalProps> = ({ isOpen, onClose, size }) => {
-  const dummydata = {
-    user: "User 1"
-  };
+interface BanConfirmModalProps extends ModalProps {
+  user: UserDetailsType;
+}
 
+const BanConfirmModal: React.FC<BanConfirmModalProps> = ({
+  isOpen,
+  onClose,
+  size,
+  user
+}) => {
   return (
     <>
       <Modal
@@ -28,7 +34,10 @@ const BanConfirmModal: React.FC<ModalProps> = ({ isOpen, onClose, size }) => {
               <div className="px-5 py-5">
                 <div className="mt-5">
                   <span className="">Are you sure you want to ban </span>
-                  <span className="font-bold">{dummydata.user}</span>?
+                  <span className="font-bold">
+                    {user.first_name} {user.last_name}
+                  </span>
+                  ?
                 </div>
 
                 <Textarea

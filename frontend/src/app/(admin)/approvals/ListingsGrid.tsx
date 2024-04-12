@@ -45,7 +45,6 @@ const ListingsGrid: React.FC<{
   useEffect(() => {
     setLoading(false);
     const newListings = listings.filter((listing, _i) => {
-      console.log(listing.listable_type.split("\\")[2], "===", type);
       return listing.listable_type.split("\\")[2] === type;
     });
     setFListings(newListings);

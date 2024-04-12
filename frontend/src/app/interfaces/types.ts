@@ -1,5 +1,5 @@
 import type { JwtPayload } from "jwt-decode";
-import type {
+import {
   UserRole,
   Amenity,
   AccommodationType,
@@ -254,4 +254,36 @@ export interface CalendarDate {
       last_name: string;
     };
   };
+}
+
+export interface Admin {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string | null;
+}
+
+export interface UserAdminResponse {
+  id: number;
+  first_name: string;
+  last_name: string;
+  role: UserRole;
+  status: "active" | "banned";
+  email: string;
+  email_verified_at: string;
+  provider: string;
+  provider_id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+  reason: string;
+  listings?: Listing[] | null;
+  bookings?: BookingAdmin[] | null;
+}
+
+export interface BookingAdmin extends Booking {
+  listing: Listing;
 }

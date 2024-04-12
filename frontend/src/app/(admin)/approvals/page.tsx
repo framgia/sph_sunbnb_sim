@@ -11,7 +11,6 @@ const ListingsPage: React.FC = async ({
     query?: string;
   };
 }) => {
-  //  add filter param when filter in implented on backend for filter functionalities on integration
   let listingsData: { listings: Listing[]; paginate: PaginationType } | null =
     null;
   try {

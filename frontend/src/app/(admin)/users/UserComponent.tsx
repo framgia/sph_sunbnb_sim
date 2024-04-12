@@ -1,89 +1,72 @@
 "use client";
-
 import UserGrid from "@/app/components/admin/UserGrid";
-import { Input, Pagination } from "@nextui-org/react";
-import React from "react";
+import {
+  PaginationType,
+  UserAdminResponse,
+  UserDetailsType
+} from "@/app/interfaces/types";
+import { getAllUsers } from "@/app/utils/helpers/admin/request";
+import { Input, Pagination, Spinner } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-const UserComponent: React.FC = () => {
-  const dummydata = [
-    {
-      title: "User 1",
-      email: "User@email.com",
-      role: "Guest",
-      status: "Unbanned"
-    },
-    {
-      title: "User 2",
-      email: "User@email.com",
-      role: "Host",
-      status: "Banned"
-    },
-    {
-      title: "User 3",
-      email: "User@email.com",
-      role: "Admin",
-      status: "Unbanned"
-    },
-    {
-      title: "User 4",
-      email: "User@email.com",
-      role: "Guest",
-      status: "Banned"
-    },
-    {
-      title: "User 5",
-      email: "User@email.com",
-      role: "Guest",
-      status: "Unbanned"
-    },
-    {
-      title: "User 6",
-      email: "User@email.com",
-      role: "Guest",
-      status: "Unbanned"
-    },
-    {
-      title: "User 7",
-      email: "User@email.com",
-      role: "Guest",
-      status: "Unbanned"
-    },
-    {
-      title: "User 8",
-      email: "User@email.com",
-      role: "Guest",
-      status: "Unbanned"
-    },
-    {
-      title: "User 9",
-      email: "User@email.com",
-      role: "Guest",
-      status: "Unbanned"
+interface UserComponentProps {
+  currentuser?: UserAdminResponse;
+}
+
+const UserComponent: React.FC<UserComponentProps> = ({ currentuser }) => {
+  const [userData, setUserData] = useState<any>(null);
+  const [page, setPage] = useState(1);
+  const [paginate, setPaginateState] = useState<PaginationType>();
+  const [isloading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    fetchUserData();
+  }, [page]);
+
+  const fetchUserData = async () => {
+    try {
+      setIsLoading(true);
+
+      const { user, paginate } = await getAllUsers(page);
+      setIsLoading(false);
+      setPaginateState(paginate);
+      setUserData(user);
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error fetching user data:", error);
     }
-  ];
+  };
+
   return (
     <>
       <div className=" flex w-full flex-wrap gap-4 md:flex-nowrap">
         <Input type="Search" label="Search" radius="full" />
       </div>
       <div className="mb-5 mt-5 text-3xl font-bold">Users</div>
-      <div className="mb-10 grid grid-cols-2 gap-8 sm:grid-cols-3">
-        {dummydata.map((item) => (
-          <div key={item.title}>
-            <UserGrid
-              title={item.title}
-              email={item.email}
-              role={item.role}
-              status={item.status}
-            />
-          </div>
-        ))}
-      </div>
+      {isloading ? (
+        <div className="mb-10 flex w-full justify-center">
+          <Spinner />
+        </div>
+      ) : (
+        <div className="mb-10 grid grid-cols-2 gap-8 sm:grid-cols-3">
+          {userData &&
+            userData.map((user: UserDetailsType, index: number) => (
+              <div key={index}>
+                <UserGrid user={user} currentUser={currentuser} />
+              </div>
+            ))}
+        </div>
+      )}
+
       <Pagination
         isCompact
         showControls
-        total={10}
-        initialPage={1}
+        total={Math.ceil((paginate?.total ?? 1) / (paginate?.per_page ?? 1))}
+        page={1}
+        onChange={(page) => {
+          setPage(page);
+        }}
         className="flex w-full justify-center"
       />
     </>
