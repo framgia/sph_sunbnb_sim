@@ -11,12 +11,60 @@ import React, { useState } from "react";
 import ChevronLeftIcon from "./svgs/Calendar/ChevronLeftIcon";
 import type { ReportData } from "../interfaces/types";
 import { Reason } from "../utils/enums";
+import { validateReport } from "../utils/helpers/report/validation";
+import { createReport } from "../utils/helpers/report/request";
+import ErrorMessage from "./ErrorMessage";
 
-const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, size }) => {
+interface ReportModalProps extends ModalProps {
+  id: number;
+}
+
+const ReportModal: React.FC<ReportModalProps> = ({
+  isOpen,
+  onClose,
+  size,
+  id
+}) => {
+  const [error, setError] = useState<Record<string, string | boolean>>({
+    hasError: false,
+    message: ""
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<ReportData>({
     content: "",
     reason: Reason.INACCURATE
   });
+
+  async function handleClick(): Promise<void> {
+    const validateData = validateReport(data);
+    if (validateData.hasError as boolean) {
+      setError({
+        message: validateData.message,
+        hasError: validateData.hasError
+      });
+    } else {
+      setError({
+        message: "",
+        hasError: false
+      });
+      setIsLoading(true);
+      const result = await createReport(id, data);
+      setIsLoading(false);
+      if (result.hasError === true) {
+        setError({
+          message: result.message,
+          hasError: result.hasError
+        });
+      } else {
+        setError({
+          message: "",
+          hasError: false
+        });
+        onClose();
+      }
+    }
+  }
+
   return (
     <div>
       <Modal
@@ -64,13 +112,28 @@ const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, size }) => {
                   className="my-3"
                   maxRows={8}
                   minRows={8}
+                  isInvalid={
+                    error.hasError === true && data.content.trim() === ""
+                  }
                   variant="bordered"
                   onChange={(e) => {
                     setData({ ...data, content: e.target.value });
                   }}
                 />
+                <div>
+                  {error.hasError === true && (
+                    <ErrorMessage message={error.message as string} />
+                  )}
+                </div>
                 <div className="my-3 flex justify-end ">
-                  <Button className=" bg-primary-600 text-white">Submit</Button>
+                  <Button
+                    className=" bg-primary-600 text-white"
+                    onClick={handleClick}
+                    isDisabled={isLoading}
+                    isLoading={isLoading}
+                  >
+                    Submit
+                  </Button>
                 </div>
               </div>
             </div>
