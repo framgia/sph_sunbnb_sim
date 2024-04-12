@@ -1,4 +1,5 @@
 "use client";
+import { Spacer } from "@nextui-org/react";
 import {
   BarElement,
   CategoryScale,
@@ -11,17 +12,24 @@ import { Bar } from "react-chartjs-2";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
-const UserTrafficSection: React.FC = () => {
+interface UserTrafficSectionProps {
+  month: string;
+  users: number[];
+}
+
+const UserTrafficSection: React.FC<UserTrafficSectionProps> = ({
+  month,
+  users
+}) => {
   const dummyBarData = {
-    /* turn this into dynamic month on integration */
-    labels: Array.from({ length: 31 }, (_, i) => "April " + (i + 1)),
+    labels: Array.from(
+      { length: users.length },
+      (_, i) => `${month.split(" ")[0]} ` + (i + 1)
+    ),
     datasets: [
       {
         label: "site visits",
-        data: [
-          12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3, 12, 19, 3,
-          5, 2, 3, 12, 19, 3, 5, 2, 3, 12
-        ],
+        data: users,
         backgroundColor: [
           "rgba(255, 34, 0, 1)",
           "rgba(255, 34, 0, 1)",
@@ -37,10 +45,9 @@ const UserTrafficSection: React.FC = () => {
   return (
     <>
       <div className="mb-2">
-        {/* turn this into dynamic month and year on integration */}
-        <span className="text-lg font-semibold">April 2024</span>
+        <span className="text-lg font-semibold">{month}</span>
       </div>
-      <div className="my-5">
+      <div className="mt-2">
         <Bar
           data={dummyBarData}
           width={400}
@@ -50,6 +57,7 @@ const UserTrafficSection: React.FC = () => {
           }}
         />
       </div>
+      <Spacer y={8} />
     </>
   );
 };
