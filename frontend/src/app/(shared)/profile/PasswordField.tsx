@@ -7,7 +7,8 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
   user,
   enabled,
   onCancel,
-  onEdit
+  onEdit,
+  isAdmin
 }) => {
   const [isEditing, setEditing] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
@@ -169,19 +170,21 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
               </Button>
             </div>
             <div className="w-auto">
-              <Button
-                variant="solid"
-                className="mb-2 bg-primary-600 text-white md:mb-0"
-                onPress={handleUpdate}
-                isDisabled={
-                  isLoading ||
-                  newPasswordError !== "" ||
-                  confirmNewPasswordError !== "" ||
-                  passwordError !== ""
-                }
-              >
-                Update
-              </Button>
+              {!isAdmin && (
+                <Button
+                  variant="solid"
+                  className="mb-2 bg-primary-600 text-white md:mb-0"
+                  onPress={handleUpdate}
+                  isDisabled={
+                    isLoading ||
+                    newPasswordError !== "" ||
+                    confirmNewPasswordError !== "" ||
+                    passwordError !== ""
+                  }
+                >
+                  Update
+                </Button>
+              )}
             </div>
           </div>
         </div>

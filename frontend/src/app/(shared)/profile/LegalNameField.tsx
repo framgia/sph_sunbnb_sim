@@ -8,7 +8,8 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
   user,
   onEdit,
   onCancel,
-  enabled
+  enabled,
+  isAdmin
 }) => {
   const [isEditing, setEditing] = useState(false);
   const [originalFirstName, setOriginalFirstName] = useState("");
@@ -170,18 +171,20 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
               {firstName} {lastName}
             </span>
           </div>
-          <Button
-            variant={enabled ? "flat" : "bordered"}
-            size="sm"
-            color="default"
-            className={
-              "font-semibold " + (enabled ? "" : "text-foreground-300")
-            }
-            onPress={handleEdit}
-            disabled={!enabled}
-          >
-            Edit
-          </Button>
+          {!isAdmin && (
+            <Button
+              variant={enabled ? "flat" : "bordered"}
+              size="sm"
+              color="default"
+              className={
+                "font-semibold " + (enabled ? "" : "text-foreground-300")
+              }
+              onPress={handleEdit}
+              disabled={!enabled}
+            >
+              Edit
+            </Button>
+          )}
         </div>
       )}
       <Divider />

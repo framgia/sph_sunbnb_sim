@@ -18,7 +18,7 @@ const ProfilePage: React.FC = async () => {
 
   return (
     <main>
-      <ProfileComponent user={user} />
+      <ProfileComponent user={user} isAdmin={userSession?.role === "admin"} />
     </main>
   );
 };

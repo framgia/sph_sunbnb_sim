@@ -6,7 +6,7 @@ import React, { useState } from "react";
 
 const EmailField: React.FC<
   ProfileFieldProps & { showUpdateButton: boolean }
-> = ({ user, onEdit, onCancel, enabled, showUpdateButton }) => {
+> = ({ user, onEdit, onCancel, enabled, showUpdateButton, isAdmin }) => {
   const [isEditing, setEditing] = useState(false);
   const [isEmailInvalid, setEmailInvalid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -112,7 +112,7 @@ const EmailField: React.FC<
               {user?.email}
             </span>
           </div>
-          {showUpdateButton && (
+          {showUpdateButton && !isAdmin && (
             <Button
               variant={enabled ? "flat" : "bordered"}
               size="sm"
