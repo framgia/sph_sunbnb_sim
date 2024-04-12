@@ -5,6 +5,7 @@ import React from "react";
 import Providers from "./providers";
 import NavbarBottom from "./components/navbar/NavbarBottom";
 import Navbar from "./components/navbar/Navbar";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,21 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>): React.JSX.Element {
   return (
     <html lang="en">
+      <head>
+        <Script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GOOGLE_ANALYTICS_ID}`}
+        ></Script>
+        <Script id="google-analytics">
+          {`  
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '${process.env.GOOGLE_ANALYTICS_ID}');
+          `}
+        </Script>
+      </head>
       <body className={inter.className}>
         <Providers>
           <div className="flex min-h-screen flex-col overflow-x-clip">

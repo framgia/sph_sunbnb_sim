@@ -10,7 +10,8 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Slider
+  Slider,
+  useDisclosure
 } from "@nextui-org/react";
 import React, { useCallback, useState } from "react";
 import ChevronDownIcon from "../svgs/Calendar/ChevronDownIcon";
@@ -35,8 +36,12 @@ import {
   UserRole
 } from "@/app/utils/enums";
 import { formatDate } from "@/app/utils/date";
+import FilterIcon from "../svgs/Listings/FilterIcon";
+import ListingFilterModal from "./ListingFilterModal";
+import FilterButton from "./FilterButton";
 
 const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [filters, setFilters] = useState<ListingFilter>(INITIAL_FILTER);
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -52,9 +57,6 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
 
   const handleFilterChange = useCallback(() => {
     const params = new URLSearchParams(searchParams);
-
-    if (filters.query !== "") params.set(`${prefix}query`, filters.query);
-    else params.delete(`${prefix}query`);
 
     if (filters.price.min !== MIN_PRICE || filters.price.max !== MAX_PRICE)
       params.set(`${prefix}price`, `${filters.price.min}-${filters.price.max}`);
@@ -92,9 +94,9 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
 
   const handleFilterClear = useCallback(() => {
     const params = new URLSearchParams(searchParams);
+
     setFilters(INITIAL_FILTER);
     params.delete(`${prefix}page`);
-    params.delete(`${prefix}query`);
     params.delete(`${prefix}price`);
     params.delete(`${prefix}rating`);
     params.delete(`${prefix}date`);
@@ -103,6 +105,24 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
     if (user === UserRole.HOST) params.delete(`${prefix}type`);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }, [pathname, router, searchParams, prefix, user]);
+
+  const handleSearchChange = useCallback(
+    (query: string) => {
+      const params = new URLSearchParams(searchParams);
+
+      if (query !== "") params.set(`${prefix}query`, query);
+      else params.delete(`${prefix}query`);
+      params.delete(`${prefix}page`);
+      params.delete(`${prefix}price`);
+      params.delete(`${prefix}rating`);
+      params.delete(`${prefix}date`);
+      params.delete(`${prefix}status`);
+      params.delete(`${prefix}type`);
+
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, prefix, router, pathname]
+  );
 
   return (
     <div className="mt-[-20px] flex items-center rounded-lg bg-white px-2 shadow-md">
@@ -120,9 +140,8 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
           innerWrapper: ["bg-white"]
         }}
         startContent={<SearchIcon width={14} height={14} />}
-        value={filters.query}
         onChange={(e) => {
-          setFilters({ ...filters, query: e.target.value });
+          handleSearchChange(e.target.value);
         }}
       />
       <Popover placement="bottom" showArrow offset={10}>
@@ -132,13 +151,14 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
           shape="circle"
           content=""
           isInvisible={searchParams.get(`${prefix}price`) === null}
+          className="hidden md:flex"
         >
           <PopoverTrigger>
             <Button
               variant="light"
               size="lg"
               fullWidth
-              className="max-w-40 justify-between rounded-none border-x text-sm capitalize text-zinc-500"
+              className="hidden justify-between rounded-none border-x text-sm capitalize text-zinc-500 md:flex"
               endContent={<ChevronDownIcon />}
             >
               Price
@@ -173,13 +193,14 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
               shape="circle"
               content=""
               isInvisible={searchParams.get(`${prefix}rating`) === null}
+              className="hidden md:flex"
             >
               <PopoverTrigger>
                 <Button
                   variant="light"
                   size="lg"
                   fullWidth
-                  className="max-w-40  justify-between rounded-none border-x text-sm capitalize text-zinc-500"
+                  className="hidden justify-between rounded-none border-x text-sm capitalize text-zinc-500 md:flex"
                   endContent={<ChevronDownIcon />}
                 >
                   Ratings
@@ -216,13 +237,14 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
               shape="circle"
               content=""
               isInvisible={searchParams.get(`${prefix}date`) === null}
+              className="hidden md:flex"
             >
               <PopoverTrigger>
                 <Button
                   variant="light"
                   size="lg"
                   fullWidth
-                  className="max-w-40  justify-between rounded-none border-x text-sm capitalize text-zinc-500"
+                  className="hidden justify-between rounded-none border-x text-sm capitalize text-zinc-500 md:flex"
                   endContent={<ChevronDownIcon />}
                 >
                   Date
@@ -255,13 +277,14 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
               shape="circle"
               content=""
               isInvisible={searchParams.get(`${prefix}status`) === null}
+              className="hidden md:flex"
             >
               <DropdownTrigger>
                 <Button
                   variant="light"
                   size="lg"
                   fullWidth
-                  className="max-w-40  justify-between rounded-none border-x text-sm capitalize text-zinc-500"
+                  className="hidden justify-between rounded-none border-x text-sm capitalize text-zinc-500 md:flex"
                   endContent={<ChevronDownIcon />}
                 >
                   Status
@@ -291,13 +314,14 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
               shape="circle"
               content=""
               isInvisible={searchParams.get(`${prefix}type`) === null}
+              className="hidden md:flex"
             >
               <DropdownTrigger>
                 <Button
                   variant="light"
                   size="lg"
                   fullWidth
-                  className="max-w-40  justify-between rounded-none border-x text-sm capitalize text-zinc-500"
+                  className="hidden justify-between rounded-none border-x text-sm capitalize text-zinc-500 md:flex"
                   endContent={<ChevronDownIcon />}
                 >
                   Type
@@ -329,17 +353,39 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
           </Dropdown>
         </>
       ) : null}
-      <Button
-        color="primary"
-        size="sm"
-        className="ms-2"
-        onClick={handleFilterChange}
-      >
-        FILTER
-      </Button>
-      <Button size="sm" className="ms-2" onClick={handleFilterClear}>
+      <FilterButton onClick={handleFilterChange}>FILTER</FilterButton>
+      <FilterButton isClear onClick={handleFilterClear}>
         CLEAR
-      </Button>
+      </FilterButton>
+      <Badge
+        color="default"
+        size="lg"
+        shape="circle"
+        content=""
+        isInvisible={filters === INITIAL_FILTER}
+        className="md:hidden"
+      >
+        <Button
+          isIconOnly
+          variant="light"
+          size="sm"
+          className="text-zinc-500 md:hidden"
+          onClick={onOpen}
+        >
+          <FilterIcon />
+        </Button>
+      </Badge>
+      <ListingFilterModal
+        user={user}
+        type={type}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onOpenChange={onOpenChange}
+        filters={filters}
+        onSetFilters={setFilters}
+        onFilterChange={handleFilterChange}
+        onFilterClear={handleFilterClear}
+      />
     </div>
   );
 };

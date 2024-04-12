@@ -37,7 +37,7 @@ const ListingItem: React.FC<ListingItemProps> = ({ user, type, listing }) => {
         <CardBody className="flex items-center justify-center rounded-xl bg-zinc-50 p-0">
           <Image
             alt="Sample Photo"
-            className="h-56 overflow-hidden rounded-xl"
+            className="h-44 overflow-hidden rounded-xl md:h-56"
             src={listing.media[0].media}
           />
         </CardBody>
@@ -73,7 +73,7 @@ const ListingItem: React.FC<ListingItemProps> = ({ user, type, listing }) => {
           {listing.media.length > 0 ? (
             <Image
               alt={`${listing.name} Photo`}
-              className="h-40 overflow-hidden rounded-xl"
+              className="h-36 overflow-hidden rounded-xl md:h-40"
               src={listing.media[0].media}
             />
           ) : (

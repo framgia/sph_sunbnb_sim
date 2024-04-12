@@ -14,7 +14,7 @@ const Listings: React.FC<ListingsProps> = ({
   return (
     <div>
       {listings.length > 0 ? (
-        <ul className="grid w-full grid-cols-1 gap-8 md:grid-cols-3">
+        <ul className="grid w-full grid-cols-1 gap-3 md:grid-cols-3 md:gap-8">
           {listings.map((listing) => (
             <li key={listing.id}>
               <ListingItem user={user} type={type} listing={listing} />

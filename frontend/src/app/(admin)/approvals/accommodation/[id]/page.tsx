@@ -5,6 +5,7 @@ import AccommodationBookingSticky from "@/app/components/booking/AccommodationBo
 import DefaultSticky from "@/app/components/booking/DefaultSticky";
 import ReviewSection from "@/app/components/review/ReviewSection";
 import type { CalendarDate } from "@/app/interfaces/types";
+import { UserRole } from "@/app/utils/enums";
 import { getPublicAccommodation } from "@/app/utils/helpers/accommodation/request";
 import { getListingAvailability } from "@/app/utils/helpers/availability/requests";
 import { getListingType } from "@/app/utils/helpers/getListingType";
@@ -108,6 +109,7 @@ const ApprovalAccommodationDetails: React.FC<{
                   minNights={accData.listable.minimum_days}
                   maxNights={accData.listable.maximum_days}
                   listingId={Number(params.id)}
+                  userRole={UserRole.ADMIN}
                   enabled={false}
                 />
               ) : (
@@ -115,7 +117,7 @@ const ApprovalAccommodationDetails: React.FC<{
               )}
             </div>
           </div>
-          <AdminApprover status={accData.status} />
+          <AdminApprover id={accData.id} status={accData.status} />
         </>
       ) : (
         <></>

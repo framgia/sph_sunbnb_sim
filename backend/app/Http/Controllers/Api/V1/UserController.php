@@ -23,10 +23,7 @@ class UserController extends Controller {
         $user = User::find($userId);
 
         if (! $user) {
-            return response()->json([
-                'success' => false,
-                'error' => 'User not found',
-            ], Response::HTTP_NOT_FOUND);
+            return User::notFoundResponse('User not found.');
         }
 
         return response()->json([
@@ -58,9 +55,6 @@ class UserController extends Controller {
 
         $user->updatePassword($request);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Password updated successfully',
-        ], Response::HTTP_OK);
+        return User::successfulTransactionResponse('Password updated successfully.');
     }
 }

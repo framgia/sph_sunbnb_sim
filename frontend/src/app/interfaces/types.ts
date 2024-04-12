@@ -246,7 +246,6 @@ export interface PaginatedListing {
 }
 
 export interface ListingFilter {
-  query: string;
   price: {
     min: number;
     max: number;
