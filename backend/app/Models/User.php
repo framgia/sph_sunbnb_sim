@@ -8,6 +8,7 @@ use App\Enums\UserRole;
 use App\Enums\UserStatus;
 use App\Notifications\ResetPasswordNotification;
 use App\Traits\ResponseHandlingTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,7 +17,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Analytics\Facades\Analytics;
-use Spatie\Analytics\OrderBy;
 use Spatie\Analytics\Period;
 
 class User extends Authenticatable {
@@ -186,19 +186,30 @@ class User extends Authenticatable {
     }
 
     public static function getUserAnalytics() {
-        $userTraffic = Analytics::get(
-            period: Period::years(1),
-            metrics: ['activeUsers', 'newUsers'],
-            dimensions: ['yearMonth'],
-            maxResults: 12,
-            orderBy: [OrderBy::dimension('yearMonth', 'DESC')]
-        );
-
         return [
             'host' => self::where('role', 'host')->count(),
             'guest' => self::where('role', 'guest')->count(),
             'admin' => Admin::count(),
-            'traffic' => $userTraffic,
+            'traffic' => self::getActiveUsersPerDay(),
+        ];
+    }
+
+    private static function getActiveUsersPerDay() {
+        $firstDayOfMonth = Carbon::now()->startOfMonth();
+        $lastDayOfMonth = Carbon::now()->endOfMonth();
+
+        $userTraffic = Analytics::fetchTotalVisitorsAndPageViews(Period::create($firstDayOfMonth, $lastDayOfMonth));
+        $daysInMonth = $lastDayOfMonth->day;
+        $activeUsersPerDay = array_fill(0, $daysInMonth, 0);
+
+        foreach ($userTraffic as $traffic) {
+            $day = Carbon::parse($traffic['date'])->day;
+            $activeUsersPerDay[$day - 1] = $traffic['activeUsers'];
+        }
+
+        return [
+            'month' => Carbon::now()->monthName.' '.Carbon::now()->year,
+            'users' => $activeUsersPerDay,
         ];
     }
 }
