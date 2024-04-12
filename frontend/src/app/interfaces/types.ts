@@ -309,7 +309,7 @@ export interface UserAdminResponse {
   created_at: string;
   updated_at: string;
   deleted_at: string;
-  reason: string;
+  reason: ReasonType[];
   listings?: Listing[] | null;
   bookings?: BookingAdmin[] | null;
 }
@@ -341,4 +341,14 @@ export interface AdminAnalytics {
     refused: number;
     popular: Listing[];
   };
+}
+
+export interface ReasonType {
+  id: number;
+  user_id: number;
+  admin_id: number;
+  reason: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
 }

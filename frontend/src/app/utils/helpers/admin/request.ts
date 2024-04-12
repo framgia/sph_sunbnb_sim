@@ -70,11 +70,22 @@ async function banUser(userId: number, reason: string): Promise<void> {
   const response = await fetch(`${config.backendUrl}/ban`, {
     method: "POST",
     headers: setHeaders(),
-    body: JSON.stringify({ reason, userId })
+    body: JSON.stringify({ reason, user_id: userId })
   });
 
   const responseData = await response.json();
   if (!response.ok) throw new Error(responseData.error as string);
 }
 
-export { getAllUsers, getAdminById, getUserDetailsAdmin, banUser };
+async function unbanUser(userId: number): Promise<void> {
+  const response = await fetch(`${config.backendUrl}/unban`, {
+    method: "PUT",
+    headers: setHeaders(),
+    body: JSON.stringify({ user_id: userId })
+  });
+
+  const responseData = await response.json();
+  if (!response.ok) throw new Error(responseData.error as string);
+}
+
+export { getAllUsers, getAdminById, getUserDetailsAdmin, banUser, unbanUser };

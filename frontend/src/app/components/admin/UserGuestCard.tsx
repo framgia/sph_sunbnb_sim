@@ -20,27 +20,28 @@ import {
   UserAdminResponse,
   UserDetailsType
 } from "@/app/interfaces/types";
-import { getUserDetailsAdmin } from "@/app/utils/helpers/admin/request";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { unbanUser } from "@/app/utils/helpers/admin/request";
 
 interface UserGuestCardProps extends ModalProps {
   user: UserAdminResponse | undefined;
+  setIsActionDone: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UserGuestCard: React.FC<UserGuestCardProps> = ({
   isOpen,
   onClose,
   size,
-  user
+  user,
+  setIsActionDone
 }) => {
   const {
     isOpen: confirmOpen,
     onOpen: confirmonOpen,
     onClose: confirmonClose
   } = useDisclosure();
-  const [isBanned, setIsBanned] = useState(false);
-  const [banReason, setBanReason] = useState("");
+
   const [data, setData] = useState<UserAdminResponse>();
   useEffect(() => {
     setData(user);
@@ -55,6 +56,19 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
     params.delete("role");
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     onClose();
+  }
+  const [isLoading, setIsLoading] = React.useState(false);
+  async function onUnbanUser() {
+    try {
+      setIsLoading(true);
+
+      await unbanUser(data?.id as number);
+      setIsLoading(false);
+      onClose();
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error unbanning user:", error);
+    }
   }
 
   return (
@@ -90,17 +104,17 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
                           <div className="m-0 p-0 capitalize">{data.role}</div>
                         </div>
                         <div>
-                          {isBanned && (
-                            <Chip className="mt-4 bg-warning-300 text-warning-600">
-                              Banned
-                            </Chip>
-                          )}
-                          {isBanned && (
-                            <div className="text-xs">
-                              <div className="mt-3 px-2">
-                                Ban Reason: {banReason}
+                          {data.status === "banned" && (
+                            <>
+                              <Chip className="mt-4 bg-warning-300 text-warning-600">
+                                Banned
+                              </Chip>
+                              <div className="text-xs">
+                                <div className="mt-3 px-2">
+                                  Ban Reason: {data.reason[0].reason}
+                                </div>
                               </div>
-                            </div>
+                            </>
                           )}
                         </div>
                       </div>
@@ -130,9 +144,24 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
                     </div>
                   </div>
                   <ModalFooter>
-                    <Button color="primary" onClick={confirmonOpen}>
-                      Ban User
-                    </Button>
+                    {data.status === "active" && (
+                      <Button color="primary" onClick={confirmonOpen}>
+                        Ban User
+                      </Button>
+                    )}
+                    {data.status === "banned" && (
+                      <Button
+                        color="primary"
+                        onClick={() => {
+                          onUnbanUser();
+                          setIsActionDone((prev) => !prev);
+                        }}
+                        isLoading={isLoading}
+                        isDisabled={isLoading}
+                      >
+                        Unban User
+                      </Button>
+                    )}
                   </ModalFooter>
                 </div>
               ) : (
@@ -146,6 +175,7 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
         <BanConfirmModal
           isOpen={confirmOpen}
           onClose={confirmonClose}
+          setIsActionDone={setIsActionDone}
           size="3xl"
           user={user}
         />

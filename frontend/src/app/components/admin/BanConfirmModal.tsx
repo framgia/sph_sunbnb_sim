@@ -1,6 +1,7 @@
 "use client";
 import type { ModalProps } from "@/app/interfaces/ModalProps";
 import { UserDetailsType } from "@/app/interfaces/types";
+import { banUser } from "@/app/utils/helpers/admin/request";
 import {
   Button,
   Modal,
@@ -12,14 +13,30 @@ import React from "react";
 
 interface BanConfirmModalProps extends ModalProps {
   user: UserDetailsType;
+  setIsActionDone: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const BanConfirmModal: React.FC<BanConfirmModalProps> = ({
   isOpen,
   onClose,
   size,
-  user
+  user,
+  setIsActionDone
 }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [reason, setReason] = React.useState("");
+  async function onBanUser() {
+    try {
+      setIsLoading(true);
+
+      await banUser(user.id, reason);
+      setIsLoading(false);
+      onClose();
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error banning user:", error);
+    }
+  }
   return (
     <>
       <Modal
@@ -46,6 +63,8 @@ const BanConfirmModal: React.FC<BanConfirmModalProps> = ({
                   minRows={10}
                   fullWidth
                   className="mt-5 px-5"
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
                 />
               </div>
               <ModalFooter>
@@ -53,10 +72,19 @@ const BanConfirmModal: React.FC<BanConfirmModalProps> = ({
                   className="bg-primary-800 text-white"
                   variant="flat"
                   onPress={onClose}
+                  isDisabled={isLoading}
                 >
                   Close
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    onBanUser();
+                    setIsActionDone((prev) => !prev);
+                  }}
+                  isLoading={isLoading}
+                  isDisabled={isLoading}
+                >
                   Confirm
                 </Button>
               </ModalFooter>

@@ -18,9 +18,14 @@ import { useRouter } from "next/navigation";
 interface UserGridProps {
   user: UserDetailsType;
   currentUser?: UserAdminResponse;
+  setIsActionDone: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const UserGrid: React.FC<UserGridProps> = ({ user, currentUser }) => {
+const UserGrid: React.FC<UserGridProps> = ({
+  user,
+  currentUser,
+  setIsActionDone
+}) => {
   const { first_name, last_name, email, role, status, id } = user;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
@@ -66,6 +71,7 @@ const UserGrid: React.FC<UserGridProps> = ({ user, currentUser }) => {
           onClose={onClose}
           size="3xl"
           user={currentUser}
+          setIsActionDone={setIsActionDone}
         />
       )}
       {user.role === "guest" && (
@@ -74,6 +80,7 @@ const UserGrid: React.FC<UserGridProps> = ({ user, currentUser }) => {
           onClose={onClose}
           size="3xl"
           user={currentUser}
+          setIsActionDone={setIsActionDone}
         />
       )}
       {user.role === "admin" && (
