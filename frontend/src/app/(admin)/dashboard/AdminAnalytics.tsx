@@ -2,6 +2,7 @@ import ListingDoughnut from "@/app/components/admin/ListingDoughnut";
 import BookingsIcon from "@/app/components/svgs/Admin/BookingsIcon";
 import ListingsIcon from "@/app/components/svgs/Admin/ListingsIcon";
 import UsersIcon from "@/app/components/svgs/Admin/UsersIcon";
+import { formatCurrency } from "@/app/utils/currency";
 import React from "react";
 
 interface AnalyticsProps {
@@ -14,6 +15,7 @@ interface AnalyticsProps {
   accumulatedVal: number;
   approvedListings: number;
 }
+
 const AdminAnalytics: React.FC<AnalyticsProps> = ({
   usersCount,
   hostsCount,
@@ -27,7 +29,7 @@ const AdminAnalytics: React.FC<AnalyticsProps> = ({
   return (
     <div>
       <div className="h-96">
-        <div className="my-5 flex h-1/2 w-full flex-row">
+        <div className="mt-3 flex h-1/2 w-full flex-row">
           <div className="mr-2 flex w-1/4 flex-col items-center self-center bg-primary p-4 text-white">
             <div className="m-2">
               <UsersIcon />
@@ -80,7 +82,10 @@ const AdminAnalytics: React.FC<AnalyticsProps> = ({
               <span className="text-xl font-bold">Accumulated value</span>
               <div className="mt-5 flex w-full items-center justify-center self-center text-2xl">
                 <span className="text-4xl">
-                  ₱<span className="font-bold"> {accumulatedVal}</span>
+                  ₱
+                  <span className="font-bold">
+                    {` ${formatCurrency("PHP", 2, accumulatedVal).substring(1)}`}
+                  </span>
                 </span>
               </div>
             </div>

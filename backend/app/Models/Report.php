@@ -44,10 +44,13 @@ class Report extends Model {
         $status = $request->query('status', 'open');
         $reason = $request->query('reason');
         $type = $request->query('type');
+        $search = $request->query('search');
+        $sort = $request->query('sort', 'desc');
 
         $query = static::where('status', $status)
             ->with([
                 'user',
+                'admin',
                 'listing' => function ($query) {
                     $query->with('user');
                 },
@@ -57,6 +60,17 @@ class Report extends Model {
             $reasonConstants = Reason::getConstants();
             $reasonValue = $reasonConstants[Str::upper($reason)];
             $query->where('reason', $reasonValue);
+        }
+
+        if ($search !== null) {
+            $query->where(function ($query) use ($search) {
+                $query->whereHas('user', function ($query) use ($search) {
+                    $query->whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$search%"]);
+                })
+                    ->orWhereHas('listing', function ($query) use ($search) {
+                        $query->where('name', 'like', "%$search%");
+                    });
+            });
         }
 
         if ($type !== null) {
@@ -70,6 +84,8 @@ class Report extends Model {
                 });
             }
         }
+
+        $query->orderBy('created_at', $sort);
 
         return $query->paginate($perPage);
     }

@@ -1,6 +1,6 @@
 "use client";
 import { NavbarPosition } from "@/app/utils/enums";
-import { Link, NavbarItem } from "@nextui-org/react";
+import { NavbarItem } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 import React from "react";
 import CalendarIcon from "../svgs/Navbar/CalendarIcon";
@@ -13,6 +13,7 @@ import ExperiencesIcon from "../svgs/Navbar/ExperiencesIcon";
 import HistoryIcon from "../svgs/Navbar/HistoryIcon";
 import DashboardIcon from "../svgs/Navbar/DashboardIcon";
 import { type NavbarProps } from "@/app/interfaces/NavbarProps";
+import Link from "next/link";
 
 const NavbarLinks: React.FC<NavbarProps> = (props) => {
   const pathname = usePathname();
