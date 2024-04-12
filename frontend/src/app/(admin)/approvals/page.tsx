@@ -9,15 +9,18 @@ const ListingsPage: React.FC = async ({
   searchParams?: {
     page?: number;
     query?: string;
+    listableType?: string;
+    status?: string;
   };
 }) => {
-  //  add filter param when filter in implented on backend for filter functionalities on integration
   let listingsData: { listings: Listing[]; paginate: PaginationType } | null =
     null;
   try {
     listingsData = await getAllListings(
       searchParams?.page,
-      searchParams?.query
+      searchParams?.query,
+      searchParams?.listableType,
+      searchParams?.status
     );
   } catch {
     console.error("Error in fetch");
@@ -29,6 +32,7 @@ const ListingsPage: React.FC = async ({
       <ListingsGrid
         listings={listingsData?.listings ?? []}
         paginate={listingsData?.paginate ?? null}
+        page={searchParams?.page ?? 1}
       />
     </>
   );
