@@ -99,6 +99,7 @@ class Listing extends Model {
         $perPage = $request->query('per_page', 9);
         $status = $request->query('status');
         $listableType = $request->query('listable_type');
+        $search = $request->query('search');
 
         $query = static::query();
 
@@ -117,6 +118,10 @@ class Listing extends Model {
             $query->whereHasMorph('listable', [$listableType], function ($query) use ($listableType) {
                 $query->where('listable_type', $listableType);
             });
+        }
+
+        if ($search !== null) {
+            self::applySearchFilter($query, $search);
         }
 
         $listings = $query->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
