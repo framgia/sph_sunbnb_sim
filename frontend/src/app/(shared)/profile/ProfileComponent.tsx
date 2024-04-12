@@ -7,9 +7,13 @@ import type { UserDetailsType } from "@/app/interfaces/types";
 
 interface ProfileComponentsProps {
   user: UserDetailsType | null;
+  isAdmin: boolean;
 }
 
-const ProfileComponent: React.FC<ProfileComponentsProps> = ({ user }) => {
+const ProfileComponent: React.FC<ProfileComponentsProps> = ({
+  user,
+  isAdmin
+}) => {
   const [PersonalSectionActive, setPersonalActive] = useState(true);
   const [LoginSectionActive, setLoginActive] = useState(true);
   const [LegalActive, setLegalActive] = useState(true);
@@ -67,6 +71,7 @@ const ProfileComponent: React.FC<ProfileComponentsProps> = ({ user }) => {
               onEdit={onFocusLegal}
               onCancel={ResetAll}
               enabled={LegalActive}
+              isAdmin={isAdmin}
             />
           </div>
           <span
@@ -84,6 +89,7 @@ const ProfileComponent: React.FC<ProfileComponentsProps> = ({ user }) => {
               onCancel={ResetAll}
               enabled={EmailActive}
               showUpdateButton={isProvider}
+              isAdmin={isAdmin}
             />
           </div>
           {isProvider && (
@@ -93,6 +99,7 @@ const ProfileComponent: React.FC<ProfileComponentsProps> = ({ user }) => {
                 onEdit={onFocusPassword}
                 onCancel={ResetAll}
                 enabled={PasswordActive}
+                isAdmin={isAdmin}
               />
             </div>
           )}
