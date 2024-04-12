@@ -9,7 +9,7 @@ const NavbarBottom: React.FC = async () => {
 
   return (
     <Navbar
-      className="border-top sticky bottom-0 border sm:!hidden"
+      className="border-top sticky bottom-0 border md:!hidden"
       isBlurred={false}
     >
       <NavbarContent justify="center" className="w-full">

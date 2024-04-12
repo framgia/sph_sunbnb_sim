@@ -226,7 +226,12 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
               Report this listing
             </span>
           </div>
-          <ReportModal isOpen={isOpen} onClose={onClose} size="2xl" />
+          <ReportModal
+            isOpen={isOpen}
+            onClose={onClose}
+            size="2xl"
+            id={listingId}
+          />
         </>
       )}
     </div>

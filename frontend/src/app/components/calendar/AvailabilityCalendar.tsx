@@ -41,10 +41,10 @@ const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({
   }, [selectedListing, onTabChanged]);
 
   return (
-    <div className="flex min-h-[600px] w-full flex-col-reverse gap-4 md:h-full md:flex-row md:gap-5">
+    <div className="flex w-full flex-col-reverse gap-4 md:h-full md:min-h-[600px] md:flex-row md:flex-row md:gap-5">
       <div
-        className={`${selectedDates.length > 0 ? "px-6 sm:ms-auto" : "sm:m-auto sm:px-6"}
-          flex w-full flex-col gap-2 sm:my-5 sm:max-w-[1024px] sm:gap-6
+        className={`${selectedDates.length > 0 ? "md:ms-auto" : "md:m-auto"}
+          flex w-full flex-col gap-3 md:my-5 md:max-w-[1024px] md:gap-6 md:px-6
         `}
       >
         <ListingsDropdown

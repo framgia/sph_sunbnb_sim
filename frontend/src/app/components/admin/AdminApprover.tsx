@@ -1,10 +1,66 @@
+"use client";
 import { ListingStatus } from "@/app/utils/enums";
-import { Button } from "@nextui-org/react";
-import React from "react";
+import { Button, useDisclosure } from "@nextui-org/react";
+import React, { useState } from "react";
+import ConfirmModal from "./ConfirmModal";
+import { reviewAction } from "@/app/utils/helpers/approval/request";
+import { useRouter } from "next/navigation";
 
-const AdminApprover: React.FC<{
-  status: ListingStatus;
-}> = ({ status }) => {
+interface ReviewActionsProps {
+  status: string;
+  id: number;
+}
+
+const AdminApprover: React.FC<ReviewActionsProps> = ({ status, id }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  async function handleApprove(): Promise<void> {
+    setIsLoading(true);
+    const result = await reviewAction(id, "approve");
+    setIsLoading(false);
+    if (result.hasError === true) {
+      console.error(result.message);
+    } else {
+      router.refresh();
+    }
+  }
+
+  async function handleReject(): Promise<void> {
+    setIsLoading(true);
+    const result = await reviewAction(id, "reject");
+    setIsLoading(false);
+    if (result.hasError === true) {
+      console.error(result.message);
+    } else {
+      router.refresh();
+    }
+  }
+
+  async function handlePending(): Promise<void> {
+    setIsLoading(true);
+    const result = await reviewAction(id, "update");
+    setIsLoading(false);
+    if (result.hasError === true) {
+      console.error(result.message);
+    } else {
+      router.refresh();
+    }
+  }
+
+  async function handleDelete(): Promise<void> {
+    setIsLoading(true);
+    const result = await reviewAction(id, "delete");
+    setIsLoading(false);
+    if (result.hasError === true) {
+      console.error(result.message);
+    } else {
+      onClose();
+      router.push("/approvals");
+    }
+  }
+
   return (
     <>
       <div className="fixed bottom-0 z-50 mx-[-1999px] flex h-28 w-[9999px] items-center justify-center self-center bg-white drop-shadow-2xl" />
@@ -24,10 +80,17 @@ const AdminApprover: React.FC<{
                   variant="bordered"
                   color="primary"
                   className="mx-2 rounded-full"
+                  onPress={handleReject}
+                  isDisabled={isLoading}
                 >
                   Reject
                 </Button>
-                <Button color="primary" className="rounded-full">
+                <Button
+                  color="primary"
+                  className="rounded-full"
+                  onPress={handleApprove}
+                  isDisabled={isLoading}
+                >
                   Approve
                 </Button>
               </div>
@@ -39,7 +102,7 @@ const AdminApprover: React.FC<{
                 <span className="font-bold"> rejected. </span>
                 You can set it to
                 <span className="font-bold"> pending </span>
-                for review or permenantly
+                for review or permanently
                 <span className="font-bold"> delete </span>
                 it.
               </span>
@@ -48,10 +111,16 @@ const AdminApprover: React.FC<{
                   variant="bordered"
                   color="primary"
                   className="mx-2 rounded-full"
+                  onPress={onOpen}
                 >
                   Delete
                 </Button>
-                <Button color="primary" className="rounded-full">
+                <Button
+                  color="primary"
+                  className="rounded-full"
+                  onPress={handlePending}
+                  isDisabled={isLoading}
+                >
                   Set to Pending
                 </Button>
               </div>
@@ -59,12 +128,18 @@ const AdminApprover: React.FC<{
           ) : status === ListingStatus.ACTIVE ? (
             <>
               <span>
-                The listing is currently active. You can set it to
+                The listing is currently
+                <span className="font-bold"> active. </span>
+                You can set it to
                 <span className="font-bold"> pending </span>
                 for review.
               </span>
               <div className="ml-80 flex flex-row">
-                <Button className="rounded-full" color="primary">
+                <Button
+                  className="rounded-full"
+                  color="primary"
+                  onPress={handlePending}
+                >
                   Set to Pending
                 </Button>
               </div>
@@ -76,6 +151,12 @@ const AdminApprover: React.FC<{
           )}
         </div>
       </div>
+      <ConfirmModal
+        isOpen={isOpen}
+        onClose={onClose}
+        size="lg"
+        handleDelete={handleDelete}
+      />{" "}
     </>
   );
 };

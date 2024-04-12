@@ -21,7 +21,7 @@ const Navbar: React.FC = async () => {
         </Link>
       </NavbarBrand>
       <>
-        <NavbarContent justify="center" className="hidden sm:flex">
+        <NavbarContent justify="center" className="hidden md:flex">
           <NavbarLinks role={user?.role ?? UserRole.DEFAULT} />
         </NavbarContent>
         <NavbarContent justify="end">

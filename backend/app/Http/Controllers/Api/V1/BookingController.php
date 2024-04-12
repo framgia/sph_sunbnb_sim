@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\BookingRequest;
 use App\Models\Booking;
 use App\Models\User;
+use App\Traits\ResponseHandlingTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class BookingController extends Controller {
+    use ResponseHandlingTrait;
+
     public function show($id) {
         $booking = Booking::with(['listing', 'user'])->findOrFail($id);
 
@@ -23,7 +26,7 @@ class BookingController extends Controller {
         $user = User::find($userId);
 
         if (! $user) {
-            return User::userNotFoundResponse();
+            return self::notFoundResponse('User not found.');
         }
 
         $response = Booking::paginateBookingsByUser($userId, $request);
@@ -41,10 +44,7 @@ class BookingController extends Controller {
         $request->validated();
         $booking = Booking::createBooking($request);
 
-        return response()->json([
-            'success' => true,
-            'booking' => $booking,
-        ], Response::HTTP_CREATED);
+        return self::createdResponse('Booking created successfully', $booking);
     }
 
     public function update($id) {
@@ -53,15 +53,9 @@ class BookingController extends Controller {
         if ($booking) {
             $booking->cancelBooking();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Booking cancelled successfully',
-            ], Response::HTTP_OK);
+            return self::successfulTransactionResponse('Booking cancelled successfully.');
         } else {
-            return response()->json([
-                'success' => false,
-                'error' => 'Booking not found',
-            ], Response::HTTP_NOT_FOUND);
+            return self::notFoundResponse('Booking not found.');
         }
     }
 
@@ -71,15 +65,9 @@ class BookingController extends Controller {
         if ($booking) {
             $booking->deleteBooking();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Booking deleted successfully',
-            ], Response::HTTP_OK);
+            return self::successfulTransactionResponse('Booking deleted successfully.');
         } else {
-            return response()->json([
-                'success' => false,
-                'error' => 'Booking not found',
-            ], Response::HTTP_NOT_FOUND);
+            return self::notFoundResponse('Booking not found.');
         }
     }
 
@@ -89,15 +77,9 @@ class BookingController extends Controller {
         if ($booking) {
             $booking->approveRefuseBooking($request);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Successful transaction',
-            ], Response::HTTP_OK);
+            return self::successfulTransactionResponse('Successful transaction.');
         } else {
-            return response()->json([
-                'success' => false,
-                'error' => 'Booking not found',
-            ], Response::HTTP_NOT_FOUND);
+            return self::notFoundResponse('Booking not found.');
         }
     }
 
@@ -107,15 +89,9 @@ class BookingController extends Controller {
         if ($booking) {
             $booking->updateGuestBooking();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Booking removed successfully',
-            ], Response::HTTP_OK);
+            return self::successfulTransactionResponse('Booking removed successfully.');
         } else {
-            return response()->json([
-                'success' => false,
-                'error' => 'Booking not found',
-            ], Response::HTTP_NOT_FOUND);
+            return self::notFoundResponse('Booking not found.');
         }
     }
 
