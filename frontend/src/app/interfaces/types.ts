@@ -254,3 +254,29 @@ export interface CalendarDate {
     };
   };
 }
+
+export interface AdminAnalytics {
+  users: {
+    host: number;
+    guest: number;
+    admin: number;
+    traffic: {
+      month: string;
+      users: number[];
+    };
+  };
+  bookings: {
+    pending: number;
+    upcoming: number;
+    done: number;
+    cancelled: number;
+    refused: number;
+    value: number;
+  };
+  listings: {
+    pending: number;
+    active: number;
+    refused: number;
+    popular: Listing[];
+  };
+}
