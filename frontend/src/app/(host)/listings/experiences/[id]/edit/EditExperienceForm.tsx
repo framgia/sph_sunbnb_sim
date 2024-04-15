@@ -89,8 +89,9 @@ const EditExperienceForm: React.FC<EditListingProps> = ({
         Address
       </div>
       <ExperienceAddressForm data={data} setData={setData} error={error} />
-      <div className="mt-5 rounded-lg border-[1.3px] border-solid border-[color:var(--Blues-Gray2,#B8BBC2)] p-10">
-        <div className="mb-10 mt-10 grid grid-cols-2">
+      <hr className="mt-12 min-h-[3px] w-full bg-zinc-200 max-md:mt-10 max-md:max-w-full" />
+      <div className="mt-5 rounded-lg border-[1.3px] border-solid border-[color:var(--Blues-Gray2,#B8BBC2)] p-5 md:p-10">
+        <div className="m-3 grid md:my-10 md:grid-cols-2">
           <div className="font-semibold">
             Inclusions
             <InclusionsListbox setData={setData} data={data} />
@@ -98,13 +99,13 @@ const EditExperienceForm: React.FC<EditListingProps> = ({
 
           <div className="w-full text-left text-sm font-semibold leading-5 text-black max-md:max-w-full">
             More Details
-            <div className="mt-5 grid grid-cols-2 gap-2 font-light">
-              <div>
-                Start Time
+            <div className="mt-5 grid gap-2 font-light md:grid-cols-2">
+              <div className="flex flex-row items-center justify-center  md:flex-col">
+                <div className="flex w-full text-left">Start Time</div>
                 <Input
                   width="186px"
                   type="time"
-                  className="mt-5"
+                  className="my-2"
                   isInvalid={
                     error.hasError === true && data.start_time.trim() === ""
                   }
@@ -114,12 +115,12 @@ const EditExperienceForm: React.FC<EditListingProps> = ({
                   }}
                 />
               </div>
-              <div>
-                End Time
+              <div className="flex flex-row items-center justify-center md:flex-col">
+                <div className="flex w-full text-left">End Time</div>
                 <Input
                   width="186px"
                   type="time"
-                  className="mt-5"
+                  className="my-2"
                   isInvalid={
                     error.hasError === true && data.end_time.trim() === ""
                   }
@@ -142,11 +143,11 @@ const EditExperienceForm: React.FC<EditListingProps> = ({
       <div className="mb-10 mt-10 w-full text-left text-lg font-semibold leading-5 text-black max-md:max-w-full">
         Upload photos of your listing
       </div>
-      <div className="grid rounded-3xl outline outline-1 outline-neutral-300 md:grid-cols-2">
+      <div className="rounded-3xl outline outline-1 outline-neutral-300 md:grid md:grid-cols-2">
         <div className="m-8 rounded-3xl bg-primary-50  outline outline-1 outline-neutral-300">
           <ListingUploader media={media} setMedia={setMedia} />
 
-          <div className="mb-3 text-center text-xs">Maximum of 5 photos</div>
+          <div className="pb-3 text-center text-xs">Maximum of 5 photos</div>
         </div>
         <div className="m-8 rounded-3xl bg-primary-50 outline outline-1 outline-neutral-300">
           <AccommodationImageUpdate media={media} setMedia={setMedia} />
