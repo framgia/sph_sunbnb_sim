@@ -22,7 +22,6 @@ import ChevronDownIcon from "../../svgs/Calendar/ChevronDownIcon";
 import { getListingBookings } from "@/app/utils/helpers/bookingmanagement/request";
 import BookingtFilterSection from "./FiltersSection";
 import { formatCurrency } from "@/app/utils/currency";
-import { truncate } from "@/app/utils/string";
 
 const ListingBookingsTable: React.FC<{
   listings: Listing[];
@@ -62,45 +61,15 @@ const ListingBookingsTable: React.FC<{
 
   return (
     <div>
-      <div className="mb-2 flex flex-col gap-3 md:flex-row">
-        <div className="md:w-1/2">
-          <BookingtFilterSection filters={filters} setFilters={setFilters} />
-        </div>
-        <Dropdown>
-          <DropdownTrigger>
-            <Button
-              className="w-60"
-              variant="solid"
-              color="primary"
-              endContent={<ChevronDownIcon />}
-            >
-              {listings.length > 0 ? (
-                <p className="truncate">
-                  {truncate(
-                    listings.find((item) => item.id === Number(currentListing))
-                      ?.name ?? "",
-                    25
-                  )}
-                </p>
-              ) : (
-                "No Active Listing"
-              )}
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            aria-label="listings"
-            className="max-h-52 w-60 overflow-y-auto overflow-x-hidden"
-            onAction={(key) => {
-              setListing(key as number);
-            }}
-          >
-            {listings.map((listing) => (
-              <DropdownItem key={listing.id} textValue={listing.name}>
-                <span className="line-clamp-1 w-full">{listing.name}</span>
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        </Dropdown>
+      <div className="mb-2">
+        <BookingtFilterSection
+          filters={filters}
+          setFilters={setFilters}
+          user="host"
+          currentListing={currentListing.toString()}
+          listings={listings}
+          onSetListing={setListing}
+        />
       </div>
       <div className="mb-2 mt-5 flex flex-row items-center justify-between">
         <div className="ps-1 text-xs text-default-500">
