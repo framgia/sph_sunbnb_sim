@@ -8,7 +8,8 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
   user,
   onEdit,
   onCancel,
-  enabled
+  enabled,
+  isAdmin
 }) => {
   const [isEditing, setEditing] = useState(false);
   const [originalFirstName, setOriginalFirstName] = useState("");
@@ -105,9 +106,9 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
               This is the name on your travel document, which could be a license
               or a passport.
             </span>
-            <div className="flex w-2/4 flex-row">
+            <div className="flex w-full flex-col md:w-2/4 md:flex-row">
               <Input
-                className="mr-5 text-zinc-500"
+                className="mb-2 mr-5 text-zinc-500 md:mb-0"
                 value={firstName}
                 onChange={handleFirstNameChange}
                 variant="bordered"
@@ -125,24 +126,28 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
                 errorMessage={lastNameError}
               />
             </div>
-            <div className="my-5 flex flex-row">
-              <Button
-                size="sm"
-                variant="flat"
-                color="default"
-                className="mr-2 font-semibold"
-                onPress={handleCancel}
-              >
-                Cancel
-              </Button>
-              <Button
-                size="sm"
-                variant="solid"
-                className="bg-primary-600 text-white"
-                onPress={handleUpdate}
-              >
-                Save
-              </Button>
+
+            <div className="my-5 flex flex-col-reverse md:flex-row">
+              <div className="w-auto">
+                <Button
+                  variant="flat"
+                  color="default"
+                  className="mr-2 font-semibold "
+                  onPress={handleCancel}
+                >
+                  <span className="hidden md:block">Cancel</span>
+                  <span className="block md:hidden">Cancel Edit</span>
+                </Button>
+              </div>
+              <div className="w-auto">
+                <Button
+                  variant="solid"
+                  className="mb-2 bg-primary-600 text-white md:mb-0"
+                  onPress={handleUpdate}
+                >
+                  Save
+                </Button>
+              </div>
             </div>
           </div>
         </>
@@ -166,18 +171,20 @@ const LegalNameField: React.FC<ProfileFieldProps> = ({
               {firstName} {lastName}
             </span>
           </div>
-          <Button
-            variant={enabled ? "flat" : "bordered"}
-            size="sm"
-            color="default"
-            className={
-              "font-semibold " + (enabled ? "" : "text-foreground-300")
-            }
-            onPress={handleEdit}
-            disabled={!enabled}
-          >
-            Edit
-          </Button>
+          {!isAdmin && (
+            <Button
+              variant={enabled ? "flat" : "bordered"}
+              size="sm"
+              color="default"
+              className={
+                "font-semibold " + (enabled ? "" : "text-foreground-300")
+              }
+              onPress={handleEdit}
+              disabled={!enabled}
+            >
+              Edit
+            </Button>
+          )}
         </div>
       )}
       <Divider />

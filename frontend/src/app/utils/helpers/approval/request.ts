@@ -15,10 +15,18 @@ function setHeaders(): Record<string, string> {
 
 async function getAllListings(
   page?: number,
-  query?: string
+  query?: string,
+  listableType?: string,
+  status?: string
 ): Promise<{ listings: Listing[]; paginate: PaginationType }> {
+  const listableTypeParam =
+    listableType !== undefined && listableType !== null
+      ? `&listable_type=${listableType}`
+      : "&listable_type=Accommodation";
+  const statusParam =
+    status !== undefined && status !== null ? `&status=${status}` : "";
   const response = await fetch(
-    `${config.backendUrl}/listing?per_page=9&page=${page ?? 1}${query !== undefined ? `&search=${query}` : ""}`,
+    `${config.backendUrl}/listing?per_page=9&page=${page ?? 1}${query !== undefined ? `&search=${query}` : ""}${listableTypeParam}${statusParam}`,
     {
       method: "GET",
       headers: setHeaders()
