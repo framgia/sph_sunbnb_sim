@@ -42,7 +42,7 @@ const BookingtFilterSection: React.FC<BookingtFilterSectionProps> = ({
         <Dropdown>
           <DropdownTrigger>
             <Button
-              className="mx-2 w-32"
+              className="ms-2 w-32"
               variant="solid"
               color="primary"
               endContent={<ChevronDownIcon />}
