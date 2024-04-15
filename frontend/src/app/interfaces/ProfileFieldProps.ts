@@ -5,4 +5,5 @@ export interface ProfileFieldProps {
   onEdit: () => void;
   onCancel: () => void;
   enabled: boolean;
+  isAdmin: boolean;
 }

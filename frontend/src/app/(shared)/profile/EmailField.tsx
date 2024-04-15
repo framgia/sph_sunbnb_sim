@@ -6,7 +6,7 @@ import React, { useState } from "react";
 
 const EmailField: React.FC<
   ProfileFieldProps & { showUpdateButton: boolean }
-> = ({ user, onEdit, onCancel, enabled, showUpdateButton }) => {
+> = ({ user, onEdit, onCancel, enabled, showUpdateButton, isAdmin }) => {
   const [isEditing, setEditing] = useState(false);
   const [isEmailInvalid, setEmailInvalid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -50,7 +50,7 @@ const EmailField: React.FC<
           <span className="mb-5 text-sm font-normal leading-5 text-zinc-500">
             Use an address you&apos;ll always have access to.
           </span>
-          <div className="flex w-2/4 flex-row">
+          <div className="flex w-full flex-row md:w-2/4">
             <Input
               className="mr-5 text-zinc-500"
               value={email}
@@ -61,31 +61,35 @@ const EmailField: React.FC<
               errorMessage={errorMessage}
             />
           </div>
-          <div className="my-5 flex flex-row">
-            <Button
-              size="sm"
-              variant="flat"
-              color="default"
-              className="mr-2 font-semibold"
-              onPress={() => {
-                setEmail(user?.email);
-                setEmailInvalid(false);
-                setErrorMessage("");
-                onCancel();
-                setEditing(false);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              size="sm"
-              variant="solid"
-              className="bg-primary-600 text-white"
-              onPress={handleUpdate}
-              isDisabled={isLoading}
-            >
-              Update
-            </Button>
+          <div className="my-5 flex flex-col-reverse md:flex-row">
+            <div className="w-auto">
+              <Button
+                variant="flat"
+                color="default"
+                className="w-auto font-semibold md:mr-2"
+                onPress={() => {
+                  setEmail(user?.email);
+                  setEmailInvalid(false);
+                  setErrorMessage("");
+                  onCancel();
+                  setEditing(false);
+                }}
+              >
+                <span className="hidden md:block">Cancel</span>
+                <span className="block md:hidden">Cancel Update</span>
+              </Button>
+            </div>
+            <div className="w-auto">
+              <Button
+                variant="solid"
+                color="primary"
+                className="mb-2 w-auto font-semibold md:mb-0 md:mr-2"
+                onPress={handleUpdate}
+                isDisabled={isLoading}
+              >
+                Update
+              </Button>
+            </div>
           </div>
         </div>
       ) : (
@@ -108,7 +112,7 @@ const EmailField: React.FC<
               {user?.email}
             </span>
           </div>
-          {showUpdateButton && (
+          {showUpdateButton && !isAdmin && (
             <Button
               variant={enabled ? "flat" : "bordered"}
               size="sm"

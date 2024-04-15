@@ -7,7 +7,8 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
   user,
   enabled,
   onCancel,
-  onEdit
+  onEdit,
+  isAdmin
 }) => {
   const [isEditing, setEditing] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
@@ -115,7 +116,7 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
           <span className="mb-5 text-sm font-normal leading-5 text-zinc-500">
             Choose a unique and secure password to keep your account safe.
           </span>
-          <div className="flex w-2/4 flex-col">
+          <div className="flex w-full flex-col md:w-2/4">
             <Input
               className="mb-5 text-zinc-500"
               variant="bordered"
@@ -147,39 +148,44 @@ const PasswordField: React.FC<ProfileFieldProps> = ({
               onChange={handleConfirmNewPasswordChange}
             />
           </div>
-          <div className="my-5 flex flex-row">
-            <Button
-              size="sm"
-              variant="flat"
-              color="default"
-              className="mr-2 font-semibold"
-              onPress={() => {
-                onCancel();
-                setEditing(false);
-                setCurrentPassword("");
-                setNewPassword("");
-                setConfirmNewPassword("");
-                setPasswordError("");
-                setNewPasswordError("");
-                setConfirmNewPasswordError("");
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              size="sm"
-              variant="solid"
-              className="bg-primary-600 text-white"
-              onPress={handleUpdate}
-              isDisabled={
-                isLoading ||
-                newPasswordError !== "" ||
-                confirmNewPasswordError !== "" ||
-                passwordError !== ""
-              }
-            >
-              Update
-            </Button>
+          <div className="my-5 flex flex-col-reverse md:flex-row">
+            <div className="w-auto">
+              <Button
+                variant="flat"
+                color="default"
+                className="mr-2 font-semibold"
+                onPress={() => {
+                  onCancel();
+                  setEditing(false);
+                  setCurrentPassword("");
+                  setNewPassword("");
+                  setConfirmNewPassword("");
+                  setPasswordError("");
+                  setNewPasswordError("");
+                  setConfirmNewPasswordError("");
+                }}
+              >
+                <span className="hidden md:block">Cancel</span>
+                <span className="block md:hidden">Cancel Update</span>
+              </Button>
+            </div>
+            <div className="w-auto">
+              {!isAdmin && (
+                <Button
+                  variant="solid"
+                  className="mb-2 bg-primary-600 text-white md:mb-0"
+                  onPress={handleUpdate}
+                  isDisabled={
+                    isLoading ||
+                    newPasswordError !== "" ||
+                    confirmNewPasswordError !== "" ||
+                    passwordError !== ""
+                  }
+                >
+                  Update
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       ) : (
