@@ -15,7 +15,7 @@ import type {
 } from "@/app/interfaces/types";
 import UserGuestCard from "./UserGuestCard";
 import UserAdminCard from "./UserAdminCard";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface UserGridProps {
   user: UserDetailsType;
@@ -30,13 +30,19 @@ const UserGrid: React.FC<UserGridProps> = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
   return (
     <div className="flex w-full justify-center">
       <Card
         shadow="md"
         isPressable
         onPress={() => {
-          router.push("?userid=" + user.id + "&currentuserrole=" + user.role);
+          const params = new URLSearchParams(searchParams);
+          params.set("userid", user.id.toString());
+          params.set("currentuserrole", user.role);
+          router.replace(`${pathname}?${params.toString()}`, { scroll: false });
           onOpen();
         }}
         radius="lg"
@@ -61,7 +67,7 @@ const UserGrid: React.FC<UserGridProps> = ({
           <span className="m-0 p-0 capitalize">{user.role}</span>
         </CardFooter>
         {user.status === "banned" && (
-          <CardFooter className="m-0 justify-center p-0">
+          <CardFooter className="m-0 justify-center p-5">
             <Chip className="bg-warning-300 text-warning-600">Banned</Chip>
           </CardFooter>
         )}

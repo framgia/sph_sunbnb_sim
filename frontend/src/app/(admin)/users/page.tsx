@@ -9,7 +9,6 @@ import type {
   UserAdminResponse,
   UserManagementFilters
 } from "@/app/interfaces/types";
-import { ReportStatus } from "@/app/utils/enums";
 
 const UsersPage: React.FC = async ({
   searchParams

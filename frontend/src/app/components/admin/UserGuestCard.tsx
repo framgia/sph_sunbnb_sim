@@ -47,7 +47,7 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
   function handleClose(): void {
     const params = new URLSearchParams(searchParams);
     params.delete("userid");
-    params.delete("role");
+    params.delete("currentuserrole");
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     onClose();
   }
@@ -58,6 +58,7 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
 
       await unbanUser(Number(data?.id));
       setIsLoading(false);
+      setIsActionDone((prev) => !prev);
       onClose();
     } catch (error) {
       setIsLoading(false);
@@ -148,7 +149,6 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
                         color="primary"
                         onClick={async () => {
                           await onUnbanUser();
-                          setIsActionDone((prev) => !prev);
                         }}
                         isLoading={isLoading}
                         isDisabled={isLoading}
@@ -159,7 +159,9 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
                   </ModalFooter>
                 </div>
               ) : (
-                <Spinner />
+                <div className="flex h-72  w-full items-center justify-center">
+                  <Spinner size="lg" />
+                </div>
               )}
             </>
           )}

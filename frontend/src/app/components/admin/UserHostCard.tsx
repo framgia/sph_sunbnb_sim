@@ -46,7 +46,7 @@ const UserHostCard: React.FC<UserHostCardProps> = ({
   function handleClose(): void {
     const params = new URLSearchParams(searchParams);
     params.delete("userid");
-    params.delete("role");
+    params.delete("currentuserrole");
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     onClose();
   }
@@ -57,6 +57,7 @@ const UserHostCard: React.FC<UserHostCardProps> = ({
 
       await unbanUser(Number(data?.id));
       setIsLoading(false);
+      setIsActionDone((prev) => !prev);
       onClose();
     } catch (error) {
       setIsLoading(false);
@@ -146,7 +147,6 @@ const UserHostCard: React.FC<UserHostCardProps> = ({
                         color="primary"
                         onClick={async () => {
                           await onUnbanUser();
-                          setIsActionDone((prev) => !prev);
                         }}
                         isLoading={isLoading}
                         isDisabled={isLoading}
@@ -157,7 +157,9 @@ const UserHostCard: React.FC<UserHostCardProps> = ({
                   </ModalFooter>
                 </div>
               ) : (
-                <Spinner />
+                <div className="flex h-72  w-full items-center justify-center">
+                  <Spinner size="lg" />
+                </div>
               )}
             </>
           )}

@@ -6,7 +6,6 @@ import type {
   UserDetailsType,
   UserManagementFilters
 } from "@/app/interfaces/types";
-import { getAllUsers } from "@/app/utils/helpers/admin/request";
 import {
   Button,
   Dropdown,
@@ -16,7 +15,6 @@ import {
   DropdownTrigger,
   Input,
   Pagination,
-  Spinner,
   Tab,
   Tabs
 } from "@nextui-org/react";
@@ -67,7 +65,7 @@ const UserComponent: React.FC<UserComponentProps> = ({
           radius="full"
           value={filters.search}
           onChange={(e) => {
-            setFilters({ ...filters, search: e.target.value });
+            setFilters({ ...filters, page: 1, search: e.target.value });
           }}
         />
       </div>
@@ -92,7 +90,7 @@ const UserComponent: React.FC<UserComponentProps> = ({
                     color={"primary"}
                     selectedKey={filters.role}
                     onSelectionChange={(key) => {
-                      setFilters({ ...filters, role: key as string });
+                      setFilters({ ...filters, page: 1, role: key as string });
                     }}
                   >
                     <Tab key="" title="All"></Tab>
@@ -110,7 +108,11 @@ const UserComponent: React.FC<UserComponentProps> = ({
                     color={"primary"}
                     selectedKey={filters.status}
                     onSelectionChange={(key) => {
-                      setFilters({ ...filters, status: key as string });
+                      setFilters({
+                        ...filters,
+                        page: 1,
+                        status: key as string
+                      });
                     }}
                   >
                     <Tab key="" title="All"></Tab>
@@ -140,30 +142,40 @@ const UserComponent: React.FC<UserComponentProps> = ({
         </div>
       </div>
 
-      <div className="mb-10 grid grid-cols-2 gap-8 sm:grid-cols-3">
-        {users.map((user: UserDetailsType, index: number) => (
-          <div key={index}>
-            <UserGrid
-              user={user}
-              currentUser={currentuser}
-              setIsActionDone={setIsActionDone}
-            />
+      {users.length > 0 ? (
+        <>
+          <div className="mb-10 grid grid-cols-2 gap-8 sm:grid-cols-3">
+            {users.map((user: UserDetailsType, index: number) => (
+              <div key={index}>
+                <UserGrid
+                  user={user}
+                  currentUser={currentuser}
+                  setIsActionDone={setIsActionDone}
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      <Pagination
-        isCompact
-        showControls
-        total={Math.ceil(
-          (pagination?.total ?? 1) / (pagination?.per_page ?? 1)
-        )}
-        page={1}
-        onChange={(page) => {
-          setFilters({ ...filters, page });
-        }}
-        className="flex w-full justify-center"
-      />
+          <Pagination
+            isCompact
+            showControls
+            total={Math.ceil(
+              (pagination?.total ?? 1) / (pagination?.per_page ?? 1)
+            )}
+            page={Number(filters.page)}
+            onChange={(page) => {
+              setFilters({ ...filters, page });
+            }}
+            className="flex w-full justify-center"
+          />
+        </>
+      ) : (
+        <>
+          <span className="flex w-full justify-center p-10 text-foreground-500">
+            No users to display
+          </span>
+        </>
+      )}
     </>
   );
 };

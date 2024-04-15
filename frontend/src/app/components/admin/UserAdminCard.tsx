@@ -36,7 +36,7 @@ const UserAdminCard: React.FC<UserAdminCardProps> = ({
   function handleClose(): void {
     const params = new URLSearchParams(searchParams);
     params.delete("userid");
-    params.delete("role");
+    params.delete("currentuserrole");
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     onClose();
   }
@@ -79,7 +79,9 @@ const UserAdminCard: React.FC<UserAdminCardProps> = ({
                   <ModalFooter></ModalFooter>
                 </div>
               ) : (
-                <Spinner />
+                <div className="flex h-72  w-full items-center justify-center">
+                  <Spinner size="lg" />
+                </div>
               )}
             </>
           )}

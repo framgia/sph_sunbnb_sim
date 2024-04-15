@@ -31,6 +31,7 @@ const BanConfirmModal: React.FC<BanConfirmModalProps> = ({
 
       await banUser(user.id, reason);
       setIsLoading(false);
+      setIsActionDone((prev) => !prev);
       onClose();
     } catch (error) {
       setIsLoading(false);
@@ -82,7 +83,6 @@ const BanConfirmModal: React.FC<BanConfirmModalProps> = ({
                   color="primary"
                   onPress={async () => {
                     await onBanUser();
-                    setIsActionDone((prev) => !prev);
                   }}
                   isLoading={isLoading}
                   isDisabled={isLoading}

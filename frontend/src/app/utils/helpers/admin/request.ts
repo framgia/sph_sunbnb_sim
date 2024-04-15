@@ -42,7 +42,6 @@ async function getAllUsers(
   );
 
   const responseData = await response.json();
-  console.log(responseData);
   if (response.ok) {
     return {
       user: responseData.data,
