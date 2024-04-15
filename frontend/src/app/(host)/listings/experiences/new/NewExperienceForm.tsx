@@ -94,8 +94,8 @@ const NewExperienceForm: React.FC<NewExperienceFormProps> = ({
           <div className="w-full text-left text-sm font-semibold leading-5 text-black max-md:max-w-full">
             More Details
             <div className="mt-5 grid gap-2 font-light md:grid-cols-2">
-              <div className="flex flex-row items-center justify-center  md:flex-col md:justify-start">
-                <div>Start Time</div>
+              <div className="flex flex-row items-center justify-center  md:flex-col">
+                <div className="flex w-full text-left">Start Time</div>
                 <Input
                   width="186px"
                   type="time"
@@ -105,8 +105,8 @@ const NewExperienceForm: React.FC<NewExperienceFormProps> = ({
                   }}
                 />
               </div>
-              <div className="flex flex-row items-center justify-center  md:flex-col md:justify-start">
-                <div>End Time</div>
+              <div className="flex flex-row items-center justify-center  md:flex-col">
+                <div className="flex w-full text-left">End Time</div>
                 <Input
                   width="186px"
                   type="time"
