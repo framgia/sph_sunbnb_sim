@@ -59,82 +59,67 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
 
   return (
     <>
-      <div className="mt-5 font-semibold">Your booking history</div>
-      <div className="flex">
-        <BookingtFilterSection filters={filters} setFilters={setFilters} />
-      </div>
-      <div className="mb-1 mt-4 flex justify-between text-xs text-default-500">
-        <div className="flex">
-          <span className="flex self-center">
-            Total bookings: {pagination.total}
-          </span>
+      <div className="my-5 font-semibold">Your booking history</div>
+      <BookingtFilterSection filters={filters} setFilters={setFilters} />
+      <div className="mb-2 mt-5 flex flex-row items-center justify-between">
+        <div className="px-1 text-xs text-default-500">
+          <span>Total {pagination.total} Bookings</span>
         </div>
-        <div className="flex gap-2">
-          <div className="flex items-center text-xs text-default-500">
-            <span>
-              Sort by: {filters.sort === "desc" ? " Newest" : " Oldest"}
-            </span>
-            <Dropdown>
-              <DropdownTrigger>
-                <Button className="bg-white" isIconOnly>
-                  <ChevronDownIcon />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label="status"
-                onAction={(key) => {
-                  setFilters({ ...filters, sort: key as string });
-                }}
+        <div className="flex md:gap-2">
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                size="sm"
+                className="gap-1 bg-white px-1 text-xs text-default-500"
+                endContent={<ChevronDownIcon />}
               >
-                <DropdownItem key="desc">Newest</DropdownItem>
-                <DropdownItem key="asc">Oldest</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-          <div className="flex flex-row">
-            <span className="flex items-center text-xs text-default-500">
-              Rows per page: {pagination.per_page}
-            </span>
-            <Dropdown>
-              <DropdownTrigger>
-                <Button className="bg-white" isIconOnly>
-                  <ChevronDownIcon />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                onAction={(key) => {
-                  setFilters({ ...filters, per_page: key as string });
-                }}
+                Sort by: {filters.sort === "desc" ? " Newest" : " Oldest"}
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Sort Selection"
+              onAction={(key) => {
+                setFilters({ ...filters, sort: key as string });
+              }}
+            >
+              <DropdownItem key="desc">Newest</DropdownItem>
+              <DropdownItem key="asc">Oldest</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                size="sm"
+                className="gap-1 bg-white px-1 text-xs text-default-500"
+                endContent={<ChevronDownIcon />}
               >
-                <DropdownItem key={3}>3</DropdownItem>
-                <DropdownItem key={5}>5</DropdownItem>
-                <DropdownItem key={8}>8</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
+                Rows per page: {pagination.per_page}
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Per Page Selection"
+              onAction={(key) => {
+                setFilters({ ...filters, per_page: key as string });
+              }}
+            >
+              <DropdownItem key={3}>3</DropdownItem>
+              <DropdownItem key={5}>5</DropdownItem>
+              <DropdownItem key={8}>8</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </div>
       </div>
-      <div className="grid h-[50px] grid-cols-[10%_20%_15%_15%_10%_15%_15%] rounded-lg bg-primary-600 text-sm">
-        <div className="col-span-2 flex items-center justify-center px-5 text-white">
-          LISTING
+      <div className="flex flex-col overflow-auto pb-2">
+        <div className="grid h-10 min-w-[700px] grid-cols-7 items-center gap-1 rounded-lg bg-primary-600 text-center text-sm text-white">
+          <div className="col-span-2">LISTING</div>
+          <div>CHECK-IN</div>
+          <div>CHECK-OUT</div>
+          <div>PRICE</div>
+          <div>STATUS</div>
+          <div>ACTIONS</div>
         </div>
-        <div className="flex items-center justify-center text-white">
-          CHECK-IN DATE
-        </div>
-        <div className="flex items-center justify-center text-white">
-          CHECK-OUT DATE
-        </div>
-        <div className="flex items-center justify-center text-white">PRICE</div>
-        <div className="flex items-center justify-center text-white">
-          STATUS
-        </div>
-        <div className="flex items-center justify-center text-white">
-          ACTIONS
-        </div>
-      </div>
-      {bookingData.length > 0 ? (
-        <>
-          {bookingData.map((booking, i) =>
+        {bookingData.length > 0 &&
+          bookingData.map((booking, i) =>
             booking.listing !== null ? (
               <BookingHistoryData
                 key={i}
@@ -154,26 +139,25 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
                 reviewed={booking.reviewed}
                 setActionDone={setActionDone}
               />
-            ) : (
-              <></>
-            )
+            ) : null
           )}
-          <Pagination
-            className="m-3 flex justify-center"
-            isCompact
-            showControls
-            total={Math.ceil(pagination.total / pagination.per_page)}
-            initialPage={1}
-            page={page}
-            onChange={(page) => {
-              setPage(page);
-            }}
-          />
-        </>
+      </div>
+      {bookingData.length > 0 ? (
+        <Pagination
+          className="mt-2 flex justify-center"
+          isCompact
+          showControls
+          total={Math.ceil(pagination.total / pagination.per_page)}
+          initialPage={1}
+          page={page}
+          onChange={(page) => {
+            setPage(page);
+          }}
+        />
       ) : (
-        <div className="flex w-full justify-center">
-          <span className=" p-5 text-foreground-500">No bookings found</span>
-        </div>
+        <p className="mx-auto mt-5 text-center text-zinc-500">
+          No bookings found.
+        </p>
       )}
     </>
   );
