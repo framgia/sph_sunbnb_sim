@@ -20,39 +20,41 @@ const RoleSelectForm: React.FC = () => {
   }
   return (
     <form onSubmit={handleRoleSumbit}>
-      <RadioGroup name="role" className="mb-10" defaultValue={roleSelected}>
-        <div className="flex w-full flex-row justify-center">
-          <RadioCard
-            className="w-24"
-            description="List accommodations or experiences"
-            value="host"
-            onClick={() => {
-              setRole("host");
-            }}
-          >
-            <HostIcon />
-            <span className="font-bold">Host</span>
-          </RadioCard>
-          <RadioCard
-            className="w-24"
-            description="Browse and book unique stays"
-            value="guest"
-            onClick={() => {
-              setRole("guest");
-            }}
-          >
-            <GuestIcon />
-            <span className="font-bold">Guest</span>
-          </RadioCard>
-        </div>
-      </RadioGroup>
-      <Button
-        isDisabled={isLoading}
-        type="submit"
-        className="mb-10 w-full bg-primary-600 text-white"
-      >
-        Continue
-      </Button>
+      <div className="flex w-4/5 w-full flex-col items-center justify-center md:w-full">
+        <RadioGroup name="role" className="mb-10" defaultValue={roleSelected}>
+          <div className="flex w-full justify-center">
+            <div className="flex flex-row justify-center">
+              <RadioCard
+                description="List accommodations or experiences"
+                value="host"
+                onClick={() => {
+                  setRole("host");
+                }}
+              >
+                <HostIcon />
+                <span className="font-bold">Host</span>
+              </RadioCard>
+              <RadioCard
+                description="Browse and book unique stays"
+                value="guest"
+                onClick={() => {
+                  setRole("guest");
+                }}
+              >
+                <GuestIcon />
+                <span className="font-bold">Guest</span>
+              </RadioCard>
+            </div>
+          </div>
+        </RadioGroup>
+        <Button
+          isDisabled={isLoading}
+          type="submit"
+          className="mb-10 w-4/5 bg-primary-600 text-white md:w-full"
+        >
+          Continue
+        </Button>
+      </div>
     </form>
   );
 };
