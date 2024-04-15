@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\UserStatus;
+use App\Http\Requests\V1\UserSortRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -50,10 +51,15 @@ class Admin extends Authenticatable {
         return $adminToken;
     }
 
-    public static function paginateAll(Request $request) {
+    public static function paginateAll(UserSortRequest $request) {
         $perPage = $request->query('per_page', 9);
-        $allData = self::getAllData();
-        $sortedData = self::sortData($allData);
+        $search = $request->query('search');
+        $role = $request->query('role');
+        $status = $request->query('status');
+        $sort = $request->query('sort', 'desc');
+
+        $allData = self::getAllData($search, $role, $status);
+        $sortedData = self::sortData($allData, $sort);
         $paginatedData = self::paginateData($sortedData, $perPage);
         $transformedData = self::transformData($paginatedData);
 
@@ -64,15 +70,52 @@ class Admin extends Authenticatable {
         ];
     }
 
-    private static function getAllData() {
-        $users = User::all();
-        $admins = self::all();
+    private static function getAllData($search = null, $role = null, $status = null) {
+        $adminsQuery = self::query();
+        if ($search) {
+            $adminsQuery->where(function ($query) use ($search) {
+                $query->where('first_name', 'like', '%'.$search.'%')
+                    ->orWhere('last_name', 'like', '%'.$search.'%');
+            });
+        }
 
-        return $users->concat($admins);
+        $admins = $adminsQuery->get();
+        if ($role === 'admin') {
+            return $admins;
+        }
+
+        $usersQuery = User::query();
+        if ($role) {
+            $acceptedRoles = ['admin', 'host', 'guest'];
+            if (in_array($role, $acceptedRoles)) {
+                if ($role !== 'admin') {
+                    $admins = collect();
+                }
+                $usersQuery->where('role', $role);
+            } else {
+                return collect();
+            }
+        }
+
+        if ($status !== null && in_array($status, UserStatus::getConstants())) {
+            $usersQuery->where('status', $status);
+        }
+
+        if ($search) {
+            $usersQuery->where(function ($query) use ($search) {
+                $query->where('first_name', 'like', '%'.$search.'%')
+                    ->orWhere('last_name', 'like', '%'.$search.'%');
+            });
+        }
+
+        $users = $usersQuery->get();
+        $allData = $status !== null ? $users : $admins->concat($users);
+
+        return $allData;
     }
 
-    private static function sortData($data) {
-        return $data->sortByDesc('created_at');
+    private static function sortData($data, $sort) {
+        return ($sort === 'asc') ? $data->sortBy('created_at') : $data->sortByDesc('created_at');
     }
 
     private static function paginateData($data, $perPage) {
