@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\UserSortRequest;
 use App\Models\Admin;
 use App\Models\Booking;
 use App\Models\Listing;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class AdminController extends Controller {
@@ -36,7 +36,7 @@ class AdminController extends Controller {
         ], Response::HTTP_OK);
     }
 
-    public function showUserAndAdmin(Request $request) {
+    public function showUserAndAdmin(UserSortRequest $request) {
         $allUsers = Admin::paginateAll($request);
 
         if (empty($allUsers['data'])) {
