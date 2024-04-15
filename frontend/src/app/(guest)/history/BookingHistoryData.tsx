@@ -1,4 +1,5 @@
 import BookingStatusComponent from "@/app/components/BookingStatus";
+import { formatCurrency } from "@/app/utils/currency";
 import { Image } from "@nextui-org/react";
 import React from "react";
 
@@ -44,7 +45,9 @@ const BookingHistoryData: React.FC<BookingHistoryDataProps> = ({
         <div className="flex items-center justify-center">
           {new Date(checkoutDate).toDateString()}
         </div>
-        <div className="flex items-center justify-center px-12">₱{price}</div>
+        <div className="flex items-center justify-center px-12">
+          {formatCurrency("PHP", 2, price)}
+        </div>
         <BookingStatusComponent
           status={status}
           id={id}
