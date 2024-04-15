@@ -73,6 +73,8 @@ class Experience extends Model {
             'name', 'description', 'province', 'city', 'barangay', 'street', 'zip_code',
             'price', 'maximum_guests',
         ]));
+
+        $this->listing->update(['status' => 'Pending']);
     }
 
     private function updateListingMedia($media) {
