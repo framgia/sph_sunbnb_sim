@@ -3,7 +3,8 @@ import UserGrid from "@/app/components/admin/UserGrid";
 import type {
   PaginationType,
   UserAdminResponse,
-  UserDetailsType
+  UserDetailsType,
+  UserManagementFilters
 } from "@/app/interfaces/types";
 import { getAllUsers } from "@/app/utils/helpers/admin/request";
 import {
@@ -19,37 +20,56 @@ import {
   Tab,
   Tabs
 } from "@nextui-org/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface UserComponentProps {
   currentuser?: UserAdminResponse;
+  pagination: PaginationType;
+  filtersData: UserManagementFilters;
+  users: UserDetailsType[];
 }
 
-const UserComponent: React.FC<UserComponentProps> = ({ currentuser }) => {
-  const [userData, setUserData] = useState<any>(null);
-  const [page, setPage] = useState(1);
-  const [paginate, setPaginateState] = useState<PaginationType>();
-  const [isloading, setIsLoading] = useState(false);
+const UserComponent: React.FC<UserComponentProps> = ({
+  currentuser,
+  filtersData,
+  users,
+  pagination
+}) => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
   const [isActionDone, setIsActionDone] = useState(false);
 
-  useEffect(() => {
-    async function fetchUserData(): Promise<void> {
-      setIsLoading(true);
+  const [filters, setFilters] = useState<UserManagementFilters>(filtersData);
 
-      const { user, paginate } = await getAllUsers(page);
-      setIsLoading(false);
-      setPaginateState(paginate);
-      setUserData(user);
-    }
-    fetchUserData().catch((error) => {
-      console.error("Error in fetch users : ", error);
-    });
-  }, [page, isActionDone]);
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+
+    params.set("sort", filters.sort);
+    params.set("page", filters.page.toString());
+    if (filters.status === "") params.delete("status");
+    else params.set("status", filters.status);
+    if (filters.role === "") params.delete("role");
+    else params.set("role", filters.role);
+
+    if (filters.search !== "") params.set("search", filters.search);
+    else params.delete("search");
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [filters, pathname, searchParams, router, isActionDone]);
 
   return (
     <>
       <div className=" flex w-full flex-wrap gap-4 md:flex-nowrap">
-        <Input type="Search" label="Search" radius="full" />
+        <Input
+          type="Search"
+          label="Search"
+          radius="full"
+          value={filters.search}
+          onChange={(e) => {
+            setFilters({ ...filters, search: e.target.value });
+          }}
+        />
       </div>
       <div className="flex justify-between">
         <div className="mb-5 mt-5 text-3xl font-bold">Users</div>
@@ -66,7 +86,15 @@ const UserComponent: React.FC<UserComponentProps> = ({ currentuser }) => {
             <DropdownMenu aria-label="Dynamic Actions">
               <DropdownSection title={"User Role"} showDivider>
                 <DropdownItem>
-                  <Tabs fullWidth aria-label="type" color={"primary"}>
+                  <Tabs
+                    fullWidth
+                    aria-label="type"
+                    color={"primary"}
+                    selectedKey={filters.role}
+                    onSelectionChange={(key) => {
+                      setFilters({ ...filters, role: key as string });
+                    }}
+                  >
                     <Tab key="" title="All"></Tab>
                     <Tab key="host" title="Host"></Tab>
                     <Tab key="guest" title="Guest"></Tab>
@@ -76,7 +104,15 @@ const UserComponent: React.FC<UserComponentProps> = ({ currentuser }) => {
               </DropdownSection>
               <DropdownSection title={"User Status"} showDivider>
                 <DropdownItem>
-                  <Tabs fullWidth aria-label="type" color={"primary"}>
+                  <Tabs
+                    fullWidth
+                    aria-label="type"
+                    color={"primary"}
+                    selectedKey={filters.status}
+                    onSelectionChange={(key) => {
+                      setFilters({ ...filters, status: key as string });
+                    }}
+                  >
                     <Tab key="" title="All"></Tab>
                     <Tab key="banned" title="Banned"></Tab>
                     <Tab key="active" title="Active"></Tab>
@@ -85,7 +121,15 @@ const UserComponent: React.FC<UserComponentProps> = ({ currentuser }) => {
               </DropdownSection>
               <DropdownSection title="Sort Order">
                 <DropdownItem>
-                  <Tabs fullWidth aria-label="type" color={"primary"}>
+                  <Tabs
+                    fullWidth
+                    aria-label="type"
+                    color={"primary"}
+                    selectedKey={filters.sort}
+                    onSelectionChange={(key) => {
+                      setFilters({ ...filters, sort: key as string });
+                    }}
+                  >
                     <Tab key="asc" title="Ascending"></Tab>
                     <Tab key="desc" title="Descending"></Tab>
                   </Tabs>
@@ -96,31 +140,27 @@ const UserComponent: React.FC<UserComponentProps> = ({ currentuser }) => {
         </div>
       </div>
 
-      {isloading ? (
-        <div className="mb-10 flex w-full justify-center">
-          <Spinner />
-        </div>
-      ) : (
-        <div className="mb-10 grid grid-cols-2 gap-8 sm:grid-cols-3">
-          {userData?.map((user: UserDetailsType, index: number) => (
-            <div key={index}>
-              <UserGrid
-                user={user}
-                currentUser={currentuser}
-                setIsActionDone={setIsActionDone}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="mb-10 grid grid-cols-2 gap-8 sm:grid-cols-3">
+        {users.map((user: UserDetailsType, index: number) => (
+          <div key={index}>
+            <UserGrid
+              user={user}
+              currentUser={currentuser}
+              setIsActionDone={setIsActionDone}
+            />
+          </div>
+        ))}
+      </div>
 
       <Pagination
         isCompact
         showControls
-        total={Math.ceil((paginate?.total ?? 1) / (paginate?.per_page ?? 1))}
+        total={Math.ceil(
+          (pagination?.total ?? 1) / (pagination?.per_page ?? 1)
+        )}
         page={1}
         onChange={(page) => {
-          setPage(page);
+          setFilters({ ...filters, page });
         }}
         className="flex w-full justify-center"
       />

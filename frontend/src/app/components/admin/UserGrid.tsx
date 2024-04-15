@@ -36,7 +36,7 @@ const UserGrid: React.FC<UserGridProps> = ({
         shadow="md"
         isPressable
         onPress={() => {
-          router.push("?userid=" + user.id + "&role=" + user.role);
+          router.push("?userid=" + user.id + "&currentuserrole=" + user.role);
           onOpen();
         }}
         radius="lg"

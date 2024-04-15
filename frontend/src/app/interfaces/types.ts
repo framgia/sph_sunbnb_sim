@@ -275,6 +275,14 @@ export interface ReportFilters {
   search: string;
 }
 
+export interface UserManagementFilters {
+  status: string;
+  role: string;
+  sort: string;
+  page: number;
+  search: string;
+}
+
 export interface CalendarDate {
   date: Date | string;
   available: boolean;

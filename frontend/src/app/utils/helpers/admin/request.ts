@@ -3,7 +3,8 @@ import config from "@/app/config/config";
 import type {
   PaginationType,
   UserAdminResponse,
-  UserDetailsType
+  UserDetailsType,
+  UserManagementFilters
 } from "@/app/interfaces/types";
 import { cookies } from "next/headers";
 
@@ -18,10 +19,22 @@ function setHeaders(): Record<string, string> {
 }
 
 async function getAllUsers(
-  page?: number
+  filters: UserManagementFilters
 ): Promise<{ user: UserDetailsType[]; paginate: PaginationType }> {
+  const queryParams = new URLSearchParams();
+  if (filters.status !== "") {
+    queryParams.append("status", filters.status);
+  }
+  queryParams.append("sort", filters.sort);
+  if (filters.role !== "") {
+    queryParams.append("role", filters.role);
+  }
+  if (filters.search !== "") {
+    queryParams.append("search", filters.search);
+  }
+  queryParams.append("page", filters.page.toString());
   const response = await fetch(
-    `${config.backendUrl}/all-users?per_page=9&page=${page ?? 1}`,
+    `${config.backendUrl}/all-users${queryParams.toString() !== "" ? `?${queryParams.toString()}` : ""}`,
     {
       method: "GET",
       headers: setHeaders()
@@ -29,7 +42,7 @@ async function getAllUsers(
   );
 
   const responseData = await response.json();
-
+  console.log(responseData);
   if (response.ok) {
     return {
       user: responseData.data,
