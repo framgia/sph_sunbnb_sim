@@ -23,10 +23,10 @@ const BookingtFilterSection: React.FC<BookingtFilterSectionProps> = ({
   setFilters
 }) => {
   return (
-    <div className="flex gap-2 md:gap-3">
+    <div className="flex gap-3">
       <Input
         size="sm"
-        className="w-full md:w-1/4"
+        className="w-full"
         classNames={{
           inputWrapper: "h-10"
         }}
@@ -42,7 +42,7 @@ const BookingtFilterSection: React.FC<BookingtFilterSectionProps> = ({
         <Dropdown>
           <DropdownTrigger>
             <Button
-              className="ms-2 w-32"
+              className="w-32"
               variant="solid"
               color="primary"
               endContent={<ChevronDownIcon />}

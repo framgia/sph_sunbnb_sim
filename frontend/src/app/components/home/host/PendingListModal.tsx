@@ -17,13 +17,18 @@ const PendingListModal: React.FC<PendingListModalProps> = ({
 }) => {
   return (
     <div>
-      <Modal size={size} isOpen={isOpen} onClose={onClose}>
+      <Modal
+        size={size}
+        isOpen={isOpen}
+        onClose={onClose}
+        placement="top-center"
+      >
         <ModalContent>
           {(onClose) => (
             <>
               <div className="p-8">
                 <div className="text-lg font-bold">Listings for Approval</div>
-                <div className="grid grid-cols-5 gap-4 py-5">
+                <div className="grid grid-cols-2 gap-4 py-5 md:grid-cols-5">
                   {cards.map((card, i) => {
                     return (
                       <PendingListingCard
