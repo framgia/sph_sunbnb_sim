@@ -38,14 +38,7 @@ class AdminController extends Controller {
 
     public function showUserAndAdmin(UserSortRequest $request) {
         $allUsers = Admin::paginateAll($request);
-
-        if (empty($allUsers['data'])) {
-            return response()->json([
-                'success' => false,
-                'error' => 'User or Admin not found',
-            ], Response::HTTP_NOT_FOUND);
-        }
-
+        
         return response()->json($allUsers, Response::HTTP_OK);
     }
 

@@ -64,7 +64,7 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
           radius="full"
           value={filters.search}
           onChange={(e) => {
-            setFilters({ ...filters, search: e.target.value });
+            setFilters({ ...filters, page: 1, search: e.target.value });
           }}
         />
       </div>
@@ -88,7 +88,7 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
                     color="primary"
                     value={filters.reason}
                     onValueChange={(value) => {
-                      setFilters({ ...filters, reason: value });
+                      setFilters({ ...filters, page: 1, reason: value });
                     }}
                   >
                     <Radio key="" value="">
@@ -110,7 +110,7 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
                     color={"primary"}
                     selectedKey={filters.type}
                     onSelectionChange={(key) => {
-                      setFilters({ ...filters, type: key as string });
+                      setFilters({ ...filters, page: 1, type: key as string });
                     }}
                   >
                     <Tab key="" title="All"></Tab>
@@ -157,7 +157,7 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
                 showControls
                 total={Math.ceil(pagination.total / pagination.per_page)}
                 initialPage={1}
-                page={filters.page}
+                page={Number(filters.page)}
                 onChange={(page) => {
                   setFilters({ ...filters, page });
                 }}
