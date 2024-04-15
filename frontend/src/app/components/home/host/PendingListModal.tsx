@@ -17,7 +17,12 @@ const PendingListModal: React.FC<PendingListModalProps> = ({
 }) => {
   return (
     <div>
-      <Modal size={size} isOpen={isOpen} onClose={onClose}>
+      <Modal
+        size={size}
+        isOpen={isOpen}
+        onClose={onClose}
+        placement="top-center"
+      >
         <ModalContent>
           {(onClose) => (
             <>

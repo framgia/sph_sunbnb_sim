@@ -36,7 +36,12 @@ const ActionConfirmModal: React.FC<ActionConfirmModalProps> = ({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size={size}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={size}
+        placement="top-center"
+      >
         <ModalContent>
           {(onClose) => (
             <>

@@ -23,7 +23,12 @@ const ShowReviewModal: React.FC<ReviewModalProps> = ({
 }) => {
   return (
     <div>
-      <Modal size={size} isOpen={isOpen} onClose={onClose}>
+      <Modal
+        size={size}
+        isOpen={isOpen}
+        onClose={onClose}
+        placement="top-center"
+      >
         <ModalContent>
           {(onClose) => (
             <div className="p-5 py-8">
