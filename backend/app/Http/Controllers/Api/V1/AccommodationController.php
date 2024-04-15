@@ -49,6 +49,7 @@ class AccommodationController extends Controller {
                 'price', 'maximum_guests',
             ]));
 
+            $listing->update(['status' => 'Pending']);
             $listing->updateMedia($listing, $request->media);
 
             return response()->json(['message' => 'Listing updated successfully'], Response::HTTP_OK);

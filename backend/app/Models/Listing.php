@@ -124,6 +124,8 @@ class Listing extends Model {
             self::applySearchFilter($query, $search);
         }
 
+        $query->orderBy('updated_at', 'desc')->orderBy('created_at', 'desc');
+
         $listings = $query->with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])
             ->paginate($perPage);
 

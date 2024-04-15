@@ -11,9 +11,9 @@ import {
   updateAccommodation
 } from "@/app/utils/helpers/accommodation/request";
 import { useDisclosure } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { validateAccommodation } from "@/app/utils/helpers/accommodation/validation";
+import ApprovalModal from "@/app/components/ApprovalModal";
 
 interface EditListingComponentProps {
   listing: AccommodationListing;
@@ -22,8 +22,16 @@ interface EditListingComponentProps {
 const EditListingComponent: React.FC<EditListingComponentProps> = ({
   listing
 }) => {
-  const router = useRouter();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: deleteIsOpen,
+    onOpen: deleteOnOpen,
+    onClose: deleteOnClose
+  } = useDisclosure();
+  const {
+    isOpen: editIsOpen,
+    onOpen: editOnOpen,
+    onClose: editOnClose
+  } = useDisclosure();
   const [error, setError] = useState<Record<string, string | boolean>>({
     hasError: false,
     message: ""
@@ -68,8 +76,9 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
       setIsLoading(true);
       const result = await updateAccommodation(listing.id, data, media);
       setIsLoading(false);
+      console.log(result.hasError);
       if (result.hasError === false) {
-        router.push(`/listings/accommodations/${listing.id}`);
+        editOnOpen();
       }
       if (result.hasError === true) {
         setError({
@@ -97,7 +106,7 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
     <main className="flex min-h-screen w-full flex-col items-center justify-between">
       <EditListingForm
         listingid={listing.id.toString()}
-        onDelete={onOpen}
+        onDelete={deleteOnOpen}
         data={data}
         setData={setData}
         media={media}
@@ -107,10 +116,17 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
         onPress={handleClick}
       />
       <DeleteModal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={deleteIsOpen}
+        onClose={deleteOnClose}
         size={"full"}
         onDelete={handleDelete}
+      />
+      <ApprovalModal
+        isOpen={editIsOpen}
+        onClose={editOnClose}
+        size={"full"}
+        id={listing.id.toString()}
+        type="accommodation"
       />
     </main>
   );
