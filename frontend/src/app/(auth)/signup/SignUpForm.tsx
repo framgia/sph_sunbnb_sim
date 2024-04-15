@@ -9,6 +9,7 @@ import GoogleButton from "@/app/components/GoogleButton";
 
 import { registerUser } from "@/app/utils/helpers/userHelper";
 import { useRouter } from "next/navigation";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 interface SignUpFormProps {
   googleButton: () => void;
@@ -93,105 +94,119 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ googleButton }) => {
   }
   return (
     <form onSubmit={handleSubmit}>
-      {message !== "" ? (
-        <div className="rounded-xl p-2 py-5 text-danger">{message}</div>
-      ) : (
-        ""
-      )}
-      <div className="mb-2 flex flex-row">
-        <Input
-          variant="bordered"
-          className="mr-2"
-          placeholder="First Name"
-          name="firstName"
-          ref={firstNameRef}
-          isRequired={true}
-        />
-        <Input
-          variant="bordered"
-          className="ml-2"
-          placeholder="Last Name"
-          name="lastName"
-          ref={lastNameRef}
-          isRequired={true}
-        />
+      <div className="flex w-full justify-center">
+        <div className="w-4/5 md:w-full">
+          {message !== "" ? <ErrorMessage message={message} /> : ""}
+          <div className="mb-2 flex flex-col md:flex-row">
+            <Input
+              variant="bordered"
+              className="mb-2 md:mb-0 md:mr-2 md:w-full "
+              placeholder="First Name"
+              name="firstName"
+              ref={firstNameRef}
+              isRequired={true}
+            />
+            <Input
+              variant="bordered"
+              className="md:ml-2"
+              placeholder="Last Name"
+              name="lastName"
+              ref={lastNameRef}
+              isRequired={true}
+            />
+          </div>
+          <Input
+            className="mb-2"
+            variant="bordered"
+            type="email"
+            placeholder="Email"
+            name="email"
+            errorMessage={isEmailInvalid ? "Please enter a valid email" : ""}
+            isInvalid={isEmailInvalid}
+            ref={emailRef}
+            isRequired={true}
+          />
+          <Input
+            className="mb-2"
+            variant="bordered"
+            type="password"
+            name="password"
+            placeholder="Password"
+            isInvalid={isPasswordLess8}
+            errorMessage={
+              isPasswordLess8 ? "Password must be at least 8 characters" : ""
+            }
+            ref={passwordRef}
+            isRequired={true}
+          />
+          <Input
+            className="mb-2"
+            variant="bordered"
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            ref={confirmPasswordRef}
+            isInvalid={passwordsNotMatch}
+            errorMessage={
+              passwordsNotMatch ? "Please make sure your passwords match." : ""
+            }
+            isRequired={true}
+          />
+        </div>
       </div>
-      <Input
-        className="mb-2"
-        variant="bordered"
-        type="email"
-        placeholder="Email"
-        name="email"
-        errorMessage={isEmailInvalid ? "Please enter a valid email" : ""}
-        isInvalid={isEmailInvalid}
-        ref={emailRef}
-        isRequired={true}
-      />
-      <Input
-        className="mb-2"
-        variant="bordered"
-        type="password"
-        name="password"
-        placeholder="Password"
-        isInvalid={isPasswordLess8}
-        errorMessage={
-          isPasswordLess8 ? "Password must be at least 8 characters" : ""
-        }
-        ref={passwordRef}
-        isRequired={true}
-      />
-      <Input
-        className="mb-2"
-        variant="bordered"
-        type="password"
-        name="confirmPassword"
-        placeholder="Confirm Password"
-        ref={confirmPasswordRef}
-        isInvalid={passwordsNotMatch}
-        errorMessage={
-          passwordsNotMatch ? "Please make sure your passwords match." : ""
-        }
-        isRequired={true}
-      />
 
       <div className="justify-content-center mt-10 flex">
         <span className="w-full text-center">Select a Role</span>
       </div>
-      <RadioGroup name="role" className="mb-10" defaultValue="host">
-        <div className="flex w-full flex-row justify-between">
-          <RadioCard
-            className="m-2"
-            description="List accommodations or experiences"
-            value="host"
-            onClick={() => {
-              setRole("host");
-            }}
-          >
-            <HostIcon />
-            <span className="font-bold">Host</span>
-          </RadioCard>
-          <RadioCard
-            className="m-2"
-            description="Browse and book unique stays"
-            value="guest"
-            onClick={() => {
-              setRole("guest");
-            }}
-          >
-            <GuestIcon />
-            <span className="font-bold">Guest</span>
-          </RadioCard>
+      <div className="flex w-full justify-center">
+        <div className="w-3/4 md:w-full">
+          <RadioGroup name="role" className="mb-10" defaultValue="host">
+            <div className="flex w-full flex-row justify-between">
+              <RadioCard
+                className="m-2"
+                description="List accommodations or experiences"
+                value="host"
+                onClick={() => {
+                  setRole("host");
+                }}
+              >
+                <HostIcon />
+                <span className="font-bold">Host</span>
+              </RadioCard>
+              <RadioCard
+                className="m-2"
+                description="Browse and book unique stays"
+                value="guest"
+                onClick={() => {
+                  setRole("guest");
+                }}
+              >
+                <GuestIcon />
+                <span className="font-bold">Guest</span>
+              </RadioCard>
+            </div>
+          </RadioGroup>
         </div>
-      </RadioGroup>
-      <Button
-        isDisabled={isLoading}
-        type="submit"
-        className="w-full bg-primary-600 text-white"
-      >
-        Register
-      </Button>
-      <DividerText>or register using</DividerText>
-      <GoogleButton onPress={googleButton} />
+      </div>
+      <div className="flex w-full justify-center">
+        <Button
+          isDisabled={isLoading}
+          type="submit"
+          className="w-4/5 bg-primary-600 text-white md:w-full"
+        >
+          Register
+        </Button>
+      </div>
+      <div className="flex w-full justify-center">
+        <div className="w-4/5 md:w-full">
+          <DividerText>or register using</DividerText>
+        </div>
+      </div>
+      <div className="flex w-full justify-center">
+        <div className="w-4/5 md:w-full">
+          <GoogleButton onPress={googleButton} />
+        </div>
+      </div>
     </form>
   );
 };
