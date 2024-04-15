@@ -14,7 +14,7 @@ const RoleSelectPage: React.FC = () => {
           Please choose one to proceed
         </span>
       </div>
-      <div className="p-2">
+      <div className="p-2 ">
         <RoleSelectForm />
       </div>
     </main>

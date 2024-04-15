@@ -19,7 +19,7 @@ const RadioCard: React.FC<RadioProps> = (props) => {
       {...getBaseProps()}
       className={cn(
         "group m-1 inline-flex flex-row-reverse items-center justify-between tap-highlight-transparent hover:opacity-70 active:opacity-50 md:m-2",
-        "w-60 cursor-pointer gap-4 rounded-3xl border-2 border-default p-4 md:w-72",
+        "w-auto cursor-pointer gap-4 rounded-3xl border-2 border-default p-4",
         "data-[selected=true]:border-primary-600 data-[selected=true]:bg-primary-50 "
       )}
     >
@@ -39,7 +39,7 @@ const RadioCard: React.FC<RadioProps> = (props) => {
           <></>
         )}
         {description !== undefined ? (
-          <span className="w-full text-wrap text-balance break-words text-small text-foreground opacity-70 md:max-w-72">
+          <span className="w-full text-wrap text-balance break-words text-small text-foreground opacity-70 md:max-w-40">
             {description}
           </span>
         ) : (

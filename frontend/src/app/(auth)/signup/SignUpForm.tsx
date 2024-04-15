@@ -158,35 +158,33 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ googleButton }) => {
       <div className="justify-content-center mt-10 flex">
         <span className="w-full text-center">Select a Role</span>
       </div>
-      <div className="flex w-full justify-center">
-        <div className="w-3/4 md:w-full">
-          <RadioGroup name="role" className="mb-10" defaultValue="host">
-            <div className="flex w-full flex-row justify-between">
-              <RadioCard
-                className="m-2"
-                description="List accommodations or experiences"
-                value="host"
-                onClick={() => {
-                  setRole("host");
-                }}
-              >
-                <HostIcon />
-                <span className="font-bold">Host</span>
-              </RadioCard>
-              <RadioCard
-                className="m-2"
-                description="Browse and book unique stays"
-                value="guest"
-                onClick={() => {
-                  setRole("guest");
-                }}
-              >
-                <GuestIcon />
-                <span className="font-bold">Guest</span>
-              </RadioCard>
-            </div>
-          </RadioGroup>
-        </div>
+      <div className="flex w-3/4 w-full justify-center md:w-full">
+        <RadioGroup name="role" className="mb-10" defaultValue="host">
+          <div className="flex w-full flex-row justify-between">
+            <RadioCard
+              className="m-2"
+              description="List accommodations or experiences"
+              value="host"
+              onClick={() => {
+                setRole("host");
+              }}
+            >
+              <HostIcon />
+              <span className="font-bold">Host</span>
+            </RadioCard>
+            <RadioCard
+              className="m-2"
+              description="Browse and book unique stays"
+              value="guest"
+              onClick={() => {
+                setRole("guest");
+              }}
+            >
+              <GuestIcon />
+              <span className="font-bold">Guest</span>
+            </RadioCard>
+          </div>
+        </RadioGroup>
       </div>
       <div className="flex w-full justify-center">
         <Button
