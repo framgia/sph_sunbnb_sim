@@ -82,8 +82,10 @@ const NewExperienceForm: React.FC<NewExperienceFormProps> = ({
         Address
       </div>
       <ExperienceAddressForm data={data} setData={setData} error={error} />
-      <div className="mt-5 rounded-lg border-[1.3px] border-solid border-[color:var(--Blues-Gray2,#B8BBC2)] p-10">
-        <div className="mb-10 mt-10 grid grid-cols-2">
+      <hr className="mt-12 min-h-[3px] w-full bg-zinc-200 max-md:mt-10 max-md:max-w-full" />
+
+      <div className="mt-5 rounded-lg border-[1.3px] border-solid border-[color:var(--Blues-Gray2,#B8BBC2)]  p-5 md:p-10">
+        <div className="m-3 grid md:my-10 md:grid-cols-2">
           <div className="font-semibold">
             Inclusions
             <InclusionsListbox setData={setData} data={data} />
@@ -91,24 +93,24 @@ const NewExperienceForm: React.FC<NewExperienceFormProps> = ({
 
           <div className="w-full text-left text-sm font-semibold leading-5 text-black max-md:max-w-full">
             More Details
-            <div className="mt-5 grid grid-cols-2 gap-2 font-light">
-              <div>
-                Start Time
+            <div className="mt-5 grid gap-2 font-light md:grid-cols-2">
+              <div className="flex flex-row items-center justify-center  md:flex-col md:justify-start">
+                <div>Start Time</div>
                 <Input
                   width="186px"
                   type="time"
-                  className="mt-5"
+                  className="m-2"
                   onChange={(e) => {
                     setData({ ...data, start_time: e.target.value });
                   }}
                 />
               </div>
-              <div>
-                End Time
+              <div className="flex flex-row items-center justify-center  md:flex-col md:justify-start">
+                <div>End Time</div>
                 <Input
                   width="186px"
                   type="time"
-                  className="mt-5"
+                  className="mt-2"
                   onChange={(e) => {
                     setData({ ...data, end_time: e.target.value });
                   }}
@@ -125,10 +127,10 @@ const NewExperienceForm: React.FC<NewExperienceFormProps> = ({
       <div className="mt-10 w-full text-left text-lg font-semibold leading-5 text-black max-md:max-w-full">
         Upload photos of your place
       </div>
-      <div className="mt-2 grid rounded-3xl outline outline-1 outline-neutral-300 md:grid-cols-2">
+      <div className="mt-2 rounded-3xl outline outline-1 outline-neutral-300 md:grid md:grid-cols-2">
         <div className="m-8 rounded-3xl bg-primary-50  outline outline-1 outline-neutral-300">
           <ListingUploader media={media} setMedia={setMedia} />
-          <div className="mb-3 text-center text-xs">Maximum of 5 photos</div>
+          <div className="pb-3 text-center text-xs">Maximum of 5 photos</div>
         </div>
         <div className="m-8 rounded-3xl bg-primary-50 outline outline-1 outline-neutral-300">
           <AccommodationImage media={media} setMedia={setMedia} />
