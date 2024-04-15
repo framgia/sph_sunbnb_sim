@@ -20,7 +20,7 @@ const PendingListingCard: React.FC<PendingListingProps> = ({
     else router.push(`/listings/accommodations/${listingId}`);
   }
   return (
-    <div className="flex h-20 w-40 flex-row justify-between rounded-xl border-1 border-foreground-300 p-2">
+    <div className="flex h-20 w-full flex-row justify-between rounded-xl border-1 border-foreground-300 p-2">
       <div className="flex w-3/4 flex-col justify-center px-2">
         <div className="truncate text-sm">
           <span>{listingName}</span>

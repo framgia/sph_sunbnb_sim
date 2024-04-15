@@ -90,20 +90,25 @@ const ReportDetailsModal: React.FC<ReportDetailsModalProps> = ({
               className=" my-5 px-5"
             />
             <div className="flex justify-between">
-              {status === ReportStatus.CLOSED && (
-                <div className="flex">
-                  <Avatar />
-                  <div>
-                    <div>{`${admin?.first_name} ${admin?.last_name}`} </div>
-                    <div> {admin?.email} </div>
-                  </div>
-                </div>
-              )}
+              <div className="mx-5 flex items-center">
+                {status === ReportStatus.CLOSED && (
+                  <>
+                    <Avatar className="m-2  flex justify-end px-6 py-6" />
+                    <div>
+                      <div>
+                        Report closed by{" "}
+                        <strong>{`${admin?.first_name} ${admin?.last_name}`}</strong>
+                      </div>
+                      <div className="text-sm"> {admin?.email} </div>
+                    </div>
+                  </>
+                )}
+              </div>
               <div className="mx-5 flex items-center justify-end text-right">
                 <div>
-                  <div className="font-bold">
+                  <div>
                     Listing hosted by{" "}
-                    {`${listing.user.first_name} ${listing.user.last_name}`}
+                    <strong>{`${listing.user.first_name} ${listing.user.last_name}`}</strong>
                   </div>
                   <div className="text-sm"> {listing.user.email}</div>
                 </div>
@@ -111,26 +116,28 @@ const ReportDetailsModal: React.FC<ReportDetailsModalProps> = ({
               </div>
             </div>
           </div>
-          <ModalFooter className=" mx-5">
-            <Checkbox
-              defaultChecked={isCheckboxChecked}
-              onChange={handleCheckboxChange}
-              radius="none"
-              color="default"
-              size="sm"
-            >
-              I have resolved this report by contacting the conflicting parties
-              and other appropriate actions upon receiving this issue.
-            </Checkbox>
-            <Button
-              className="bg-primary text-white"
-              isDisabled={!isCheckboxChecked || isLoading}
-              isLoading={isLoading}
-              onPress={isCheckboxChecked ? handleResolve : undefined}
-            >
-              Resolve
-            </Button>
-          </ModalFooter>
+          {status === ReportStatus.OPEN && (
+            <ModalFooter className=" mx-5">
+              <Checkbox
+                defaultChecked={isCheckboxChecked}
+                onChange={handleCheckboxChange}
+                radius="none"
+                color="default"
+                size="sm"
+              >
+                I have resolved this report by contacting the conflicting
+                parties and other appropriate actions upon receiving this issue.
+              </Checkbox>
+              <Button
+                className="bg-primary text-white"
+                isDisabled={!isCheckboxChecked || isLoading}
+                isLoading={isLoading}
+                onPress={isCheckboxChecked ? handleResolve : undefined}
+              >
+                Resolve
+              </Button>
+            </ModalFooter>
+          )}
         </ModalContent>
       </Modal>
     </>

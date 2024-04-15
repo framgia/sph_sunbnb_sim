@@ -21,6 +21,7 @@ import { getInitials } from "@/app/utils/helpers/getInitials";
 import ChevronDownIcon from "../../svgs/Calendar/ChevronDownIcon";
 import { getListingBookings } from "@/app/utils/helpers/bookingmanagement/request";
 import BookingtFilterSection from "./FiltersSection";
+import { formatCurrency } from "@/app/utils/currency";
 
 const ListingBookingsTable: React.FC<{
   listings: Listing[];
@@ -60,147 +61,98 @@ const ListingBookingsTable: React.FC<{
 
   return (
     <div>
-      <div className="mb-2 flex h-auto w-full flex-row">
-        <BookingtFilterSection filters={filters} setFilters={setFilters} />
-        <div>
+      <div className="mb-2">
+        <BookingtFilterSection
+          filters={filters}
+          setFilters={setFilters}
+          user="host"
+          currentListing={currentListing.toString()}
+          listings={listings}
+          onSetListing={setListing}
+        />
+      </div>
+      <div className="mb-2 mt-5 flex flex-row items-center justify-between">
+        <div className="ps-1 text-xs text-default-500">
+          <span>Total {bookingData.length} Guests</span>
+        </div>
+        <div className="flex md:gap-2">
           <Dropdown>
             <DropdownTrigger>
               <Button
-                className="mx-2"
-                radius="sm"
-                variant="solid"
-                color="primary"
+                size="sm"
+                className="gap-1 bg-white px-1 text-xs text-default-500"
                 endContent={<ChevronDownIcon />}
               >
-                {listings.length > 0 ? (
-                  <p className="truncate">
-                    {
-                      listings.find(
-                        (item) => item.id === Number(currentListing)
-                      )?.name
-                    }
-                  </p>
-                ) : (
-                  "No Active Listing"
-                )}
+                Sort by: {filters.sort === "desc" ? " Newest" : " Oldest"}
               </Button>
             </DropdownTrigger>
             <DropdownMenu
-              aria-label="listings"
+              aria-label="Sort Selection"
               onAction={(key) => {
-                setListing(key as number);
+                setFilters({ ...filters, sort: key as string });
               }}
             >
-              {listings.map((listing) => (
-                <DropdownItem key={listing.id}>
-                  <span className="line-clamp-1 w-full">{listing.name}</span>
-                </DropdownItem>
-              ))}
+              <DropdownItem key="desc">Newest</DropdownItem>
+              <DropdownItem key="asc">Oldest</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                size="sm"
+                className="gap-1 bg-white px-1 text-xs text-default-500"
+                endContent={<ChevronDownIcon />}
+              >
+                Rows per page: {pagination.per_page}
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Per Page Selection"
+              onAction={(key) => {
+                setFilters({ ...filters, per_page: key as string });
+              }}
+            >
+              <DropdownItem key={3}>3</DropdownItem>
+              <DropdownItem key={5}>5</DropdownItem>
+              <DropdownItem key={8}>8</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
       </div>
-      <div className="mb-2 flex flex-row items-center justify-between">
-        <div>
-          <span className="text-xs text-default-500">
-            Total:{" "}
-            {bookingData.length > 1
-              ? bookingData.length + " " + "guests"
-              : "1 guest"}
-          </span>
+      <div className="flex flex-col overflow-auto pb-1">
+        <div className="grid h-10 min-w-[800px] grid-cols-9 items-center gap-1 rounded-lg bg-primary-600 text-center text-sm text-white">
+          <div className="col-span-3">NAME</div>
+          <div>CHECK-IN</div>
+          <div>CHECK-OUT</div>
+          <div>GUESTS</div>
+          <div>BILL</div>
+          <div>STATUS</div>
+          <div>ACTION</div>
         </div>
-        <div className="flex gap-2">
-          <div className="flex items-center text-xs text-default-500">
-            <span>
-              Sort by: {filters.sort === "desc" ? " Newest" : " Oldest"}
-            </span>
-            <Dropdown>
-              <DropdownTrigger>
-                <Button className="bg-white" isIconOnly>
-                  <ChevronDownIcon />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label="status"
-                onAction={(key) => {
-                  setFilters({ ...filters, sort: key as string });
-                }}
-              >
-                <DropdownItem key="desc">Newest</DropdownItem>
-                <DropdownItem key="asc">Oldest</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-          <div className="flex items-center text-xs text-default-500">
-            Rows per page: {pagination.per_page}
-            <Dropdown>
-              <DropdownTrigger>
-                <Button className="bg-white" isIconOnly>
-                  <ChevronDownIcon />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                onAction={(key) => {
-                  setFilters({ ...filters, per_page: key as string });
-                }}
-              >
-                <DropdownItem key={3}>3</DropdownItem>
-                <DropdownItem key={5}>5</DropdownItem>
-                <DropdownItem key={8}>8</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        </div>
-      </div>
-      <div className="grid h-[50px] grid-cols-[25%_18%_18%_9%_10%_10%_10%] rounded-lg bg-primary-600 px-2 text-sm">
-        <div className="flex items-center justify-center px-5 text-white">
-          NAME
-        </div>
-        <div className="flex items-center justify-center px-5 text-white">
-          CHECK-IN DATE
-        </div>
-        <div className="flex items-center justify-center px-5 text-white">
-          CHECK-OUT DATE
-        </div>
-        <div className="flex items-center justify-center px-5 text-white">
-          GUESTS
-        </div>
-        <div className="flex items-center justify-center px-5 text-white">
-          BILL
-        </div>
-        <div className="flex items-center justify-center px-5 text-white">
-          STATUS
-        </div>
-        <div className="flex items-center justify-center px-5 text-white">
-          ACTION
-        </div>
-      </div>
-      {bookingData.length > 0 ? (
-        <>
-          {bookingData.map((book, i) => {
+        {bookingData.length > 0 &&
+          bookingData.map((book, i) => {
             return (
               <div
-                className="my-5 grid h-[50px] grid-cols-[25%_18%_18%_9%_10%_10%_10%] px-2 text-sm"
+                className="my-5 grid h-12 min-w-[800px] grid-cols-9 items-center gap-1 rounded-lg text-sm"
                 key={i}
               >
-                <div className="flex items-center justify-center">
-                  <div className="m-2 flex flex-row">
+                <div className="col-span-3 flex grid grid-cols-[25%_80%] gap-2 md:gap-0">
+                  <div className="flex w-full justify-end md:justify-center">
                     <Avatar
+                      size="sm"
                       name={getInitials(
                         book.user.first_name + " " + book.user.last_name
                       )}
                     />
-                    <div className="ml-2 flex flex-col">
-                      <span className="text-md font-semibold">
-                        {book.user.first_name + " " + book.user.last_name}
-                      </span>
-                      <span className="text-xs">{book.user.email}</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold">
+                      {book.user.first_name + " " + book.user.last_name}
                     </div>
+                    <div className="text-xs">{book.user.email}</div>
                   </div>
                 </div>
-                <div className="flex items-center justify-center">
-                  {new Date(book.start_date).toDateString()}
-                </div>
+                <div>{new Date(book.start_date).toDateString()}</div>
                 <div className="flex items-center justify-center">
                   {new Date(book.end_date).toDateString()}
                 </div>
@@ -208,12 +160,10 @@ const ListingBookingsTable: React.FC<{
                   {book.number_of_guests}
                 </div>
                 <div className="flex items-center justify-center">
-                  ₱ {book.total_price}
+                  {formatCurrency("PHP", 2, book.total_price)}
                 </div>
                 <div className="flex items-center justify-center">
-                  <div className="flex justify-center">
-                    <StatusChip status={book.status} />
-                  </div>
+                  <StatusChip status={book.status} />
                 </div>
                 <div className="flex items-center justify-center">
                   <BookingActions
@@ -225,22 +175,22 @@ const ListingBookingsTable: React.FC<{
               </div>
             );
           })}
-
-          <Pagination
-            isCompact
-            className="m-3 flex justify-center"
-            showControls
-            showShadow
-            color="primary"
-            page={pagination.current_page}
-            total={Math.ceil(pagination.total / pagination.per_page)}
-            onChange={(page) => {
-              setPage(page);
-            }}
-          />
-        </>
+      </div>
+      {bookingData.length > 0 ? (
+        <Pagination
+          isCompact
+          className="mt-1 flex justify-center"
+          showControls
+          showShadow
+          color="primary"
+          page={pagination.current_page}
+          total={Math.ceil(pagination.total / pagination.per_page)}
+          onChange={(page) => {
+            setPage(page);
+          }}
+        />
       ) : (
-        <p className="m-10 flex justify-center text-neutral-400">
+        <p className="mx-auto mt-5 text-center text-zinc-500">
           No bookings to display.
         </p>
       )}

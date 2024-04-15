@@ -275,6 +275,14 @@ export interface ReportFilters {
   search: string;
 }
 
+export interface UserManagementFilters {
+  status: string;
+  role: string;
+  sort: string;
+  page: number;
+  search: string;
+}
+
 export interface CalendarDate {
   date: Date | string;
   available: boolean;
@@ -296,6 +304,27 @@ export interface Admin {
   deleted_at?: string | null;
 }
 
+export interface UserAdminResponse {
+  id: number;
+  first_name: string;
+  last_name: string;
+  role: UserRole;
+  status: "active" | "banned";
+  email: string;
+  email_verified_at: string;
+  provider: string;
+  provider_id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+  reason: ReasonType[];
+  listings?: Listing[] | null;
+  bookings?: BookingAdmin[] | null;
+}
+
+export interface BookingAdmin extends Booking {
+  listing: Listing;
+}
 export interface AdminAnalytics {
   users: {
     host: number;
@@ -320,4 +349,14 @@ export interface AdminAnalytics {
     refused: number;
     popular: Listing[];
   };
+}
+
+export interface ReasonType {
+  id: number;
+  user_id: number;
+  admin_id: number;
+  reason: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
 }

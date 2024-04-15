@@ -3,7 +3,6 @@ import DeleteModal from "@/app/components/DeleteModal";
 import type { MediaUpdate } from "@/app/interfaces/AccomodationData";
 
 import { useDisclosure } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import type { ExperienceData } from "@/app/interfaces/ExperienceData";
 import type { ExperienceListing } from "@/app/interfaces/types";
@@ -13,6 +12,7 @@ import {
   updateExperience
 } from "@/app/utils/helpers/experience/request";
 import EditExperienceForm from "./EditExperienceForm";
+import ApprovalModal from "@/app/components/ApprovalModal";
 
 interface EditListingComponentProps {
   listing: ExperienceListing;
@@ -21,8 +21,16 @@ interface EditListingComponentProps {
 const EditExperienceComponent: React.FC<EditListingComponentProps> = ({
   listing
 }) => {
-  const router = useRouter();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: deleteIsOpen,
+    onOpen: deleteOnOpen,
+    onClose: deleteOnClose
+  } = useDisclosure();
+  const {
+    isOpen: editIsOpen,
+    onOpen: editOnOpen,
+    onClose: editOnClose
+  } = useDisclosure();
   const [error, setError] = useState<Record<string, string | boolean>>({
     hasError: false,
     message: ""
@@ -66,7 +74,7 @@ const EditExperienceComponent: React.FC<EditListingComponentProps> = ({
       const result = await updateExperience(listing.id, data, media);
       setIsLoading(false);
       if (result.hasError === false) {
-        router.push(`/listings/experiences/${listing.id}`);
+        editOnOpen();
       }
       if (result.hasError === true) {
         setError({
@@ -95,7 +103,7 @@ const EditExperienceComponent: React.FC<EditListingComponentProps> = ({
     <main className="flex min-h-screen w-full flex-col items-center justify-between">
       <EditExperienceForm
         listingid={listing.id.toString()}
-        onDelete={onOpen}
+        onDelete={deleteOnOpen}
         data={data}
         setData={setData}
         media={media}
@@ -105,10 +113,17 @@ const EditExperienceComponent: React.FC<EditListingComponentProps> = ({
         onPress={handleClick}
       />
       <DeleteModal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={deleteIsOpen}
+        onClose={deleteOnClose}
         size={"full"}
         onDelete={handleDelete}
+      />
+      <ApprovalModal
+        isOpen={editIsOpen}
+        onClose={editOnClose}
+        size={"full"}
+        id={listing.id.toString()}
+        type="experience"
       />
     </main>
   );

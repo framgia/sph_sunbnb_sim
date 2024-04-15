@@ -1,5 +1,7 @@
 "use client";
 import type { ModalProps } from "@/app/interfaces/ModalProps";
+import type { UserDetailsType } from "@/app/interfaces/types";
+import { banUser } from "@/app/utils/helpers/admin/request";
 import {
   Button,
   Modal,
@@ -9,11 +11,33 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 
-const BanConfirmModal: React.FC<ModalProps> = ({ isOpen, onClose, size }) => {
-  const dummydata = {
-    user: "User 1"
-  };
+interface BanConfirmModalProps extends ModalProps {
+  user: UserDetailsType;
+  setIsActionDone: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
+const BanConfirmModal: React.FC<BanConfirmModalProps> = ({
+  isOpen,
+  onClose,
+  size,
+  user,
+  setIsActionDone
+}) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [reason, setReason] = React.useState("");
+  async function onBanUser(): Promise<void> {
+    try {
+      setIsLoading(true);
+
+      await banUser(user.id, reason);
+      setIsLoading(false);
+      setIsActionDone((prev) => !prev);
+      onClose();
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error banning user:", error);
+    }
+  }
   return (
     <>
       <Modal
@@ -28,7 +52,10 @@ const BanConfirmModal: React.FC<ModalProps> = ({ isOpen, onClose, size }) => {
               <div className="px-5 py-5">
                 <div className="mt-5">
                   <span className="">Are you sure you want to ban </span>
-                  <span className="font-bold">{dummydata.user}</span>?
+                  <span className="font-bold">
+                    {user.first_name} {user.last_name}
+                  </span>
+                  ?
                 </div>
 
                 <Textarea
@@ -37,6 +64,10 @@ const BanConfirmModal: React.FC<ModalProps> = ({ isOpen, onClose, size }) => {
                   minRows={10}
                   fullWidth
                   className="mt-5 px-5"
+                  value={reason}
+                  onChange={(e) => {
+                    setReason(e.target.value);
+                  }}
                 />
               </div>
               <ModalFooter>
@@ -44,10 +75,18 @@ const BanConfirmModal: React.FC<ModalProps> = ({ isOpen, onClose, size }) => {
                   className="bg-primary-800 text-white"
                   variant="flat"
                   onPress={onClose}
+                  isDisabled={isLoading}
                 >
                   Close
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button
+                  color="primary"
+                  onPress={async () => {
+                    await onBanUser();
+                  }}
+                  isLoading={isLoading}
+                  isDisabled={isLoading}
+                >
                   Confirm
                 </Button>
               </ModalFooter>
