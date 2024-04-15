@@ -1,6 +1,6 @@
 "use client";
 import type { ModalProps } from "@/app/interfaces/ModalProps";
-import { UserDetailsType } from "@/app/interfaces/types";
+import type { UserDetailsType } from "@/app/interfaces/types";
 import { banUser } from "@/app/utils/helpers/admin/request";
 import {
   Button,
@@ -25,7 +25,7 @@ const BanConfirmModal: React.FC<BanConfirmModalProps> = ({
 }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [reason, setReason] = React.useState("");
-  async function onBanUser() {
+  async function onBanUser(): Promise<void> {
     try {
       setIsLoading(true);
 
@@ -64,7 +64,9 @@ const BanConfirmModal: React.FC<BanConfirmModalProps> = ({
                   fullWidth
                   className="mt-5 px-5"
                   value={reason}
-                  onChange={(e) => setReason(e.target.value)}
+                  onChange={(e) => {
+                    setReason(e.target.value);
+                  }}
                 />
               </div>
               <ModalFooter>
@@ -78,8 +80,8 @@ const BanConfirmModal: React.FC<BanConfirmModalProps> = ({
                 </Button>
                 <Button
                   color="primary"
-                  onPress={() => {
-                    onBanUser();
+                  onPress={async () => {
+                    await onBanUser();
                     setIsActionDone((prev) => !prev);
                   }}
                   isLoading={isLoading}

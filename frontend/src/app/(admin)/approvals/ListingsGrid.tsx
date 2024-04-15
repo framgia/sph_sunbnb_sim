@@ -40,19 +40,7 @@ const ListingsGrid: React.FC<{
     if (pageState === 1) params.delete("page");
     else params.set("page", pageState.toString());
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-<<<<<<< HEAD
-  }, [page, pathname, searchParams, router]);
-
-  useEffect(() => {
-    setLoading(false);
-    const newListings = listings.filter((listing, _i) => {
-      return listing.listable_type.split("\\")[2] === type;
-    });
-    setFListings(newListings);
-  }, [type, listingsState, listings]);
-=======
   }, [pageState, pathname, searchParams, router]);
->>>>>>> 89ddb4108c7c0a7dcf70d63250f43779bdc8e421
 
   useEffect(() => {
     setLoading(false);

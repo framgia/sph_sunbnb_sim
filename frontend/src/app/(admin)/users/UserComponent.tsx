@@ -1,11 +1,10 @@
 "use client";
 import UserGrid from "@/app/components/admin/UserGrid";
-import {
+import type {
   PaginationType,
   UserAdminResponse,
   UserDetailsType
 } from "@/app/interfaces/types";
-import { Reason } from "@/app/utils/enums";
 import { getAllUsers } from "@/app/utils/helpers/admin/request";
 import {
   Button,
@@ -16,13 +15,10 @@ import {
   DropdownTrigger,
   Input,
   Pagination,
-  Radio,
-  RadioGroup,
   Spinner,
   Tab,
   Tabs
 } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface UserComponentProps {
@@ -37,22 +33,18 @@ const UserComponent: React.FC<UserComponentProps> = ({ currentuser }) => {
   const [isActionDone, setIsActionDone] = useState(false);
 
   useEffect(() => {
-    fetchUserData();
-  }, [page, isActionDone]);
-
-  const fetchUserData = async () => {
-    try {
+    async function fetchUserData(): Promise<void> {
       setIsLoading(true);
 
       const { user, paginate } = await getAllUsers(page);
       setIsLoading(false);
       setPaginateState(paginate);
       setUserData(user);
-    } catch (error) {
-      setIsLoading(false);
-      console.error("Error fetching user data:", error);
     }
-  };
+    fetchUserData().catch((error) => {
+      console.error("Error in fetch users : ", error);
+    });
+  }, [page, isActionDone]);
 
   return (
     <>
@@ -110,16 +102,15 @@ const UserComponent: React.FC<UserComponentProps> = ({ currentuser }) => {
         </div>
       ) : (
         <div className="mb-10 grid grid-cols-2 gap-8 sm:grid-cols-3">
-          {userData &&
-            userData.map((user: UserDetailsType, index: number) => (
-              <div key={index}>
-                <UserGrid
-                  user={user}
-                  currentUser={currentuser}
-                  setIsActionDone={setIsActionDone}
-                />
-              </div>
-            ))}
+          {userData?.map((user: UserDetailsType, index: number) => (
+            <div key={index}>
+              <UserGrid
+                user={user}
+                currentUser={currentuser}
+                setIsActionDone={setIsActionDone}
+              />
+            </div>
+          ))}
         </div>
       )}
 

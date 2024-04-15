@@ -13,15 +13,8 @@ import {
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import BanConfirmModal from "./BanConfirmModal";
-import {
-  Listing,
-  UserAdminResponse,
-  UserDetailsType
-} from "@/app/interfaces/types";
-import {
-  getUserDetailsAdmin,
-  unbanUser
-} from "@/app/utils/helpers/admin/request";
+import type { UserAdminResponse } from "@/app/interfaces/types";
+import { unbanUser } from "@/app/utils/helpers/admin/request";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -58,11 +51,11 @@ const UserHostCard: React.FC<UserHostCardProps> = ({
     onClose();
   }
   const [isLoading, setIsLoading] = React.useState(false);
-  async function onUnbanUser() {
+  async function onUnbanUser(): Promise<void> {
     try {
       setIsLoading(true);
 
-      await unbanUser(data?.id as number);
+      await unbanUser(Number(data?.id));
       setIsLoading(false);
       onClose();
     } catch (error) {
@@ -120,7 +113,7 @@ const UserHostCard: React.FC<UserHostCardProps> = ({
                       <div className="font-bold">Listings hosted</div>
 
                       <div className="flex w-full justify-between gap-2">
-                        {(data?.listings?.length as number) > 0 ? (
+                        {Number(data?.listings?.length) > 0 ? (
                           data?.listings
                             ?.slice(0, 3)
                             .map((listing, index) => (
@@ -151,8 +144,8 @@ const UserHostCard: React.FC<UserHostCardProps> = ({
                     {data?.status === "banned" && (
                       <Button
                         color="primary"
-                        onClick={() => {
-                          onUnbanUser();
+                        onClick={async () => {
+                          await onUnbanUser();
                           setIsActionDone((prev) => !prev);
                         }}
                         isLoading={isLoading}
@@ -170,7 +163,7 @@ const UserHostCard: React.FC<UserHostCardProps> = ({
           )}
         </ModalContent>
       </Modal>
-      {user != undefined ? (
+      {user !== undefined ? (
         <BanConfirmModal
           isOpen={confirmOpen}
           setIsActionDone={setIsActionDone}

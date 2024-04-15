@@ -4,7 +4,7 @@ import {
   getAdminById,
   getUserDetailsAdmin
 } from "@/app/utils/helpers/admin/request";
-import { UserAdminResponse } from "@/app/interfaces/types";
+import type { UserAdminResponse } from "@/app/interfaces/types";
 
 const UsersPage: React.FC = async ({
   searchParams
@@ -15,7 +15,7 @@ const UsersPage: React.FC = async ({
     role?: string;
   };
 }) => {
-  let userdata: UserAdminResponse | undefined = undefined;
+  let userdata: UserAdminResponse | undefined;
   if (searchParams?.userid !== undefined) {
     if (searchParams?.role === "admin") {
       userdata = await getAdminById(searchParams?.userid);

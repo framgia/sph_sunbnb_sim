@@ -13,13 +13,7 @@ import {
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import BanConfirmModal from "./BanConfirmModal";
-import {
-  Booking,
-  BookingAdmin,
-  Listing,
-  UserAdminResponse,
-  UserDetailsType
-} from "@/app/interfaces/types";
+import type { UserAdminResponse } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { unbanUser } from "@/app/utils/helpers/admin/request";
@@ -58,11 +52,11 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
     onClose();
   }
   const [isLoading, setIsLoading] = React.useState(false);
-  async function onUnbanUser() {
+  async function onUnbanUser(): Promise<void> {
     try {
       setIsLoading(true);
 
-      await unbanUser(data?.id as number);
+      await unbanUser(Number(data?.id));
       setIsLoading(false);
       onClose();
     } catch (error) {
@@ -121,7 +115,7 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
                       <div className="font-bold">Recent Bookings</div>
 
                       <div className="flex w-full justify-between gap-2">
-                        {(data?.bookings?.length as number) > 0 ? (
+                        {Number(data?.bookings?.length) > 0 ? (
                           data?.bookings
                             ?.slice(0, 3)
                             .map((booking, index) => (
@@ -152,8 +146,8 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
                     {data.status === "banned" && (
                       <Button
                         color="primary"
-                        onClick={() => {
-                          onUnbanUser();
+                        onClick={async () => {
+                          await onUnbanUser();
                           setIsActionDone((prev) => !prev);
                         }}
                         isLoading={isLoading}
@@ -171,7 +165,7 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
           )}
         </ModalContent>
       </Modal>
-      {user != undefined ? (
+      {user !== undefined ? (
         <BanConfirmModal
           isOpen={confirmOpen}
           onClose={confirmonClose}

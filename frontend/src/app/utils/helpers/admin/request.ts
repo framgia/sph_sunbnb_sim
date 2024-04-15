@@ -1,9 +1,6 @@
 "use server";
 import config from "@/app/config/config";
-import {
-  Admin,
-  Booking,
-  Listing,
+import type {
   PaginationType,
   UserAdminResponse,
   UserDetailsType

@@ -4,23 +4,11 @@ import {
   Modal,
   ModalContent,
   ModalFooter,
-  Button,
-  Image,
-  useDisclosure,
-  Chip,
   Avatar,
   Spinner
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
-import BanConfirmModal from "./BanConfirmModal";
-import {
-  Admin,
-  Booking,
-  Listing,
-  UserAdminResponse,
-  UserDetailsType
-} from "@/app/interfaces/types";
-import { getAdminById } from "@/app/utils/helpers/admin/request";
+import type { UserAdminResponse } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import {
   usePathname,

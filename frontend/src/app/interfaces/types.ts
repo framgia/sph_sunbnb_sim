@@ -1,5 +1,5 @@
 import type { JwtPayload } from "jwt-decode";
-import {
+import type {
   UserRole,
   Amenity,
   AccommodationType,
