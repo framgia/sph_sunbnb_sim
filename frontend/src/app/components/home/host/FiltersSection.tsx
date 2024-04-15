@@ -23,10 +23,13 @@ const BookingtFilterSection: React.FC<BookingtFilterSectionProps> = ({
   setFilters
 }) => {
   return (
-    <>
+    <div className="flex gap-2 md:gap-3">
       <Input
         size="sm"
-        className="mr-5 w-1/4 "
+        className="w-full md:w-1/4"
+        classNames={{
+          inputWrapper: "h-10"
+        }}
         placeholder="Search by name..."
         variant="bordered"
         value={filters.search}
@@ -39,8 +42,7 @@ const BookingtFilterSection: React.FC<BookingtFilterSectionProps> = ({
         <Dropdown>
           <DropdownTrigger>
             <Button
-              className="mx-2 w-40"
-              radius="sm"
+              className="ms-2 w-32"
               variant="solid"
               color="primary"
               endContent={<ChevronDownIcon />}
@@ -50,7 +52,7 @@ const BookingtFilterSection: React.FC<BookingtFilterSectionProps> = ({
             </Button>
           </DropdownTrigger>
           <DropdownMenu
-            aria-label="status"
+            aria-label="Booking Status Filter"
             onAction={(key) => {
               setFilters({ ...filters, status: key as string });
             }}
@@ -64,7 +66,7 @@ const BookingtFilterSection: React.FC<BookingtFilterSectionProps> = ({
           </DropdownMenu>
         </Dropdown>
       </div>
-    </>
+    </div>
   );
 };
 
