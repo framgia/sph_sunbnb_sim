@@ -13,10 +13,10 @@ interface PendingCardsSlicerProps {
 const PendingCardsSlicer: React.FC<PendingCardsSlicerProps> = ({ cards }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <div className="mb-5 flex flex-col py-2">
-      <div className="flex w-full flex-row justify-between">
+    <div className="my-5 flex flex-col">
+      <div className="flex w-full flex-row items-center justify-between">
         <div>
-          <span className="text-xs font-semibold">Waiting for approval</span>
+          <span className="text-sm font-semibold">Waiting for approval</span>
         </div>
         <div>
           {cards.length > 5 ? (
@@ -31,7 +31,7 @@ const PendingCardsSlicer: React.FC<PendingCardsSlicerProps> = ({ cards }) => {
           )}
         </div>
       </div>
-      <div className="grid grid-cols-5 gap-4 py-5">
+      <div className="grid grid-cols-2 gap-4 py-5 md:grid-cols-5">
         {cards.slice(0, 5).map((card, i) => {
           return (
             <PendingListingCard

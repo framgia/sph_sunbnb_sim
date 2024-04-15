@@ -1,5 +1,5 @@
 "use client";
-import type { BookingFilters } from "@/app/interfaces/types";
+import type { BookingFilters, Listing } from "@/app/interfaces/types";
 import {
   Button,
   Dropdown,
@@ -12,18 +12,29 @@ import React from "react";
 import ChevronDownIcon from "../../svgs/Calendar/ChevronDownIcon";
 import { BookingStatus } from "@/app/utils/enums";
 import SearchIcon from "../../svgs/SearchIcon";
+import { truncate } from "@/app/utils/string";
 
 interface BookingtFilterSectionProps {
+  user: "guest" | "host";
+  currentListing?: string;
+  listings?: Listing[];
+  onSetListing?: (id: number) => void;
   filters: BookingFilters;
   setFilters: React.Dispatch<React.SetStateAction<BookingFilters>>;
 }
 
 const BookingtFilterSection: React.FC<BookingtFilterSectionProps> = ({
+  user,
+  currentListing,
+  listings,
+  onSetListing,
   filters,
   setFilters
 }) => {
   return (
-    <div className="flex gap-2 md:gap-3">
+    <div
+      className={`flex gap-3 ${user === "host" ? "flex-col md:flex-row" : "flex-row"}`}
+    >
       <Input
         size="sm"
         className="w-full md:w-1/4"
@@ -38,11 +49,11 @@ const BookingtFilterSection: React.FC<BookingtFilterSectionProps> = ({
         }}
         startContent={<SearchIcon height={15} width={15} />}
       />
-      <div className="flex flex-row items-center">
+      <div className="flex flex-row gap-3">
         <Dropdown>
           <DropdownTrigger>
             <Button
-              className="ms-2 w-32"
+              className="w-32"
               variant="solid"
               color="primary"
               endContent={<ChevronDownIcon />}
@@ -65,6 +76,46 @@ const BookingtFilterSection: React.FC<BookingtFilterSectionProps> = ({
             <DropdownItem key={"status"}>All</DropdownItem>
           </DropdownMenu>
         </Dropdown>
+        {user === "host" &&
+        listings !== undefined &&
+        onSetListing !== undefined ? (
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                className="w-60"
+                variant="solid"
+                color="primary"
+                endContent={<ChevronDownIcon />}
+              >
+                {listings.length > 0 ? (
+                  <p className="truncate">
+                    {truncate(
+                      listings.find(
+                        (item) => item.id === Number(currentListing)
+                      )?.name ?? "",
+                      25
+                    )}
+                  </p>
+                ) : (
+                  "No Active Listing"
+                )}
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="listings"
+              className="max-h-52 w-60 overflow-y-auto overflow-x-hidden"
+              onAction={(key) => {
+                onSetListing(key as number);
+              }}
+            >
+              {listings.map((listing) => (
+                <DropdownItem key={listing.id} textValue={listing.name}>
+                  <span className="line-clamp-1 w-full">{listing.name}</span>
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
+        ) : null}
       </div>
     </div>
   );

@@ -15,9 +15,9 @@ const HostDashboard: React.FC<{ userName: string }> = async ({ userName }) => {
     <>
       <span className="text-lg font-semibold">Welcome back, {userName}!</span>
       <PendingCardsSlicer cards={pendingListings} />
-      <div className="flex flex-col py-2">
+      <div className="flex flex-col">
         <div className="mb-5">
-          <span className="text-xs font-semibold">Your reservations</span>
+          <span className="text-sm font-semibold">Your reservations</span>
         </div>
         <ListingBookingsTable listings={activeListings} />
       </div>
