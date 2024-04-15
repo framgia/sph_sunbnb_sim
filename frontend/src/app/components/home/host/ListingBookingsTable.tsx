@@ -119,7 +119,7 @@ const ListingBookingsTable: React.FC<{
           </Dropdown>
         </div>
       </div>
-      <div className="flex flex-col overflow-auto pb-2">
+      <div className="flex flex-col overflow-auto pb-1">
         <div className="grid h-10 min-w-[800px] grid-cols-9 items-center gap-1 rounded-lg bg-primary-600 text-center text-sm text-white">
           <div className="col-span-3">NAME</div>
           <div>CHECK-IN</div>
@@ -179,7 +179,7 @@ const ListingBookingsTable: React.FC<{
       {bookingData.length > 0 ? (
         <Pagination
           isCompact
-          className="m-3 flex justify-center"
+          className="mt-1 flex justify-center"
           showControls
           showShadow
           color="primary"
