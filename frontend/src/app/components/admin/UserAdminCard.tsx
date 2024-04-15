@@ -47,6 +47,7 @@ const UserAdminCard: React.FC<UserAdminCardProps> = ({
         onClose={handleClose}
         size={size}
         className="shadow-md"
+        placement="top-center"
       >
         <ModalContent>
           {(handleClose) => (

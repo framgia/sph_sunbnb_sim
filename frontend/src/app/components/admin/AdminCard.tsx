@@ -17,7 +17,7 @@ const AdminCard: React.FC = () => {
   };
   return (
     <>
-      <Modal backdrop="transparent">
+      <Modal backdrop="transparent" placement="top-center">
         <ModalContent>
           {(onClose) => (
             <>

@@ -34,6 +34,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
         onClose={onClose}
         isDismissable={false}
         closeButton={<></>}
+        placement="top-center"
       >
         <ModalContent>
           {(onClose) => (

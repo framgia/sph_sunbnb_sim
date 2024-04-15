@@ -31,7 +31,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} placement="top-center">
         <ModalContent>
           {(onClose) => (
             <>
