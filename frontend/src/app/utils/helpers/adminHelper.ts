@@ -60,7 +60,6 @@ export async function getAdminAnalytics(): Promise<AdminAnalytics | undefined> {
     if (!response.ok) throw new Error("Failed to fetch admin analytics.");
 
     const data = await response.json();
-
     return data.data as AdminAnalytics;
   } catch (error) {
     console.error("Failed to fetch admin analytics.", error);
