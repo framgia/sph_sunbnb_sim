@@ -71,6 +71,7 @@ const UserHostCard: React.FC<UserHostCardProps> = ({
         onClose={handleClose}
         size={size}
         className="shadow-md"
+        placement="top-center"
       >
         <ModalContent>
           {(handleClose) => (

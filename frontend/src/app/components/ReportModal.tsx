@@ -73,6 +73,7 @@ const ReportModal: React.FC<ReportModalProps> = ({
         onClose={onClose}
         isDismissable={false}
         closeButton={<></>}
+        placement="top-center"
       >
         <ModalContent>
           {(onClose) => (

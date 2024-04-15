@@ -73,6 +73,7 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
         onClose={handleClose}
         size={size}
         className="shadow-md"
+        placement="top-center"
       >
         <ModalContent>
           {(handleClose) => (

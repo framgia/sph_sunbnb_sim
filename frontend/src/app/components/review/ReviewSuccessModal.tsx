@@ -23,7 +23,12 @@ const ReviewSuccessModal: React.FC<ReviewSuccessModalProps> = ({
   }
   return (
     <div>
-      <Modal size={size} isOpen={isOpen} onClose={onClose}>
+      <Modal
+        size={size}
+        isOpen={isOpen}
+        onClose={onClose}
+        placement="top-center"
+      >
         <ModalContent>
           {(onClose) => (
             <div className="p-10">

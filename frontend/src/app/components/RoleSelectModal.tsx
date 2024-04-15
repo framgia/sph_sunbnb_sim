@@ -6,7 +6,7 @@ import RoleSelectForm from "./RoleSelectForm";
 const RoleSelectModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} placement="top-center">
         <ModalContent>
           {() => (
             <>
