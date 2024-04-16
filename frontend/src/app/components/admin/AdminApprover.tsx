@@ -69,31 +69,33 @@ const AdminApprover: React.FC<ReviewActionsProps> = ({ status, id }) => {
           <div className="flex  items-center justify-between p-2 px-5 text-sm md:w-1/2 md:py-10 md:text-base">
             {status === ListingStatus.PENDING ? (
               <>
-                <span>
-                  This is the
-                  <span className="font-bold"> preview page </span>
-                  of the listing when it gets
-                  <span className="font-bold"> published. </span>
-                  Approve listing?
-                </span>
-                <div className="   flex flex-row">
-                  <Button
-                    variant="bordered"
-                    color="primary"
-                    className="mx-2 rounded-full"
-                    onPress={handleReject}
-                    isDisabled={isLoading}
-                  >
-                    Reject
-                  </Button>
-                  <Button
-                    color="primary"
-                    className="rounded-full"
-                    onPress={handleApprove}
-                    isDisabled={isLoading}
-                  >
-                    Approve
-                  </Button>
+                <div className="flex flex-col gap-2 md:flex-row md:items-center">
+                  <span className="">
+                    This is the
+                    <span className="font-bold"> preview page </span>
+                    of the listing when it gets
+                    <span className="font-bold"> published. </span>
+                    Approve listing?
+                  </span>
+                  <div className="flex flex-row gap-2">
+                    <Button
+                      variant="bordered"
+                      color="primary"
+                      className="rounded-full"
+                      onPress={handleReject}
+                      isDisabled={isLoading}
+                    >
+                      Reject
+                    </Button>
+                    <Button
+                      color="primary"
+                      className="rounded-full"
+                      onPress={handleApprove}
+                      isDisabled={isLoading}
+                    >
+                      Approve
+                    </Button>
+                  </div>
                 </div>
               </>
             ) : status === ListingStatus.REFUSED ? (
