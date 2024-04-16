@@ -60,7 +60,11 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
   return (
     <>
       <div className="my-5 font-semibold">Your booking history</div>
-      <BookingtFilterSection filters={filters} setFilters={setFilters} />
+      <BookingtFilterSection
+        filters={filters}
+        setFilters={setFilters}
+        user="guest"
+      />
       <div className="mb-2 mt-5 flex flex-row items-center justify-between">
         <div className="px-1 text-xs text-default-500">
           <span>Total {pagination.total} Bookings</span>
