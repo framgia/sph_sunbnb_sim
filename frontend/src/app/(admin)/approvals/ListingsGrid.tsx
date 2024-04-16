@@ -82,22 +82,23 @@ const ListingsGrid: React.FC<{
 
   return (
     <div>
-      <div className="my-5 flex w-full flex-row justify-between">
-        <div className="flex w-3/4 flex-row">
-          <Input
-            placeholder="Search"
-            size="sm"
-            startContent={<SearchIcon />}
-            onChange={(e) => {
-              handleSearch(e.target.value);
-            }}
-          />
-        </div>
-        <div className="flex w-1/4 justify-end">
+      <div className=" flex w-full flex-wrap gap-4 md:flex-nowrap">
+        <Input
+          placeholder="Search"
+          size="sm"
+          startContent={<SearchIcon />}
+          onChange={(e) => {
+            handleSearch(e.target.value);
+          }}
+        />
+      </div>
+      <div className="flex w-full justify-between">
+        <div className="mb-5 mt-5 text-2xl font-bold">Listings</div>
+        <div>
           <Dropdown>
             <DropdownTrigger>
               <Button
-                className="bg-white text-foreground-500"
+                className="mt-5 bg-white text-neutral-500"
                 startContent={<FilterIcon />}
               >
                 Status: {selectedOption}
@@ -150,7 +151,7 @@ const ListingsGrid: React.FC<{
         </Tabs>
       </div>
       {!isLoading ? (
-        <div className="grid grid-cols-3 gap-5">
+        <div className="gap-5 md:grid md:grid-cols-3">
           {listingsState.length <= 0 ? (
             <div className="col-span-3 my-10 flex w-full justify-center">
               <span className=" text-foreground-500">No listings found</span>
@@ -158,7 +159,7 @@ const ListingsGrid: React.FC<{
           ) : (
             listingsState.map((listing, i) => {
               return (
-                <div className="rounded-xl shadow-lg" key={i}>
+                <div className="m-4 rounded-xl shadow-lg md:m-0" key={i}>
                   <ListingItem
                     key={i}
                     user={UserRole.ADMIN}

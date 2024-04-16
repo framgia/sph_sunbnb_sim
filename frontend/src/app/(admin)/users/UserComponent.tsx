@@ -1,5 +1,7 @@
 "use client";
 import UserGrid from "@/app/components/admin/UserGrid";
+import FilterIcon from "@/app/components/svgs/Admin/FilterIcon";
+import SearchIcon from "@/app/components/svgs/SearchIcon";
 import type {
   PaginationType,
   UserAdminResponse,
@@ -61,8 +63,10 @@ const UserComponent: React.FC<UserComponentProps> = ({
       <div className=" flex w-full flex-wrap gap-4 md:flex-nowrap">
         <Input
           type="Search"
-          label="Search"
           radius="full"
+          startContent={<SearchIcon />}
+          placeholder="Search"
+          aria-label="Search"
           value={filters.search}
           onChange={(e) => {
             setFilters({ ...filters, page: 1, search: e.target.value });
@@ -70,13 +74,13 @@ const UserComponent: React.FC<UserComponentProps> = ({
         />
       </div>
       <div className="flex justify-between">
-        <div className="mb-5 mt-5 text-3xl font-bold">Users</div>
+        <div className="mb-5 mt-5 text-2xl font-bold">Users</div>
         <div className="">
           <Dropdown closeOnSelect={false}>
             <DropdownTrigger>
               <Button
-                variant="bordered"
                 className="mt-5 bg-white text-neutral-500"
+                startContent={<FilterIcon />}
               >
                 Filter
               </Button>

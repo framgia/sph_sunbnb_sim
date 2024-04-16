@@ -1,6 +1,8 @@
 "use client";
 import ReportCard from "@/app/components/admin/ReportCard";
 import ReportTabStatus from "@/app/components/admin/ReportTabStatus";
+import FilterIcon from "@/app/components/svgs/Admin/FilterIcon";
+import SearchIcon from "@/app/components/svgs/SearchIcon";
 import type {
   PaginationType,
   Report,
@@ -60,8 +62,10 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
       <div className="flex w-full flex-wrap gap-4 md:flex-nowrap">
         <Input
           type="Search"
-          label="Search"
           radius="full"
+          startContent={<SearchIcon />}
+          placeholder="Search"
+          aria-label="Search"
           value={filters.search}
           onChange={(e) => {
             setFilters({ ...filters, page: 1, search: e.target.value });
@@ -69,13 +73,13 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
         />
       </div>
       <div className="flex justify-between">
-        <div className="mt-5 text-3xl font-bold">Reports</div>
+        <div className="mt-5 text-2xl font-bold">Reports</div>
         <div className="">
           <Dropdown closeOnSelect={false}>
             <DropdownTrigger>
               <Button
-                variant="bordered"
                 className="mt-5 bg-white text-neutral-500"
+                startContent={<FilterIcon />}
               >
                 Filter
               </Button>
