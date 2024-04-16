@@ -16,7 +16,12 @@ const ThankYouModal: React.FC<ModalProps> = ({ onClose, isOpen }) => {
   const router = useRouter();
   return (
     <div>
-      <Modal className="p-5" isOpen={isOpen} onClose={onClose}>
+      <Modal
+        className="p-5"
+        isOpen={isOpen}
+        onClose={onClose}
+        placement="top-center"
+      >
         <ModalContent>
           {() => (
             <>

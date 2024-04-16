@@ -71,7 +71,7 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
   }, [nights, maxNights, startDateState]);
 
   return (
-    <div className="w-80">
+    <div className="w-full">
       <div className="mb-1 w-full rounded-xl border-1 border-black p-5 shadow-lg">
         <div className="mb-5">
           <span className="text-xl font-semibold"> ₱ {price} / night </span>
@@ -143,13 +143,12 @@ const AccommodationBookingSticky: React.FC<AccommodationBookingStickyProps> = ({
                   </PopoverTrigger>
                 }
               />
-              <PopoverContent className="my-2 ml-16">
+              <PopoverContent className="my-2 ms-6 md:ms-16">
                 <div className="flex justify-between">
                   <div className="self-center p-2 text-sm font-semibold">
                     Number of Guests
                   </div>
                   <div>
-                    {" "}
                     <GuestCounter
                       max={maxGuests}
                       min={1}

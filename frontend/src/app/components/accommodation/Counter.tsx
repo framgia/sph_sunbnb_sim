@@ -30,26 +30,28 @@ const Counter: React.FC<CounterProps> = ({ name, data, setData, id }) => {
 
   return (
     <div className="my-1 flex w-full justify-between px-0">
-      <div className="flex items-center">{name}</div>
+      <div className="flex w-full items-center">{name}</div>
 
-      <div className="grid grid-cols-3 items-center p-2">
-        <Button
-          className="flex justify-center rounded-full bg-white"
-          isIconOnly
-          onClick={handleDecrement}
-        >
-          <MinusIcon />
-        </Button>
-
+      <div className="grid w-full grid-cols-3 items-center justify-center p-2">
+        <div className="flex w-full justify-center">
+          <Button
+            className="flex w-full items-center justify-center rounded-full bg-white"
+            isIconOnly
+            onClick={handleDecrement}
+          >
+            <MinusIcon />
+          </Button>
+        </div>
         <div className="flex justify-center">{data[id]}</div>
-
-        <Button
-          className="flex justify-center rounded-full bg-white"
-          isIconOnly
-          onClick={handleIncrement}
-        >
-          <PlusIcon />
-        </Button>
+        <div className="flex w-full justify-center">
+          <Button
+            className="flex justify-center rounded-full bg-white"
+            isIconOnly
+            onClick={handleIncrement}
+          >
+            <PlusIcon />
+          </Button>
+        </div>
       </div>
     </div>
   );

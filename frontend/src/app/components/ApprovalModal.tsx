@@ -31,7 +31,7 @@ const ApprovalModal: React.FC<ApprovalModalProps> = ({
   }
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} placement="top-center">
         <ModalContent>
           {(onClose) => (
             <>

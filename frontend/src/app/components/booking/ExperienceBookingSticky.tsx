@@ -72,7 +72,7 @@ const ExperienceBookingSticky: React.FC<ExperienceBookingStickyProps> = ({
     setDateArr(newArr);
   }, [dates, endDateState, startDateState]);
   return (
-    <div className="w-96">
+    <div className="w-full">
       <div className="mb-1 w-full rounded-xl border-1 border-black p-5 shadow-lg">
         <div className="mb-5">
           <span className="text-xl font-semibold">From ₱ {price} / Person</span>

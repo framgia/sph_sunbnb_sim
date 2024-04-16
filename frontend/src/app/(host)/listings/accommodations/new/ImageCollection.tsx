@@ -18,7 +18,7 @@ const AccommodationImage: React.FC<AccommodationImageProps> = ({
   }
 
   return (
-    <div className="grid grid-cols-3 p-5">
+    <div className="grid grid-cols-2 p-5 md:grid-cols-3">
       {media.map((url, index) => (
         <div key={index} className="flex items-center justify-center">
           <div key={index} className="relative inline-block p-2">
