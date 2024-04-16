@@ -55,9 +55,11 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
 
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex">
-          <span className="text-2xl font-bold leading-7">{experienceName}</span>
+      <div className="grid-rows-2items-center mb-4 flex grid grid-cols-2 justify-between gap-4 md:grid-cols-3">
+        <div className="col-span-2 flex">
+          <span className="truncate text-2xl font-bold leading-7">
+            {experienceName}
+          </span>
           {((await userRole()) === "host" ||
             (await userRole()) === "admin") && (
             <div className="mx-4">
@@ -65,34 +67,37 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
             </div>
           )}
         </div>
-        {(await userRole()) === "host" && (
-          <div>
-            <ToEditButton path={`/listings/experiences/${id}/edit`} />
-          </div>
-        )}
+        <div className="flex md:justify-end">
+          {(await userRole()) === "host" && (
+            <div>
+              <ToEditButton path={`/listings/experiences/${id}/edit`} />
+            </div>
+          )}
+        </div>
       </div>
-      <div className="mb-5 flex h-80 w-full flex-row items-center justify-center">
-        <div className="relative mr-2 h-full w-2/4 overflow-hidden rounded-2xl">
+      <div className="mb-5 md:flex md:h-80 md:w-full md:flex-row md:items-center md:justify-center">
+        <div className="relative mb-2 h-80 w-full overflow-hidden rounded-2xl md:mr-2 md:h-full md:w-2/4">
           <Image
             src={images[0].media.replace(/['"]/g, "")}
-            className="object-fill"
             alt="Listing Image"
             loading="lazy"
             fill
+            objectFit="cover"
           />
         </div>
-        <div className="grid h-full grid-cols-2 items-end gap-4">
+        <div className="flex justify-center gap-4 md:grid md:h-full md:grid-cols-2 md:items-end">
           {images.slice(1).map((imageObj, i) => {
             return (
               <div
                 key={i}
-                className="relative mx-2 h-full w-60 overflow-hidden rounded-2xl"
+                className="relative h-24 h-32 w-24 w-32 overflow-hidden rounded-2xl md:mx-2 md:h-full md:w-60"
               >
                 <Image
                   src={imageObj.media.replace(/['"]/g, "")}
                   alt="listing image"
                   loading="lazy"
                   fill
+                  objectFit="cover"
                 />
               </div>
             );
@@ -100,12 +105,16 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
         </div>
       </div>
       <div className="mb-10">
-        <div className="mb-1 flex justify-between text-xl font-semibold leading-7">
-          <span>
-            {street}, {barangay}, {city}, {zipCode}
-          </span>
-          {((await userRole()) === "host" ||
-            (await userRole()) === "admin") && <span>₱{price}</span>}
+        <div className="mb-1 flex grid grid-rows-2 gap-1 text-xl font-semibold leading-7 md:grid-cols-3 md:grid-rows-1">
+          <div className="col-span-2">
+            <span>
+              {street}, {barangay}, {city}, {zipCode}
+            </span>
+          </div>
+          <div className="flex md:justify-end">
+            {((await userRole()) === "host" ||
+              (await userRole()) === "admin") && <span>₱{price}</span>}
+          </div>
         </div>
         <div className="mb-1 text-base leading-6 text-zinc-500">
           {type} •{" "}
