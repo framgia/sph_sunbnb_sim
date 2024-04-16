@@ -7,7 +7,6 @@ import {
   Chip,
   Modal,
   ModalContent,
-  ModalFooter,
   Textarea
 } from "@nextui-org/react";
 import React, { useState } from "react";
@@ -57,10 +56,10 @@ const ReportDetailsModal: React.FC<ReportDetailsModalProps> = ({
         className="rounded-3xl p-5"
       >
         <ModalContent>
-          <div className="px-5 py-5">
+          <div className="py-3  md:p-5">
             <div>
               <div className="flex items-center gap-3 px-5 ">
-                <div className="text-3xl font-bold">{reason}</div>
+                <div className="text-xl font-bold md:text-3xl">{reason}</div>
                 {status === ReportStatus.OPEN ? (
                   <Chip className="bg-success-300 text-success-600" size="sm">
                     Open
@@ -71,40 +70,61 @@ const ReportDetailsModal: React.FC<ReportDetailsModalProps> = ({
                   </Chip>
                 )}
               </div>
-              <div className="flex items-center px-5">
-                <Avatar className="m-2 px-6 py-6" />
+              <div className="flex items-center md:px-5">
+                <Avatar className="m-2 p-4 md:p-6" />
                 <div>
-                  <div className="font-bold">
+                  <div className="text-sm font-bold md:text-base">
                     {`${user.first_name} ${user.last_name}`}{" "}
-                    <span className="font-base">on</span> {listing.name}
+                    <span className="hidden font-normal md:inline-block">
+                      on
+                    </span>{" "}
+                    <span className="hidden md:inline-block">
+                      {listing.name}
+                    </span>
                   </div>
-                  <div>{user.email}</div>
+                  <div className="text-xs md:text-sm">{user.email}</div>
                 </div>
               </div>
+              <div className="px-5 text-sm">
+                <div className="block font-normal md:hidden">Report on</div>{" "}
+                <div className="block truncate font-bold md:hidden">
+                  {listing.name}
+                </div>
+              </div>
+            </div>
+            <div className="mx-5 flex items-center justify-end text-right md:hidden">
+              <div>
+                <div className="text-sm md:text-base">
+                  Listing hosted by{" "}
+                  <strong>{`${listing.user.first_name} ${listing.user.last_name}`}</strong>
+                </div>
+                <div className="text-xs md:text-sm"> {listing.user.email}</div>
+              </div>
+              <Avatar className="m-2 p-4 md:p-6" />
             </div>
             <Textarea
               isReadOnly
               autoFocus={false}
               value={content}
               fullWidth
-              className=" my-5 px-5"
+              className=" px-5 md:my-5"
             />
             <div className="flex justify-between">
               <div className="mx-5 flex items-center">
                 {status === ReportStatus.CLOSED && (
                   <>
-                    <Avatar className="m-2  flex justify-end px-6 py-6" />
+                    <Avatar className="m-2 p-4 md:p-6" />
                     <div>
-                      <div>
+                      <div className="text-sm md:text-base">
                         Report closed by{" "}
                         <strong>{`${admin?.first_name} ${admin?.last_name}`}</strong>
                       </div>
-                      <div className="text-sm"> {admin?.email} </div>
+                      <div className="text-xs md:text-sm"> {admin?.email} </div>
                     </div>
                   </>
                 )}
               </div>
-              <div className="mx-5 flex items-center justify-end text-right">
+              <div className="mx-5 hidden items-center justify-end text-right md:flex">
                 <div>
                   <div>
                     Listing hosted by{" "}
@@ -117,7 +137,7 @@ const ReportDetailsModal: React.FC<ReportDetailsModalProps> = ({
             </div>
           </div>
           {status === ReportStatus.OPEN && (
-            <ModalFooter className=" mx-5">
+            <div className="mx-5 flex flex-col md:flex-row">
               <Checkbox
                 defaultChecked={isCheckboxChecked}
                 onChange={handleCheckboxChange}
@@ -128,15 +148,17 @@ const ReportDetailsModal: React.FC<ReportDetailsModalProps> = ({
                 I have resolved this report by contacting the conflicting
                 parties and other appropriate actions upon receiving this issue.
               </Checkbox>
-              <Button
-                className="bg-primary text-white"
-                isDisabled={!isCheckboxChecked || isLoading}
-                isLoading={isLoading}
-                onPress={isCheckboxChecked ? handleResolve : undefined}
-              >
-                Resolve
-              </Button>
-            </ModalFooter>
+              <div className="flex justify-end">
+                <Button
+                  className=" bg-primary text-white"
+                  isDisabled={!isCheckboxChecked || isLoading}
+                  isLoading={isLoading}
+                  onPress={isCheckboxChecked ? handleResolve : undefined}
+                >
+                  Resolve
+                </Button>
+              </div>
+            </div>
           )}
         </ModalContent>
       </Modal>

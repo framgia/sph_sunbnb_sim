@@ -1,11 +1,5 @@
 "use client";
-import {
-  Avatar,
-  Card,
-  CardFooter,
-  useDisclosure,
-  Chip
-} from "@nextui-org/react";
+import { Avatar, Card, useDisclosure, Chip } from "@nextui-org/react";
 import React from "react";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import UserHostCard from "./UserHostCard";
