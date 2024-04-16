@@ -82,7 +82,7 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
             alt="Listing Image"
             loading="lazy"
             fill
-            objectFit="cover"
+            style={{ objectFit: "cover" }}
           />
         </div>
         <div className="flex justify-center gap-4 md:grid md:h-full md:grid-cols-2 md:items-end">
@@ -97,7 +97,7 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
                   alt="listing image"
                   loading="lazy"
                   fill
-                  objectFit="cover"
+                  style={{ objectFit: "cover" }}
                 />
               </div>
             );

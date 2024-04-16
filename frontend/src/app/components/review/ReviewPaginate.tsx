@@ -71,20 +71,20 @@ const ReviewPaginate: React.FC<ReviewPaginateProps> = ({
             </div>
           </div>
           <div className="flex w-full justify-center"></div>
+          <Pagination
+            className="flex w-full justify-center md:mt-0"
+            isCompact
+            showControls
+            total={Math.ceil(paginationState.total / paginationState.per_page)}
+            initialPage={1}
+            page={paginationState.current_page}
+            color="primary"
+            onChange={(page) => {
+              setPage(page);
+            }}
+          />
         </>
       )}
-      <Pagination
-        className="flex w-full justify-center md:mt-0"
-        isCompact
-        showControls
-        total={Math.ceil(paginationState.total / paginationState.per_page)}
-        initialPage={1}
-        page={paginationState.current_page}
-        color="primary"
-        onChange={(page) => {
-          setPage(page);
-        }}
-      />
     </>
   );
 };
