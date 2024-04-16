@@ -89,7 +89,7 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
                         className="flex h-32 w-32  bg-danger text-[50px] text-white md:h-60 md:w-60 md:text-[100px]"
                       ></Avatar>
                     </div>
-                    <div className="px-5">
+                    <div className="w-full px-5">
                       <div className="flex h-full flex-col justify-center text-center md:flex-row md:justify-start md:text-left">
                         <div>
                           <div className="m-0 mt-3 flex justify-center  text-3xl font-bold">
