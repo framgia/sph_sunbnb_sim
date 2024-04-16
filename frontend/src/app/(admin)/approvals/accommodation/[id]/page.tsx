@@ -88,7 +88,7 @@ const ApprovalAccommodationDetails: React.FC<{
             status={accData.status}
             price={accData.price}
           />
-          <div className="flex h-fit flex-row items-start">
+          <div className="mb-3 flex h-fit flex-col items-start md:flex-row">
             <div className="w-full">
               <Divider className="my-10 " />
               <span className="text-sm">{accData.description}</span>
@@ -100,7 +100,7 @@ const ApprovalAccommodationDetails: React.FC<{
                 listingType="accommodation"
               />
             </div>
-            <div className="w-90 h-90 sticky top-[30px] z-50 ml-5 block self-start pt-10">
+            <div className="md:w-90 md:h-90 top-[30px] block w-full  self-start pt-10 md:sticky md:ml-5">
               {user !== undefined && user !== null ? (
                 <AccommodationBookingSticky
                   exclude={blockedDates}
