@@ -100,7 +100,7 @@ const ApprovalAccommodationDetails: React.FC<{
                 listingType="accommodation"
               />
             </div>
-            <div className="w-90 h-90 top-[30px] ml-5  block self-start pt-10 md:sticky">
+            <div className="md:w-90 md:h-90 top-[30px] block w-full  self-start pt-10 md:sticky md:ml-5">
               {user !== undefined && user !== null ? (
                 <AccommodationBookingSticky
                   exclude={blockedDates}
