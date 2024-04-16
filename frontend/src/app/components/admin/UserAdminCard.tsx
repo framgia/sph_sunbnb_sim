@@ -54,17 +54,17 @@ const UserAdminCard: React.FC<UserAdminCardProps> = ({
             <>
               {data !== undefined ? (
                 <div className="p-5">
-                  <div className="flex w-full justify-center py-5">
+                  <div className="flex w-full flex-col items-center justify-center py-5 md:flex-row">
                     <div className="px-5">
                       <Avatar
                         name={getInitials(
                           data.first_name + " " + data.last_name
                         )}
-                        className="h-60 w-60 bg-danger text-[100px] text-white"
+                        className="flex h-32 w-32  bg-danger text-[50px] text-white md:h-60 md:w-60 md:text-[100px]"
                       ></Avatar>
                     </div>
                     <div className="px-5">
-                      <div className="flex h-full items-center">
+                      <div className="flex h-full items-center text-center md:text-left">
                         <div>
                           <div className="m-0 mt-3 flex text-4xl font-bold">
                             <div className="m-0 p-0">{data.first_name}</div>
@@ -72,7 +72,7 @@ const UserAdminCard: React.FC<UserAdminCardProps> = ({
                           </div>
 
                           <div className="m-0 p-0 italic">{data.email}</div>
-                          <div className="m-0 p-0 capitalize">{data.role}</div>
+                          <div className="m-0 p-0 capitalize">Admin</div>
                         </div>
                       </div>
                     </div>

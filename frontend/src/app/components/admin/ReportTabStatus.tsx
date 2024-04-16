@@ -10,11 +10,11 @@ interface ReportTabProps {
 const ReportTabStatus: React.FC<ReportTabProps> = ({ filters, setFilters }) => {
   return (
     <>
-      <div className="m-8 flex w-32 flex-col">
+      <div className="mt-5 flex w-full justify-around md:m-8 md:w-32 md:flex-col md:justify-normal">
         <div
           className={`my-1 cursor-pointer px-3 ${
             filters.status === ReportStatus.OPEN
-              ? "border-r-5 border-primary text-primary"
+              ? "border-b-5 border-primary text-primary md:border-b-0 md:border-r-5"
               : "text-gray-500"
           }`}
           onClick={() => {
@@ -26,7 +26,7 @@ const ReportTabStatus: React.FC<ReportTabProps> = ({ filters, setFilters }) => {
         <div
           className={`my-1 cursor-pointer px-3  ${
             filters.status === ReportStatus.CLOSED
-              ? "border-r-5 border-primary text-primary"
+              ? "border-b-5 border-primary text-primary md:border-b-0 md:border-r-5"
               : "text-gray-500"
           }`}
           onClick={() => {
