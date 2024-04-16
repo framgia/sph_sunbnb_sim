@@ -54,8 +54,8 @@ const ReviewPaginate: React.FC<ReviewPaginateProps> = ({
       ) : (
         <>
           <ReviewHeader metadata={metadataState} listingType={listingType} />
-          <div className="h-96">
-            <div className="mt-5 grid grid-cols-2">
+          <div className="h-97">
+            <div className="mt-5 grid md:grid-cols-2">
               {reviewArr.map((review, i) => {
                 return (
                   <div className="mb-5" key={i}>
@@ -71,20 +71,20 @@ const ReviewPaginate: React.FC<ReviewPaginateProps> = ({
             </div>
           </div>
           <div className="flex w-full justify-center"></div>
+          <Pagination
+            className="flex w-full justify-center md:mt-0"
+            isCompact
+            showControls
+            total={Math.ceil(paginationState.total / paginationState.per_page)}
+            initialPage={1}
+            page={paginationState.current_page}
+            color="primary"
+            onChange={(page) => {
+              setPage(page);
+            }}
+          />
         </>
       )}
-      <Pagination
-        className="flex w-full justify-center"
-        isCompact
-        showControls
-        total={Math.ceil(paginationState.total / paginationState.per_page)}
-        initialPage={1}
-        page={paginationState.current_page}
-        color="primary"
-        onChange={(page) => {
-          setPage(page);
-        }}
-      />
     </>
   );
 };
