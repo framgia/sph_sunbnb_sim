@@ -1,11 +1,5 @@
 "use client";
-import {
-  Avatar,
-  Card,
-  CardFooter,
-  useDisclosure,
-  Chip
-} from "@nextui-org/react";
+import { Avatar, Card, useDisclosure, Chip } from "@nextui-org/react";
 import React from "react";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import UserHostCard from "./UserHostCard";
@@ -48,28 +42,37 @@ const UserGrid: React.FC<UserGridProps> = ({
         radius="lg"
         className="flex h-48 w-60 justify-center rounded-3xl"
       >
-        <CardFooter className="mt-5 justify-center">
-          <Avatar
-            name={getInitials(user.first_name + " " + user.last_name)}
-            className="h-12 w-12 bg-danger text-white"
-          />
-        </CardFooter>
-        <CardFooter className="m-0 justify-center p-0 text-xl font-bold">
-          <span className="m-0 p-0">{user.first_name}</span>
-          <span className="m-0 ml-1 p-0">{user.last_name}</span>
-        </CardFooter>
+        <div className="flex w-full flex-col justify-center">
+          <div className="m-2 flex justify-center">
+            <Avatar
+              name={getInitials(user.first_name + " " + user.last_name)}
+              className=" bg-danger text-white md:h-12 md:w-12"
+            />
+          </div>
+          <div className="m-0 justify-center p-0">
+            <div className="m-0 p-0 font-bold md:text-xl">
+              {user.first_name} {user.last_name}
+            </div>
+          </div>
 
-        <CardFooter className="m-0 justify-center p-0 text-small font-light">
-          <span className="m-0 p-0 italic">{user.email}</span>
-        </CardFooter>
+          <div className="m-0 justify-center truncate  px-2">
+            <span className="m-0  px-2 text-xs font-light italic md:text-sm">
+              {user.email}
+            </span>
+          </div>
 
-        <CardFooter className="m-0 justify-center p-0 font-light">
-          <span className="m-0 p-0 capitalize">{user.role}</span>
-        </CardFooter>
+          <div className="m-0 justify-center p-0 font-light">
+            <span className="m-0 p-0 text-xs capitalize md:text-sm">
+              {user.role}
+            </span>
+          </div>
+        </div>
         {user.status === "banned" && (
-          <CardFooter className="m-0 justify-center p-5">
-            <Chip className="bg-warning-300 text-warning-600">Banned</Chip>
-          </CardFooter>
+          <div className="order-first m-0 flex w-full justify-center p-1 md:order-last md:p-2 ">
+            <Chip className="bg-warning-300 text-warning-600" size="sm">
+              Banned
+            </Chip>
+          </div>
         )}
       </Card>
       {user.role === "host" && (

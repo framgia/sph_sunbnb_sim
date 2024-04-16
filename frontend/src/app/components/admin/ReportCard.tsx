@@ -28,12 +28,12 @@ const ReportCard: React.FC<ReportCardProps> = ({ report, setActionDone }) => {
       >
         <div className="flex w-full justify-between">
           <div className="flex">
-            <Avatar className="m-2 px-8 py-8" />
+            <Avatar className="m-2 p-4 md:p-8" />
             <div className="ml-4 text-left">
-              <div className="my-1  text-xl font-bold">
+              <div className="my-1  text-base font-bold md:text-xl">
                 <p className="line-clamp-1">
                   {`${user.first_name} ${user.last_name}`}{" "}
-                  <span className="font-base">on</span> {listing.name}
+                  <span className="font-normal">on</span> {listing.name}
                 </p>
               </div>
               <div className="my-1 flex items-center gap-2">
@@ -46,10 +46,10 @@ const ReportCard: React.FC<ReportCardProps> = ({ report, setActionDone }) => {
                     Closed
                   </Chip>
                 )}
-                <div className="text-sm font-bold">{reason}</div>
+                <div className="text-xs font-bold md:text-sm">{reason}</div>
               </div>
 
-              <div className="my-1 line-clamp-2 text-sm  font-light">
+              <div className="my-1 line-clamp-2 text-xs font-light md:text-sm">
                 {content}
               </div>
             </div>

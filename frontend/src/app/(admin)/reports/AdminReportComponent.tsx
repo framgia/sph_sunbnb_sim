@@ -139,7 +139,7 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
           </Dropdown>
         </div>
       </div>
-      <div className="flex w-full">
+      <div className="flex w-full flex-col md:flex-row">
         <ReportTabStatus filters={filters} setFilters={setFilters} />
         <div className="mt-5 flex w-full flex-col gap-5">
           {reports.length > 0 ? (
