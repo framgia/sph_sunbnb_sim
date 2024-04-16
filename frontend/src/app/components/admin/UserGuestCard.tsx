@@ -80,21 +80,22 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
             <>
               {data !== undefined ? (
                 <div className="p-5">
-                  <div className="flex w-full justify-center py-5">
+                  <div className="flex w-full flex-col items-center justify-center py-5 md:flex-row">
                     <div className="px-5">
                       <Avatar
                         name={getInitials(
                           data.first_name + " " + data.last_name
                         )}
-                        className="h-60 w-60 bg-danger text-[100px] text-white"
+                        className="flex h-32 w-32  bg-danger text-[50px] text-white md:h-60 md:w-60 md:text-[100px]"
                       ></Avatar>
                     </div>
                     <div className="px-5">
-                      <div className="flex">
+                      <div className="flex h-full flex-col justify-center text-center md:flex-row md:justify-start md:text-left">
                         <div>
-                          <div className="m-0 mt-3 flex  text-3xl font-bold">
-                            <div className="m-0 p-0">{data.first_name}</div>
-                            <div className="m-0 ml-1 p-0">{data.last_name}</div>
+                          <div className="m-0 mt-3 flex justify-center  text-3xl font-bold">
+                            <div className="m-0 p-0">
+                              {data.first_name} {data.last_name}
+                            </div>
                           </div>
                           <div className="m-0 p-0">{data.email}</div>
                           <div className="m-0 p-0 capitalize">{data.role}</div>
@@ -102,11 +103,11 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
                         <div>
                           {data.status === "banned" && (
                             <>
-                              <Chip className="mt-4 bg-warning-300 text-warning-600">
+                              <Chip className="mx-2 bg-warning-300 text-warning-600 md:mt-4">
                                 Banned
                               </Chip>
                               <div className="text-xs">
-                                <div className="mt-3 px-2">
+                                <div className="px-2 md:mt-3">
                                   Ban Reason: {data.reason[0].reason}
                                 </div>
                               </div>
@@ -114,7 +115,7 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
                           )}
                         </div>
                       </div>
-                      <div className="font-bold">Recent Bookings</div>
+                      <div className="my-3 font-bold">Recent Bookings</div>
 
                       <div className="flex w-full justify-between gap-2">
                         {Number(data?.bookings?.length) > 0 ? (
@@ -128,11 +129,11 @@ const UserGuestCard: React.FC<UserGuestCardProps> = ({
                                   ""
                                 )}
                                 alt={`booking ${index}`}
-                                className="h-32 w-32"
+                                className="h-20 w-20 rounded-xl object-cover md:h-32 md:w-32"
                               />
                             ))
                         ) : (
-                          <div className="py-5 text-foreground-500">
+                          <div className="w-full py-5 text-center text-foreground-500 md:text-left">
                             No bookings yet
                           </div>
                         )}
