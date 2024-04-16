@@ -55,7 +55,7 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
 
   return (
     <div>
-      <div className="grid-rows-2items-center mb-4 flex grid grid-cols-2 justify-between gap-4 md:grid-cols-3">
+      <div className="mb-4 grid grid-cols-2 grid-rows-2 gap-4 md:flex md:grid-cols-3 md:items-center md:justify-between">
         <div className="col-span-2 flex">
           <span className="truncate text-2xl font-bold leading-7">
             {experienceName}
@@ -75,8 +75,8 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
           )}
         </div>
       </div>
-      <div className="mb-5 md:flex md:h-80 md:w-full md:flex-row md:items-center md:justify-center">
-        <div className="relative mb-2 h-80 w-full overflow-hidden rounded-2xl md:mr-2 md:h-full md:w-2/4">
+      <div className="mb-5 grid h-96 grid-flow-row grid-cols-4 grid-rows-4 gap-4 md:grid-rows-2">
+        <div className="relative col-span-4 row-span-3 overflow-hidden rounded-2xl md:col-span-2 md:row-span-2">
           <Image
             src={images[0].media.replace(/['"]/g, "")}
             alt="Listing Image"
@@ -85,24 +85,22 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
             style={{ objectFit: "cover" }}
           />
         </div>
-        <div className="flex justify-center gap-4 md:grid md:h-full md:grid-cols-2 md:items-end">
-          {images.slice(1).map((imageObj, i) => {
-            return (
-              <div
-                key={i}
-                className="relative h-24 h-32 w-24 w-32 overflow-hidden rounded-2xl md:mx-2 md:h-full md:w-60"
-              >
-                <Image
-                  src={imageObj.media.replace(/['"]/g, "")}
-                  alt="listing image"
-                  loading="lazy"
-                  fill
-                  style={{ objectFit: "cover" }}
-                />
-              </div>
-            );
-          })}
-        </div>
+        {images.slice(1).map((imageObj, i) => {
+          return (
+            <div
+              key={i}
+              className="relative h-full w-full overflow-hidden rounded-2xl"
+            >
+              <Image
+                src={imageObj.media.replace(/['"]/g, "")}
+                alt="listing image"
+                loading="lazy"
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          );
+        })}
       </div>
       <div className="mb-10">
         <div className="mb-1 flex grid grid-rows-2 gap-1 text-xl font-semibold leading-7 md:grid-cols-3 md:grid-rows-1">
