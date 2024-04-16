@@ -55,7 +55,7 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
 
   return (
     <div>
-      <div className="mb-4 grid grid-cols-2 grid-rows-2 gap-4 md:flex md:grid-cols-3 md:items-center md:justify-between">
+      <div className="mb-2 grid grid-cols-2 gap-4 md:mb-4 md:flex md:grid-cols-3 md:items-center md:justify-between">
         <div className="col-span-2 flex">
           <span className="truncate text-2xl font-bold leading-7">
             {experienceName}
@@ -103,7 +103,7 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
         })}
       </div>
       <div className="mb-10">
-        <div className="mb-1 flex grid grid-rows-2 gap-1 text-xl font-semibold leading-7 md:grid-cols-3 md:grid-rows-1">
+        <div className="mb-1 flex grid grid-cols-2 gap-1 text-xl font-semibold leading-7 md:grid-cols-3 md:grid-rows-1">
           <div className="col-span-2">
             <span>
               {street}, {barangay}, {city}, {zipCode}
