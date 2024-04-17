@@ -1,4 +1,5 @@
 "use client";
+import AdminApprovalFilter from "@/app/components/admin/AdminApprovalFilter";
 import ListingItem from "@/app/components/listings/ListingItem";
 import FilterIcon from "@/app/components/svgs/Admin/FilterIcon";
 import SearchIcon from "@/app/components/svgs/SearchIcon";
@@ -94,48 +95,10 @@ const ListingsGrid: React.FC<{
       </div>
       <div className="flex w-full justify-between">
         <div className="mb-5 mt-5 text-2xl font-bold">Listings</div>
-        <div>
-          <Dropdown>
-            <DropdownTrigger>
-              <Button
-                className="mt-5 bg-white text-neutral-500"
-                startContent={<FilterIcon />}
-              >
-                Status: {selectedOption}
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Status Filter">
-              <DropdownItem
-                onPress={() => {
-                  handleStatusType("Pending");
-                }}
-              >
-                Pending
-              </DropdownItem>
-              <DropdownItem
-                onPress={() => {
-                  handleStatusType("Active");
-                }}
-              >
-                Active
-              </DropdownItem>
-              <DropdownItem
-                onPress={() => {
-                  handleStatusType("Refused");
-                }}
-              >
-                Refused
-              </DropdownItem>
-              <DropdownItem
-                onPress={() => {
-                  handleStatusType("All");
-                }}
-              >
-                All
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
+        <AdminApprovalFilter
+          selectedOption={selectedOption}
+          handleStatusType={handleStatusType}
+        />
       </div>
       <div className="mb-5 flex w-full justify-center gap-4">
         <Tabs
