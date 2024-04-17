@@ -21,6 +21,13 @@ trait ResponseHandlingTrait {
         ], Response::HTTP_CREATED);
     }
 
+    protected static function okResponse($key, $data) {
+        return response()->json([
+            'success' => true,
+            $key => $data,
+        ], Response::HTTP_OK);
+    }
+
     protected static function notFoundResponse($error) {
         return response([
             'success' => false,

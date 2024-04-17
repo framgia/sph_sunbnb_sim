@@ -13,10 +13,7 @@ class UserController extends Controller {
     public function index() {
         $users = User::all();
 
-        return response()->json([
-            'success' => true,
-            'users' => $users,
-        ], Response::HTTP_OK);
+        return User::okResponse('users', $users);
     }
 
     public function show($userId) {
@@ -26,10 +23,7 @@ class UserController extends Controller {
             return User::notFoundResponse('User not found.');
         }
 
-        return response()->json([
-            'success' => true,
-            'user' => $user,
-        ], Response::HTTP_OK);
+        return User::okResponse('user', $user);
     }
 
     public function showAdminSide($userId) {
