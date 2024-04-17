@@ -68,13 +68,15 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
     },
     date: [
       {
-        startDate: (searchParams.get(`${prefix}date`)?.split(":")[0] ??
-          MIN_DATE) as Date,
+        startDate: new Date(
+          searchParams.get(`${prefix}date`)?.split(":")[0] ?? MIN_DATE
+        ),
         endDate:
           searchParams.get(`${prefix}date`) === null
             ? undefined
-            : ((searchParams.get(`${prefix}date`)?.split(":")[1] ??
-                MIN_DATE) as Date),
+            : new Date(
+                searchParams.get(`${prefix}date`)?.split(":")[1] ?? MIN_DATE
+              ),
         key: "selection"
       }
     ],
@@ -104,8 +106,6 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
       filters.date[0].startDate !== MIN_DATE &&
       filters.date[0].endDate !== undefined
     ) {
-      console.log(filters.date[0].startDate);
-      console.log(filters.date[0].endDate);
       params.set(
         `${prefix}date`,
         `${formatDate(new Date(filters.date[0].startDate))}:${formatDate(new Date(filters.date[0].endDate))}`
