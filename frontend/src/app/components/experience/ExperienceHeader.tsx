@@ -1,8 +1,7 @@
 "use server";
 import type { MediaType } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
-import { Avatar } from "@nextui-org/react";
-import Image from "next/image";
+import { Avatar, Image } from "@nextui-org/react";
 import React from "react";
 import ToEditButton from "../ToEditButton";
 import { userRole } from "@/app/utils/helpers/userHelper";
@@ -79,10 +78,9 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
         <div className="relative col-span-4 row-span-3 overflow-hidden rounded-2xl md:col-span-2 md:row-span-2">
           <Image
             src={images[0].media.replace(/['"]/g, "")}
+            className="object-fill"
             alt="Listing Image"
             loading="lazy"
-            fill
-            style={{ objectFit: "cover" }}
           />
         </div>
         {images.slice(1).map((imageObj, i) => {
@@ -93,10 +91,9 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
             >
               <Image
                 src={imageObj.media.replace(/['"]/g, "")}
-                alt="listing image"
+                className="object-fill"
+                alt="Listing Image"
                 loading="lazy"
-                fill
-                style={{ objectFit: "cover" }}
               />
             </div>
           );
