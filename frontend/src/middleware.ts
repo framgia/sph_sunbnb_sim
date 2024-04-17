@@ -46,6 +46,9 @@ export function middleware(request: NextRequest): NextResponse | undefined {
     if (request.nextUrl.pathname.startsWith("/login")) {
       return NextResponse.redirect(new URL("/", request.url));
     }
+    if (request.nextUrl.pathname.startsWith("/admin/login")) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
     if (request.nextUrl.pathname.startsWith("/signup")) {
       return NextResponse.redirect(new URL("/", request.url));
     }
