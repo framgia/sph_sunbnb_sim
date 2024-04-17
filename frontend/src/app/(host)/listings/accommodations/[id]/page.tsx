@@ -73,7 +73,7 @@ const AccommodationDetailsPage: React.FC<ListingDetailsPageProps> = async ({
             status={accData.status}
           />
           <div>
-            <Divider className="my-10 " />
+            <Divider className="my-6 md:my-10" />
             <span className="text-sm">{accData.description}</span>
             <Divider className="my-10 " />
             <AmenitySection amenities={accData.listable.amenities} />

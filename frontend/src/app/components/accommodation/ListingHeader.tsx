@@ -1,6 +1,7 @@
 "use server";
 import React from "react";
-import { Avatar, Image } from "@nextui-org/react";
+import { Avatar } from "@nextui-org/react";
+import Image from "next/image";
 import type { MediaType } from "@/app/interfaces/types";
 import { getInitials } from "@/app/utils/helpers/getInitials";
 import ToEditButton from "@/app/components/ToEditButton";
@@ -47,9 +48,9 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
 }) => {
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex flex-row">
-          <span className="text-2xl font-bold leading-7">
+      <div className="mb-2 grid grid-cols-2 gap-4 md:mb-4 md:flex md:grid-cols-3 md:items-center md:justify-between">
+        <div className="col-span-2 flex">
+          <span className="truncate text-2xl font-bold leading-7">
             {accomodationName}
           </span>
           {((await userRole()) === "host" ||
@@ -59,45 +60,54 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
             </div>
           )}
         </div>
-        {(await userRole()) === "host" && (
-          <div>
-            <ToEditButton path={`/listings/accommodations/${id}/edit`} />
-          </div>
-        )}
+        <div className="flex md:justify-end">
+          {(await userRole()) === "host" && (
+            <div>
+              <ToEditButton path={`/listings/accommodations/${id}/edit`} />
+            </div>
+          )}
+        </div>
       </div>
-      <div className="mb-5 flex h-80 w-full flex-row items-center justify-center">
-        <div className="relative mr-2 h-full w-2/4 overflow-hidden rounded-2xl">
+      <div className="mb-5 grid h-96 grid-flow-row grid-cols-4 grid-rows-4 gap-4 md:grid-rows-2">
+        <div className="relative col-span-4 row-span-3 overflow-hidden rounded-2xl md:col-span-2 md:row-span-2">
           <Image
             src={images[0].media.replace(/['"]/g, "")}
-            className="object-fill"
             alt="Listing Image"
             loading="lazy"
+            fill
+            style={{ objectFit: "cover" }}
           />
         </div>
-        <div className="grid h-full grid-cols-2 items-end gap-4">
-          {images.slice(1).map((imageObj, i) => {
-            return (
-              <div
-                key={i}
-                className="relative mx-2 h-full w-60 overflow-hidden rounded-2xl"
-              >
-                <Image
-                  src={imageObj.media.replace(/['"]/g, "")}
-                  alt="listing image"
-                  loading="lazy"
-                />
-              </div>
-            );
-          })}
-        </div>
+        {images.slice(1).map((imageObj, i) => {
+          return (
+            <div
+              key={i}
+              className="relative h-full w-full overflow-hidden rounded-2xl"
+            >
+              <Image
+                src={imageObj.media.replace(/['"]/g, "")}
+                alt="listing image"
+                loading="lazy"
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          );
+        })}
       </div>
-      <div className="mb-10">
-        <div className="mb-1 flex justify-between text-xl font-semibold leading-7">
-          <span>
-            {type} in {city}
-          </span>
+      <div className="mb-7 md:mb-10">
+        <div className="mb-1 grid grid-cols-2 gap-1 text-xl font-semibold leading-7 md:flex md:justify-between">
+          <div className="col-span-2 md:col-auto">
+            <span>
+              {type} in {city}
+            </span>
+          </div>
           {((await userRole()) === "host" ||
-            (await userRole()) === "admin") && <span>₱{price}</span>}
+            (await userRole()) === "admin") && (
+            <div className="md:col-auto">
+              <span>₱{price}</span>
+            </div>
+          )}
         </div>
 
         <div className="mb-1 text-base leading-6 text-zinc-500">

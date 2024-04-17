@@ -59,7 +59,7 @@ const ExperienceDetailsPage: React.FC<ExperienceDetailsProps> = async ({
           .join(" ")}
         status={expData.status}
       />
-      <Divider className="my-10 w-full" />
+      <Divider className="my-6 w-full md:my-10" />
       <span className="text-sm">
         <div className="flex flex-col">
           <span className="mb-5 text-xl font-semibold">

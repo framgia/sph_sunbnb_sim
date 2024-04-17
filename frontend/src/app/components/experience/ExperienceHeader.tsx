@@ -99,17 +99,20 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
           );
         })}
       </div>
-      <div className="mb-10">
-        <div className="mb-1 flex grid grid-cols-2 gap-1 text-xl font-semibold leading-7 md:grid-cols-3 md:grid-rows-1">
-          <div className="col-span-2">
+      <div className="mb-7 md:mb-10">
+        <div className="mb-1 grid grid-cols-2 gap-1 text-xl font-semibold leading-7 md:flex md:justify-between">
+          <div className="col-span-2 md:col-auto">
             <span>
               {street}, {barangay}, {city}, {zipCode}
             </span>
           </div>
-          <div className="flex md:justify-end">
-            {((await userRole()) === "host" ||
-              (await userRole()) === "admin") && <span>₱{price}</span>}
-          </div>
+
+          {((await userRole()) === "host" ||
+            (await userRole()) === "admin") && (
+            <div className="md:col-auto">
+              <span>₱{price}</span>
+            </div>
+          )}
         </div>
         <div className="mb-1 text-base leading-6 text-zinc-500">
           {type} •{" "}
