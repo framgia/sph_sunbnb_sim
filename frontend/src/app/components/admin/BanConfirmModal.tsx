@@ -10,6 +10,7 @@ import {
   Textarea
 } from "@nextui-org/react";
 import React from "react";
+import ErrorMessage from "../ErrorMessage";
 
 interface BanConfirmModalProps extends ModalProps {
   user: UserDetailsType;
@@ -25,14 +26,22 @@ const BanConfirmModal: React.FC<BanConfirmModalProps> = ({
 }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [reason, setReason] = React.useState("");
+  const [error, setError] = React.useState("");
   async function onBanUser(): Promise<void> {
     try {
-      setIsLoading(true);
+      if (reason.trim() !== "") {
+        setIsLoading(true);
 
-      await banUser(user.id, reason);
-      setIsLoading(false);
-      setIsActionDone((prev) => !prev);
-      onClose();
+        await banUser(user.id, reason);
+        setIsLoading(false);
+        setIsActionDone((prev) => !prev);
+        onClose();
+      } else {
+        setError("Reason should be provided.");
+        setTimeout(() => {
+          setError("");
+        }, 3000);
+      }
     } catch (error) {
       setIsLoading(false);
       console.error("Error banning user:", error);
@@ -70,6 +79,11 @@ const BanConfirmModal: React.FC<BanConfirmModalProps> = ({
                   }}
                 />
               </div>
+              {error !== "" ? (
+                <div className="px-10">
+                  <ErrorMessage message={error} />
+                </div>
+              ) : null}
               <ModalFooter>
                 <Button
                   className="bg-primary-800 text-white"
