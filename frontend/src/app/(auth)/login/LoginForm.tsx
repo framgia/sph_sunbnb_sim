@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Button } from "@nextui-org/react";
 import GoogleButton from "../../components/GoogleButton";
 import DividerText from "../../components/DividerText";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { loginUser } from "@/app/utils/helpers/userHelper";
 import ErrorMessage from "@/app/components/ErrorMessage";
 
 interface LoginFormProps {
   onResetPress: () => void;
   googleButton: () => void;
+  ban_reason?: string;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({
   onResetPress,
-  googleButton
+  googleButton,
+  ban_reason
 }) => {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -48,22 +50,23 @@ const LoginForm: React.FC<LoginFormProps> = ({
       router.push("/");
     } else {
       setError(loginResult.message);
-      console.error("Login failed");
     }
     setLoading(false);
   };
 
   return (
     <form className="flex w-96 flex-col px-5" onSubmit={handleSubmit}>
-      {error !== "" && (
+      {error !== "" || ban_reason !== "" ? (
         <ErrorMessage
           header={error === "Invalid credentials." ? error : undefined}
           message={
             error === "Invalid credentials."
               ? "Please check your username and password"
-              : error
+              : ban_reason ?? error
           }
         />
+      ) : (
+        <></>
       )}
       <div className="mt-2 flex flex-col">
         <label htmlFor="email"></label>

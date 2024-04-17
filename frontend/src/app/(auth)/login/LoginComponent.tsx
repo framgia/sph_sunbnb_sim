@@ -8,7 +8,7 @@ import { signIn } from "next-auth/react";
 import { forgetPassword } from "@/app/utils/helpers/password/request";
 import { validateForgetPassword } from "@/app/utils/helpers/password/validation";
 
-const LoginComponent: React.FC = () => {
+const LoginComponent: React.FC<{ ban_reason?: string }> = ({ ban_reason }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isValid, setValid] = useState(false);
   const [email, setEmail] = useState("");
@@ -47,6 +47,7 @@ const LoginComponent: React.FC = () => {
         googleButton={async () => {
           await signIn("google");
         }}
+        ban_reason={ban_reason}
       />
       {!isValid ? (
         <ResetPasswordModal

@@ -51,6 +51,8 @@ export function nextAuthOptions(
             result = await loginWithGoogle(account.id_token);
             if (result.message === "success") {
               return "/";
+            } else if (result.message.includes("banned")) {
+              return `/login?idtoken=${account.id_token}`;
             } else {
               return "/role-selection";
             }

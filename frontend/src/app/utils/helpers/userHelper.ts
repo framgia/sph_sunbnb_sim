@@ -217,7 +217,7 @@ export async function loginWithGoogle(
       }
     }
   }
-  return { message: "login failed" };
+  return { message: resData.message };
 }
 
 export async function registerWithGoogle(
