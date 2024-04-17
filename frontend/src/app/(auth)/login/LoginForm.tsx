@@ -47,7 +47,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
     if (loginResult.message === "success") {
       router.push("/");
     } else {
-      setError("Incorrect Credentials, please input them again.");
+      setError(loginResult.message);
       console.error("Login failed");
     }
     setLoading(false);
@@ -57,8 +57,12 @@ const LoginForm: React.FC<LoginFormProps> = ({
     <form className="flex w-96 flex-col px-5" onSubmit={handleSubmit}>
       {error !== "" && (
         <ErrorMessage
-          header="Invalid Credentials"
-          message="Make sure you entered the correct email and password"
+          header={error === "Invalid credentials." ? error : undefined}
+          message={
+            error === "Invalid credentials."
+              ? "Please check your username and password"
+              : error
+          }
         />
       )}
       <div className="mt-2 flex flex-col">
