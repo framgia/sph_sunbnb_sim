@@ -75,7 +75,9 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
           )}
         </div>
       </div>
-      <div className="mb-5 grid h-96 grid-flow-row grid-cols-4 grid-rows-4 gap-4 md:grid-rows-2">
+      <div
+        className={`${images.length === 1 ? "grid-rows-3" : "grid-rows-4"} mb-5 grid h-96 grid-flow-row grid-cols-4 gap-4 md:grid-rows-2`}
+      >
         <div className="relative col-span-4 row-span-3 overflow-hidden rounded-2xl md:col-span-2 md:row-span-2">
           <Image
             src={images[0].media.replace(/['"]/g, "")}
