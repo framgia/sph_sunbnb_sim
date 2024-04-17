@@ -9,7 +9,8 @@ import {
   useDisclosure,
   Chip,
   Avatar,
-  Spinner
+  Spinner,
+  Tooltip
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import BanConfirmModal from "./BanConfirmModal";
@@ -76,44 +77,60 @@ const UserHostCard: React.FC<UserHostCardProps> = ({
         <ModalContent>
           {(handleClose) => (
             <>
-              {user !== undefined ? (
+              {data !== undefined ? (
                 <div className="p-5">
-                  <div className="flex w-full flex-col items-center justify-center py-5 md:flex-row">
+                  <div className="flex cursor-default md:hidden">
+                    {data.status === "banned" && (
+                      <Tooltip
+                        color="warning"
+                        placement="bottom"
+                        content={data.reason[0].reason}
+                      >
+                        <Chip
+                          size="sm"
+                          className=" mx-2 bg-warning-300 text-warning-600"
+                        >
+                          Banned
+                        </Chip>
+                      </Tooltip>
+                    )}
+                  </div>
+                  <div className="flex w-full flex-col items-center justify-center py-2 md:flex-row">
                     <div className="px-5">
                       <Avatar
                         name={getInitials(
-                          user.first_name + " " + user.last_name
+                          data.first_name + " " + data.last_name
                         )}
                         className="flex h-32 w-32  bg-danger text-[50px] text-white md:h-60 md:w-60 md:text-[100px]"
                       ></Avatar>
                     </div>
                     <div className="w-full px-5">
-                      <div className="flex h-full flex-col justify-center text-center md:flex-row md:justify-start md:text-left">
-                        <div>
-                          <div className="m-0 mt-3 flex justify-center  text-3xl font-bold">
-                            <div className="m-0 p-0">
-                              {user.first_name} {user.last_name}
-                            </div>
-                          </div>
-                          <div className="m-0 p-0 italic">{user.email}</div>
-                          <div className="m-0 p-0 capitalize">{user.role}</div>
-                        </div>
-                        <div>
-                          {data?.status === "banned" && (
-                            <>
-                              <Chip className="mx-2 bg-warning-300 text-warning-600 md:mt-4">
+                      <div className="flex flex-row justify-center md:justify-start">
+                        <span className="text-3xl font-bold">
+                          {data.first_name} {data.last_name}
+                        </span>
+                        <div className="hidden cursor-default md:flex">
+                          {data.status === "banned" && (
+                            <Tooltip
+                              color="warning"
+                              placement="bottom"
+                              content={data.reason[0].reason}
+                            >
+                              <Chip
+                                size="sm"
+                                className=" mx-2 bg-warning-300 text-warning-600"
+                              >
                                 Banned
                               </Chip>
-                              <div className="text-xs">
-                                <div className="px-2 md:mt-3">
-                                  Ban Reason: {data.reason[0].reason}
-                                </div>
-                              </div>
-                            </>
+                            </Tooltip>
                           )}
                         </div>
                       </div>
-                      <div className="my-3 font-bold">Listings hosted</div>
+                      <div className="flex h-full flex-col justify-center text-center md:justify-start md:text-left">
+                        <div className="m-0 p-0">{data.email}</div>
+                        <div className="m-0 p-0 capitalize">{data.role}</div>
+                      </div>
+                      <div className="my-3 font-bold">Listings Hosted</div>
 
                       <div className="flex w-full justify-between gap-2">
                         {Number(data?.listings?.length) > 0 ? (
@@ -126,25 +143,25 @@ const UserHostCard: React.FC<UserHostCardProps> = ({
                                   /['"]/g,
                                   ""
                                 )}
-                                alt={`Listing ${index}`}
+                                alt={`booking ${index}`}
                                 className="h-20 w-20 rounded-xl object-cover md:h-32 md:w-32"
                               />
                             ))
                         ) : (
                           <div className="w-full py-5 text-center text-foreground-500 md:text-left">
-                            No listings hosted
+                            No bookings yet
                           </div>
                         )}
                       </div>
                     </div>
                   </div>
-                  <ModalFooter>
-                    {data?.status === "active" && (
+                  <ModalFooter className="py-0">
+                    {data.status === "active" && (
                       <Button color="primary" onClick={confirmonOpen}>
                         Ban User
                       </Button>
                     )}
-                    {data?.status === "banned" && (
+                    {data.status === "banned" && (
                       <Button
                         color="primary"
                         onClick={async () => {
