@@ -62,12 +62,16 @@ const LoginForm: React.FC<LoginFormProps> = ({
           message={
             error === "Invalid credentials."
               ? "Please check your username and password"
-              : error ?? banReason
+              : error !== ""
+                ? error
+                : banReason ||
+                  "An error occured while logging in. Please try again or contact support."
           }
         />
       ) : (
         <></>
       )}
+
       <div className="mt-2 flex flex-col">
         <label htmlFor="email"></label>
         <div>

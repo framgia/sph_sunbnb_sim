@@ -63,8 +63,8 @@ const AdminApprover: React.FC<ReviewActionsProps> = ({ status, id }) => {
 
   return (
     <>
-      <div className="fixed bottom-0 z-50 mx-[-1999px] flex h-28 w-[9999px] items-center justify-center self-center bg-white drop-shadow-2xl" />
-      <div className="fixed bottom-0 left-0 z-50 flex w-full justify-start">
+      <div className="fixed bottom-16 z-50 mx-[-1999px] flex h-28 w-[9999px] items-center justify-center self-center bg-white md:bottom-0 md:drop-shadow-2xl" />
+      <div className="fixed bottom-16 left-0 z-50 flex w-full justify-start md:bottom-0">
         <div className="flex w-full justify-center">
           <div className="flex  items-center justify-between p-2 px-5 text-sm md:w-1/2 md:py-10 md:text-base">
             {status === ListingStatus.PENDING ? (
@@ -100,51 +100,55 @@ const AdminApprover: React.FC<ReviewActionsProps> = ({ status, id }) => {
               </>
             ) : status === ListingStatus.REFUSED ? (
               <>
-                <span>
-                  The listing has been
-                  <span className="font-bold"> rejected. </span>
-                  You can set it to
-                  <span className="font-bold"> pending </span>
-                  for review or permanently
-                  <span className="font-bold"> delete </span>
-                  it.
-                </span>
-                <div className=" flex flex-row">
-                  <Button
-                    variant="bordered"
-                    color="primary"
-                    className="mx-2 rounded-full"
-                    onPress={onOpen}
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    color="primary"
-                    className="rounded-full"
-                    onPress={handlePending}
-                    isDisabled={isLoading}
-                  >
-                    Set to Pending
-                  </Button>
+                <div className="flex flex-col gap-2 md:flex-row md:items-center">
+                  <span>
+                    The listing has been
+                    <span className="font-bold"> rejected. </span>
+                    You can set it to
+                    <span className="font-bold"> pending </span>
+                    for review or permanently
+                    <span className="font-bold"> delete </span>
+                    it.
+                  </span>
+                  <div className="flex flex-row gap-2">
+                    <Button
+                      variant="bordered"
+                      color="primary"
+                      className="rounded-full"
+                      onPress={onOpen}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      color="primary"
+                      className="rounded-full"
+                      onPress={handlePending}
+                      isDisabled={isLoading}
+                    >
+                      Set to Pending
+                    </Button>
+                  </div>
                 </div>
               </>
             ) : status === ListingStatus.ACTIVE ? (
               <>
-                <span>
-                  The listing is currently
-                  <span className="font-bold"> active. </span>
-                  You can set it to
-                  <span className="font-bold"> pending </span>
-                  for review.
-                </span>
-                <div className=" flex flex-row">
-                  <Button
-                    className="rounded-full"
-                    color="primary"
-                    onPress={handlePending}
-                  >
-                    Set to Pending
-                  </Button>
+                <div className="flex flex-col gap-2 md:flex-row md:items-center">
+                  <span>
+                    The listing is currently
+                    <span className="font-bold"> active. </span>
+                    You can set it to
+                    <span className="font-bold"> pending </span>
+                    for review.
+                  </span>
+                  <div className=" flex flex-row">
+                    <Button
+                      className="rounded-full"
+                      color="primary"
+                      onPress={handlePending}
+                    >
+                      Set to Pending
+                    </Button>
+                  </div>
                 </div>
               </>
             ) : (
