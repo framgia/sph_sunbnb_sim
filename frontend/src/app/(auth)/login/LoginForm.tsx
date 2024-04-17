@@ -64,7 +64,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
               ? "Please check your username and password"
               : error !== ""
                 ? error
-                : banReason ||
+                : banReason ??
                   "An error occured while logging in. Please try again or contact support."
           }
         />
