@@ -62,7 +62,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
           message={
             error === "Invalid credentials."
               ? "Please check your username and password"
-              : banReason ?? error
+              : error ?? banReason
           }
         />
       ) : (

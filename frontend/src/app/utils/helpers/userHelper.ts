@@ -96,6 +96,7 @@ export async function loginUser(
     });
     return { message: "success" };
   }
+  console.log(resData.message);
   return { message: resData.message };
 }
 
