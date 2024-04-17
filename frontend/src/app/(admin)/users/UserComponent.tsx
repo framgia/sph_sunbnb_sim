@@ -1,4 +1,5 @@
 "use client";
+import AdminUserManagementFilter from "@/app/components/admin/AdminUserManagementFilter";
 import UserGrid from "@/app/components/admin/UserGrid";
 import FilterIcon from "@/app/components/svgs/Admin/FilterIcon";
 import SearchIcon from "@/app/components/svgs/SearchIcon";
@@ -75,75 +76,7 @@ const UserComponent: React.FC<UserComponentProps> = ({
       </div>
       <div className="flex justify-between">
         <div className="mb-5 mt-5 text-2xl font-bold">Users</div>
-        <div className="">
-          <Dropdown closeOnSelect={false}>
-            <DropdownTrigger>
-              <Button
-                className="mt-5 bg-white text-neutral-500"
-                startContent={<FilterIcon />}
-              >
-                Filter
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Dynamic Actions">
-              <DropdownSection title={"User Role"} showDivider>
-                <DropdownItem>
-                  <Tabs
-                    fullWidth
-                    aria-label="type"
-                    color={"primary"}
-                    selectedKey={filters.role}
-                    onSelectionChange={(key) => {
-                      setFilters({ ...filters, page: 1, role: key as string });
-                    }}
-                  >
-                    <Tab key="" title="All"></Tab>
-                    <Tab key="host" title="Host"></Tab>
-                    <Tab key="guest" title="Guest"></Tab>
-                    <Tab key="admin" title="Admin"></Tab>
-                  </Tabs>
-                </DropdownItem>
-              </DropdownSection>
-              <DropdownSection title={"User Status"} showDivider>
-                <DropdownItem>
-                  <Tabs
-                    fullWidth
-                    aria-label="type"
-                    color={"primary"}
-                    selectedKey={filters.status}
-                    onSelectionChange={(key) => {
-                      setFilters({
-                        ...filters,
-                        page: 1,
-                        status: key as string
-                      });
-                    }}
-                  >
-                    <Tab key="" title="All"></Tab>
-                    <Tab key="banned" title="Banned"></Tab>
-                    <Tab key="active" title="Active"></Tab>
-                  </Tabs>
-                </DropdownItem>
-              </DropdownSection>
-              <DropdownSection title="Sort Order">
-                <DropdownItem>
-                  <Tabs
-                    fullWidth
-                    aria-label="type"
-                    color={"primary"}
-                    selectedKey={filters.sort}
-                    onSelectionChange={(key) => {
-                      setFilters({ ...filters, sort: key as string });
-                    }}
-                  >
-                    <Tab key="asc" title="Ascending"></Tab>
-                    <Tab key="desc" title="Descending"></Tab>
-                  </Tabs>
-                </DropdownItem>
-              </DropdownSection>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
+        <AdminUserManagementFilter filters={filters} setFilters={setFilters} />
       </div>
 
       {users.length > 0 ? (
