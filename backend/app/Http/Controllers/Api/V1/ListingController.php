@@ -19,10 +19,7 @@ class ListingController extends Controller {
         $listing = Listing::with(['listable', 'media', 'user:id,first_name,last_name,email,created_at'])->find($listingId);
 
         if ($listing) {
-            return response()->json([
-                'success' => true,
-                'listing' => $listing,
-            ], Response::HTTP_OK);
+            return Listing::okResponse('listing', $listing);
         } else {
             return Listing::notFoundResponse('Listing not found.');
         }

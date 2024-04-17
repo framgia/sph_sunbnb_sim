@@ -16,10 +16,7 @@ class BookingController extends Controller {
     public function show($id) {
         $booking = Booking::with(['listing', 'user'])->findOrFail($id);
 
-        return response()->json([
-            'success' => true,
-            'booking' => $booking,
-        ], Response::HTTP_OK);
+        return self::okResponse('booking', $booking);
     }
 
     public function showBookingsByUser($userId, Request $request) {

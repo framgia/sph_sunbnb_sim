@@ -76,10 +76,7 @@ class Admin extends Authenticatable {
     private static function getAllData($search = null, $role = null, $status = null) {
         $adminsQuery = self::query();
         if ($search) {
-            $adminsQuery->where(function ($query) use ($search) {
-                $query->where('first_name', 'like', '%'.$search.'%')
-                    ->orWhere('last_name', 'like', '%'.$search.'%');
-            });
+            $adminsQuery = self::applySearchQuery($adminsQuery, $search);
         }
 
         $admins = $adminsQuery->get();
@@ -105,16 +102,20 @@ class Admin extends Authenticatable {
         }
 
         if ($search) {
-            $usersQuery->where(function ($query) use ($search) {
-                $query->where('first_name', 'like', '%'.$search.'%')
-                    ->orWhere('last_name', 'like', '%'.$search.'%');
-            });
+            $usersQuery = self::applySearchQuery($usersQuery, $search);
         }
 
         $users = $usersQuery->get();
         $allData = $status !== null ? $users : $admins->concat($users);
 
         return $allData;
+    }
+
+    private static function applySearchQuery($query, $search) {
+        return $query->where(function ($query) use ($search) {
+            $query->where('first_name', 'like', '%'.$search.'%')
+                ->orWhere('last_name', 'like', '%'.$search.'%');
+        });
     }
 
     private static function sortData($data, $sort) {
