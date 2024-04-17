@@ -73,7 +73,7 @@ const GuestExperienceDetailsPage: React.FC<
             id={params.id}
             status={expData.status}
           />
-          <div className="mb-3 flex h-fit flex-col items-start md:flex-row">
+          <div className="mb-20 flex h-fit flex-col items-start md:mb-3 md:flex-row">
             <div className="w-full">
               <Divider className="my-10 w-full" />
               <span className="text-sm">

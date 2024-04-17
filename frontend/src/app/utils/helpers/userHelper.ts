@@ -96,7 +96,7 @@ export async function loginUser(
     });
     return { message: "success" };
   }
-  return { message: "login failed" };
+  return { message: resData.message };
 }
 
 export async function getUser(
@@ -217,7 +217,7 @@ export async function loginWithGoogle(
       }
     }
   }
-  return { message: "login failed" };
+  return { message: resData.message };
 }
 
 export async function registerWithGoogle(

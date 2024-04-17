@@ -10,11 +10,13 @@ import ErrorMessage from "@/app/components/ErrorMessage";
 interface LoginFormProps {
   onResetPress: () => void;
   googleButton: () => void;
+  banReason?: string;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({
   onResetPress,
-  googleButton
+  googleButton,
+  banReason
 }) => {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -47,20 +49,29 @@ const LoginForm: React.FC<LoginFormProps> = ({
     if (loginResult.message === "success") {
       router.push("/");
     } else {
-      setError("Incorrect Credentials, please input them again.");
-      console.error("Login failed");
+      setError(loginResult.message);
     }
     setLoading(false);
   };
 
   return (
     <form className="flex w-96 flex-col px-5" onSubmit={handleSubmit}>
-      {error !== "" && (
+      {error !== "" || banReason !== "" ? (
         <ErrorMessage
-          header="Invalid Credentials"
-          message="Make sure you entered the correct email and password"
+          header={error === "Invalid credentials." ? error : undefined}
+          message={
+            error === "Invalid credentials."
+              ? "Please check your username and password"
+              : error !== ""
+                ? error
+                : banReason ||
+                  "An error occured while logging in. Please try again or contact support."
+          }
         />
+      ) : (
+        <></>
       )}
+
       <div className="mt-2 flex flex-col">
         <label htmlFor="email"></label>
         <div>

@@ -88,7 +88,7 @@ const ApprovalAccommodationDetails: React.FC<{
             status={accData.status}
             price={accData.price}
           />
-          <div className="mb-3 flex h-fit flex-col items-start md:flex-row">
+          <div className="mb-20 flex h-fit flex-col items-start md:mb-3 md:flex-row">
             <div className="w-full">
               <Divider className="my-10 " />
               <span className="text-sm">{accData.description}</span>
