@@ -10,11 +10,11 @@ const LoginPage: React.FC = async ({
     idtoken?: string;
   };
 }) => {
-  let ban_reason = "";
+  let banReason = "";
   if (searchParams?.idtoken !== undefined || searchParams?.idtoken !== "") {
     const resData = await loginWithGoogle(searchParams?.idtoken ?? "");
     if (resData.message.includes("banned")) {
-      ban_reason = resData.message;
+      banReason = resData.message;
     }
   }
   return (
@@ -29,7 +29,7 @@ const LoginPage: React.FC = async ({
       <div className="mb-10 w-full text-center text-sm leading-5 text-zinc-500">
         Login to continue booking or listing
       </div>
-      <LoginComponent ban_reason={ban_reason} />
+      <LoginComponent banReason={banReason} />
     </main>
   );
 };

@@ -50,7 +50,7 @@ const UserGrid: React.FC<UserGridProps> = ({
             />
           </div>
           <div className="m-0 justify-center p-0">
-            <div className="m-0 p-0 font-bold md:text-xl">
+            <div className="m-0 line-clamp-1 p-0 font-bold md:text-xl">
               {user.first_name} {user.last_name}
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { UserManagementFilters } from "@/app/interfaces/types";
+import type { UserManagementFilters } from "@/app/interfaces/types";
 import {
   Button,
   Dropdown,

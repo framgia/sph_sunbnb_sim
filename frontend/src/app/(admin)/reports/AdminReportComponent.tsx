@@ -2,7 +2,6 @@
 import ReportCard from "@/app/components/admin/ReportCard";
 import ReportFilterComponent from "@/app/components/admin/ReportFilterComponent";
 import ReportTabStatus from "@/app/components/admin/ReportTabStatus";
-import FilterIcon from "@/app/components/svgs/Admin/FilterIcon";
 import SearchIcon from "@/app/components/svgs/SearchIcon";
 import type {
   PaginationType,
