@@ -17,12 +17,12 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
     <div className="border-b-1 border-foreground-300">
       <div className="flex w-full flex-row divide-x-2">
         <div
-          className={`flex flex-col px-5 pb-5 ${listingType === "accommodation" ? "h-20 w-1/4" : "w-full"}`}
+          className={`flex flex-col pb-5 ${listingType === "accommodation" ? "mr-2 h-20 w-1/4" : "w-full"}`}
         >
-          <span className="text-md mb-2 py-2">Overall Rating</span>
-          <div className="flex w-full flex-row items-center ">
+          <span className="mb-2 text-xs md:text-base">Overall Rating</span>
+          <div className="flex w-full flex-row items-center">
             <div className="mr-2 text-sm">5</div>
-            <div className="flex w-full justify-center ">
+            <div className="flex w-full justify-center">
               <Progress
                 className="w-3/4 self-center"
                 color="default"
@@ -88,34 +88,40 @@ const ReviewHeader: React.FC<ReviewHeaderProps> = ({
         </div>
         {listingType === "accommodation" && (
           <>
-            <div className="flex w-1/4 flex-col px-5 py-2">
-              <div className="mb-10 flex flex-col">
-                <span className="text-md mb-2">Cleanliness</span>
-                <div className="text-md font-bold">
+            <div className="flex w-1/4 flex-col items-start justify-start">
+              <div className="mb-10 ml-2 flex flex-col md:ml-5">
+                <span className="mb-2 text-xs md:text-base">Cleanliness</span>
+                <div className="text-base font-bold">
                   {Number(metadata.average_cleanliness).toFixed(0) ?? 0}
                 </div>
               </div>
-              <CleanlinessIcon />
+              <div className="ml-2 md:ml-5">
+                <CleanlinessIcon />
+              </div>
             </div>
-            <div className="flex w-1/4 flex-col px-5 py-2">
-              <div className="mb-10 flex flex-col ">
-                <span className="text-md mb-2">Value</span>
-                <div className="text-md font-bold">
+            <div className="flex w-1/4 flex-col items-start justify-start">
+              <div className="mb-10 ml-2 flex flex-col md:ml-5">
+                <span className="mb-2 text-xs md:text-base">Value</span>
+                <div className="text-base font-bold">
                   {" "}
                   {Number(metadata.average_value).toFixed(0) ?? 0}{" "}
                 </div>
               </div>
-              <ValueIcon />
+              <div className="ml-2 md:ml-5">
+                <ValueIcon />
+              </div>
             </div>
-            <div className="flex w-1/4 flex-col px-5 py-2">
-              <div className="mb-10 flex flex-col">
-                <span className="text-md mb-2">Location</span>
-                <div className="text-md font-bold">
+            <div className="flex w-1/4 flex-col items-start justify-start">
+              <div className="mb-10 ml-2 flex flex-col md:ml-5">
+                <span className="mb-2 text-xs md:text-base">Location</span>
+                <div className="text-base font-bold">
                   {" "}
                   {Number(metadata.average_location).toFixed(0) ?? 0}{" "}
                 </div>
               </div>
-              <LocationIcon />
+              <div className="ml-2 md:ml-5">
+                <LocationIcon />
+              </div>
             </div>
           </>
         )}
