@@ -45,10 +45,13 @@ class Admin extends Authenticatable {
 
     public static function authenticateAdmin($request) {
         $admin = self::where('email', $request['email'])->first();
-        abort_unless($admin && Hash::check($request['password'], $admin->password), Response::HTTP_UNAUTHORIZED, 'Unauthorized');
-        $adminToken = $admin->createToken('Personal Access Token', ['admin']);
+        abort_unless(
+            $admin && Hash::check($request['password'], $admin->password),
+            Response::HTTP_UNAUTHORIZED,
+            'Unauthorized'
+        );
 
-        return $adminToken;
+        return $admin->createToken('Personal Access Token', ['admin']);
     }
 
     public static function paginateAll(UserSortRequest $request) {

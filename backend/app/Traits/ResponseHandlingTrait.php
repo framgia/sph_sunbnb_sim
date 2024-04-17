@@ -5,6 +5,14 @@ namespace App\Traits;
 use Illuminate\Http\Response;
 
 trait ResponseHandlingTrait {
+    protected static function successLoginResponse($token) {
+        return response()->json([
+            'success' => true,
+            'token' => $token->accessToken,
+            'expires_in' => $token->token->expires_at,
+        ], Response::HTTP_OK);
+    }
+
     protected static function createdResponse($message, $data) {
         return response()->json([
             'success' => true,

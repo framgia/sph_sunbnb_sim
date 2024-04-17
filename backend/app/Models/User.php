@@ -97,24 +97,40 @@ class User extends Authenticatable {
 
     public static function authenticateUser($credentials) {
         $user = self::where('email', $credentials['email'])->first();
-        abort_unless($user && Hash::check($credentials['password'], $user->password), Response::HTTP_UNAUTHORIZED, 'Invalid credentials.');
-        $userToken = $user->createToken('Personal Access Token', [$user->role]);
+        abort_unless(
+            $user && Hash::check($credentials['password'], $user->password),
+            Response::HTTP_UNAUTHORIZED,
+            'Invalid credentials.'
+        );
+        $user->checkUserStatus($user->status);
 
-        return $userToken;
+        return $user->createToken('Personal Access Token', [$user->role]);
     }
 
     public static function authenticateGoogleUser($payload) {
-        abort_unless($payload && isset($payload['sub']), Response::HTTP_BAD_REQUEST, 'Invalid Google payload.');
+        abort_unless(
+            $payload && isset($payload['sub']),
+            Response::HTTP_BAD_REQUEST,
+            'Invalid Google payload.'
+        );
         $user = self::where('provider_id', $payload['sub'])->first();
         abort_unless($user, Response::HTTP_UNAUTHORIZED, 'User not found.');
-        $userToken = $user->createToken('Personal Access Token', [$user->role]);
+        $user->checkUserStatus($user->status);
 
-        return $userToken;
+        return $user->createToken('Personal Access Token', [$user->role]);
     }
 
     public static function createGoogleUser($payload, $role) {
-        abort_unless($payload && isset($payload['sub']) && isset($payload['email']), Response::HTTP_BAD_REQUEST, 'Invalid Google payload.');
-        abort_unless(self::where('email', $payload['email'])->doesntExist(), Response::HTTP_BAD_REQUEST, 'User already exists.');
+        abort_unless(
+            $payload && isset($payload['sub']) && isset($payload['email']),
+            Response::HTTP_BAD_REQUEST,
+            'Invalid Google payload.'
+        );
+        abort_unless(
+            self::where('email', $payload['email'])->doesntExist(),
+            Response::HTTP_BAD_REQUEST,
+            'User already exists.'
+        );
 
         self::create([
             'email' => $payload['email'],
@@ -211,5 +227,14 @@ class User extends Authenticatable {
             'month' => Carbon::now()->monthName.' '.Carbon::now()->year,
             'users' => $activeUsersPerDay,
         ];
+    }
+
+    private function checkUserStatus($status): void {
+        if ($status === UserStatus::BANNED) {
+            abort(
+                Response::HTTP_FORBIDDEN,
+                "User $this->email is banned. ".$this->reason->last()->reason
+            );
+        }
     }
 }
