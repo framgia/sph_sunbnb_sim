@@ -95,7 +95,7 @@ const GuestAccommodationsDetails: React.FC<
           />
           <div className="flex flex-col items-start md:flex-row">
             <div className="w-full flex-1">
-              <Divider className="my-10 " />
+              <Divider className="my-7 md:my-10" />
               <span className="text-sm">{accData.description}</span>
               <Divider className="my-10 " />
               <AmenitySection amenities={accData.listable.amenities} />

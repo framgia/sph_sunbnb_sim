@@ -11,8 +11,8 @@ const AmenitySection: React.FC<AmenitySectionProps> = ({ amenities }) => {
   return (
     <div>
       <span className="text-xl font-semibold">What this place offers</span>
-      <div className="my-10 w-2/4">
-        <div className="grid grid-cols-2">
+      <div className="my-10 md:w-6/12">
+        <div className="justify between grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-x-40">
           {!showAll
             ? amenities.slice(0, 6).map((amenity, i) => {
                 return <AmenityComponent key={i} amenity={amenity} />;
