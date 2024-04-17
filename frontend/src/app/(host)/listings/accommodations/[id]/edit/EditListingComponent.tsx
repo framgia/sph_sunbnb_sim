@@ -76,7 +76,6 @@ const EditListingComponent: React.FC<EditListingComponentProps> = ({
       setIsLoading(true);
       const result = await updateAccommodation(listing.id, data, media);
       setIsLoading(false);
-      console.log(result.hasError);
       if (result.hasError === false) {
         editOnOpen();
       }

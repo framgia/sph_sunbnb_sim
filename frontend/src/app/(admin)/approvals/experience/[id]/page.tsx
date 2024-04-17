@@ -73,7 +73,7 @@ const GuestExperienceDetailsPage: React.FC<
             id={params.id}
             status={expData.status}
           />
-          <div className="flex h-fit flex-row items-start">
+          <div className="mb-3 flex h-fit flex-col items-start md:flex-row">
             <div className="w-full">
               <Divider className="my-10 w-full" />
               <span className="text-sm">
@@ -89,7 +89,7 @@ const GuestExperienceDetailsPage: React.FC<
               <Divider className="my-10 w-full " />
               <ReviewSection listingId={params.id} listingType="experience" />
             </div>
-            <div className="w-90 h-90 sticky top-[30px]  ml-5 block self-start pt-10">
+            <div className="md:w-90 md:h-90 top-[30px] block w-full  self-start pt-10 md:sticky md:ml-5">
               {user !== undefined && user !== null ? (
                 <ExperienceBookingSticky
                   maxGuest={expData.maximum_guests}

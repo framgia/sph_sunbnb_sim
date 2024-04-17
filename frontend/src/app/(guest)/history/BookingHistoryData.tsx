@@ -32,7 +32,7 @@ const BookingHistoryData: React.FC<BookingHistoryDataProps> = ({
 }) => {
   return (
     <>
-      <div className="my-5 grid h-12 min-w-[700px] grid-cols-7 items-center gap-1 rounded-lg text-sm">
+      <div className="my-3 grid min-w-[700px] grid-cols-7 items-center gap-1 rounded-lg text-sm">
         <div className="flex w-full justify-center">
           <div className="w-14 self-end rounded-xl bg-zinc-50">
             <Image src={image} alt={name} className="h-14" />

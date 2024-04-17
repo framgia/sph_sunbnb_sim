@@ -28,7 +28,6 @@ const ListingsPage: React.FC = async ({
 
   return (
     <>
-      <span className="text-2xl font-bold">Listings</span>
       <ListingsGrid
         listings={listingsData?.listings ?? []}
         paginate={listingsData?.paginate ?? null}

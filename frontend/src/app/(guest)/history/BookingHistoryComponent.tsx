@@ -113,7 +113,7 @@ const BookingHistoryComponent: React.FC<BookingHistoryProps> = ({
           </Dropdown>
         </div>
       </div>
-      <div className="flex flex-col overflow-auto pb-2">
+      <div className="flex flex-col overflow-x-auto pb-2">
         <div className="grid h-10 min-w-[700px] grid-cols-7 items-center gap-1 rounded-lg bg-primary-600 text-center text-sm text-white">
           <div className="col-span-2">LISTING</div>
           <div>CHECK-IN</div>
