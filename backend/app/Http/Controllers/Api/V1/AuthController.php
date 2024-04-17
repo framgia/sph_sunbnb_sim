@@ -9,10 +9,13 @@ use App\Http\Requests\V1\LoginRequest;
 use App\Http\Requests\V1\RegistrationRequest;
 use App\Models\Admin;
 use App\Models\User;
+use App\Traits\ResponseHandlingTrait;
 use Google_Client;
 use Illuminate\Http\Response;
 
 class AuthController extends Controller {
+    use ResponseHandlingTrait;
+
     private $googleClient;
 
     public function __construct(Google_Client $googleClient) {
@@ -23,22 +26,14 @@ class AuthController extends Controller {
         $request->validated();
         $userToken = User::authenticateUser($request->all());
 
-        return response()->json([
-            'success' => true,
-            'token' => $userToken->accessToken,
-            'expires_in' => $userToken->token->expires_at,
-        ], Response::HTTP_OK);
+        return self::successLoginResponse($userToken);
     }
 
     public function adminLogin(LoginRequest $request) {
         $request->validated();
         $adminToken = Admin::authenticateAdmin($request->all());
 
-        return response()->json([
-            'success' => true,
-            'token' => $adminToken->accessToken,
-            'expires_in' => $adminToken->token->expires_at,
-        ], Response::HTTP_OK);
+        return self::successLoginResponse($adminToken);
     }
 
     public function googleLogin(GoogleLoginRequest $request) {
@@ -46,22 +41,14 @@ class AuthController extends Controller {
         $payload = $this->googleClient->verifyIdToken($request->input('id_token'));
         $userToken = User::authenticateGoogleUser($payload);
 
-        return response()->json([
-            'success' => true,
-            'token' => $userToken->accessToken,
-            'expires_in' => $userToken->token->expires_at,
-        ], Response::HTTP_OK);
+        return self::successLoginResponse($userToken);
     }
 
     public function register(RegistrationRequest $request) {
         $request->validated();
         $userToken = User::createUser($request->all());
 
-        return response()->json([
-            'success' => true,
-            'token' => $userToken->accessToken,
-            'expires_in' => $userToken->token->expires_at,
-        ], Response::HTTP_CREATED);
+        return self::successLoginResponse($userToken);
     }
 
     public function googleRegister(GoogleRegistrationRequest $request) {
@@ -69,11 +56,7 @@ class AuthController extends Controller {
         $payload = $this->googleClient->verifyIdToken($request->input('id_token'));
         $userToken = User::createGoogleUser($payload, $request->input('role'));
 
-        return response()->json([
-            'success' => true,
-            'token' => $userToken->accessToken,
-            'expires_in' => $userToken->token->expires_at,
-        ], Response::HTTP_CREATED);
+        return self::successLoginResponse($userToken);
     }
 
     public function logout() {
