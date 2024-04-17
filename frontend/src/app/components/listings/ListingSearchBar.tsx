@@ -41,8 +41,6 @@ import ListingFilterModal from "./ListingFilterModal";
 import FilterButton from "./FilterButton";
 
 const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [filters, setFilters] = useState<ListingFilter>(INITIAL_FILTER);
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -54,6 +52,38 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
           ? "a"
           : "e"
         : "";
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [filters, setFilters] = useState<ListingFilter>({
+    price: {
+      min: (searchParams.get(`${prefix}price`)?.split("-")[0] ??
+        MIN_PRICE) as number,
+      max: (searchParams.get(`${prefix}price`)?.split("-")[1] ??
+        MAX_PRICE) as number
+    },
+    rating: {
+      min: (searchParams.get(`${prefix}rating`)?.split("-")[0] ??
+        MIN_RATING) as number,
+      max: (searchParams.get(`${prefix}rating`)?.split("-")[1] ??
+        MAX_RATING) as number
+    },
+    date: [
+      {
+        startDate: (searchParams.get(`${prefix}date`)?.split(":")[0] ??
+          MIN_DATE) as Date,
+        endDate:
+          searchParams.get(`${prefix}date`) === null
+            ? undefined
+            : ((searchParams.get(`${prefix}date`)?.split(":")[1] ??
+                MIN_DATE) as Date),
+        key: "selection"
+      }
+    ],
+    status: (searchParams.get(`${prefix}status`) as ListingStatus) ?? "all",
+    type:
+      (searchParams.get(`${prefix}type`) as
+        | AccommodationType
+        | ExperienceType) ?? "all"
+  });
 
   const handleFilterChange = useCallback(() => {
     const params = new URLSearchParams(searchParams);
@@ -74,9 +104,11 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
       filters.date[0].startDate !== MIN_DATE &&
       filters.date[0].endDate !== undefined
     ) {
+      console.log(filters.date[0].startDate);
+      console.log(filters.date[0].endDate);
       params.set(
         `${prefix}date`,
-        `${formatDate(filters.date[0].startDate)}:${formatDate(filters.date[0].endDate)}`
+        `${formatDate(new Date(filters.date[0].startDate))}:${formatDate(new Date(filters.date[0].endDate))}`
       );
     } else params.delete(`${prefix}date`);
 
@@ -140,6 +172,7 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
           innerWrapper: ["bg-white"]
         }}
         startContent={<SearchIcon width={14} height={14} />}
+        defaultValue={searchParams.get(`${prefix}query`) ?? ""}
         onChange={(e) => {
           handleSearchChange(e.target.value);
         }}
@@ -171,6 +204,12 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
             size="sm"
             minValue={MIN_PRICE}
             maxValue={MAX_PRICE}
+            defaultValue={[
+              (searchParams.get(`${prefix}price`)?.split("-")[0] ??
+                MIN_PRICE) as number,
+              (searchParams.get(`${prefix}price`)?.split("-")[1] ??
+                MAX_PRICE) as number
+            ]}
             value={[filters.price.min, filters.price.max]}
             formatOptions={{ style: "currency", currency: "PHP" }}
             className="max-w-md p-1"
@@ -362,7 +401,14 @@ const ListingSearchBar: React.FC<ListingSearchBarProps> = ({ user, type }) => {
         size="lg"
         shape="circle"
         content=""
-        isInvisible={filters === INITIAL_FILTER}
+        isInvisible={
+          searchParams.get(`${prefix}price`) === null &&
+          searchParams.get(`${prefix}rating`) === null &&
+          searchParams.get(`${prefix}date`) === null &&
+          searchParams.get(`${prefix}status`) === null &&
+          (searchParams.get(`${prefix}type`) === null ||
+            user === UserRole.GUEST)
+        }
         className="md:hidden"
       >
         <Button
