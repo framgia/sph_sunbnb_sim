@@ -41,6 +41,7 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
     if (filters.search !== "") params.set("search", filters.search);
     else params.delete("search");
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    router.refresh();
   }, [filters, pathname, searchParams, router, actionDone]);
 
   return (
