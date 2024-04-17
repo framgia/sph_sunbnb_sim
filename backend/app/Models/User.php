@@ -230,10 +230,12 @@ class User extends Authenticatable {
     }
 
     private function checkUserStatus($status): void {
-        abort_unless(
-            $status === UserStatus::ACTIVE,
-            Response::HTTP_FORBIDDEN,
-            "User $this->email is banned. ".$this->reason->last()->reason
-        );
+        if ($status === UserStatus::BANNED) {
+            abort(
+
+                Response::HTTP_FORBIDDEN,
+                "User $this->email is banned. ".$this->reason->last()->reason
+            );
+        }
     }
 }
