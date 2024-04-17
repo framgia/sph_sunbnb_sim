@@ -1,7 +1,6 @@
 "use client";
 import AdminUserManagementFilter from "@/app/components/admin/AdminUserManagementFilter";
 import UserGrid from "@/app/components/admin/UserGrid";
-import FilterIcon from "@/app/components/svgs/Admin/FilterIcon";
 import SearchIcon from "@/app/components/svgs/SearchIcon";
 import type {
   PaginationType,
@@ -9,18 +8,7 @@ import type {
   UserDetailsType,
   UserManagementFilters
 } from "@/app/interfaces/types";
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownSection,
-  DropdownTrigger,
-  Input,
-  Pagination,
-  Tab,
-  Tabs
-} from "@nextui-org/react";
+import { Input, Pagination } from "@nextui-org/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 

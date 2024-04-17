@@ -13,7 +13,7 @@ import {
 import React from "react";
 import FilterIcon from "../svgs/Admin/FilterIcon";
 import { Reason } from "@/app/utils/enums";
-import { ReportFilters } from "@/app/interfaces/types";
+import type { ReportFilters } from "@/app/interfaces/types";
 
 interface ReportFiltersProps {
   filters: ReportFilters;

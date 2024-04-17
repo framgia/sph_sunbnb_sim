@@ -1,23 +1,11 @@
 "use client";
 import AdminApprovalFilter from "@/app/components/admin/AdminApprovalFilter";
 import ListingItem from "@/app/components/listings/ListingItem";
-import FilterIcon from "@/app/components/svgs/Admin/FilterIcon";
 import SearchIcon from "@/app/components/svgs/SearchIcon";
 import type { Listing, PaginationType } from "@/app/interfaces/types";
 import { UserRole } from "@/app/utils/enums";
 import type { ListingType } from "@/app/utils/enums";
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Input,
-  Pagination,
-  Spinner,
-  Tab,
-  Tabs
-} from "@nextui-org/react";
+import { Input, Pagination, Spinner, Tab, Tabs } from "@nextui-org/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 

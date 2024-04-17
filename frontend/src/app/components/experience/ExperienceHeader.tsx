@@ -80,8 +80,9 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
           <Image
             src={images[0].media.replace(/['"]/g, "")}
             alt="Listing Image"
-            loading="lazy"
             fill
+            priority
+            sizes="100%"
             style={{ objectFit: "cover" }}
           />
         </div>
@@ -96,6 +97,7 @@ const ExperienceHeader: React.FC<ExperienceHeaderProps> = async ({
                 alt="listing image"
                 loading="lazy"
                 fill
+                sizes="100%"
                 style={{ objectFit: "cover" }}
               />
             </div>
