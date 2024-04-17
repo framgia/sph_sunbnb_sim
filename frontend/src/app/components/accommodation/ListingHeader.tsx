@@ -73,8 +73,9 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
           <Image
             src={images[0].media.replace(/['"]/g, "")}
             alt="Listing Image"
-            loading="lazy"
             fill
+            priority
+            sizes="100%"
             style={{ objectFit: "cover" }}
           />
         </div>
@@ -89,6 +90,7 @@ const ListingHeader: React.FC<ListingHeaderProps> = async ({
                 alt="listing image"
                 loading="lazy"
                 fill
+                sizes="100%"
                 style={{ objectFit: "cover" }}
               />
             </div>
