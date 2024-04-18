@@ -38,7 +38,7 @@ const UserComponent: React.FC<UserComponentProps> = ({
   }, [users]);
   useEffect(() => {
     router.refresh();
-  }, [isActionDone]);
+  }, [isActionDone, router]);
 
   //   const params = new URLSearchParams(searchParams);
   //   params.set("sort", filters.sort);
