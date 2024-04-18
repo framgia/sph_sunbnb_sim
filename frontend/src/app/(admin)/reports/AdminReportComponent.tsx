@@ -129,7 +129,6 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
           startContent={<SearchIcon />}
           placeholder="Search"
           aria-label="Search"
-          value={filtersData.search}
           onChange={(e) => {
             handleSearch(e.target.value);
           }}

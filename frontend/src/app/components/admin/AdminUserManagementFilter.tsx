@@ -14,12 +14,16 @@ import FilterIcon from "../svgs/Admin/FilterIcon";
 
 interface AdminUserManagementFilterProps {
   filters: UserManagementFilters;
-  setFilters: React.Dispatch<React.SetStateAction<UserManagementFilters>>;
+  handleRoleChange: (role: string) => void;
+  handleStatusChange: (status: string) => void;
+  handleSortChange: (sort: string) => void;
 }
 
 const AdminUserManagementFilter: React.FC<AdminUserManagementFilterProps> = ({
   filters,
-  setFilters
+  handleRoleChange,
+  handleStatusChange,
+  handleSortChange
 }) => {
   return (
     <>
@@ -42,7 +46,7 @@ const AdminUserManagementFilter: React.FC<AdminUserManagementFilterProps> = ({
                   color={"primary"}
                   selectedKey={filters.role}
                   onSelectionChange={(key) => {
-                    setFilters({ ...filters, page: 1, role: key as string });
+                    handleRoleChange(key as string);
                   }}
                 >
                   <Tab key="" title="All"></Tab>
@@ -60,11 +64,7 @@ const AdminUserManagementFilter: React.FC<AdminUserManagementFilterProps> = ({
                   color={"primary"}
                   selectedKey={filters.status}
                   onSelectionChange={(key) => {
-                    setFilters({
-                      ...filters,
-                      page: 1,
-                      status: key as string
-                    });
+                    handleStatusChange(key as string);
                   }}
                 >
                   <Tab key="" title="All"></Tab>
@@ -81,7 +81,7 @@ const AdminUserManagementFilter: React.FC<AdminUserManagementFilterProps> = ({
                   color={"primary"}
                   selectedKey={filters.sort}
                   onSelectionChange={(key) => {
-                    setFilters({ ...filters, sort: key as string });
+                    handleSortChange(key as string);
                   }}
                 >
                   <Tab key="asc" title="Ascending"></Tab>

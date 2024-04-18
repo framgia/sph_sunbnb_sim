@@ -10,7 +10,7 @@ import type {
 } from "@/app/interfaces/types";
 import { Input, Pagination, Spinner } from "@nextui-org/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 interface UserComponentProps {
   currentuser?: UserAdminResponse;
@@ -31,28 +31,78 @@ const UserComponent: React.FC<UserComponentProps> = ({
   const [usersState, setUsers] = useState(users);
   const [isLoading, setLoading] = useState(false);
   const [isActionDone, setIsActionDone] = useState(false);
-  const [filters, setFilters] = useState<UserManagementFilters>(filtersData);
 
   useEffect(() => {
     setLoading(false);
     setUsers(users);
   }, [users]);
   useEffect(() => {
-    setLoading(true);
-
-    const params = new URLSearchParams(searchParams);
-    params.set("sort", filters.sort);
-    params.set("page", filters.page.toString());
-    if (filters.status === "") params.delete("status");
-    else params.set("status", filters.status);
-    if (filters.role === "") params.delete("role");
-    else params.set("role", filters.role);
-
-    if (filters.search !== "") params.set("search", filters.search);
-    else params.delete("search");
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     router.refresh();
-  }, [filters, pathname, searchParams, router, isActionDone]);
+  }, [isActionDone]);
+
+  //   const params = new URLSearchParams(searchParams);
+  //   params.set("sort", filters.sort);
+  //   params.set("page", filters.page.toString());
+  //   if (filters.status === "") params.delete("status");
+  //   else params.set("status", filters.status);
+  //   if (filters.role === "") params.delete("role");
+  //   else params.set("role", filters.role);
+
+  //   if (filters.search !== "") params.set("search", filters.search);
+  //   else params.delete("search");
+  //   router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  //   router.refresh();
+  // }, [filters, pathname, searchParams, router, isActionDone]);
+
+  const handleRoleChange = useCallback(
+    (role: string) => {
+      const params = new URLSearchParams(searchParams);
+      if (role === "") params.delete("role");
+      else params.set("role", role);
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [pathname, searchParams, router]
+  );
+
+  const handleSortChange = useCallback(
+    (order: string) => {
+      const params = new URLSearchParams(searchParams);
+      if (order === "asc") params.delete("sort");
+      else params.set("sort", order);
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [pathname, searchParams, router]
+  );
+
+  const handleStatusChange = useCallback(
+    (status: string) => {
+      const params = new URLSearchParams(searchParams);
+      if (status === "") params.delete("status");
+      else params.set("status", status);
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [pathname, searchParams, router]
+  );
+
+  const handleSearch = useCallback(
+    (query: string) => {
+      const params = new URLSearchParams(searchParams);
+      if (query === "") params.delete("search");
+      else params.set("search", query);
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [pathname, searchParams, router]
+  );
+
+  const handlePage = useCallback(
+    (page: number) => {
+      const params = new URLSearchParams(searchParams);
+      if (page === 1) params.delete("page");
+      else params.set("page", page.toString());
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [pathname, searchParams, router]
+  );
 
   return (
     <>
@@ -63,15 +113,19 @@ const UserComponent: React.FC<UserComponentProps> = ({
           startContent={<SearchIcon />}
           placeholder="Search"
           aria-label="Search"
-          value={filters.search}
           onChange={(e) => {
-            setFilters({ ...filters, page: 1, search: e.target.value });
+            handleSearch(e.target.value);
           }}
         />
       </div>
       <div className="flex justify-between">
         <div className="mb-5 mt-5 text-2xl font-bold">Users</div>
-        <AdminUserManagementFilter filters={filters} setFilters={setFilters} />
+        <AdminUserManagementFilter
+          filters={filtersData}
+          handleRoleChange={handleRoleChange}
+          handleSortChange={handleSortChange}
+          handleStatusChange={handleStatusChange}
+        />
       </div>
       {!isLoading ? (
         <>
@@ -95,9 +149,9 @@ const UserComponent: React.FC<UserComponentProps> = ({
                 total={Math.ceil(
                   (pagination?.total ?? 1) / (pagination?.per_page ?? 1)
                 )}
-                page={Number(filters.page)}
+                page={Number(filtersData.page)}
                 onChange={(page) => {
-                  setFilters({ ...filters, page });
+                  handlePage(page);
                 }}
                 className="flex w-full justify-center"
               />
