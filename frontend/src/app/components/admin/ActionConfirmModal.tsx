@@ -8,6 +8,7 @@ import {
   ModalFooter,
   ModalHeader
 } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 interface ActionConfirmModalProps extends ModalProps {
@@ -23,6 +24,7 @@ const ActionConfirmModal: React.FC<ActionConfirmModalProps> = ({
   setActionDone
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   async function handleDelete(): Promise<void> {
     setIsLoading(true);
@@ -32,6 +34,7 @@ const ActionConfirmModal: React.FC<ActionConfirmModalProps> = ({
       onClose();
     }
     setIsLoading(false);
+    router.refresh();
   }
 
   return (
