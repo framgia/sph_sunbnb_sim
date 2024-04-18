@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 import FilterIcon from "../svgs/Admin/FilterIcon";
-import { ListingType, Reason } from "@/app/utils/enums";
+import { type ListingType, Reason } from "@/app/utils/enums";
 import type { ReportFilters } from "@/app/interfaces/types";
 
 interface ReportFiltersProps {

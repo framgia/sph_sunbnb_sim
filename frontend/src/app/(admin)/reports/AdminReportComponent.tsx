@@ -8,7 +8,7 @@ import type {
   Report,
   ReportFilters
 } from "@/app/interfaces/types";
-import { ListingType, Reason } from "@/app/utils/enums";
+import type { ListingType, Reason } from "@/app/utils/enums";
 import { Input, Pagination, Spinner } from "@nextui-org/react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
@@ -30,7 +30,7 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
   const [isLoading, setLoading] = useState(false);
   const [reportsState, setReports] = useState(reports);
   const [actionDone, setActionDone] = useState(false);
-
+  console.log(actionDone);
   // status: (searchParams?.status as ReportStatus) ?? "open",
   //   reason: searchParams?.reason ?? "",
   //   type: searchParams?.type ?? "",
