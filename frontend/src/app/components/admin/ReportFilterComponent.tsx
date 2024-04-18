@@ -12,17 +12,21 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 import FilterIcon from "../svgs/Admin/FilterIcon";
-import { Reason } from "@/app/utils/enums";
+import { ListingType, Reason } from "@/app/utils/enums";
 import type { ReportFilters } from "@/app/interfaces/types";
 
 interface ReportFiltersProps {
   filters: ReportFilters;
-  setFilters: React.Dispatch<React.SetStateAction<ReportFilters>>;
+  handleReason: (reason: Reason | "") => void;
+  handleType: (type: ListingType | "") => void;
+  handleSort: (order: "asc" | "desc") => void;
 }
 
 const ReportFilterComponent: React.FC<ReportFiltersProps> = ({
   filters,
-  setFilters
+  handleReason,
+  handleSort,
+  handleType
 }) => {
   return (
     <>
@@ -44,7 +48,7 @@ const ReportFilterComponent: React.FC<ReportFiltersProps> = ({
                   color="primary"
                   value={filters.reason}
                   onValueChange={(value) => {
-                    setFilters({ ...filters, page: 1, reason: value });
+                    handleReason(value as Reason);
                   }}
                 >
                   <Radio key="" value="">
@@ -66,7 +70,7 @@ const ReportFilterComponent: React.FC<ReportFiltersProps> = ({
                   color={"primary"}
                   selectedKey={filters.type}
                   onSelectionChange={(key) => {
-                    setFilters({ ...filters, page: 1, type: key as string });
+                    handleType(key as ListingType | "");
                   }}
                 >
                   <Tab key="" title="All"></Tab>
@@ -83,7 +87,7 @@ const ReportFilterComponent: React.FC<ReportFiltersProps> = ({
                   color={"primary"}
                   selectedKey={filters.sort}
                   onSelectionChange={(key) => {
-                    setFilters({ ...filters, sort: key as string });
+                    handleSort(key as "desc" | "asc");
                   }}
                 >
                   <Tab key="asc" title="Ascending"></Tab>

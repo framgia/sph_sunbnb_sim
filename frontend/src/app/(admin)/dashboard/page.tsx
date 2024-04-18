@@ -18,7 +18,7 @@ const DashboardPage: React.FC = async () => {
         adminCount={5}
         bookingsCount={7}
         listingsCount={22}
-        accumulatedVal={7,420}
+        accumulatedVal={7420}
         approvedListings={20}
       />
       <div className="mt-12">

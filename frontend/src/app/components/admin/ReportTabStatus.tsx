@@ -4,10 +4,13 @@ import React from "react";
 
 interface ReportTabProps {
   filters: ReportFilters;
-  setFilters: React.Dispatch<React.SetStateAction<ReportFilters>>;
+  handleStatus: (status: string) => void;
 }
 
-const ReportTabStatus: React.FC<ReportTabProps> = ({ filters, setFilters }) => {
+const ReportTabStatus: React.FC<ReportTabProps> = ({
+  filters,
+  handleStatus
+}) => {
   return (
     <>
       <div className="mt-5 flex w-full justify-around md:m-8 md:w-32 md:flex-col md:justify-normal">
@@ -18,7 +21,7 @@ const ReportTabStatus: React.FC<ReportTabProps> = ({ filters, setFilters }) => {
               : "text-gray-500"
           }`}
           onClick={() => {
-            setFilters({ ...filters, status: ReportStatus.OPEN });
+            handleStatus(ReportStatus.OPEN);
           }}
         >
           Open
@@ -30,7 +33,7 @@ const ReportTabStatus: React.FC<ReportTabProps> = ({ filters, setFilters }) => {
               : "text-gray-500"
           }`}
           onClick={() => {
-            setFilters({ ...filters, status: ReportStatus.CLOSED });
+            handleStatus(ReportStatus.CLOSED);
           }}
         >
           Closed
