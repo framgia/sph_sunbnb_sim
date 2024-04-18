@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import type { Report } from "@/app/interfaces/types";
 import { ReportStatus } from "@/app/utils/enums";
 import { closeReport } from "@/app/utils/helpers/report/request";
+import { useRouter } from "next/navigation";
 
 interface ReportDetailsModalProps extends ModalProps {
   report: Report;
@@ -29,6 +30,7 @@ const ReportDetailsModal: React.FC<ReportDetailsModalProps> = ({
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { id, reason, status, content, user, listing, admin } = report;
+  const router = useRouter();
 
   const handleCheckboxChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -44,6 +46,7 @@ const ReportDetailsModal: React.FC<ReportDetailsModalProps> = ({
       onClose();
     }
     setIsLoading(false);
+    router.refresh();
   }
 
   return (
