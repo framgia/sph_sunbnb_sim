@@ -77,10 +77,7 @@ async function getReports(filters: ReportFilters): Promise<ReportResponse> {
   );
 
   const responseData = await response.json();
-
-  if (response.ok) {
-    return responseData;
-  } else throw new Error(responseData.error as string);
+  return responseData;
 }
 
 async function closeReport(

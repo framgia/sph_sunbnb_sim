@@ -8,7 +8,7 @@ import type {
   Report,
   ReportFilters
 } from "@/app/interfaces/types";
-import { Input, Pagination } from "@nextui-org/react";
+import { Input, Pagination, Spinner } from "@nextui-org/react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -26,10 +26,19 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+  const [reportsState, setReports] = useState(reports);
   const [actionDone, setActionDone] = useState(false);
   const [filters, setFilters] = useState<ReportFilters>(filtersData);
 
   useEffect(() => {
+    setLoading(false);
+    setReports(reports);
+    console.log(reports);
+  }, [reports]);
+
+  useEffect(() => {
+    setLoading(true);
     const params = new URLSearchParams(searchParams);
     params.set("status", filters.status);
     params.set("sort", filters.sort);
@@ -65,32 +74,38 @@ const AdminReportComponent: React.FC<AdminReportProps> = ({
       </div>
       <div className="flex w-full flex-col md:flex-row">
         <ReportTabStatus filters={filters} setFilters={setFilters} />
-        <div className="mt-5 flex w-full flex-col gap-5">
-          {reports.length > 0 ? (
-            <>
-              {reports.map((report, index) => (
-                <ReportCard
-                  key={index}
-                  report={report}
-                  setActionDone={setActionDone}
+        {!isLoading ? (
+          <div className="mt-5 flex w-full flex-col gap-5">
+            {reportsState?.length > 0 ? (
+              <>
+                {reportsState.map((report, index) => (
+                  <ReportCard
+                    key={index}
+                    report={report}
+                    setActionDone={setActionDone}
+                  />
+                ))}
+                <Pagination
+                  className="m-3 flex justify-center"
+                  isCompact
+                  showControls
+                  total={Math.ceil(pagination.total / pagination.per_page)}
+                  initialPage={1}
+                  page={Number(filters.page)}
+                  onChange={(page) => {
+                    setFilters({ ...filters, page });
+                  }}
                 />
-              ))}
-              <Pagination
-                className="m-3 flex justify-center"
-                isCompact
-                showControls
-                total={Math.ceil(pagination.total / pagination.per_page)}
-                initialPage={1}
-                page={Number(filters.page)}
-                onChange={(page) => {
-                  setFilters({ ...filters, page });
-                }}
-              />
-            </>
-          ) : (
-            <div className="flex justify-center">No reports to display.</div>
-          )}
-        </div>
+              </>
+            ) : (
+              <div className="flex justify-center">No reports to display.</div>
+            )}
+          </div>
+        ) : (
+          <div className="flex w-full items-center justify-center">
+            <Spinner size="lg" />
+          </div>
+        )}
       </div>
     </>
   );

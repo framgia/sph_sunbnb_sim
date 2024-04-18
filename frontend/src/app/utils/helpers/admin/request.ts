@@ -42,12 +42,10 @@ async function getAllUsers(
   );
 
   const responseData = await response.json();
-  if (response.ok) {
-    return {
-      user: responseData.data,
-      paginate: responseData.pagination
-    };
-  } else throw new Error(responseData.error as string);
+  return {
+    user: responseData.data,
+    paginate: responseData.pagination
+  };
 }
 
 async function getAdminById(userId: number): Promise<UserAdminResponse> {
